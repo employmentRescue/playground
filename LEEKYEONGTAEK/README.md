@@ -5,3 +5,8 @@
 
 - 와이어프레임 작성중  
   https://www.figma.com/file/YlOB3Ah579DUXWWMRReYjI/Team-project1?node-id=0%3A1&t=G3ZhOMJFyk2P1Tft-0
+
+### 23-01-16
+
+- 와이어프레임 작성중  
+  https://www.figma.com/file/YlOB3Ah579DUXWWMRReYjI/Team-project1?node-id=0%3A1&t=G3ZhOMJFyk2P1Tft-0
