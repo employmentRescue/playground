@@ -22,6 +22,7 @@ module.exports = {
         "blue-700": "#303EFF",
         "gray-600": "#DBDBDB",
         "gray-100": "#f5f5f5",
+        "kakao": "#F9E000",
       },
 
     },
