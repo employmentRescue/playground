@@ -11,9 +11,9 @@
 
 ## 개인
 
-- 웹소켓의 기본 개념을 학습하고 실시간 채팅 구현 원리를 학습하기 위해 Java로 실시간 채팅을 구현해 보았다.
+- 웹소켓의 기본 개념을 학습하고 실시간 채팅 구현 원리를 학습하기 위해 Java로 실시간 채팅을 구현했다.
 
 ## 10.19
 
 - MSA 아키텍처 2D 설계도
-  (C:/Users/SSAFY/Desktop/S08P12B309/YOODOYEOL/msa 아키텍처)
+  ![msa 아키텍처](https://user-images.githubusercontent.com/86040882/213598625-2719e24a-df3f-4737-9cef-49fef39f5579.png)
