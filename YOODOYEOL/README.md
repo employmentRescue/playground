@@ -16,4 +16,4 @@
 ## 10.19
 
 - MSA 아키텍처 2D 설계도
-  (C:\Users\SSAFY\Desktop\S08P12B309\YOODOYEOL\msa 아키텍처)
+  (C:/Users/SSAFY/Desktop/S08P12B309/YOODOYEOL/msa 아키텍처)
