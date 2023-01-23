@@ -14,16 +14,20 @@ function Counter() {
   return (
     <div>
       <h1>Counter</h1>
-      <button onClick={() => {
+      <button className="w-50 bg-red-500" onClick={() => {
         dispatch(counterSlice.actions.up(2))
       }}>+</button>
-      <button onClick={() => {
+      <button className="w-50 bg-blue-400" onClick={() => {
         dispatch(counterSlice.actions.down(2))
       }}>-</button>
-      <button onClick={() => {
+      <button className="w-100 bg-green-400" onClick={() => {
         dispatch(counterSlice.actions.reset())
       }}>리셋</button>
-      <h1>{`${count}`}</h1>
+      <div className="w-100 h-100 justify-center">
+        <p>
+          {count}
+        </p>
+      </div>
     </div>
   )
 }

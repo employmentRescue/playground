@@ -50,13 +50,15 @@ function Todo() {
       <ul>
         {todos.map((todo) => {
           return (
-            <li key={todo.id}>
+            <li className="m-10" key={todo.id}>
               <input
+                className="mr-10"
                 type="checkbox"
                 onChange={() => handleCheckBox(todo.id)}
               />
               {todo.done === false ? <>{todo.text}</> : <del>{todo.text}</del>}
               <button
+                className="ml-10 border-2 border-violet-900 rounded-5"
                 onClick={() => handleTodoDelete(todo.id)}>
                 삭제
               </button>
