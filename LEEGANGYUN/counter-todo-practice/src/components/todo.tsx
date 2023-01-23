@@ -42,7 +42,8 @@ function Todo() {
 
   return (
     <div>
-      <h1>Todo List</h1>
+      <h1 className="text-40">Todo List</h1>
+      <h2 className="text-16">입력 후 Enter를 눌러 todo 추가</h2>
       <input
         name="todo"
         onKeyUp={handleOnKeyUpEnter}

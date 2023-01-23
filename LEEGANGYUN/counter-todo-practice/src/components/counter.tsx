@@ -13,7 +13,7 @@ function Counter() {
   })
   return (
     <div>
-      <h1>Counter</h1>
+      <h1 className="text-40">Counter</h1>
       <button className="w-50 bg-red-500" onClick={() => {
         dispatch(counterSlice.actions.up(2))
       }}>+</button>
@@ -23,7 +23,7 @@ function Counter() {
       <button className="w-100 bg-green-400" onClick={() => {
         dispatch(counterSlice.actions.reset())
       }}>리셋</button>
-      <div className="w-100 h-100 justify-center">
+      <div className="w-100 h-100 justify-center text-60">
         <p>
           {count}
         </p>
