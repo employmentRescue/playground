@@ -1,33 +1,33 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface match {
+interface live {
     title: string | null,
 }
 
-interface matchListState {
-    matchList: match[];
+interface liveListState {
+    liveList: live[];
 }
 
-const initialState: matchListState = {
-    matchList: [
+const initialState: liveListState = {
+    liveList: [
         {
             title: "농구할 사람",
         }
     ]
 }
 
-const matchSlice = createSlice({
+const liveSlice = createSlice({
     name: "match",
     initialState,
     reducers: {
         addMatch(state, action) {
-            state.matchList.push(action.payload);
+            state.liveList.push(action.payload);
         },
     }
 })
 
 export const {
     addMatch,
-} = matchSlice.actions;
+} = liveSlice.actions;
 
-export default matchSlice.reducer;
+export default liveSlice.reducer;
