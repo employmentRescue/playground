@@ -1,6 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
+import store from './stores/store';
 import './index.css';
 import DefaultPage from './pages/DefaultPage';
 import HomePage from './pages/HomePage';
@@ -26,7 +29,9 @@ const router = createBrowserRouter([
 
 
 createRoot(container).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>
+  <Provider store={store}>
+    <PersistGate persistor={persistStore(store)}>
+      <RouterProvider router={router} />
+    </PersistGate>
+  </Provider >
 );

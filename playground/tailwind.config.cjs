@@ -19,10 +19,16 @@ module.exports = {
       minHeight: px0_200,
       spacing: px0_200,
       colors: {
+        "blue-300": "#f1f3ff",
+        "blue-400": "#d8caff",
         "blue-700": "#303EFF",
+        "blue-800": "#2632cc",
         "gray-600": "#DBDBDB",
         "gray-100": "#f5f5f5",
-        "kakao": "#F9E000",
+        "yellow-200": "#fde9b4",
+        "yellow-600": "#efad45",
+        "green-400": "#c4ffb6",
+
       },
 
     },
