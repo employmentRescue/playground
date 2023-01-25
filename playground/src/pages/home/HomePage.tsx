@@ -1,17 +1,22 @@
-import useMouse from "@react-hook/mouse-position";
 import { useEffect, useRef } from "react"
 import { useReducer } from "react"
+import useGeolocation from "react-hook-geolocation";
+import basketBallMap from "@/assets/icons/basketball-map.png"
+import soccerMap from "@/assets/icons/soccer-map.png"
+import badmintonMap from "@/assets/icons/badminton-map.png"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'INIT' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'BASIC' };
 
 interface State {
     isPressed: boolean;
-    sportType: number;
+    sportType: string;
+    modalType: string;
 }
 
 const initialState: State = {
     isPressed: false,
-    sportType: 0,
+    sportType: '',
+    modalType: 'basic',
 }
 
 function registReducer(state: State, action: Action) {
@@ -24,22 +29,42 @@ function registReducer(state: State, action: Action) {
         case 'BASKETBALL':
             return {
                 ...state,
-                sportType: 1
+                sportType: 'basketball'
             }
         case 'SOCCER':
             return {
                 ...state,
-                sportType: 2
+                sportType: 'soccer'
             }
         case 'BADMINTON':
             return {
                 ...state,
-                sportType: 3
+                sportType: 'badminton'
             }
-        case 'INIT':
+        case 'REGISTER':
             return {
                 ...state,
-                sportType: 0
+                modalType: 'register'
+            }
+        case 'MODIFY':
+            return {
+                ...state,
+                modalType: 'modify'
+            }
+        case 'DELETE':
+            return {
+                ...state,
+                modalType: 'delete'
+            }
+        case 'QUIT':
+            return {
+                ...state,
+                modalType: 'quit'
+            }
+        case 'BASIC':
+            return {
+                ...state,
+                modalType: 'basic'
             }
         default:
             throw new Error('Unhandled action');
@@ -52,64 +77,67 @@ export default function HomePage() {
     const basketBall = () => dispatch({ type: 'BASKETBALL' });
     const soccer = () => dispatch({ type: 'SOCCER' });
     const badminton = () => dispatch({ type: 'BADMINTON' });
-    const init = () => dispatch({ type: 'INIT' });
+    const registerMeeting = () => dispatch({ type: 'REGISTER' });
+    const modifyMeeting = () => dispatch({ type: 'MODIFY' });
+    const deleteMeeting = () => dispatch({ type: 'DELETE' });
+    const quitMetting = () => dispatch({ type: 'QUIT' });
 
     const mapElement: any | null = useRef(undefined);
+    const geolocation = useGeolocation();
+
     useEffect(() => {
         const { naver } = window;
         if (!mapElement.current || !naver) return;
-        console.log("new!");
-
         // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
-        const location = new naver.maps.LatLng(37.5656, 126.9769);
+        const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         const mapOptions: naver.maps.MapOptions = {
             center: location,
             zoom: 17,
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
-        new naver.maps.Marker({
-            position: location,
-            map,
-        });
-    }, []);
-
-    useEffect(() => {
         switch (state.sportType) {
-            case 1:
-                naver.maps.Event.addListener(mapElement.current, 'click', function (e) {
-                    new naver.maps.Marker({
-                        position: e.coord,
-                        map: mapElement.current
-                    })
-                    //init();
-
+            case 'basketball':
+                new naver.maps.Marker({
+                    position: location,
+                    map,
+                    icon: {
+                        url: basketBallMap,
+                        size: new naver.maps.Size(60, 60),
+                        scaledSize: new naver.maps.Size(60, 60),
+                        origin: new naver.maps.Point(0, 0),
+                        anchor: new naver.maps.Point(30, 60)
+                    }
                 });
-                console.log(state.sportType);
-
                 break;
-            case 2:
-                naver.maps.Event.addListener(mapElement.current, 'click', function (e) {
-                    new naver.maps.Marker({
-                        position: e.coord,
-                        map: mapElement.current,
-                    })
+            case 'soccer':
+                new naver.maps.Marker({
+                    position: new naver.maps.LatLng(geolocation.latitude, geolocation.longitude),
+                    map,
+                    icon: {
+                        url: soccerMap,
+                        size: new naver.maps.Size(60, 60),
+                        scaledSize: new naver.maps.Size(60, 60),
+                        origin: new naver.maps.Point(0, 0),
+                        anchor: new naver.maps.Point(30, 60)
+                    }
                 });
-                init;
-                console.log(state.sportType);
                 break;
-            case 3:
-                naver.maps.Event.addListener(mapElement.current, 'click', function (e) {
-                    new naver.maps.Marker({
-                        position: e.coord,
-                        map: mapElement.current,
-                    })
+            case 'badminton':
+                new naver.maps.Marker({
+                    position: new naver.maps.LatLng(geolocation.latitude, geolocation.longitude),
+                    map,
+                    icon: {
+                        url: badmintonMap,
+                        size: new naver.maps.Size(60, 60),
+                        scaledSize: new naver.maps.Size(60, 60),
+                        origin: new naver.maps.Point(0, 0),
+                        anchor: new naver.maps.Point(30, 60)
+                    }
                 });
-                init;
-                console.log(state.sportType);
                 break;
         }
-
-    }, [state])
+        console.log(state.sportType)
+    }, [state.sportType, geolocation.latitude, geolocation.longitude]);
 
 
     return (
