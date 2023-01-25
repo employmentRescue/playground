@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react"
 import { useReducer } from "react"
-import useGeolocation from "react-hook-geolocation";
+import useGeolocation from "react-hook-geolocation"
+import Register from "@/components/LiveRegister/Register"
 import basketBallMap from "@/assets/icons/basketball-map.png"
 import soccerMap from "@/assets/icons/soccer-map.png"
 import badmintonMap from "@/assets/icons/badminton-map.png"
@@ -141,7 +142,7 @@ export default function HomePage() {
 
 
     return (
-        <div ref={mapElement} className="w-full h-full">
+        <div ref={mapElement} className="w-full h-full relative">
             <div className="w-60 h-193 flex flex-col relative float-right mt-12 mr-9 z-10 ">{
                 state.isPressed === false ?
                     <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>등록</button>
@@ -156,6 +157,7 @@ export default function HomePage() {
                     </div>
             }
             </div>
+            <Register />
         </div>
     )
 }
