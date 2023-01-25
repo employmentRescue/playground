@@ -1,20 +1,17 @@
+import useMouse from "@react-hook/mouse-position";
 import { useEffect, useRef } from "react"
 import { useReducer } from "react"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'INIT' };
 
 interface State {
     isPressed: boolean;
     sportType: number;
-    mouseX: number;
-    mouseY: number;
 }
 
 const initialState: State = {
     isPressed: false,
     sportType: 0,
-    mouseX: 0,
-    mouseY: 0,
 }
 
 function registReducer(state: State, action: Action) {
@@ -39,6 +36,11 @@ function registReducer(state: State, action: Action) {
                 ...state,
                 sportType: 3
             }
+        case 'INIT':
+            return {
+                ...state,
+                sportType: 0
+            }
         default:
             throw new Error('Unhandled action');
     }
@@ -50,21 +52,13 @@ export default function HomePage() {
     const basketBall = () => dispatch({ type: 'BASKETBALL' });
     const soccer = () => dispatch({ type: 'SOCCER' });
     const badminton = () => dispatch({ type: 'BADMINTON' });
+    const init = () => dispatch({ type: 'INIT' });
 
-    const mapElement = useRef(null);
-    const mouseElement = useRef(null);
-
+    const mapElement: any | null = useRef(undefined);
     useEffect(() => {
-        switch (state.sportType) {
-            case 1:
-                document.addEventListener("mousemove", (e) => {
-                    state.mouseX = e.clientX;
-                    state.mouseY = e.clientY;
-                    console.log(state.mouseX);
-                })
-        }
         const { naver } = window;
         if (!mapElement.current || !naver) return;
+        console.log("new!");
 
         // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
         const location = new naver.maps.LatLng(37.5656, 126.9769);
@@ -77,7 +71,45 @@ export default function HomePage() {
             position: location,
             map,
         });
-    }, [state]);
+    }, []);
+
+    useEffect(() => {
+        switch (state.sportType) {
+            case 1:
+                naver.maps.Event.addListener(mapElement.current, 'click', function (e) {
+                    new naver.maps.Marker({
+                        position: e.coord,
+                        map: mapElement.current
+                    })
+                    //init();
+
+                });
+                console.log(state.sportType);
+
+                break;
+            case 2:
+                naver.maps.Event.addListener(mapElement.current, 'click', function (e) {
+                    new naver.maps.Marker({
+                        position: e.coord,
+                        map: mapElement.current,
+                    })
+                });
+                init;
+                console.log(state.sportType);
+                break;
+            case 3:
+                naver.maps.Event.addListener(mapElement.current, 'click', function (e) {
+                    new naver.maps.Marker({
+                        position: e.coord,
+                        map: mapElement.current,
+                    })
+                });
+                init;
+                console.log(state.sportType);
+                break;
+        }
+
+    }, [state])
 
 
     return (
@@ -89,7 +121,7 @@ export default function HomePage() {
                     <div>
                         <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>취소</button>
                         <div className="flex flex-col justify-between items-center w-60 h-157 mt-4 rounded-15 border-1 border-[#303eff80] bg-blue-300">
-                            <div ref={mouseElement} className="w-40 h-40 mt-7 rounded-50 bg-yellow-200" onClick={basketBall}></div>
+                            <div className="w-40 h-40 mt-7 rounded-50 bg-yellow-200" onClick={basketBall} ></div>
                             <div className="w-40 h-40 rounded-50 bg-blue-400" onClick={soccer}></div>
                             <div className="w-40 h-40 mb-7 rounded-50 bg-green-400" onClick={badminton}></div>
                         </div>
