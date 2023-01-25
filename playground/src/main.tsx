@@ -6,8 +6,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 import store from './stores/store';
 import './index.css';
 import DefaultPage from './pages/DefaultPage';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
+import HomePage from './pages/home/HomePage';
+import { LoginPage, LoginFailPage, LoginRegisterPage } from './pages/user/UserAuthPages';
+import persistStore from 'redux-persist/es/persistStore';
+import DefaultPage2 from './pages/UserDefaultPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const router = createBrowserRouter([
@@ -19,12 +21,26 @@ const router = createBrowserRouter([
         path: '',
         element: <HomePage />,
       },
-      {
-        path: 'login',
-        element: <LoginPage />
-      }
     ]
   },
+  {
+    path: '/',
+    element: <DefaultPage2 />,
+    children: [
+      {
+        path: 'login',
+        element: <LoginPage />,
+      },
+      {
+        path: 'login/register',
+        element: <LoginRegisterPage />
+      },
+      {
+        path: 'login/fail',
+        element: <LoginFailPage />,
+      }
+    ]
+  }
 ]);
 
 
