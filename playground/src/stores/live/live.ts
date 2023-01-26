@@ -1,7 +1,13 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface live {
-    title: string | null,
+    place: string,
+    detail: string,
+    currentPeopleNum: number,
+    totalPeopleNum: number,
+    remainTime: number,
+    userNickName: string,
+    userPicture: string,
 }
 
 interface liveListState {
@@ -9,25 +15,24 @@ interface liveListState {
 }
 
 const initialState: liveListState = {
-    liveList: [
-        {
-            title: "농구할 사람",
-        }
-    ]
+    liveList: []
 }
 
 const liveSlice = createSlice({
-    name: "match",
+    name: "live",
     initialState,
     reducers: {
-        addMatch(state, action) {
+        addLiveMatch(state, action) {
             state.liveList.push(action.payload);
+        },
+        getLiveMatchList(state, action) {
+            state.liveList = action.payload;
         },
     }
 })
 
 export const {
-    addMatch,
+    addLiveMatch,
 } = liveSlice.actions;
 
 export default liveSlice.reducer;
