@@ -29,11 +29,12 @@ module.exports = {
         "yellow-200": "#fde9b4",
         "yellow-600": "#efad45",
         "green-400": "#c4ffb6",
+        "gray-service": "#3B485B",
 
       },
 
     },
 
   },
-  plugins: [],
+  plugins: [require('tailwindcss-font-inter')],
 }
