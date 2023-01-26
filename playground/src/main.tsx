@@ -7,6 +7,8 @@ import store from './stores/store';
 import './index.css';
 import DefaultPage from './pages/DefaultPage';
 import HomePage from './pages/home/HomePage';
+import MatchPage from './pages/match/MatchPage';
+
 import persistStore from 'redux-persist/es/persistStore';
 
 const container = document.getElementById('root') as HTMLElement;
@@ -18,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: '',
         element: <HomePage />,
+      },
+      {
+        path: 'match/',
+        element: <MatchPage />,
       }
     ]
   },
