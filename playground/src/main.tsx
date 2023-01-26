@@ -7,8 +7,11 @@ import store from './stores/store';
 import './index.css';
 import { UserDefaultPage, DefaultPage } from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
-import { LoginPage, LoginFailPage, LoginRegisterPage, LoginSuccessPage } from './pages/user/UserAuthPages';
 import persistStore from 'redux-persist/es/persistStore';
+import LoginPage from './pages/user/LoginPage';
+import LoginRegisterPage from './pages/user/LoginRegisterPage';
+import LoginFailPage from './pages/user/LoginFailPage';
+import LoginSuccessPage from './pages/user/LoginSuccessPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const router = createBrowserRouter([
@@ -27,18 +30,22 @@ const router = createBrowserRouter([
     element: <UserDefaultPage />,
     children: [
       {
+        // '카카오 계정으로 로그인' 버튼이 있는 로그인 페이지
         path: 'login',
         element: <LoginPage />,
       },
       {
+        // 앱 계정이 없는 사용자에게 보여줄 회원가입 페이지
         path: 'login/register',
         element: <LoginRegisterPage />
       },
       {
+        // 로그인 실패 페이지
         path: 'login/fail',
         element: <LoginFailPage />,
       },
       {
+        // 백엔드 서버에서 로그인 토큰까지 받아왔을 때 Redirect될 URL
         path: 'login/success',
         element: <LoginSuccessPage />,
       },
