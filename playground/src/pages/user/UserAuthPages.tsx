@@ -2,7 +2,7 @@ import { KAKAO_AUTH_URL } from "@/services/oauth"
 import { oauthRedirectHandler } from "@/services/oauthRedirectHandler"
 import welcomeImg from "@/assets/welcome/welcome.png"
 
-const LOGIN_URL = "http://localhost:3000/login"
+const LOGIN_URL = "https://localhost:3000/login"
 
 export function LoginPage() {
     return (
