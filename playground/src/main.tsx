@@ -5,11 +5,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
 import store from './stores/store';
 import './index.css';
-import DefaultPage from './pages/DefaultPage';
+import { UserDefaultPage, DefaultPage } from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
 import { LoginPage, LoginFailPage, LoginRegisterPage } from './pages/user/UserAuthPages';
 import persistStore from 'redux-persist/es/persistStore';
-import DefaultPage2 from './pages/UserDefaultPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const router = createBrowserRouter([
@@ -25,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <DefaultPage2 />,
+    element: <UserDefaultPage />,
     children: [
       {
         path: 'login',
