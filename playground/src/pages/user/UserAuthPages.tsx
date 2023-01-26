@@ -22,8 +22,16 @@ export function LoginRegisterPage() {
     oauthRedirectHandler();
     return (
         <div>
+            <h1>인증 토큰 발급 중...</h1>
+        </div>
+    )
+}
+
+export function LoginSuccessPage() {
+    return (
+        <div>
             <h1>카카오 로그인 성공!</h1>
-            <h2>닉네임을 설정해주세요</h2>
+            <h2>인증 토큰 발급 완료</h2>
         </div>
     )
 }

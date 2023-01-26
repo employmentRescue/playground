@@ -7,7 +7,7 @@ import store from './stores/store';
 import './index.css';
 import { UserDefaultPage, DefaultPage } from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
-import { LoginPage, LoginFailPage, LoginRegisterPage } from './pages/user/UserAuthPages';
+import { LoginPage, LoginFailPage, LoginRegisterPage, LoginSuccessPage } from './pages/user/UserAuthPages';
 import persistStore from 'redux-persist/es/persistStore';
 
 const container = document.getElementById('root') as HTMLElement;
@@ -37,7 +37,11 @@ const router = createBrowserRouter([
       {
         path: 'login/fail',
         element: <LoginFailPage />,
-      }
+      },
+      {
+        path: 'login/success',
+        element: <LoginSuccessPage />,
+      },
     ]
   }
 ]);
