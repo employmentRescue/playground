@@ -6,6 +6,7 @@ import JoinModal from "@/components/LiveModal/JoinModal"
 import basketBallMap from "@/assets/icons/basketball-map.png"
 import soccerMap from "@/assets/icons/soccer-map.png"
 import badmintonMap from "@/assets/icons/badminton-map.png"
+import currentPos from "@/assets/icons/current-position.png"
 import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
 import JoinButton from "@/components/LiveModal/Buttons/JoinButton"
@@ -80,16 +81,16 @@ export default function HomePage() {
     const mapElement: any | null = useRef(undefined);
     const geolocation = useGeolocation();
 
-    function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map) {
+    function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number) {
         return new naver.maps.Marker({
             position: location,
             map,
             icon: {
                 url: icon,
-                size: new naver.maps.Size(60, 60),
-                scaledSize: new naver.maps.Size(60, 60),
+                size: new naver.maps.Size(sizeX, sizeY),
+                scaledSize: new naver.maps.Size(sizeX, sizeY),
                 origin: new naver.maps.Point(0, 0),
-                anchor: new naver.maps.Point(30, 60)
+                anchor: new naver.maps.Point(sizeX / 2, sizeY)
             }
         });
     }
@@ -104,17 +105,18 @@ export default function HomePage() {
             zoom: 17,
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
+        setMapIcon(currentPos, location, map, 40, 40);
         switch (state.sportType) {
             case 'basketball':
-                setMapIcon(basketBallMap, location, map)
+                setMapIcon(basketBallMap, location, map, 60, 60)
                 registerMeeting();
                 break;
             case 'soccer':
-                setMapIcon(soccerMap, location, map)
+                setMapIcon(soccerMap, location, map, 60, 60)
                 registerMeeting();
                 break;
             case 'badminton':
-                setMapIcon(badmintonMap, location, map)
+                setMapIcon(badmintonMap, location, map, 60, 60)
                 registerMeeting();
                 break;
         }
@@ -136,7 +138,7 @@ export default function HomePage() {
                     </div>
             }
             </div>
-            {state.modalType === 'register' && <RegisterModal><JoinButton>등록하기</JoinButton></RegisterModal>}
+            {state.modalType === 'register' && <RegisterModal></RegisterModal>}
             {state.modalType === 'modify' && <ModifyModal />}
             {state.modalType === 'join' && <JoinModal></JoinModal>}
             {state.modalType === 'quit' && <QuitModal />}

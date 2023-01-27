@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 interface IProps {
     children: ReactNode;
+    onClick: any;
 }
 
 export default function JoinButton({ children }: IProps) {

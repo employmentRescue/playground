@@ -3,8 +3,6 @@ import RegisterModal from "./RegisterModal";
 
 export default function QuitModal() {
     return (
-        <RegisterModal>
-            <QuitButton />
-        </RegisterModal>
+        <RegisterModal />
     )
 }

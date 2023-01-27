@@ -33,6 +33,7 @@ const liveSlice = createSlice({
 
 export const {
     addLiveMatch,
+    getLiveMatchList
 } = liveSlice.actions;
 
 export default liveSlice.reducer;
