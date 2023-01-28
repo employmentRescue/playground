@@ -34,40 +34,40 @@ module.exports = {
         'react-hooks'
     ],
     "rules": {
-        'no-console': 'warn',
-		'react/prop-types': 'off',
-		'react/button-has-type': 'warn',
-		'react/self-closing-comp': [
-			'warn',
-			{
-				component: true,
-				html: false
-			}
-		],
-		'react/jsx-sort-props': [
-		  'warn',
-		  {
-		    shorthandFirst: true,
-		    callbacksLast: true,
-		    noSortAlphabetically: false,
-		    reservedFirst: true,
-				multiline: 'last',
-		  },
-		],
-        'react-hooks/rules-of-hooks': 'error',
-		'react-hooks/exhaustive-deps': 'warn',
-        'jsx-a11y/anchor-has-content': [
-            'warn',
-            {
-              components: ['Link'],
-            },
-          ],
-          'jsx-a11y/anchor-is-valid': [
-            'warn',
-            {
-              components: ['Link'],
-            },
-          ],
+      'no-console': 'warn',
+      'react/prop-types': 'off',
+      'react/button-has-type': 'warn',
+      'react/self-closing-comp': [
+          'warn',
+          {
+              component: true,
+              html: false
+          }
+      ],
+      'react/jsx-sort-props': [
+          'warn',
+          {
+            shorthandFirst: true,
+            callbacksLast: true,
+            noSortAlphabetically: false,
+            reservedFirst: true,
+            multiline: 'last',
+          },
+      ],
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'jsx-a11y/anchor-has-content': [
+          'warn',
+          {
+            components: ['Link'],
+          },
+        ],
+        'jsx-a11y/anchor-is-valid': [
+          'warn',
+          {
+            components: ['Link'],
+          },
+        ],
         'import/no-unresolved': 'off',
         'import/default': 'off',
         'import/order': [
