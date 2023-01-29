@@ -1,7 +1,9 @@
 package com.ssafy.matching.service;
 
 import com.ssafy.matching.dto.Gathering;
+import com.ssafy.matching.dto.MemberGathering;
 import com.ssafy.matching.repository.GatheringRepository;
+import com.ssafy.matching.repository.MemberGatheringRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.util.List;
 public class GatheringServiceImpl implements GatheringService {
     @Autowired
     private GatheringRepository gatheringRepository;
+    @Autowired
+    private MemberGatheringRepository memberGatheringRepository;
 
     @Override
     public List<Gathering> findAll() {
@@ -44,5 +48,15 @@ public class GatheringServiceImpl implements GatheringService {
     @Override
     public void deleteGathering(int gatheringId) {
         gatheringRepository.deleteByGatheringId(gatheringId);
+    }
+
+    @Override
+    public void joinGathering(MemberGathering memberGathering) {
+        memberGatheringRepository.save(memberGathering);
+    }
+
+    @Override
+    public void leaveGathering(int gatheringId, int memberId) {
+        memberGatheringRepository.deleteByGatheringIdAndMemberId(gatheringId, memberId);
     }
 }

@@ -20,6 +20,5 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
     Gathering getByGatheringId(int gatheringId); //해당 운동 모임 조회
 
     Gathering save(Gathering gathering); //insert, update 둘 다 사용(기존에 있는 데이터인지 판단해서 알아서 처리)
-
     void deleteByGatheringId(int gatheringId); //해당 운동 모임 삭제
 }

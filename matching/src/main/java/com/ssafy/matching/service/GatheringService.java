@@ -1,6 +1,7 @@
 package com.ssafy.matching.service;
 
 import com.ssafy.matching.dto.Gathering;
+import com.ssafy.matching.dto.MemberGathering;
 
 import java.util.List;
 
@@ -13,4 +14,7 @@ public interface GatheringService {
     void registerGathering(Gathering gathering);
     void updateGathering(Gathering gathering);
     void deleteGathering(int gatheringId);
+
+    void joinGathering(MemberGathering memberGathering);
+    void leaveGathering(int gatheringId, int memberId);
 }
