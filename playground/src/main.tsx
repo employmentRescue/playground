@@ -12,7 +12,6 @@ import LoginPage from './pages/user/LoginPage';
 import LoginRegisterPage from './pages/user/LoginRegisterPage';
 import LoginFailPage from './pages/user/LoginFailPage';
 import LoginSuccessPage from './pages/user/LoginSuccessPage';
-import LoginRegisterTab from './components/UserRegister/LoginRegisterTab';
 
 const container = document.getElementById('root') as HTMLElement;
 const router = createBrowserRouter([
@@ -38,14 +37,8 @@ const router = createBrowserRouter([
       // 앱 계정이 없는 사용자에게 보여줄 회원가입 페이지
       {
         // 개인정보, 관심정보, 운동레벨 변경 탭
-        path: '',
-        element: <LoginRegisterTab />,
-        children: [
-          {
-            path: 'login/register',
-            element: <LoginRegisterPage />,
-          }
-        ]
+        path: 'login/register',
+        element: <LoginRegisterPage />,
       },
       {
         // 로그인 실패 페이지
