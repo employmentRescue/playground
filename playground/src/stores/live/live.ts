@@ -25,15 +25,11 @@ const liveSlice = createSlice({
         addLiveMatch(state, action) {
             state.liveList.push(action.payload);
         },
-        getLiveMatchList(state, action) {
-            state.liveList = action.payload;
-        },
     }
 })
 
 export const {
     addLiveMatch,
-    getLiveMatchList
 } = liveSlice.actions;
 
 export default liveSlice.reducer;

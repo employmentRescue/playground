@@ -3,6 +3,6 @@ import RegisterModal from "./RegisterModal";
 
 export default function ModifyModal() {
     return (
-        <RegisterModal />
+        <div></div>
     )
 } 

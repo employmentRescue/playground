@@ -9,9 +9,10 @@ import badmintonMap from "@/assets/icons/badminton-map.png"
 import currentPos from "@/assets/icons/current-position.png"
 import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
-import JoinButton from "@/components/LiveModal/Buttons/JoinButton"
+import live from "@/stores/live/live"
+import { useSelector } from "react-redux"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'BASIC' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' };
 
 interface State {
     isPressed: boolean;
@@ -62,6 +63,11 @@ function registReducer(state: State, action: Action) {
                 ...state,
                 modalType: 'quit'
             }
+        case 'NONE':
+            return {
+                ...state,
+                modalType: 'none'
+            }
         default:
             throw new Error('Unhandled action');
     }
@@ -77,6 +83,7 @@ export default function HomePage() {
     const modifyMeeting = () => dispatch({ type: 'MODIFY' });
     const deleteMeeting = () => dispatch({ type: 'DELETE' });
     const quitMetting = () => dispatch({ type: 'QUIT' });
+    const closeModal = () => dispatch({ type: 'NONE' });
 
     const mapElement: any | null = useRef(undefined);
     const geolocation = useGeolocation();
@@ -138,7 +145,7 @@ export default function HomePage() {
                     </div>
             }
             </div>
-            {state.modalType === 'register' && <RegisterModal></RegisterModal>}
+            {state.modalType === 'register' && <RegisterModal openModal={state.modalType} closeModal={closeModal}></RegisterModal>}
             {state.modalType === 'modify' && <ModifyModal />}
             {state.modalType === 'join' && <JoinModal></JoinModal>}
             {state.modalType === 'quit' && <QuitModal />}
