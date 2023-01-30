@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 
 interface IProps {
     children: ReactNode;
-    onClick: any;
+    onClick: () => void;
 }
 
-export default function JoinButton({ children }: IProps) {
+export default function JoinButton({ children, onClick }: IProps) {
     return (
-        <button className="w-[288px] h-34 rounded-5 bg-blue-700 text-15 mb-14 text-white">{children}</button>
+        <button onClick={onClick} className="w-[288px] h-34 rounded-5 bg-blue-700 text-15 mb-14 text-white">{children}</button>
     )
 }
