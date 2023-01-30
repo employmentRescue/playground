@@ -57,8 +57,8 @@ const router = createBrowserRouter([
 
 createRoot(container).render(
   <Provider store={store}>
-
-    <RouterProvider router={router} />
-
+    <PersistGate persistor={persistStore(store)}>
+      <RouterProvider router={router} />
+    </PersistGate>
   </Provider >
 );
