@@ -87,8 +87,9 @@ export default function HomePage() {
 
     const mapElement: any | null = useRef(undefined);
     const geolocation = useGeolocation();
+    const liveMatchInfo = useSelector((state: any) => state.live);
 
-    function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number) {
+    function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
         return new naver.maps.Marker({
             position: location,
             map,
@@ -97,8 +98,9 @@ export default function HomePage() {
                 size: new naver.maps.Size(sizeX, sizeY),
                 scaledSize: new naver.maps.Size(sizeX, sizeY),
                 origin: new naver.maps.Point(0, 0),
-                anchor: new naver.maps.Point(sizeX / 2, sizeY)
-            }
+                anchor: new naver.maps.Point(sizeX / 2, sizeY),
+            },
+            animation: isBounce ? naver.maps.Animation.BOUNCE : undefined
         });
     }
 
@@ -109,21 +111,35 @@ export default function HomePage() {
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         const mapOptions: naver.maps.MapOptions = {
             center: location,
-            zoom: 17,
+            zoom: 14,
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
-        setMapIcon(currentPos, location, map, 40, 40);
+        setMapIcon(currentPos, location, map, 40, 40, false);
+        for (const e of liveMatchInfo.liveList) {
+            switch (e.type) {
+                case "basketball":
+                    setMapIcon(basketBallMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+                    break;
+                case "soccer":
+                    setMapIcon(soccerMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+                    break;
+                case "badminton":
+                    setMapIcon(badmintonMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+                    break;
+            }
+        };
+
         switch (state.sportType) {
             case 'basketball':
-                setMapIcon(basketBallMap, location, map, 60, 60)
+                setMapIcon(basketBallMap, location, map, 60, 60, true);
                 registerMeeting();
                 break;
             case 'soccer':
-                setMapIcon(soccerMap, location, map, 60, 60)
+                setMapIcon(soccerMap, location, map, 60, 60, true);
                 registerMeeting();
                 break;
             case 'badminton':
-                setMapIcon(badmintonMap, location, map, 60, 60)
+                setMapIcon(badmintonMap, location, map, 60, 60, true);
                 registerMeeting();
                 break;
         }
@@ -145,7 +161,7 @@ export default function HomePage() {
                     </div>
             }
             </div>
-            {state.modalType === 'register' && <RegisterModal openModal={state.modalType} closeModal={closeModal}></RegisterModal>}
+            {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={closeModal}></RegisterModal>}
             {state.modalType === 'modify' && <ModifyModal />}
             {state.modalType === 'join' && <JoinModal></JoinModal>}
             {state.modalType === 'quit' && <QuitModal />}
