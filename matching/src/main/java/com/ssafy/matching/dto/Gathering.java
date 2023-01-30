@@ -47,6 +47,7 @@ public class Gathering implements Serializable {
 
     @ApiModelProperty(value = "운동 모임 장소")
     @OneToOne
+    //TODO 에러나서 추가한거 다시 검토하기
     @JoinColumn(name = "placeId", insertable=false, updatable=false) //에러나서 추가로 붙임
     private Place place;
 

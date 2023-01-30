@@ -8,7 +8,9 @@ import java.util.List;
 
 public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
     List<Gathering> findAll(); //운동 모임 전체 리스트
+    List<Gathering> findAllByIsCompletedFalse(); //운동 모임 전체 리스트(아직 모집완료 안된거)
 
+    //TODO SQL 에러남
     //Error : Encountered a duplicated sql alias [place_id] during auto-discovery of a native-sql query
     @Query(value = "SELECT * " +
             "FROM Gathering g, Place p " +
@@ -16,6 +18,9 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
             "AND " +
             "ST_Distance_Sphere(POINT(?1, ?2), POINT(p.latY, p.latX)) <= 3000", nativeQuery = true)
     List<Gathering> findGatheringsByPlace(float latX, float latY); //내 위치 기준 반경 3km 안의 모든 운동 모임을 검색
+
+    //TODO 운동 모임 필터: 쿼리 구현
+//    List<Gathering> findGatheringsByFilter();
 
     Gathering getByGatheringId(int gatheringId); //해당 운동 모임 조회
 

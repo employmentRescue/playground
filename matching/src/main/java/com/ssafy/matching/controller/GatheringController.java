@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE} , maxAge = 6000)
 @RestController
@@ -30,6 +32,7 @@ public class GatheringController {
     @GetMapping
     public ResponseEntity<?> list() {
         try {
+            System.out.println("Gatheringcontroller list() 실행");
             List<Gathering> list = gatheringService.findAll();
             if (list != null && !list.isEmpty()) {
                 System.out.println(list);
@@ -43,9 +46,27 @@ public class GatheringController {
 
     }
 
+    @ApiOperation(value = "운동 모임 검색", notes = "필터 조건(날짜, 지역(latX, latY), 최소 시작시간, 최대 시작시간, 수준, 최소 게임시간, 최대 게임시간, 성별, 게임종류)에 맞는 운동 모임을 검색해 반환한다", response = List.class)
+    @PostMapping
+    public ResponseEntity<?> listByFilter(@RequestBody Map<String, Object> map) {
+        try {
+            //TODO service 구현하기
+            List<Gathering> list = new ArrayList<>();
+            if (list != null && !list.isEmpty()) {
+                System.out.println(list);
+                return new ResponseEntity<List<Gathering>>(list, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
+
     @ApiOperation(value = "운동 모임 상세 보기", notes = "모임 id에 해당하는 운동 모임을 반환한다", response = Gathering.class)
     @GetMapping("/{gatheringid}")
     public ResponseEntity<?> view(@PathVariable("gatheringid") int gatheringId) throws Exception {
+        System.out.println("Gatheringcontroller view() 실행");
         return new ResponseEntity<Gathering>(gatheringService.getByGatheringId(gatheringId), HttpStatus.OK);
     }
 

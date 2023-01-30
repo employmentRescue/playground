@@ -44,6 +44,7 @@ public class LiveController {
     }
 
     //view 메소드 넣어야 함
+    //TODO view() 메소드 - 위에 list 때문에 안읽히는 문제
 
     @ApiOperation(value = "운동 모임 등록하기", notes = "새로 운동 모임을 등록한다.")
     @PostMapping("/register")
