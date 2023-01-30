@@ -15,7 +15,7 @@ export default function LoginRegisterPage() {
     function TabBar(tabName: String, tabNum: IndexState): JSX.Element {
 
         return (
-            <div onClick={() => tabClickHandler(tabNum)} className="mt-30 mb-30">
+            <div onClick={() => tabClickHandler(tabNum)} className="mt-40 mb-30">
                 <p className="font-inter text-center text-12" >{tabName}</p>
                 <div className={"w-92 h-3 mx-6 border-black " + (activeIndex===tabNum ? "bg-blue-700" : "bg-[#bbc0ff]")}>
                 </div>
@@ -25,8 +25,8 @@ export default function LoginRegisterPage() {
 
 
     return (
-        <div>
-            <div className="flex w-full justify-center">
+        <div className="w-full">
+            <div className="flex justify-center">
                 {TabBar("1. 개인정보", 0)}
                 {TabBar("2. 관심 운동", 1)}
                 {TabBar("3. 운동 레벨", 2)}
