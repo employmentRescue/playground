@@ -28,7 +28,7 @@ const initialState: liveListState = {
         totalPeopleNum: 6,
         remainTime: 1523,
         userNickName: "이경택",
-        userPicture: "userPicture",
+        userPicture: "taek.png",
     },
     {
         type: "soccer",
@@ -40,7 +40,7 @@ const initialState: liveListState = {
         totalPeopleNum: 6,
         remainTime: 1523,
         userNickName: "박진성",
-        userPicture: "userPicture",
+        userPicture: "jinsung.png",
     },
     {
         type: "badminton",
@@ -52,7 +52,7 @@ const initialState: liveListState = {
         totalPeopleNum: 6,
         remainTime: 625,
         userNickName: "이강윤",
-        userPicture: "userPicture",
+        userPicture: "gangyun.png",
     }]
 }
 
@@ -66,7 +66,7 @@ const liveSlice = createSlice({
         clearAllLiveMatch(state, action) {
             state.liveList = [];
         }
-    }
+    },
 })
 
 export const {

@@ -9,8 +9,7 @@ import badmintonMap from "@/assets/icons/badminton-map.png"
 import currentPos from "@/assets/icons/current-position.png"
 import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
-import live from "@/stores/live/live"
-import { useSelector } from "react-redux"
+import useLiveMatchListQuery from "@/hooks/useLiveMatchListQuery"
 
 type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' };
 
@@ -87,8 +86,8 @@ export default function HomePage() {
 
     const mapElement: any | null = useRef(undefined);
     const geolocation = useGeolocation();
-    const liveMatchInfo = useSelector((state: any) => state.live);
 
+    // const { data } = useLiveMatchListQuery();
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
         return new naver.maps.Marker({
             position: location,
@@ -115,19 +114,22 @@ export default function HomePage() {
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
         setMapIcon(currentPos, location, map, 40, 40, false);
-        for (const e of liveMatchInfo.liveList) {
-            switch (e.type) {
-                case "basketball":
-                    setMapIcon(basketBallMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                    break;
-                case "soccer":
-                    setMapIcon(soccerMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                    break;
-                case "badminton":
-                    setMapIcon(badmintonMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                    break;
-            }
-        };
+        // if (data != undefined) {
+        //     for (const e of data?.liveList) {
+        //         switch (e.type) {
+        //             case "basketball":
+        //                 setMapIcon(basketBallMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+        //                 break;
+        //             case "soccer":
+        //                 setMapIcon(soccerMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+        //                 break;
+        //             case "badminton":
+        //                 setMapIcon(badmintonMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+        //                 break;
+        //         }
+        //     };
+        // }
+
 
         switch (state.sportType) {
             case 'basketball':
@@ -162,7 +164,7 @@ export default function HomePage() {
             }
             </div>
             {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={closeModal}></RegisterModal>}
-            {state.modalType === 'modify' && <ModifyModal />}
+            {state.modalType === 'modify' && <ModifyModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={closeModal} />}
             {state.modalType === 'join' && <JoinModal></JoinModal>}
             {state.modalType === 'quit' && <QuitModal />}
         </div>
