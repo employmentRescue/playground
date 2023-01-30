@@ -1,10 +1,15 @@
 import { useEffect, useRef } from "react"
 import { useReducer } from "react"
 import useGeolocation from "react-hook-geolocation"
-import Register from "@/components/LiveRegister/Register"
+import RegisterModal from "@/components/LiveModal/RegisterModal"
+import JoinModal from "@/components/LiveModal/JoinModal"
 import basketBallMap from "@/assets/icons/basketball-map.png"
 import soccerMap from "@/assets/icons/soccer-map.png"
 import badmintonMap from "@/assets/icons/badminton-map.png"
+import currentPos from "@/assets/icons/current-position.png"
+import ModifyModal from "@/components/LiveModal/ModifyModal"
+import QuitModal from "@/components/LiveModal/QuitModal"
+import JoinButton from "@/components/LiveModal/Buttons/JoinButton"
 
 type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'BASIC' };
 
@@ -52,20 +57,10 @@ function registReducer(state: State, action: Action) {
                 ...state,
                 modalType: 'modify'
             }
-        case 'DELETE':
-            return {
-                ...state,
-                modalType: 'delete'
-            }
         case 'QUIT':
             return {
                 ...state,
                 modalType: 'quit'
-            }
-        case 'BASIC':
-            return {
-                ...state,
-                modalType: 'basic'
             }
         default:
             throw new Error('Unhandled action');
@@ -86,6 +81,20 @@ export default function HomePage() {
     const mapElement: any | null = useRef(undefined);
     const geolocation = useGeolocation();
 
+    function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number) {
+        return new naver.maps.Marker({
+            position: location,
+            map,
+            icon: {
+                url: icon,
+                size: new naver.maps.Size(sizeX, sizeY),
+                scaledSize: new naver.maps.Size(sizeX, sizeY),
+                origin: new naver.maps.Point(0, 0),
+                anchor: new naver.maps.Point(sizeX / 2, sizeY)
+            }
+        });
+    }
+
     useEffect(() => {
         const { naver } = window;
         if (!mapElement.current || !naver) return;
@@ -96,50 +105,22 @@ export default function HomePage() {
             zoom: 17,
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
+        setMapIcon(currentPos, location, map, 40, 40);
         switch (state.sportType) {
             case 'basketball':
-                new naver.maps.Marker({
-                    position: location,
-                    map,
-                    icon: {
-                        url: basketBallMap,
-                        size: new naver.maps.Size(60, 60),
-                        scaledSize: new naver.maps.Size(60, 60),
-                        origin: new naver.maps.Point(0, 0),
-                        anchor: new naver.maps.Point(30, 60)
-                    }
-                });
+                setMapIcon(basketBallMap, location, map, 60, 60)
+                registerMeeting();
                 break;
             case 'soccer':
-                new naver.maps.Marker({
-                    position: new naver.maps.LatLng(geolocation.latitude, geolocation.longitude),
-                    map,
-                    icon: {
-                        url: soccerMap,
-                        size: new naver.maps.Size(60, 60),
-                        scaledSize: new naver.maps.Size(60, 60),
-                        origin: new naver.maps.Point(0, 0),
-                        anchor: new naver.maps.Point(30, 60)
-                    }
-                });
+                setMapIcon(soccerMap, location, map, 60, 60)
+                registerMeeting();
                 break;
             case 'badminton':
-                new naver.maps.Marker({
-                    position: new naver.maps.LatLng(geolocation.latitude, geolocation.longitude),
-                    map,
-                    icon: {
-                        url: badmintonMap,
-                        size: new naver.maps.Size(60, 60),
-                        scaledSize: new naver.maps.Size(60, 60),
-                        origin: new naver.maps.Point(0, 0),
-                        anchor: new naver.maps.Point(30, 60)
-                    }
-                });
+                setMapIcon(badmintonMap, location, map, 60, 60)
+                registerMeeting();
                 break;
         }
-        console.log(state.sportType)
     }, [state.sportType, geolocation.latitude, geolocation.longitude]);
-
 
     return (
         <div ref={mapElement} className="w-full h-full relative">
@@ -157,7 +138,10 @@ export default function HomePage() {
                     </div>
             }
             </div>
-            <Register />
+            {state.modalType === 'register' && <RegisterModal></RegisterModal>}
+            {state.modalType === 'modify' && <ModifyModal />}
+            {state.modalType === 'join' && <JoinModal></JoinModal>}
+            {state.modalType === 'quit' && <QuitModal />}
         </div>
     )
 }
