@@ -15,7 +15,7 @@ export function DefaultPage() {
 
 export function UserDefaultPage() {
     return (
-        <div className="bg-white w-screen h-screen">
+        <div className="bg-white w-screen h-screen flex flex-col">
             <Header />
             <Outlet />
         </div>
