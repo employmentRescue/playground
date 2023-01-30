@@ -7,6 +7,7 @@ import registerTabSlice from "./registerTab/registerTab";
 
 const reducers = combineReducers({
     match: matchSlice,
+    live: liveSlice,
     registerTab: registerTabSlice,
 })
 
