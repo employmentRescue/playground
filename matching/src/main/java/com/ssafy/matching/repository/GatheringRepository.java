@@ -19,7 +19,17 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
     List<Gathering> findGatheringsByPlace(float latX, float latY); //내 위치 기준 반경 3km 안의 모든 운동 모임을 검색
 
     //TODO 운동 모임 필터: 쿼리 구현
-//    List<Gathering> findGatheringsByFilter();
+    @Query(value = "SELECT * " +
+            "FROM Gathering g, Place p " +
+            "WHERE g.place_id = p.place_id " +
+            "AND " +
+            "ST_Distance_Sphere(POINT(?2, ?3), POINT(p.latY, p.latX)) <= ?4 " +
+            "AND g.is_completed = false " +
+            "AND (g.start_time BETWEEN ?5 AND ?6)" +
+            "AND g.level = ?7 " +
+            "AND (g.play_time BETWEEN ?8 AND ?9) " +
+            "AND g.sex = ?10 AND g.sports = ?11 AND g.gameType = ?12", nativeQuery = true)
+    List<Gathering> findGatheringsByFilter(String startDate, float latX, float latY, int distance, int minStartTime, int maxStartTime, String level, int minPlayTime, int maxPlayTime, String sex, String sports, String gameType);
 
     Gathering getByGatheringId(int gatheringId); //해당 운동 모임 조회
 
