@@ -4,10 +4,10 @@ import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.dto.MemberGathering;
 import com.ssafy.matching.repository.GatheringRepository;
 import com.ssafy.matching.repository.MemberGatheringRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import javax.xml.stream.Location;
 import java.util.List;
 import java.util.Map;

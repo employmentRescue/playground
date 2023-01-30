@@ -2,8 +2,9 @@ package com.ssafy.matching.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.List;

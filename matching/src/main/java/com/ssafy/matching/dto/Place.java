@@ -2,12 +2,8 @@ package com.ssafy.matching.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.*;
-
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter

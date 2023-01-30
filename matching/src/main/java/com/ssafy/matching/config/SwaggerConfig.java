@@ -18,7 +18,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableWebMvc
 //@EnableSwagger2
 public class SwaggerConfig {
-	//http://localhost:8080/swagger-ui.html
 	//http://localhost:8080/swagger-ui/index.html
 
 	private ApiInfo info() {
