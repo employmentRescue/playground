@@ -1,23 +1,30 @@
-import { useState } from "react"
 import UserInfoTab from "./tab/UserInfoTab"
 import FavoriteSportsTab from "./tab/FavoriteSportsTab"
 import SportsLevelTab from "./tab/SportsLevelTab"
+import { useDispatch, useSelector } from "react-redux"
+import { activeIndex } from "@/stores/registerTab/registerTab"
 
-type IndexState = 0 | 1 | 2;
+type IndexState = {
+    registerTab: { currentIndex: 0 | 1 | 2 }
+};
 
 export default function LoginRegisterPage() {
-    const [activeIndex, setActiveIndex] = useState(0)
-    
-    function tabClickHandler(index: IndexState) {
-        setActiveIndex(index)
+    const dispatch = useDispatch();
+    const currentIndex = useSelector((state: IndexState) => {
+        return state.registerTab.currentIndex
+    })
+
+    function tabClickHandler(index: number) {
+        console.log("asd")
+        dispatch(activeIndex(index))
     }
-    
-    function TabBar(tabName: String, tabNum: IndexState): JSX.Element {
+
+    function TabBar(tabName: String, tabNum: number): JSX.Element {
 
         return (
             <div onClick={() => tabClickHandler(tabNum)} className="mt-40 mb-30">
-                <p className="font-inter text-center text-12" >{tabName}</p>
-                <div className={"w-92 h-3 mx-6 border-black " + (activeIndex===tabNum ? "bg-blue-700" : "bg-[#bbc0ff]")}>
+                <p className="font-inter text-center text-12 mb-3" >{tabName}</p>
+                <div className={"w-92 h-3 mx-6 border-black " + (currentIndex === tabNum ? "bg-blue-700" : "bg-[#bbc0ff]")}>
                 </div>
             </div>
         )
@@ -32,9 +39,9 @@ export default function LoginRegisterPage() {
                 {TabBar("3. 운동 레벨", 2)}
             </div>
             <div>
-                {activeIndex === 0 && <UserInfoTab />}
-                {activeIndex === 1 && <FavoriteSportsTab />}
-                {activeIndex === 2 && <SportsLevelTab />}
+                {currentIndex === 0 && <UserInfoTab />}
+                {currentIndex === 1 && <FavoriteSportsTab />}
+                {currentIndex === 2 && <SportsLevelTab />}
             </div>
         </div>
     )
