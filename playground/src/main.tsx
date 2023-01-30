@@ -34,10 +34,11 @@ const router = createBrowserRouter([
         path: 'login',
         element: <LoginPage />,
       },
+      // 앱 계정이 없는 사용자에게 보여줄 회원가입 페이지
       {
-        // 앱 계정이 없는 사용자에게 보여줄 회원가입 페이지
+        // 개인정보, 관심정보, 운동레벨 변경 탭
         path: 'login/register',
-        element: <LoginRegisterPage />
+        element: <LoginRegisterPage />,
       },
       {
         // 로그인 실패 페이지
