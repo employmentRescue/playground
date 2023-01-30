@@ -43,8 +43,12 @@ public class LiveController {
 
     }
 
-    //view 메소드 넣어야 함
-    //TODO view() 메소드 - 위에 list 때문에 안읽히는 문제
+    @ApiOperation(value = "운동 모임 상세 보기", notes = "모임 id에 해당하는 운동 모임을 반환한다", response = Gathering.class)
+    @GetMapping("/{gatheringid}")
+    public ResponseEntity<?> view(@PathVariable("gatheringid") int gatheringId) throws Exception {
+        System.out.println("Gatheringcontroller view() 실행");
+        return new ResponseEntity<Gathering>(gatheringService.getByGatheringId(gatheringId), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "운동 모임 등록하기", notes = "새로 운동 모임을 등록한다.")
     @PostMapping("/register")
