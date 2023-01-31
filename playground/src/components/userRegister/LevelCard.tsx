@@ -18,10 +18,10 @@ export default function LevelCard({ className, imageSrc, imageSize, onClick, inn
             </div>
             
             <div className="flex-col">
-                <p className="text-11">입문: </p>
-                <p className="text-11">초수: </p>
-                <p className="text-11">중수: </p>
-                <p className="text-11">고수: </p>
+                <p className="text-11">입문 : 축구를 처음 해봄</p>
+                <p className="text-11">초수 : 축구를 몇 번 해봄</p>
+                <p className="text-11">중수 : 축구 경기에 익숙함</p>
+                <p className="text-11">고수 : </p>
             </div>
             
         </div>
