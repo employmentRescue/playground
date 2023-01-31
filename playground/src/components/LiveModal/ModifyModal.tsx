@@ -4,13 +4,13 @@ import JoinButton from './Buttons/JoinButton'
 import exit from '@/assets/icons/exit.png'
 import placeIcon from '@/assets/icons/place.png'
 import { addLiveMatch } from '@/stores/live/live';
+import { liveMatch } from '@/models/liveMatch';
+import ModifyButton from './Buttons/ModifyButton';
 
 const arr: number[] = [... new Array(15)].map((_, i) => i + 1);
 
 interface Iprops {
-    type: string;
-    lat: number;
-    lng: number;
+    liveMatch: liveMatch;
     openModal: string;
     closeModal: () => void;
 }
@@ -21,10 +21,10 @@ export default function ModifyModal(props: Iprops) {
     const [size2, resize2] = useState(1); // 정원 size
     const [height, resizeHeight] = useState(22); // 현재 인원 height
     const [height2, resizeHeight2] = useState(22); // 정원 height
-    const [place, setPlace] = useState('');
-    const [detail, setDetail] = useState('');
-    const [currentPeopleNum, setCurrentPeopleNum] = useState(1);
-    const [totalPeopleNum, setTotalPeopleNum] = useState(1);
+    const [place, setPlace] = useState(props.liveMatch.place);
+    const [detail, setDetail] = useState(props.liveMatch.detail);
+    const [currentPeopleNum, setCurrentPeopleNum] = useState(props.liveMatch.currentPeopleNum);
+    const [totalPeopleNum, setTotalPeopleNum] = useState(props.liveMatch.totalPeopleNum);
 
     const open = (b: boolean) => {
         if (b) {
@@ -60,18 +60,18 @@ export default function ModifyModal(props: Iprops) {
         setTotalPeopleNum(Number(e.target.value));
     }
 
-    const register = () => {
+    const modify = () => {
         dispatch(addLiveMatch({
-            type: props.type,
-            place: "고운뜰공원",
+            type: props.liveMatch.type,
+            place: place,
             detail: detail,
-            lat: props.lat,
-            lng: props.lng,
+            lat: props.liveMatch.lat,
+            lng: props.liveMatch.lng,
             currentPeopleNum: currentPeopleNum,
             totalPeopleNum: totalPeopleNum,
-            remainTime: 1800,
-            userNickName: "이경택",
-            userPicture: "userPicture",
+            startTime: props.liveMatch.startTime,
+            userNickName: props.liveMatch.userNickName,
+            userPicture: props.liveMatch.userPicture,
         }));
         props.closeModal();
 
@@ -105,10 +105,7 @@ export default function ModifyModal(props: Iprops) {
                 </select>
                 <div className="text-15 opacity-50 ml-6">명</div>
             </div>
-            <div className="flex justify-between w-[290px] h-34">
-                <button className="w-170 h-34 rounded-5 bg-blue-700 text-15 mb-14 text-white">수정하기</button>
-                <button className="w-114 h-34 rounded-5 bg-red-600 text-15 mb-14 text-white">삭제하기</button>
-            </div>
+            <ModifyButton onClickModify={modify} onClickDelete={modify}></ModifyButton>
         </div>
         : null
     )

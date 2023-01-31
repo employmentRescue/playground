@@ -1,4 +1,4 @@
-import QuitButton from "./Buttons/QuitButton";
+import QuitButton from "./Buttons/ModifyButton";
 import RegisterModal from "./RegisterModal";
 
 export default function QuitModal() {
