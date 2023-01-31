@@ -23,8 +23,8 @@ export default function LoginRegisterPage() {
 
         return (
             <div onClick={() => tabClickHandler(tabNum)} className="mt-40 mb-30">
-                <p className="font-inter text-center text-12 mb-3" >{tabName}</p>
-                <div className={"w-92 h-3 mx-6 border-black " + (currentIndex === tabNum ? "bg-blue-700" : "bg-[#bbc0ff]")}>
+                <p className={"font-inter text-center text-12 mb-3 " + (currentIndex === tabNum ? "font-semibold" : "")} >{tabName}</p>
+                <div className={"w-92 h-3 mx-6 border-black " + (currentIndex === tabNum ? "bg-blue-700 " : "bg-[#bbc0ff]")}>
                 </div>
             </div>
         )
@@ -33,7 +33,7 @@ export default function LoginRegisterPage() {
 
     return (
         <div className="w-full">
-            <div className="flex justify-center">
+            <div className="flex justify-center tracking-tight">
                 {TabBar("1. 개인정보", 0)}
                 {TabBar("2. 관심 운동", 1)}
                 {TabBar("3. 운동 레벨", 2)}
