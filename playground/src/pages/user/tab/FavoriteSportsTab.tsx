@@ -29,8 +29,9 @@ export default function FavoriteSportsTab() {
                             onClick={() => 
                                 dispatch(getFavoriteSports({isSelected: !(favoriteSports[0].isSelected), sportName: "soccer"}))
                             }
-                            className={"mx-12 pt-19 pl-19 " + ((favoriteSports[0].isSelected) ? "bg-[#BEE0F7] border-1 border-blue-700 " : "bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 ")}
-                            imageProps={soccerImg}
+                            className={"w-80 h-80 mx-12 pt-19 pl-19 " + ((favoriteSports[0].isSelected) ? "bg-[#BEE0F7] border-1 border-blue-700 " : "bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 ")}
+                            imageSrc={soccerImg}
+                            imageSize={"w-42 h-42"}
                         />
                         <p className="text-center font-inter text-11 mt-6">축구</p>
                     </div>
@@ -39,8 +40,9 @@ export default function FavoriteSportsTab() {
                             onClick={() => 
                                 dispatch(getFavoriteSports({isSelected: !(favoriteSports[1].isSelected), sportName: "basketball"}))
                             }
-                            className={"mx-12 pt-19 pl-19 " + ((favoriteSports[1].isSelected) ? "bg-[#BEE0F7] border-1 border-blue-700 " : "bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 ")}
-                            imageProps={basketballImg}
+                            className={"w-80 h-80 mx-12 pt-19 pl-19 " + ((favoriteSports[1].isSelected) ? "bg-[#BEE0F7] border-1 border-blue-700 " : "bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 ")}
+                            imageSrc={basketballImg}
+                            imageSize={"w-42 h-42"}
                         />
                         <p className="text-center font-inter text-11 mt-6">농구</p>
                     </div>
@@ -49,8 +51,9 @@ export default function FavoriteSportsTab() {
                             onClick={() => 
                                 dispatch(getFavoriteSports({isSelected: !(favoriteSports[2].isSelected), sportName: "badminton"}))
                             }
-                            className={"mx-12 pt-19 pl-19 " + ((favoriteSports[2].isSelected)  ? "bg-[#BEE0F7] border-1 border-blue-700 " : "bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 ")}
-                            imageProps={badmintonImg}
+                            className={"w-80 h-80 mx-12 pt-19 pl-19 " + ((favoriteSports[2].isSelected)  ? "bg-[#BEE0F7] border-1 border-blue-700 " : "bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 ")}
+                            imageSrc={badmintonImg}
+                            imageSize={"w-42 h-42"}
                         />
                         <p className="text-center font-inter text-11 mt-6">배드민턴</p>
                     </div>
