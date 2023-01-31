@@ -35,6 +35,10 @@ public class Live implements Serializable {
     @JoinColumn(name = "placeId", insertable=false, updatable=false) //에러나서 추가로 붙임
     private Place place;
 
+    @OneToOne
+    @JoinColumn(name = "hostId", insertable=false, updatable=false)
+    private Member host;
+
     @ApiModelProperty(value = "실시간 운동 모임의 멤버 리스트")
     @OneToMany
     @JoinColumn(name = "liveId")

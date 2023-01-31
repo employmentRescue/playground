@@ -24,9 +24,9 @@ public class Member implements Serializable {
     @ApiModelProperty(value = "회원 번호")
     private int memberId;
     @ApiModelProperty(value = "회원의 본명")
-    private int name;
+    private String name;
     @ApiModelProperty(value = "회원의 닉네임")
-    private int nickname;
+    private String nickname;
 
     @OneToOne
     @ApiModelProperty(value = "멤버의 자주 업데이트되는 상세 정보")
