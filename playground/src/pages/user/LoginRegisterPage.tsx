@@ -15,7 +15,7 @@ export default function LoginRegisterPage() {
     })
 
     function tabClickHandler(index: number) {
-        console.log("asd")
+        console.log(`${index}번 탭으로 전환됨`)
         dispatch(activeIndex(index))
     }
 

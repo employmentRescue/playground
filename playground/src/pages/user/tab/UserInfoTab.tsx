@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Slider } from "@mui/material"
 import ChoiceCompoleteButton from "@/components/userRegister/Buttons/ChoiceCompleteButton"
 import NicknameCheckButton from "@/components/userRegister/Buttons/NicknameCheckButton"
@@ -21,6 +21,8 @@ export default function UserInfoTab() {
         // console.log(e.target.value)
         setNickname(e.target.value)
     }
+
+    let nicknameInput: any = useRef();
 
     const marks = [
         {
@@ -66,12 +68,24 @@ export default function UserInfoTab() {
                 <div className="flex justify-center mt-35">
                     <input
                         type="text"
+                        value={nickname}
                         className="border-b-2 mx-11 border-gray-600 w-160 h-26"
                         onChange={handleNickname}
+                        ref={nicknameInput}
                     />
                     <NicknameCheckButton nicknameCheck={() => {
-                        // 백엔드에 요청해서 중복되는 아이디가 있는지 검사
-                        alert("사용 가능한 닉네임 입니다.")
+                        /* 백엔드에 요청해서 중복되는 아이디가 있는지 검사하는 코드 넣기!!
+
+                        
+                        */ 
+                        if (nickname.length > 10) {
+                            alert("닉네임은 10글자 이하만 사용 가능합니다.")
+                            nicknameInput.current.focus()
+                            setNickname("")
+                            return
+                        } else {
+                            alert("사용 가능한 닉네임 입니다.")
+                        }
                         console.log(nickname)
                     }} />
                 </div>
