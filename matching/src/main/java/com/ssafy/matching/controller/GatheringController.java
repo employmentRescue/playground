@@ -1,12 +1,12 @@
 package com.ssafy.matching.controller;
 
 import com.ssafy.matching.dto.Gathering;
-import com.ssafy.matching.dto.MemberGathering;
+import com.ssafy.matching.dto.GatheringMember;
 import com.ssafy.matching.service.GatheringService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +16,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE} , maxAge = 6000)
 @RestController
+@AllArgsConstructor
 @RequestMapping("/gathering")
 @Api("운동 모임 정보 API")
 public class GatheringController {
@@ -23,11 +24,6 @@ public class GatheringController {
     private static final String FAIL = "fail";
 
     private GatheringService gatheringService;
-
-    @Autowired
-    public GatheringController(GatheringService gatheringService) {
-        this.gatheringService = gatheringService;
-    }
 
     @ApiOperation(value = "운동 모임 전체 리스트", notes = "운동 모임 전체를 반환한다", response = List.class)
     @GetMapping
@@ -99,7 +95,7 @@ public class GatheringController {
 
     @ApiOperation(value = "운동 모임에 참여하기", notes = "운동모임에 참여한다.")
     @PostMapping("/join")
-    public void join(@RequestBody @ApiParam(value = "운동 모임 멤버 정보", required = true) MemberGathering memberGathering) throws Exception {
+    public void join(@RequestBody @ApiParam(value = "운동 모임 멤버 정보", required = true) GatheringMember memberGathering) throws Exception {
         System.out.println(memberGathering);
 
         gatheringService.joinGathering(memberGathering);

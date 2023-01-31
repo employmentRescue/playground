@@ -12,11 +12,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 
-@ApiModel(value = "MemberGathering : 운동 모임 멤버 정보", description = "운동 모임의 멤버를 나타낸다.")
+@ApiModel(value = "GatheringMember : 운동 모임 멤버 정보", description = "운동 모임의 멤버를 나타낸다.")
 
 @SuppressWarnings("serial")
 @Entity
-public class MemberGathering implements Serializable {
+public class GatheringMember implements Serializable {
     @ApiModelProperty(value = "운동 모임-멤버 아이디")
     @Id
     private int memberGatheringId;

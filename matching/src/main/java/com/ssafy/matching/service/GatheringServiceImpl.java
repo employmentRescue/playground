@@ -1,9 +1,9 @@
 package com.ssafy.matching.service;
 
 import com.ssafy.matching.dto.Gathering;
-import com.ssafy.matching.dto.MemberGathering;
+import com.ssafy.matching.dto.GatheringMember;
 import com.ssafy.matching.repository.GatheringRepository;
-import com.ssafy.matching.repository.MemberGatheringRepository;
+import com.ssafy.matching.repository.GatheringMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,12 @@ public class GatheringServiceImpl implements GatheringService {
     @Autowired
     private GatheringRepository gatheringRepository;
     @Autowired
-    private MemberGatheringRepository memberGatheringRepository;
+    private GatheringMemberRepository memberGatheringRepository;
 
     @Override
     public List<Gathering> findAll() {
         System.out.println("findAll service 실행");
         return gatheringRepository.findAllByIsCompletedFalse();
-    }
-
-    @Override
-    //내 위치 기준 반경 3km 안의 모든 운동 모임을 검색
-    public List<Gathering> findGatheringsByMyLocation(float latX, float latY) {
-        System.out.println("findGatheringsByMyLocation service 실행");
-        return gatheringRepository.findGatheringsByPlace(latX, latY);
     }
 
     @Override
@@ -74,7 +67,7 @@ public class GatheringServiceImpl implements GatheringService {
     }
 
     @Override
-    public void joinGathering(MemberGathering memberGathering) {
+    public void joinGathering(GatheringMember memberGathering) {
         memberGatheringRepository.save(memberGathering);
     }
 

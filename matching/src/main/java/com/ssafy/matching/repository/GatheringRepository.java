@@ -10,14 +10,6 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
     List<Gathering> findAll(); //운동 모임 전체 리스트
     List<Gathering> findAllByIsCompletedFalse(); //운동 모임 전체 리스트(아직 모집완료 안된거)
 
-    @Query(value = "SELECT * " +
-            "FROM Gathering g, Place p " +
-            "WHERE g.place_id = p.place_id " +
-            "AND " +
-            "ST_Distance_Sphere(POINT(?1, ?2), POINT(p.latY, p.latX)) <= 3000 " +
-            "AND g.is_completed = false", nativeQuery = true)
-    List<Gathering> findGatheringsByPlace(float latX, float latY); //내 위치 기준 반경 3km 안의 모든 운동 모임을 검색
-
     //TODO 운동 모임 필터: 쿼리 구현
     @Query(value = "SELECT * " +
             "FROM Gathering g, Place p " +

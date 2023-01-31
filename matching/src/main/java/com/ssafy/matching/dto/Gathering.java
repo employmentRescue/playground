@@ -36,7 +36,7 @@ public class Gathering implements Serializable {
     @ApiModelProperty(value = "운동 모임 모집 완료 여부")
     private boolean isCompleted;
     @ApiModelProperty(value = "모임장의  memberId")
-    private int manager;
+    private int hostId;
     @ApiModelProperty(value = "운동 모임 성별 조건")
     private String sex;
     @ApiModelProperty(value = "운동 모임 레벨")
@@ -55,7 +55,7 @@ public class Gathering implements Serializable {
     @ApiModelProperty(value = "운동 모임의 멤버 리스트")
     @OneToMany
     @JoinColumn(name = "gatheringId")
-    private List<MemberGathering> memberGatheringList;
+    private List<GatheringMember> memberGatheringList;
 
 }
 
