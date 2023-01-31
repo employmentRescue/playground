@@ -11,15 +11,29 @@ export default function SportsLevelTab() {
                 <h1 className="font-inter text-19 font-bold text-center mb-40">운동 레벨을 선택해주세요</h1>
                 <div>
                     <div className="flex">
-                        <LevelCard 
-                            className={"w-[300px] h-120 mb-15 pt-20 pl-20 bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 "}
+                        <LevelCard
+                            className={"w-[300px] h-122 mb-15 pt-20 pl-20 bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 "}
                             imageSrc={soccerImg}
-                            imageSize={"w-40 h-40 mr-20 mt-4"}
+                            imageSize={"w-45 h-45 mr-25 mt-4"}
                             innerText="축구"
                         />
                     </div>
-                    <LevelCard className={"w-[300px] h-120 mb-15 pt-20 pl-20 bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 "} imageSrc={basketballImg} imageSize={"w-40 h-40"}/>    
-                    <LevelCard className={"w-[300px] h-120 mb-15 pt-20 pl-20 bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 "} imageSrc={badmintonImg} imageSize={"w-40 h-40"}/>    
+                    <div className="flex">
+                        <LevelCard
+                            className={"w-[300px] h-122 mb-15 pt-20 pl-20 bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 "}
+                            imageSrc={basketballImg}
+                            imageSize={"w-45 h-45 mr-25 mt-4"}
+                            innerText="농구"
+                        />
+                    </div>
+                    <div className="flex">
+                        <LevelCard
+                            className={"w-[300px] h-122 mb-15 pt-20 pl-20 bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 "}
+                            imageSrc={badmintonImg}
+                            imageSize={"w-45 h-45 mr-25 mt-4"}
+                            innerText="배드민턴"
+                        />
+                    </div>
                 </div>
             </div>
             <div className="self-center">
