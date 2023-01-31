@@ -2,9 +2,9 @@ import UserInfoTab from "./tab/UserInfoTab"
 import FavoriteSportsTab from "./tab/FavoriteSportsTab"
 import SportsLevelTab from "./tab/SportsLevelTab"
 import { useDispatch, useSelector } from "react-redux"
-import { activeIndex } from "@/stores/registerTab/registerTab"
+import { activeIndex } from "@/stores/register/registerTab"
 
-type IndexState = {
+interface IndexState {
     registerTab: { currentIndex: 0 | 1 | 2 }
 };
 

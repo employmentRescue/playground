@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { activeIndex } from "@/stores/registerTab/registerTab";
+import { activeIndex } from "@/stores/register/registerTab";
 
 type IndexState = {
     registerTab: { currentIndex: 0 | 1 | 2 }
