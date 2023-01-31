@@ -74,10 +74,6 @@ export default function UserInfoTab() {
                         ref={nicknameInput}
                     />
                     <NicknameCheckButton nicknameCheck={() => {
-                        /* 백엔드에 요청해서 중복되는 아이디가 있는지 검사하는 코드 넣기!!
-
-                        
-                        */ 
                         if (nickname.length > 10) {
                             alert("닉네임은 10글자 이하만 사용 가능합니다.")
                             nicknameInput.current.focus()
@@ -86,6 +82,11 @@ export default function UserInfoTab() {
                         } else {
                             alert("사용 가능한 닉네임 입니다.")
                         }
+                        /* 백엔드에 요청해서 중복되는 아이디가 있는지 검사하는 코드 넣기!!
+
+
+                        */ 
+                        
                         console.log(nickname)
                     }} />
                 </div>
