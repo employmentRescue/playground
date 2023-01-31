@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "MEMBER_SOMTIMES")
-public class MemberSometimes {
+public class MemberSometimesEntity {
     @Id @Column(name = "MEMBER_ID")
     int id;
     String nickname;

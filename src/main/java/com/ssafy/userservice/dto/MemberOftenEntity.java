@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "MEMBER_OFTEN")
-public class MemberOften extends BaseTimeEntity {
+public class MemberOftenEntity extends BaseTimeEntity {
     @Id
     @Column(name = "MEMBER_ID")
     int id;
@@ -23,8 +23,8 @@ public class MemberOften extends BaseTimeEntity {
     String web_fcm_token;
     String mobile_fcm_token;
     String user_profile_img_url;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(name = "activities")
-    @CollectionTable(name = "user_activities", joinColumns = @JoinColumn(name = "member_often_member_id"))
-    Set<String> preferActivities = new HashSet<>();
+//    @ElementCollection
+////    @JoinColumn
+//            @JoinTable(name = "PREFER_ACTIVITIES", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+//    Set<String> preferActivities = new HashSet<>();
 }

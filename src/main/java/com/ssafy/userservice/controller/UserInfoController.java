@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
-import com.ssafy.userservice.dto.MemberOften;
-import com.ssafy.userservice.dto.MemberSometimes;
-import com.ssafy.userservice.dto.QMemberOften;
-import com.ssafy.userservice.dto.QMemberSometimes;
+import com.ssafy.userservice.dto.MemberOftenEntity;
+import com.ssafy.userservice.dto.MemberSometimesEntity;
+import com.ssafy.userservice.dto.QMemberOftenEntity;
+import com.ssafy.userservice.dto.QMemberSometimesEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -28,8 +29,8 @@ public class UserInfoController {
     @Autowired
     private JPAQueryFactory queryFactory;
 
-    final private static QMemberOften qMemberOften = new QMemberOften("MEM_OFTEN");
-    final private static QMemberSometimes qMemberSometimes = new QMemberSometimes("MEM_SOME");
+    final private static QMemberOftenEntity qMemberOften = new QMemberOftenEntity("MEM_OFTEN");
+    final private static QMemberSometimesEntity qMemberSometimes = new QMemberSometimesEntity("MEM_SOME");
 
 
     @GetMapping("/check/nickname/{nickname}")
@@ -59,7 +60,7 @@ public class UserInfoController {
         try {
             Map<String, Object> searchResult = new HashMap<>();
 
-            // db로부터 데이터 가져옴 --> MemberOften, MemberSometimes 객체에 데이터 할당하기
+            // db로부터 데이터 가져옴 --> MemberOftenEntity, MemberSometimesEntity 객체에 데이터 할당하기
             Tuple ret = (Tuple)queryFactory
                     .select(qMemberOften, qMemberSometimes)
                     .from(qMemberOften)
@@ -73,9 +74,9 @@ public class UserInfoController {
 
 
 
-            // MemberOften 객체에 대해서 검색한 값만 searchResult에 넣기
+            // MemberOftenEntity 객체에 대해서 검색한 값만 searchResult에 넣기
 
-            requestSearchList = objectMapper.convertValue(ret.get(0, MemberOften.class), Map.class);
+            requestSearchList = objectMapper.convertValue(ret.get(0, MemberOftenEntity.class), Map.class);
 
 
             for (String key : req){
@@ -84,7 +85,7 @@ public class UserInfoController {
             // ================================================================================================================
 
             // MemberSometime 객체에 대해 검색한 값만 searchResult에 넣기
-            requestSearchList = objectMapper.convertValue(ret.get(1, MemberSometimes.class), Map.class);
+            requestSearchList = objectMapper.convertValue(ret.get(1, MemberSometimesEntity.class), Map.class);
             for (String key : req){
                 if (key != userID && requestSearchList.get(key) != null) searchResult.put(key, requestSearchList.get(key));
             }
@@ -102,7 +103,7 @@ public class UserInfoController {
 
     @Transactional
     @PostMapping("/regist/{user_id}")
-    ResponseEntity registUserInfo(@PathVariable("user_id") int userID,  MemberOften memOften, MemberSometimes memSome){
+    ResponseEntity registUserInfo(@PathVariable("user_id") int userID, MemberOftenEntity memOften, MemberSometimesEntity memSome){
         memOften.setId(userID); memSome.setId(userID);
 
         System.out.println(userID);
@@ -114,7 +115,7 @@ public class UserInfoController {
         try
         {
 
-            // MemberOften 객체에 대해 not null 인 값만 update(단, memOften != null인 경우만 실행)
+            // MemberOftenEntity 객체에 대해 not null 인 값만 update(단, memOften != null인 경우만 실행)
             if (memOften != null && userID > 0){
 
                 entityManager.persist(memOften);
@@ -136,7 +137,7 @@ public class UserInfoController {
 
     @Transactional
     @PostMapping("/update/{user_id}")
-    ResponseEntity updateUserInfo(@PathVariable("user_id") int userID,  MemberOften memOften, MemberSometimes memSome){
+    ResponseEntity updateUserInfo(@PathVariable("user_id") int userID, MemberOftenEntity memOften, MemberSometimesEntity memSome, @RequestBody MultipartFile profile_img){
         System.out.println(userID);
         System.out.println(memOften);
         System.out.println(memSome);
@@ -147,7 +148,7 @@ public class UserInfoController {
         {
             memOften.setId(userID); memSome.setId(userID);
 
-            // MemberOften 객체에 대해 not null 인 값만 update(단, memOften != null인 경우만 실행)
+            // MemberOftenEntity 객체에 대해 not null 인 값만 update(단, memOften != null인 경우만 실행)
             if (memOften != null && userID > 0){
                 int cnt = 0;
 
@@ -219,16 +220,17 @@ public class UserInfoController {
     }
 
     @GetMapping("/get/prefer_activities/{user_id}")
-    ResponseEntity getUSerPreferActivities(@PathVariable int userID){
+    ResponseEntity getUSerPreferActivities(@PathVariable("user_id") int userID){
 
         try {
-            Set<String> prefer_activites = queryFactory
-                    .select(qMemberOften.preferActivities)
-                    .from(qMemberOften)
-                    .where(qMemberOften.id.eq(userID))
-                    .fetchFirst();
+//            Set<String> prefer_activites = queryFactory
+//                    .select(qMemberOften)
+//                    .from(qMemberOften)
+//                    .where(qMemberOften.id.eq(userID))
+//                    .fetchOne()
+//                    .getPreferActivities();
 
-            return new ResponseEntity(prefer_activites, HttpStatus.OK);
+            return new ResponseEntity(null, HttpStatus.OK);
         }
         catch (Throwable e){
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -239,34 +241,19 @@ public class UserInfoController {
     @PostMapping("/insert/prefer_activities/{user_id}")
     ResponseEntity insertUSerPreferActivities(@PathVariable("user_id") int userID, @RequestBody Set<String> plusPreferActivities){
 
-        Set<String> prefer_activites = queryFactory
-                .select(qMemberOften.preferActivities)
-                .from(qMemberOften)
-                .where(qMemberOften.id.eq(userID))
-                .fetchFirst();
-
-        if (prefer_activites == null){
-            prefer_activites = new HashSet<>();
-
-            prefer_activites.addAll(plusPreferActivities);
-
-            queryFactory.update(qMemberOften).set(qMemberOften.preferActivities, prefer_activites).execute();
-        }
-        else{
-
-        }
-
-
-        System.out.println(prefer_activites);
-
-
-
-//        if (prefer_activites.size() > 0) queryFactory.update(qMemberOften).set(qMemberOften.preferActivities, plusPreferActivities).execute();
-
         try {
-
-            // EntityManager clear
-            entityManager.flush(); entityManager.flush();
+            
+//            MemberOftenEntity memOften = queryFactory.selectFrom(qMemberOften).where(qMemberOften.id.eq(userID)).fetchOne();
+//            System.out.println(memOften);
+//
+//            memOften.getPreferActivities().addAll(plusPreferActivities);
+//
+//            entityManager.persist(memOften);
+//
+//            entityManager.flush(); entityManager.clear();
+//
+//            // EntityManager clear
+//            entityManager.flush(); entityManager.flush();
 
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -277,21 +264,17 @@ public class UserInfoController {
 
     @Transactional
     @PostMapping("/delete/prefer_activities/{user_id}")
-    ResponseEntity deleteUSerPreferActivities(@PathVariable int userID, @RequestBody Set<String> plusPreferActivities){
+    ResponseEntity deleteUSerPreferActivities(@PathVariable("user_id") int userID, @RequestBody Set<String> plusPreferActivities){
 
         try {
-            Set<String> prefer_activites = queryFactory
-                    .select(qMemberOften.preferActivities)
-                    .from(qMemberOften)
-                    .where(qMemberOften.id.eq(userID))
-                    .fetchFirst();
+            MemberOftenEntity memOften = queryFactory.selectFrom(qMemberOften).where(qMemberOften.id.eq(userID)).fetchOne();
+            System.out.println(memOften);
 
-            if (prefer_activites == null) prefer_activites = new HashSet<>();
+//            memOften.getPreferActivities().removeAll(plusPreferActivities);
+//
+//            entityManager.persist(memOften);
 
-            prefer_activites.removeAll(plusPreferActivities);
-
-            queryFactory.update(qMemberOften).set(qMemberOften.preferActivities, plusPreferActivities);
-
+            entityManager.flush(); entityManager.clear();
 
             // EntityManager clear
             entityManager.flush(); entityManager.flush();

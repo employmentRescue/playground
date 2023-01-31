@@ -129,13 +129,4 @@ class UserServiceApplicationTests {
     void removeUserPreferActivities(){
     }
 
-    @Test
-        // 사용자가 읽지않은 메세지 시간을 가져오는 rest api
-    void getRecentReadMessageDate(){
-    }
-
-    @Test
-        // 사용자가 읽은 메세지를 설(message id) rest api
-    void setRecentReadMessageDate(){
-    }
 }
