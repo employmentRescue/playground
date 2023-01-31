@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Slider } from "@mui/material"
 import ChoiceCompoleteButton from "@/components/userRegister/Buttons/ChoiceCompleteButton"
 import NicknameCheckButton from "@/components/userRegister/Buttons/NicknameCheckButton"
@@ -10,10 +10,16 @@ const initialTimeState: TimeState = [0, 24]
 
 export default function UserInfoTab() {
     const [favoriteTime, setFavoriteTime] = useState(initialTimeState);
+    const [nickname, setNickname] = useState("");
 
     const handleChange = (event: Event, value: number | number[]) => {
         setFavoriteTime(value)
         console.log(value)
+    }
+
+    const handleNickname = (e: React.BaseSyntheticEvent) => {
+        // console.log(e.target.value)
+        setNickname(e.target.value)
     }
 
     const marks = [
@@ -52,17 +58,21 @@ export default function UserInfoTab() {
         return `${value}시간`
     }
 
-    const nicknameInput = useRef(null);
-
     return (
         // calc안의 100vh-146은 탭이 끝나는 지점부터의 높이를 의미
         <div className="flex flex-col h-[calc(100vh-149px)] justify-between">
             <div className="flex flex-col mt-37 self-center">
                 <h2 className="font-inter text-19 font-bold text-center">닉네임을 설정해주세요</h2>
                 <div className="flex justify-center mt-35">
-                    <input type="text" className="border-b-2 mx-11 border-gray-600 w-160 h-26" ref={nicknameInput} />
+                    <input
+                        type="text"
+                        className="border-b-2 mx-11 border-gray-600 w-160 h-26"
+                        onChange={handleNickname}
+                    />
                     <NicknameCheckButton nicknameCheck={() => {
-                        console.log(nicknameInput)
+                        // 백엔드에 요청해서 중복되는 아이디가 있는지 검사
+                        alert("사용 가능한 닉네임 입니다.")
+                        console.log(nickname)
                     }} />
                 </div>
 
