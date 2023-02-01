@@ -36,7 +36,7 @@ public class Gathering implements Serializable {
     @ApiModelProperty(value = "운동 모임 시작 시간", required = true)
     private String startTime;
     @ApiModelProperty(value = "운동 모임 지속 시간", required = true)
-    private String playTime;
+    private int playTime;
     @ApiModelProperty(value = "운동 모임 모집 완료 여부", required = true)
     private boolean isCompleted;
     @ApiModelProperty(value = "모임장의  memberId", required = true)
