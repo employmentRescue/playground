@@ -2,26 +2,34 @@ import React, { useState, useRef } from "react";
 import { Slider } from "@mui/material"
 import ChoiceCompoleteButton from "@/components/userRegister/Buttons/ChoiceCompleteButton"
 import NicknameCheckButton from "@/components/userRegister/Buttons/NicknameCheckButton"
+import { useDispatch, useSelector } from "react-redux"
+import { setNickname, setFavoriteTime } from "@/stores/register/user"
+import { User } from "@/stores/register/user"
 
-
-type TimeState = number | number[]
-
-const initialTimeState: TimeState = [0, 24]
+interface userState {
+    user: User
+}
 
 export default function UserInfoTab() {
-    const [favoriteTime, setFavoriteTime] = useState(initialTimeState);
-    const [nickname, setNickname] = useState("");
+    // const [favoriteTime, setFavoriteTime] = useState(initialTimeState);
+    // const [nickname, setNickname] = useState("");
+    const dispatch = useDispatch();
+    const favoriteTime = useSelector((state: userState) => {
+        return state.user.favoriteTime;
+    });
+    const nickname = useSelector((state: userState) => {
+        return state.user.nickname;
+    });
 
     const handleChange = (event: Event, value: number | number[]) => {
         event.preventDefault();
-        setFavoriteTime(value)
-        console.log(value)
+        dispatch(setFavoriteTime(value))
     }
 
-    const handleNickname = (e: React.BaseSyntheticEvent) => {
+    const handleNickname = (event: React.BaseSyntheticEvent) => {
         // console.log(e.target.value)
-        e.preventDefault();
-        setNickname(e.target.value)
+        event.preventDefault();
+        dispatch(setNickname(event.target.value))
     }
 
     let nicknameInput: any = useRef();
@@ -79,7 +87,7 @@ export default function UserInfoTab() {
                         if (nickname.length > 10) {
                             alert("닉네임은 10글자 이하만 사용 가능합니다.")
                             nicknameInput.current.focus()
-                            setNickname("")
+                            dispatch(setNickname(""))
                             return
                         } else {
                             alert("사용 가능한 닉네임 입니다.")

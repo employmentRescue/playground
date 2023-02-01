@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 type Level = "입문" | "초보" | "중수" | "고수" | null
 
 interface NicknameAction {
-    payload: String
+    payload: string
 }
 interface FavoriteTimeAction {
-    payload: number[]
+    payload: number | number[]
 }
 interface FavoriteSportsAction {
     payload: { sportName: String, isSelected: boolean }
@@ -16,8 +16,8 @@ interface SportsLevelAction {
 }
 
 export interface User {
-    nickname: String,
-    favoriteTime?: number[],
+    nickname: string,
+    favoriteTime?: number | number[],
     favoriteSports: {
         soccer: boolean,
         basketball: boolean,
