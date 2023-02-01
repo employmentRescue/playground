@@ -78,7 +78,7 @@ export default function FavoriteSportsTab() {
             </div>
 
             <div className="self-center sticky bottom-0">
-                <ChoiceCompoleteButton />
+                <ChoiceCompoleteButton innerText="선택 완료" />
             </div>
         </div>
 

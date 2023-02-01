@@ -119,7 +119,7 @@ export default function UserInfoTab() {
             </div>
 
             <div className="self-center sticky bottom-0">
-                <ChoiceCompoleteButton />
+                <ChoiceCompoleteButton innerText="선택 완료" />
             </div>
         </div>
     )

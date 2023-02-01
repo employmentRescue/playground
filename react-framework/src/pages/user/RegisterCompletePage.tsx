@@ -11,9 +11,8 @@ export default function RegisterCompletePage() {
       </div>
 
       <div className="self-center">
-        <ChoiceCompoleteButton />
+        <ChoiceCompoleteButton innerText="운동하러 가기"/>
       </div>
     </div>
-
   )
 }
