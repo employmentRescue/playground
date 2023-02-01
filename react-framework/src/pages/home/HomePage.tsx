@@ -99,7 +99,8 @@ export default function HomePage() {
 
     // other state
     const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
-    const [markers, setMarkers] = useState<any | null>([]);
+    const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
+    const [markers, setMarkers] = useState<naver.maps.Marker[] | null>([]);
     const [liveMatch, setLiveMatch] = useState<liveMatch | null>(null);
 
     // naver map
@@ -124,6 +125,7 @@ export default function HomePage() {
         });
     }
 
+    // 네이버 지도 생성
     useEffect(() => {
         const { naver } = window;
         if (!mapElement.current || !naver) return;
@@ -138,20 +140,31 @@ export default function HomePage() {
         setNaverMap(map);
     }, []);
 
+    // 마커
     useEffect(() => {
         if (naverMap === null)
             return;
 
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         naverMap.setCenter(location);
-        console.log(location)
-        console.log(liveMatchList);
 
-        setMapIcon(currentPos, location, naverMap, 40, 40, false);
+        // 기존 현재 위치 마커 제거
+        if (curPos) {
+            curPos.setMap(null);
+        }
 
-        setMarkers(null);
+        // 현재 위치 맵에 표시
+        setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
 
-        if (liveMatchList.isSuccess) {
+        // 기존 실시간 운동 모임 마커 제거
+        if (markers) {
+            for (const m of markers) {
+                m.setMap(null);
+            }
+        }
+
+        // 실시간 운동 모임 마커 생성
+        if (liveMatchList.isSuccess) { // liveMatch리스트를 받아왔으면
             let newMarkers: naver.maps.Marker[] = []
             for (const e of liveMatchList.data) {
                 console.log(e)
@@ -173,7 +186,7 @@ export default function HomePage() {
                         place: liveMatchList.data[i].place.address,
                         detail: liveMatchList.data[i].detail,
                         hostId: liveMatchList.data[i].hostId,
-                        hostNickName: liveMatchList.data[i].host.nickName,
+                        hostNickName: liveMatchList.data[i].host.nickname,
                         currentPeopleNum: liveMatchList.data[i].currentPeopleNum,
                         totalPeopleNum: liveMatchList.data[i].totalPeopleNum,
                         registTime: liveMatchList.data[i].registTime,
@@ -188,6 +201,7 @@ export default function HomePage() {
 
     }, [geolocation.latitude, geolocation.longitude, liveMatchList.isSuccess]);
 
+    // 실시간 운동 모임 등록
     useEffect(() => {
         if (naverMap === null)
             return;
@@ -218,10 +232,6 @@ export default function HomePage() {
         }
     }, [state.sportType])
 
-    useEffect(() => {
-        console.log(state.modalType)
-    }, [markers, state.modalType]);
-
     return (
         <div ref={mapElement} className="w-full h-full relative">
             <div className="w-60 h-193 flex flex-col relative float-right mt-12 mr-9 z-10 ">{
@@ -241,7 +251,7 @@ export default function HomePage() {
             {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
             {state.modalType === 'modify' &&
                 <ModifyModal liveMatch={liveMatchList.data} openModal={state.modalType} closeModal={closeModal} />}
-            {state.modalType === 'join' && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
+            {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
             {state.modalType === 'quit' && <QuitModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></QuitModal>}
         </div>
     )
