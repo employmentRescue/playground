@@ -27,7 +27,7 @@ public class Live implements Serializable {
     private int currentPeopleNum;
     private int totalPeopleNum;
     private Time registTime;
-    private int hostId;
+    private long hostId;
     private String sports;
 
     @OneToOne

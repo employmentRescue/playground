@@ -36,7 +36,7 @@ public class Gathering implements Serializable {
     @ApiModelProperty(value = "운동 모임 모집 완료 여부")
     private boolean isCompleted;
     @ApiModelProperty(value = "모임장의  memberId")
-    private int hostId;
+    private long hostId;
     @ApiModelProperty(value = "운동 모임 성별 조건")
     private String sex;
     @ApiModelProperty(value = "운동 모임 레벨")

@@ -19,6 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableSwagger2
 public class SwaggerConfig {
 	//http://localhost:8080/swagger-ui/index.html
+	//https://localhost:8080/swagger-ui/index.html
 
 	private ApiInfo info() {
 		return new ApiInfoBuilder().title("Playground Matching Server API").build();

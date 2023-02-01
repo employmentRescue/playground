@@ -21,15 +21,15 @@ import java.io.Serializable;
 public class MemberDetail implements Serializable {
     @Id
     @ApiModelProperty(value = "회원 번호")
-    private int memberId;
+    private long memberId;
     @ApiModelProperty(value = "회원의 상태 메시지")
     private String statusMessage;
     @ApiModelProperty(value = "회원의 선호 운동 시간대 범위")
     private String preferTime;
-    @ApiModelProperty(value = "회원의 웹 토큰 번호")
-    private String webFcmToken;
-    @ApiModelProperty(value = "회원의 모바일 토큰 번호")
-    private String mobileFcmToken;
+//    @ApiModelProperty(value = "회원의 웹 토큰 번호")
+//    private String webFcmToken;
+//    @ApiModelProperty(value = "회원의 모바일 토큰 번호")
+//    private String mobileFcmToken;
     @ApiModelProperty(value = "회원의 프로필 이미지 URL")
     private String userProfileImgUrl;
 }

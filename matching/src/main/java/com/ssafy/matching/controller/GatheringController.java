@@ -103,7 +103,7 @@ public class GatheringController {
 
     @ApiOperation(value = "운동 모임 참여 취소하기", notes = "모임Id와 유저ID에 해당하는 운동 모임을 삭제한다.")
     @DeleteMapping("/leave/{gatheringid}")
-    public void delete(int gatheringId, int memberId) throws Exception {
+    public void delete(int gatheringId, long memberId) throws Exception {
         gatheringService.leaveGathering(gatheringId, memberId);
     }
 

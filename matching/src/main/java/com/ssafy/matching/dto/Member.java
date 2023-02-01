@@ -22,7 +22,7 @@ import java.io.Serializable;
 public class Member implements Serializable {
     @Id
     @ApiModelProperty(value = "회원 번호")
-    private int memberId;
+    private long memberId;
     @ApiModelProperty(value = "회원의 본명")
     private String name;
     @ApiModelProperty(value = "회원의 닉네임")

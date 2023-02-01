@@ -16,5 +16,5 @@ public interface LiveService {
     void deleteLive(int liveId);
 
     void joinLive(LiveMember liveMember);
-    void leaveLive(int liveId, int memberId);
+    void leaveLive(int liveId, long memberId);
 }

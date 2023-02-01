@@ -81,7 +81,7 @@ public class LiveController {
 
     @ApiOperation(value = "실시간 운동 모임 참여 취소하기", notes = "모임Id와 유저ID에 해당하는 운동 모임을 삭제한다.")
     @DeleteMapping("/leave/{gatheringid}")
-    public void delete(int liveId, int memberId) throws Exception {
+    public void delete(int liveId, long memberId) throws Exception {
         liveService.leaveLive(liveId, memberId);
     }
 

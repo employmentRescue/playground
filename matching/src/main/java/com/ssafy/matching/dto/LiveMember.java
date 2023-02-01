@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
@@ -16,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 
-@ApiModel(value = "Live : 실시간 운동 모임 정보", description = "실시간 운동 모임의 정보를 나타낸다.")
+@ApiModel(value = "LiveMember : 실시간 운동 모임 정보", description = "실시간 운동 모임의 정보를 나타낸다.")
 
 @SuppressWarnings("serial")
 @Entity
@@ -27,7 +24,7 @@ public class LiveMember implements Serializable {
     @ApiModelProperty(value = "실시간 운동 모임 번호")
     private int liveId;
     @ApiModelProperty(value = "멤버의 아이디")
-    private int memberId;
+    private long memberId;
 
     @ManyToOne
     @JoinColumn(name = "memberId", insertable=false, updatable=false)

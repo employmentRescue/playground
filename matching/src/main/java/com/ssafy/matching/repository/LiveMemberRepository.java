@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LiveMemberRepository extends JpaRepository<LiveMember, Integer> {
     LiveMember save(LiveMember liveMember);
-    void deleteByLiveIdAndMemberId(int liveId, int memberId);
+    void deleteByLiveIdAndMemberId(int liveId, long memberId);
 }

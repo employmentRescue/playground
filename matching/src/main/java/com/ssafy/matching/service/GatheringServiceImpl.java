@@ -72,7 +72,7 @@ public class GatheringServiceImpl implements GatheringService {
     }
 
     @Override
-    public void leaveGathering(int gatheringId, int memberId) {
+    public void leaveGathering(int gatheringId, long memberId) {
         memberGatheringRepository.deleteByGatheringIdAndMemberId(gatheringId, memberId);
     }
 }

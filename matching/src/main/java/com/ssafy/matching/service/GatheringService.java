@@ -17,5 +17,5 @@ public interface GatheringService {
     void deleteGathering(int gatheringId);
 
     void joinGathering(GatheringMember memberGathering);
-    void leaveGathering(int gatheringId, int memberId);
+    void leaveGathering(int gatheringId, long memberId);
 }
