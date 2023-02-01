@@ -80,7 +80,7 @@ export default function HomePage() {
 
     const [state, dispatch] = useReducer(registReducer, initialState);
     const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
-    const [markers, setMarkers] = useState([]);
+    const [markers, setMarkers] = useState<any | null>([]);
     const onPressed = () => dispatch({ type: 'ISPRESSED' });
     const basketBall = () => dispatch({ type: 'BASKETBALL' });
     const soccer = () => dispatch({ type: 'SOCCER' });
@@ -96,6 +96,7 @@ export default function HomePage() {
     const geolocation = useGeolocation();
 
     const liveMatchList = useLiveMatchListQuery();
+
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
         return new naver.maps.Marker({
             position: location,
@@ -107,7 +108,7 @@ export default function HomePage() {
                 origin: new naver.maps.Point(0, 0),
                 anchor: new naver.maps.Point(sizeX / 2, sizeY),
             },
-            animation: isBounce ? naver.maps.Animation.BOUNCE : undefined
+            animation: isBounce ? naver.maps.Animation.BOUNCE : undefined,
         });
     }
 
@@ -130,34 +131,34 @@ export default function HomePage() {
 
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         naverMap.setCenter(location);
+        console.log(location)
+        console.log(liveMatchList);
 
-        if (liveMatchList != undefined) {
-            for (const e in liveMatchList) {
-                //console.log(liveMatchList.data.title);
-                // switch (e.title) {
-                //     case "basketball":
-                //         setMapIcon(basketBallMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                //         break;
-                //     case "soccer":
-                //         setMapIcon(soccerMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                //         break;
-                //     case "badminton":
-                //         setMapIcon(badmintonMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                //         break;
-                //     default:
-                //         console.log(data);
-                //         break;
-                // }
-            };
+        if (liveMatchList.isSuccess) {
+            let newMarkers: naver.maps.Marker[] = []
+            for (const e of liveMatchList.data) {
+                console.log(e)
+                switch (e.sports) {
+                    case "농구":
+                        newMarkers.push(setMapIcon(basketBallMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
+                        break;
+                    case "축구":
+                        newMarkers.push(setMapIcon(soccerMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
+                        break;
+                    case "배드민턴":
+                        newMarkers.push(setMapIcon(badmintonMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
+                        break;
+                }
+            }
+            setMarkers(newMarkers);
+            console.log(newMarkers);
         }
-
-        const map = setMapIcon(currentPos, location, naverMap, 40, 40, false);
     }, [geolocation.latitude, geolocation.longitude]);
 
     useEffect(() => {
         if (naverMap === null)
             return;
-
+        console.log(liveMatchList);
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         naverMap.setCenter(location);
 
