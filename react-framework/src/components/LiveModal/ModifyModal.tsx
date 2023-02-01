@@ -61,18 +61,15 @@ export default function ModifyModal(props: Iprops) {
     }
 
     const modify = () => {
-        dispatch(addLiveMatch({
-            type: props.liveMatch.type,
-            place: place,
-            detail: detail,
-            lat: props.liveMatch.lat,
-            lng: props.liveMatch.lng,
-            currentPeopleNum: currentPeopleNum,
-            totalPeopleNum: totalPeopleNum,
-            startTime: props.liveMatch.startTime,
-            userNickName: props.liveMatch.userNickName,
-            userPicture: props.liveMatch.userPicture,
-        }));
+        // dispatch(addLiveMatch({
+        //     type: props.liveMatch.type,
+        //     place: place,
+        //     detail: detail,
+        //     lat: props.liveMatch.lat,
+        //     lng: props.liveMatch.lng,
+        //     currentPeopleNum: currentPeopleNum,
+        //     totalPeopleNum: totalPeopleNum,
+        // }));
         props.closeModal();
 
     }
