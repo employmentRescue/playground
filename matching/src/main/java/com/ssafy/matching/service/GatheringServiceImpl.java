@@ -69,6 +69,18 @@ public class GatheringServiceImpl implements GatheringService {
     @Override
     public void joinGathering(GatheringMember memberGathering) {
         memberGatheringRepository.save(memberGathering);
+        
+        //TODO 의문점
+        int gatheringId = memberGathering.getGatheringId();
+        Gathering gathering = gatheringRepository.getByGatheringId(gatheringId);
+
+        System.out.println("size : " + gathering.getMemberGatheringList().size()); //왜 이 시점에서는 앞에 결과가 반영이 안될까...?
+
+        if(gathering.getMemberGatheringList().size() + 1 == gathering.getPeople()) { //위에 문제 때문에 +1 해줌..
+            gathering.setCompleted(true);
+            System.out.println("gathering : " + gathering);
+            gatheringRepository.save(gathering);
+        }
     }
 
     @Override
