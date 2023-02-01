@@ -80,6 +80,7 @@ export default function HomePage() {
 
     const [state, dispatch] = useReducer(registReducer, initialState);
     const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
+    const [markers, setMarkers] = useState([]);
     const onPressed = () => dispatch({ type: 'ISPRESSED' });
     const basketBall = () => dispatch({ type: 'BASKETBALL' });
     const soccer = () => dispatch({ type: 'SOCCER' });
@@ -96,8 +97,7 @@ export default function HomePage() {
 
     const liveMatchList = useLiveMatchListQuery();
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
-        console.log(map, naverMap);
-        const temp = new naver.maps.Marker({
+        return new naver.maps.Marker({
             position: location,
             map,
             icon: {
@@ -109,8 +109,6 @@ export default function HomePage() {
             },
             animation: isBounce ? naver.maps.Animation.BOUNCE : undefined
         });
-        console.log(temp);
-        return temp;
     }
 
     useEffect(() => {
@@ -127,23 +125,12 @@ export default function HomePage() {
     }, []);
 
     useEffect(() => {
-        console.log(naverMap)
         if (naverMap === null)
             return;
 
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         naverMap.setCenter(location);
-        const map = setMapIcon(currentPos, location, naverMap, 40, 40, false);
-        console.log(map);
 
-    }, [geolocation.latitude, geolocation.longitude]);
-
-    useEffect(() => {
-        if (naverMap === null)
-            return;
-
-        const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
-        naverMap.setCenter(location);
         if (liveMatchList != undefined) {
             for (const e in liveMatchList) {
                 //console.log(liveMatchList.data.title);
@@ -163,6 +150,16 @@ export default function HomePage() {
                 // }
             };
         }
+
+        const map = setMapIcon(currentPos, location, naverMap, 40, 40, false);
+    }, [geolocation.latitude, geolocation.longitude]);
+
+    useEffect(() => {
+        if (naverMap === null)
+            return;
+
+        const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
+        naverMap.setCenter(location);
 
         let marker: naver.maps.Marker;
         switch (state.sportType) {
@@ -203,11 +200,11 @@ export default function HomePage() {
                     </div>
             }
             </div>
-            {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
+            {state.modalType === 'register2' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
             {state.modalType === 'modify' &&
                 <ModifyModal liveMatch={liveMatchList.data} openModal={state.modalType} closeModal={closeModal} />}
-            {state.modalType === 'join' && <JoinModal></JoinModal>}
-            {state.modalType === 'quit' && <QuitModal />}
+            {state.modalType === 'register' && <JoinModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
+            {state.modalType === 'quit' && <QuitModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></QuitModal>}
         </div>
     )
 }
