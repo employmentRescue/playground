@@ -1,16 +1,15 @@
 import useMouse from "@react-hook/mouse-position";
-import { useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useReducer } from "react"
 
-import basketBallMatch from "@/assets/icons/basketball-match.png"
-import badmintonMatch from "@/assets/icons/badminton-match.png"
-import soccerMatch from "@/assets/icons/soccer-match.png"
 import basketBallOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import soccerOriginal from "@/assets/icons/soccer-original.png"
+import filterEtc from "@/assets/icons/filter-etc.png"
+import matchButton from "@/assets/icons/personal-match-button.png"
 
 
-type Action = { type: 'AUTOMATCH' | 'LIST' };
+type TabAction = { type: 'AUTOMATCH' | 'LIST' };
 
 
 type propsTab = {
@@ -28,16 +27,23 @@ type listItem = {
 // 더미 목록들
 // #
 
-interface State {
+interface TabState {
     tabType : string;
 }
 
-const initialState: State = {
+const initialTabState: TabState = {
     tabType : 'AUTOMATCH',
 }
 
+// interface sportTypeState {
+//     sportType : string;
+// }
 
-function registReducer(state: State, action: Action) {
+// const initialSportTypeState: sportTypeState = {
+//     sportType : 'BASKETBALL',
+// } 
+
+function registerTabType(state: TabState, action: TabAction) {
     switch (action.type) {
         case 'AUTOMATCH':
             return {
@@ -135,9 +141,15 @@ function Content({clickedTab}: {clickedTab: string}) {
 // 자동 매칭 필터바
 function MatchFilterBar() {
     return (
-        <div className="w-[360px] h-53 grow-0 m-0 pt-8 pl-16 bg-[#f1f3ff]">
-            <div className="w-40 h-40 grow-0 mr-11 border-solid border-2.5 border-[#efad45] rounded-20 bg-[#fde9b4]"></div>
-            <img src={basketBallMatch} className="w-40 h-40 grow-0 mr-11"/>
+        <div className="relative w-[360px] h-53 grow-0 m-0 pt-8 pl-16 bg-[#f1f3ff]">
+            <div className="w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] border-[#efad45] rounded-20 bg-[#fde9b4]">
+                <img src={basketBallOriginal} className="w-20 h-20 grow-0"/>
+            </div>
+            <MatchFilterType />
+            <MatchFilterDistance />
+            <MatchFilterDate />
+            <MatchFilterTime />
+            <MatchFilterEtc />
         </div>
     )
 }
@@ -145,39 +157,66 @@ function MatchFilterBar() {
 // 자동 매칭 필터바 - 종목
 function MatchFilterType() {
     return (
-        <div className="absolute w-60 h-[157px] m-0 pt-7 px-10 rounded-15 border-solid border-1 border-[#303EFF]/50 bg-[#f1f3ff]">
-            <img src={basketBallMatch} className="w-40 h-40 grow-0 mr-11 mb-10"/>
-            <img src={soccerMatch} className="w-40 h-40 grow-0 mr-11 mb-10"/>
-            <img src={badmintonMatch} className="w-40 h-40 grow-0 mr-11"/>
+        <div className="absolute top-61 left-6 w-60 h-[157px] m-0 pt-7 px-10 rounded-15 border-solid border-1 border-[#303EFF]/50 bg-[#f1f3ff] z-10">
+            <div className="w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8  rounded-20 bg-[#fde9b4] border-solid border-[2.5px] border-[#efad45]">
+                <img src={basketBallOriginal} className="w-20 h-20 grow-0"/>
+            </div>
+            <div className="w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#d8caff] border-solid border-[2.5px] border-[#9C8DD3]">
+                <img src={soccerOriginal} className="w-20 h-20 grow-0"/>
+            </div>
+            <div className="w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#c4ffb6] border-solid border-[2.5px] border-[#71D354]">
+                <img src={badmintonOriginal} className="w-20 h-20 grow-0"/>
+            </div>
         </div>
     )
 }
 
 // 자동 매칭 필터바 - 거리범위
 function MatchFilterDistance() {
-
+    return (
+        <div className="absolute top-15 left-67 w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]">
+            <span className="w-41 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">~20km</span>
+        </div>
+    )
 }
 
 // 자동 매칭 필터바 - 날짜
 function MatchFilterDate() {
-    
+    return (
+        <div className="absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]"> 
+            <span className="w-45 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">1월 15일</span>
+            
+        </div>
+    )
 }
 
 // 자동 매칭 필터바 - 시간
 function MatchFilterTime() {
-    
+    return (
+        <div className="absolute top-15 left-[233px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]">
+            <span className="w-43 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">18 ~ 22</span>
+            
+        </div>
+    )
 }
 
 // 자동 매칭 필터바 - 기타
 function MatchFilterEtc() {
-    
+    return (
+        <div className="absolute top-15 left-[318px] w-25 h-25 flex-grow-0 pt-3 pl-3 rounded-5 bg-[#303eff]">
+            <img src={filterEtc} alt="" className="w-20 h-20 flex-grow-0"/>
+        </div>
+    )
 }
 
 // 자동 매칭 내용
 function MatchContent() {
     return (
-        <div className="relation w-[360px] h-[575px] m-0 pt-8 pl-6 bg-[#fff]">
-            <MatchFilterType />
+        <div className="relative w-[360px] h-[575px] m-0 pt-8 pl-6 bg-[#fff]">
+            <img src={matchButton} alt="" className="absolute top-[133px] left-[80px] w-[200px] h-[200px] "/>
+            <div className="absolute w-[124px] h-45 flex-grow-0 top-[360px] left-[118px] pt-11 pl-22 rounded-30 bg-[#303eff]">
+                <span className="w-70 h-24 flex-grow-0 font-inter text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
+            </div>
         </div>
     )
 }
@@ -187,7 +226,7 @@ function MatchContent() {
 function ListFilterBar() {
     return (
         <div className="w-[360px] h-93 grow-0 m-0 pt-8 pl-16 border-b-1 border-solid border-[#D8CAFF] bg-[#f1f3ff]">
-            <img src={basketBallMatch} className="w-40 h-40 grow-0 mr-11"/>
+            <img src={basketBallOriginal} className="w-40 h-40 grow-0 mr-11"/>
         </div>
     )
 }
@@ -226,7 +265,7 @@ function ListContent(){
 // 매치 페이지 출력
 export default function MatchPage() {
     
-    const [state, dispatch] = useReducer(registReducer, initialState);
+    const [state, dispatch] = useReducer(registerTabType, initialTabState);
 
     const autoMatch = () => dispatch({type : 'AUTOMATCH'});
     const list = () => dispatch({type: 'LIST'});
