@@ -1,4 +1,6 @@
 export interface liveMatch {
+    liveId?: number,
+    memberId?: number,
     place: string,
     detail: string,
     hostId: number,
