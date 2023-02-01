@@ -70,15 +70,11 @@ export default function FavoriteSportsTab() {
                         />
                         <p className="text-center font-inter text-11 mt-6">배드민턴</p>
                     </div>
-
-                </div>
-                <div className="self-center">
-                    <button onClick={() => console.log(storeState)}>console창에서 선택된 종목 확인</button>
                 </div>
             </div>
 
             <div className="self-center sticky bottom-0">
-                <ChoiceCompoleteButton />
+                <ChoiceCompoleteButton innerText="선택 완료" />
             </div>
         </div>
 
