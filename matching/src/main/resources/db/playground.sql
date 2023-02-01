@@ -18,10 +18,9 @@ USE `playground` ;
 -- Table `playground`.`member_sometimes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `playground`.`member_sometimes` (
-  `member_id` INT NOT NULL,
-  `nickname` VARCHAR(45) NOT NULL,
-  `pw_hash` VARCHAR(45) NOT NULL,
+  `member_id` BIGINT NOT NULL,
   `name` VARCHAR(45) NULL,
+  `nickname` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`member_id`))
 ENGINE = InnoDB;
 
@@ -31,7 +30,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `playground`.`alarm` (
   `alarm_id` INT NOT NULL AUTO_INCREMENT,
-  `member_id` INT NOT NULL,
+  `member_id` BIGINT NOT NULL,
   `content` VARCHAR(1000) NOT NULL,
   `alarm_type` VARCHAR(45) NOT NULL,
   `reg_date` DATE NOT NULL,
@@ -50,7 +49,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `playground`.`interest` (
   `interest_id` INT NOT NULL AUTO_INCREMENT,
-  `member_id` INT NOT NULL,
+  `member_id` BIGINT NOT NULL,
   `sports` VARCHAR(45) NOT NULL,
   `level` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`interest_id`),
@@ -68,13 +67,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `playground`.`place` (
   `place_id` INT NOT NULL AUTO_INCREMENT,
-  `sido` VARCHAR(100) NOT NULL,
-  `sigun` VARCHAR(100) NOT NULL,
-  `dong` VARCHAR(100) NOT NULL,
-  `jibun` VARCHAR(100) NOT NULL,
-  `place_name` VARCHAR(1000) NOT NULL,
-  `latX` FLOAT NOT NULL,
-  `latY` FLOAT NOT NULL,
+  `address` VARCHAR(1000) NOT NULL,
+  `lat` DOUBLE NOT NULL,
+  `lng` DOUBLE NOT NULL,
   PRIMARY KEY (`place_id`))
 ENGINE = InnoDB;
 
@@ -86,11 +81,13 @@ CREATE TABLE IF NOT EXISTS `playground`.`gathering` (
   `gathering_id` INT NOT NULL AUTO_INCREMENT,
   `place_id` INT NOT NULL,
   `title` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(45) NULL,
   `people` INT NOT NULL,
   `start_date` VARCHAR(45) NOT NULL,
   `start_time` VARCHAR(45) NOT NULL,
+  `play_time` INT NOT NULL,
   `is_completed` TINYINT NOT NULL,
-  `manager` INT NOT NULL,
+  `host_id` INT NOT NULL,
   `sex` VARCHAR(5) NOT NULL,
   `level` VARCHAR(10) NOT NULL,
   `sports` VARCHAR(45) NOT NULL,
@@ -106,41 +103,23 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `playground`.`member_gathering`
+-- Table `playground`.`gathering_member`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `playground`.`member_gathering` (
-  `member_gathering_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `playground`.`gathering_member` (
+  `gathering_member_id` INT NOT NULL AUTO_INCREMENT,
   `gathering_id` INT NOT NULL,
-  `member_id` INT NOT NULL,
-  PRIMARY KEY (`member_gathering_id`),
+  `member_id` BIGINT NOT NULL,
+  PRIMARY KEY (`gathering_member_id`),
   INDEX `fk_member_id_idx` (`member_id` ASC) VISIBLE,
   INDEX `fk_gathering_id_idx` (`gathering_id` ASC) VISIBLE,
-  CONSTRAINT `fk_gathering_member_id`
+  CONSTRAINT `fk_member_gathering_id`
     FOREIGN KEY (`member_id`)
     REFERENCES `playground`.`member_sometimes` (`member_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_member_gathering_id`
+  CONSTRAINT `fk_gathering_member_id`
     FOREIGN KEY (`gathering_id`)
     REFERENCES `playground`.`gathering` (`gathering_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `playground`.`member_profile_img`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `playground`.`member_profile_img` (
-  `profile_img_id` INT NOT NULL AUTO_INCREMENT,
-  `member_id` INT NOT NULL COMMENT '회원 : \"M\" + foreigner key\n팀 :  \"T\" + foreigner key',
-  `file_name` VARCHAR(1000) NOT NULL,
-  `file_path` VARCHAR(1000) NOT NULL,
-  PRIMARY KEY (`profile_img_id`),
-  INDEX `fk_profile_member_id_idx` (`member_id` ASC) VISIBLE,
-  CONSTRAINT `fk_profile_member_id`
-    FOREIGN KEY (`member_id`)
-    REFERENCES `playground`.`member_sometimes` (`member_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -169,7 +148,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `playground`.`member_gathering_chatroom` (
   `member_gathering_chatroom_id` INT NOT NULL AUTO_INCREMENT,
   `gathering_chatroom_id` INT NOT NULL,
-  `member_id` INT NOT NULL,
+  `member_id` BIGINT NOT NULL,
   PRIMARY KEY (`member_gathering_chatroom_id`),
   INDEX `fk_member_id_idx` (`member_id` ASC) VISIBLE,
   INDEX `fk_gathering_chatroom_id_idx` (`gathering_chatroom_id` ASC) VISIBLE,
@@ -187,72 +166,35 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `playground`.`gathering_message`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `playground`.`gathering_message` (
+  `gathering_message_id` INT NOT NULL AUTO_INCREMENT,
+  `gathering_chatroom_id` INT NOT NULL,
+  `reg_time` DATE NOT NULL,
+  `member_id` BIGINT NOT NULL,
+  `content` TEXT NOT NULL,
+  `is_notice` TINYINT NOT NULL,
+  `type` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`gathering_message_id`),
+  INDEX `fk_chatroom_id_idx` (`gathering_chatroom_id` ASC) VISIBLE,
+  CONSTRAINT `fk_message_gathering_chatroom_id`
+    FOREIGN KEY (`gathering_chatroom_id`)
+    REFERENCES `playground`.`gathering_chatroom` (`gathering_chatroom_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `playground`.`team`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `playground`.`team` (
   `team_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `manager` VARCHAR(45) NOT NULL,
+  `team_profile_img_url` TEXT NULL,
   PRIMARY KEY (`team_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `playground`.`team_chatroom`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `playground`.`team_chatroom` (
-  `team_chatroom_id` INT NOT NULL AUTO_INCREMENT,
-  `team_id` INT NOT NULL,
-  `chatroom_name` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`team_chatroom_id`),
-  INDEX `fk_chatroom_team_id_idx` (`team_id` ASC) VISIBLE,
-  CONSTRAINT `fk_team_chatroom_id`
-    FOREIGN KEY (`team_id`)
-    REFERENCES `playground`.`team` (`team_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `playground`.`message`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `playground`.`message` (
-  `message_id` INT NOT NULL AUTO_INCREMENT,
-  `chatroom_id` INT NOT NULL,
-  `reg_time` DATE NOT NULL,
-  `member_id` INT NOT NULL,
-  `content` TEXT NOT NULL,
-  `is_notice` TINYINT NOT NULL,
-  PRIMARY KEY (`message_id`),
-  INDEX `fk_chatroom_id_idx` (`chatroom_id` ASC) VISIBLE,
-  CONSTRAINT `fk_message_gathering_chatroom_id`
-    FOREIGN KEY (`chatroom_id`)
-    REFERENCES `playground`.`gathering_chatroom` (`gathering_chatroom_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_message_team_chatroom_id`
-    FOREIGN KEY (`chatroom_id`)
-    REFERENCES `playground`.`team_chatroom` (`team_chatroom_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `playground`.`chatroom_notice`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `playground`.`chatroom_notice` (
-  `chatroom_notice_id` INT NOT NULL AUTO_INCREMENT,
-  `chatroom_id` INT NULL,
-  `content` TEXT NULL,
-  PRIMARY KEY (`chatroom_notice_id`),
-  INDEX `fk_chatroom_id_idx` (`chatroom_id` ASC) VISIBLE,
-  CONSTRAINT `fk_notice_chatroom_id`
-    FOREIGN KEY (`chatroom_id`)
-    REFERENCES `playground`.`gathering_chatroom` (`gathering_chatroom_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -305,7 +247,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `playground`.`member_team` (
   `member_team_id` INT NOT NULL AUTO_INCREMENT,
   `team_id` INT NOT NULL,
-  `member_id` INT NOT NULL,
+  `member_id` BIGINT NOT NULL,
   PRIMARY KEY (`member_team_id`),
   INDEX `fk_member_id_idx` (`member_id` ASC) VISIBLE,
   INDEX `fk_team_id_idx` (`team_id` ASC) VISIBLE,
@@ -326,12 +268,13 @@ ENGINE = InnoDB;
 -- Table `playground`.`Member_often`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `playground`.`Member_often` (
-  `member_often_id` INT NOT NULL AUTO_INCREMENT,
-  `member_id` INT NOT NULL,
+  `member_id` BIGINT NOT NULL,
   `status_message` VARCHAR(45) NULL,
-  `prefer_time` VARCHAR(45) NOT NULL,
-  `fcm_token` TEXT NULL,
-  PRIMARY KEY (`member_often_id`),
+  `prefer_time` VARCHAR(45) NULL,
+  `web_fcm_token` TEXT NULL,
+  `mobile_fcm_token` TEXT NULL,
+  `user_profile_img_url` TEXT NULL,
+  PRIMARY KEY (`member_id`),
   INDEX `fk_often_member_id_idx` (`member_id` ASC) VISIBLE,
   CONSTRAINT `fk_often_member_id`
     FOREIGN KEY (`member_id`)
@@ -359,16 +302,15 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `playground`.`team_profile_img`
+-- Table `playground`.`team_chatroom`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `playground`.`team_profile_img` (
-  `profile_img_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `playground`.`team_chatroom` (
+  `team_chatroom_id` INT NOT NULL AUTO_INCREMENT,
   `team_id` INT NOT NULL,
-  `file_name` VARCHAR(1000) NOT NULL,
-  `file_path` VARCHAR(1000) NOT NULL,
-  PRIMARY KEY (`profile_img_id`),
-  INDEX `fk_profile_team_id_idx` (`team_id` ASC) VISIBLE,
-  CONSTRAINT `fk_profile_team_id`
+  `chatroom_name` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`team_chatroom_id`),
+  INDEX `fk_chatroom_team_id_idx` (`team_id` ASC) VISIBLE,
+  CONSTRAINT `fk_team_chatroom_id`
     FOREIGN KEY (`team_id`)
     REFERENCES `playground`.`team` (`team_id`)
     ON DELETE NO ACTION
@@ -377,15 +319,16 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `playground`.`read_message`
+-- Table `playground`.`gathering_read_message`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `playground`.`read_message` (
-  `message_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `playground`.`gathering_read_message` (
+  `gathering_message_id` INT NOT NULL,
   `is_read` TINYINT NOT NULL,
-  INDEX `fk_read_message_id_idx` (`message_id` ASC) VISIBLE,
-  CONSTRAINT `fk_read_message_id`
-    FOREIGN KEY (`message_id`)
-    REFERENCES `playground`.`message` (`message_id`)
+  INDEX `fk_read_message_id_idx` (`gathering_message_id` ASC) VISIBLE,
+  PRIMARY KEY (`gathering_message_id`),
+  CONSTRAINT `fk_gathering_read_message_id`
+    FOREIGN KEY (`gathering_message_id`)
+    REFERENCES `playground`.`gathering_message` (`gathering_message_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -397,7 +340,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `playground`.`member_team_chatroom` (
   `member_team_chatroom_id` INT NOT NULL AUTO_INCREMENT,
   `team_chatroom_id` INT NOT NULL,
-  `member_id` INT NOT NULL,
+  `member_id` BIGINT NOT NULL,
   PRIMARY KEY (`member_team_chatroom_id`),
   INDEX `fk_member_id_idx` (`member_id` ASC) VISIBLE,
   INDEX `fk_member_team_chatroom_id_idx` (`team_chatroom_id` ASC) VISIBLE,
@@ -409,6 +352,93 @@ CREATE TABLE IF NOT EXISTS `playground`.`member_team_chatroom` (
   CONSTRAINT `fk_member_team_chatroom_id`
     FOREIGN KEY (`team_chatroom_id`)
     REFERENCES `playground`.`team_chatroom` (`team_chatroom_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `playground`.`live`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `playground`.`live` (
+  `live_id` INT NOT NULL AUTO_INCREMENT,
+  `place_id` INT NOT NULL,
+  `detail` VARCHAR(45) NULL,
+  `current_people_num` INT NOT NULL,
+  `total_people_num` INT NOT NULL,
+  `regist_time` TIME NOT NULL,
+  `host_id` BIGINT NOT NULL,
+  `sports` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`live_id`),
+  INDEX `fk_live_place_id_idx` (`place_id` ASC) VISIBLE,
+  INDEX `fk_host_id_idx` (`host_id` ASC) VISIBLE,
+  CONSTRAINT `fk_live_place_id`
+    FOREIGN KEY (`place_id`)
+    REFERENCES `playground`.`place` (`place_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_host_id`
+    FOREIGN KEY (`host_id`)
+    REFERENCES `playground`.`member_sometimes` (`member_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `playground`.`live_member`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `playground`.`live_member` (
+  `live_member_id` INT NOT NULL AUTO_INCREMENT,
+  `live_id` INT NOT NULL,
+  `member_id` BIGINT NOT NULL,
+  PRIMARY KEY (`live_member_id`),
+  INDEX `fk_live_member_id_idx` (`live_id` ASC) VISIBLE,
+  INDEX `fk_live_member_member_id_idx` (`member_id` ASC) VISIBLE,
+  CONSTRAINT `fk_live_member_live_id`
+    FOREIGN KEY (`live_id`)
+    REFERENCES `playground`.`live` (`live_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_live_member_member_id`
+    FOREIGN KEY (`member_id`)
+    REFERENCES `playground`.`member_sometimes` (`member_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `playground`.`team_message`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `playground`.`team_message` (
+  `team_message_id` INT NOT NULL AUTO_INCREMENT,
+  `team_chatroom_id` INT NOT NULL,
+  `reg_time` DATE NOT NULL,
+  `member_id` BIGINT NOT NULL,
+  `content` TEXT NOT NULL,
+  `is_notice` TINYINT NOT NULL,
+  `type` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`team_message_id`),
+  INDEX `fk_message_team_chatroom_id_idx` (`team_chatroom_id` ASC) VISIBLE,
+  CONSTRAINT `fk_message_team_chatroom_id`
+    FOREIGN KEY (`team_chatroom_id`)
+    REFERENCES `playground`.`team_chatroom` (`team_chatroom_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `playground`.`team_read_message`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `playground`.`team_read_message` (
+  `team_message_id` INT NOT NULL,
+  `is_read` TINYINT NOT NULL,
+  PRIMARY KEY (`team_message_id`),
+  CONSTRAINT `fk_team_read_message_id`
+    FOREIGN KEY (`team_message_id`)
+    REFERENCES `playground`.`team_message` (`team_message_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

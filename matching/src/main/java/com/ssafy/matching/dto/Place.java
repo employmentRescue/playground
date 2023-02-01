@@ -23,7 +23,7 @@ public class Place implements Serializable {
     private int placeId;
     private String address;
     @ApiModelProperty(value = "위도")
-    private Float lat;
+    private double lat;
     @ApiModelProperty(value = "경도")
-    private Float lng;
+    private double lng;
 }
