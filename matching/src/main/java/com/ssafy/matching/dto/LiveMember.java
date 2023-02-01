@@ -25,8 +25,4 @@ public class LiveMember implements Serializable {
     private int liveId;
     @ApiModelProperty(value = "멤버의 아이디")
     private long memberId;
-
-    @ManyToOne
-    @JoinColumn(name = "memberId", insertable=false, updatable=false)
-    private Member member;
 }
