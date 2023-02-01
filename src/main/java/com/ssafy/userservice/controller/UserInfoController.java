@@ -4,12 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
-import com.ssafy.userservice.dto.MemberOftenEntity;
-import com.ssafy.userservice.dto.MemberSometimesEntity;
-import com.ssafy.userservice.dto.QMemberOftenEntity;
-import com.ssafy.userservice.dto.QMemberSometimesEntity;
+import com.ssafy.userservice.dto.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -34,7 +33,7 @@ public class UserInfoController {
 
 
     @GetMapping("/check/nickname/{nickname}")
-    ResponseEntity checkNicname(@PathVariable String nickname){
+    ResponseEntity checkNickname(@PathVariable String nickname){
 
         try{
             return new ResponseEntity<Map<String, Boolean>>(
@@ -54,7 +53,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/search/{user_id}")
-    ResponseEntity searchUserInfo(@PathVariable("user_id") String userID , @RequestBody Set<String> req){
+    ResponseEntity searchUserInfo(@PathVariable("user_id") long userID , @RequestBody Set<String> req){
         System.out.println("req : " + req);
 
         try {
@@ -65,7 +64,7 @@ public class UserInfoController {
                     .select(qMemberOften, qMemberSometimes)
                     .from(qMemberOften)
                     .join(qMemberSometimes)
-                    .where(qMemberOften.id.eq(qMemberSometimes.id), qMemberOften.id.eq(Integer.parseInt(userID)))
+                    .where(qMemberOften.id.eq(qMemberSometimes.id), qMemberOften.id.eq(userID))
                     .fetchOne();
 
             // ================================================================================================================
@@ -80,14 +79,14 @@ public class UserInfoController {
 
 
             for (String key : req){
-                if (key != userID && requestSearchList.get(key) != null) searchResult.put(key, requestSearchList.get(key));
+                if (key != String.valueOf(userID) && requestSearchList.get(key) != null) searchResult.put(key, requestSearchList.get(key));
             }
             // ================================================================================================================
 
             // MemberSometime 객체에 대해 검색한 값만 searchResult에 넣기
             requestSearchList = objectMapper.convertValue(ret.get(1, MemberSometimesEntity.class), Map.class);
             for (String key : req){
-                if (key != userID && requestSearchList.get(key) != null) searchResult.put(key, requestSearchList.get(key));
+                if (key != String.valueOf(userID) && requestSearchList.get(key) != null) searchResult.put(key, requestSearchList.get(key));
             }
             // ================================================================================================================
 
@@ -103,13 +102,16 @@ public class UserInfoController {
 
     @Transactional
     @PostMapping("/regist/{user_id}")
-    ResponseEntity registUserInfo(@PathVariable("user_id") int userID, MemberOftenEntity memOften, MemberSometimesEntity memSome){
+    ResponseEntity registUserInfo(@PathVariable("user_id") long userID, @RequestBody Map<String, Object> json) throws IOException {
+//        MemberOftenEntity memOften = new MemberOftenEntity();
+
+
+        MemberOftenEntity memOften = objectMapper.convertValue(json, MemberOftenEntity.class);
+        MemberSometimesEntity memSome = objectMapper.convertValue(json, MemberSometimesEntity.class);
         memOften.setId(userID); memSome.setId(userID);
 
-        System.out.println(userID);
-        System.out.println(memOften);
-        System.out.println(memSome);
-
+//        System.out.println(memOften);
+//        System.out.println(memSome);
 
         // ===================================================================================================
         try
@@ -137,7 +139,7 @@ public class UserInfoController {
 
     @Transactional
     @PostMapping("/update/{user_id}")
-    ResponseEntity updateUserInfo(@PathVariable("user_id") int userID, MemberOftenEntity memOften, MemberSometimesEntity memSome, @RequestBody MultipartFile profile_img){
+    ResponseEntity updateUserInfo(@PathVariable("user_id") long userID, MemberOftenEntity memOften, MemberSometimesEntity memSome, @RequestBody MultipartFile profile_img){
         System.out.println(userID);
         System.out.println(memOften);
         System.out.println(memSome);
@@ -220,17 +222,17 @@ public class UserInfoController {
     }
 
     @GetMapping("/get/prefer_activities/{user_id}")
-    ResponseEntity getUSerPreferActivities(@PathVariable("user_id") int userID){
+    ResponseEntity getUSerPreferActivities(@PathVariable("user_id") long userID){
 
         try {
-//            Set<String> prefer_activites = queryFactory
-//                    .select(qMemberOften)
-//                    .from(qMemberOften)
-//                    .where(qMemberOften.id.eq(userID))
-//                    .fetchOne()
-//                    .getPreferActivities();
+            List<activitiesEntity> prefer_activites = queryFactory
+                    .select(qMemberOften)
+                    .from(qMemberOften)
+                    .where(qMemberOften.id.eq(userID))
+                    .fetchOne()
+                    .getPreferActivities();
 
-            return new ResponseEntity(null, HttpStatus.OK);
+            return new ResponseEntity(prefer_activites, HttpStatus.OK);
         }
         catch (Throwable e){
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -238,22 +240,48 @@ public class UserInfoController {
     }
 
     @Transactional
-    @PostMapping("/insert/prefer_activities/{user_id}")
-    ResponseEntity insertUSerPreferActivities(@PathVariable("user_id") int userID, @RequestBody Set<String> plusPreferActivities){
+    @PutMapping("/put/prefer_activities/{user_id}")
+    ResponseEntity putUSerPreferActivities(@PathVariable("user_id") long userID, @RequestBody List<activitiesEntity> plusPreferActivities){
+        System.out.println(plusPreferActivities);
 
+        MemberOftenEntity memOften = queryFactory.selectFrom(qMemberOften).where(qMemberOften.id.eq(userID)).fetchOne();
+
+        if (memOften.getPreferActivities().isEmpty()){
+            memOften.setPreferActivities(plusPreferActivities);
+        }
+        else{
+            List<activitiesEntity> preferActivities = memOften.getPreferActivities();
+
+            for (activitiesEntity activity : plusPreferActivities){
+
+                int idx = -1;
+
+                for (int i = 0;i < preferActivities.size();i++){
+                    if (preferActivities.get(i).getMember_id() == activity.getMember_id()
+                            && preferActivities.get(i).getActivity().equals(activity.getActivity())){
+                        idx = i;
+                        break;
+                    }
+                }
+
+
+                if (idx == -1){
+                    preferActivities.add(activity);
+                }
+                else {
+                    preferActivities.get(idx).setLevel(activity.getLevel());
+                }
+
+
+            }
+            memOften.setPreferActivities(preferActivities);
+        }
+
+
+        entityManager.persist(memOften);
+
+        entityManager.flush(); entityManager.clear();
         try {
-            
-//            MemberOftenEntity memOften = queryFactory.selectFrom(qMemberOften).where(qMemberOften.id.eq(userID)).fetchOne();
-//            System.out.println(memOften);
-//
-//            memOften.getPreferActivities().addAll(plusPreferActivities);
-//
-//            entityManager.persist(memOften);
-//
-//            entityManager.flush(); entityManager.clear();
-//
-//            // EntityManager clear
-//            entityManager.flush(); entityManager.flush();
 
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -263,21 +291,26 @@ public class UserInfoController {
     }
 
     @Transactional
-    @PostMapping("/delete/prefer_activities/{user_id}")
-    ResponseEntity deleteUSerPreferActivities(@PathVariable("user_id") int userID, @RequestBody Set<String> plusPreferActivities){
+    @DeleteMapping("/delete/prefer_activities/{user_id}")
+    ResponseEntity deleteUSerPreferActivities(@PathVariable("user_id") long userID, @RequestBody List<activitiesEntity> plusPreferActivities){
+        System.out.println(plusPreferActivities);
+
+        MemberOftenEntity memOften = queryFactory.selectFrom(qMemberOften).where(qMemberOften.id.eq(userID)).fetchOne();
+        List<activitiesEntity> preferActivities = memOften.getPreferActivities();
+
+        for (activitiesEntity activity : plusPreferActivities){
+            for (int i = 0;i < preferActivities.size();i++){
+                if (activity.getActivity().equals(preferActivities.get(i).getActivity()) && activity.getMember_id() == preferActivities.get(i).getMember_id())
+                {
+                    preferActivities.remove(i--);
+                }
+            }
+        }
+        entityManager.persist(memOften);
+
+        entityManager.flush(); entityManager.clear();
 
         try {
-            MemberOftenEntity memOften = queryFactory.selectFrom(qMemberOften).where(qMemberOften.id.eq(userID)).fetchOne();
-            System.out.println(memOften);
-
-//            memOften.getPreferActivities().removeAll(plusPreferActivities);
-//
-//            entityManager.persist(memOften);
-
-            entityManager.flush(); entityManager.clear();
-
-            // EntityManager clear
-            entityManager.flush(); entityManager.flush();
 
             return new ResponseEntity(HttpStatus.OK);
         }

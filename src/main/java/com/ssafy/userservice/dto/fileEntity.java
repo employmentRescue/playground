@@ -18,5 +18,5 @@ public class fileEntity extends BaseTimeEntity {
     @Id @Column(name = "FILE_NAME")
     String file_name;
     String origin_file_name;
-    String userID;
+    long userID;
 }
