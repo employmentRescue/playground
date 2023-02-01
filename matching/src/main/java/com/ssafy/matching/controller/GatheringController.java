@@ -87,7 +87,7 @@ public class GatheringController {
         gatheringService.updateGathering(gathering);
     }
 
-    @ApiOperation(value = "운동 모임 삭제하기", notes = "모임Id에 해당하는 운동 모임을 수정한다.")
+    @ApiOperation(value = "운동 모임 삭제하기", notes = "모임Id에 해당하는 운동 모임을 삭제한다.")
     @DeleteMapping("/{gatheringid}")
     public void delete(@PathVariable("gatheringid") int gatheringId) throws Exception {
         gatheringService.deleteGathering(gatheringId);

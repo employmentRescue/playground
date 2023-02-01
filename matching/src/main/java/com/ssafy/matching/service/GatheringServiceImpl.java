@@ -85,6 +85,14 @@ public class GatheringServiceImpl implements GatheringService {
 
     @Override
     public void leaveGathering(int gatheringId, long memberId) {
+        //나가려는 멤버가 호스트이면, 호스트 다른 사람에게 넘겨주고 떠나기
+        Gathering gathering = gatheringRepository.getByGatheringId(gatheringId);
+
+        if(memberId == gathering.getHostId()) {
+            long nextHostId = gathering.getMemberGatheringList().get(1).getMemberId();
+            gathering.setHostId(nextHostId);
+        }
+
         memberGatheringRepository.deleteByGatheringIdAndMemberId(gatheringId, memberId);
     }
 }

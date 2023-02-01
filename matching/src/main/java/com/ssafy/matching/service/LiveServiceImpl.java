@@ -47,7 +47,7 @@ public class LiveServiceImpl implements LiveService {
     @Override
     public void joinLive(LiveMember liveMember) {
         liveMemberRepository.save(liveMember);
-        //TODO 현재 인원수 카운팅 올리기
+
         int liveId = liveMember.getLiveId();
         Live live = liveRepository.getByLiveId(liveId);
 
