@@ -21,8 +21,8 @@ public class LiveMember implements Serializable {
     @Id
     @ApiModelProperty(value = "실시간 운동 모임-멤버 아이디")
     private int live_memberId;
-    @ApiModelProperty(value = "실시간 운동 모임 번호")
+    @ApiModelProperty(value = "실시간 운동 모임 번호", required = true)
     private int liveId;
-    @ApiModelProperty(value = "멤버의 아이디")
+    @ApiModelProperty(value = "멤버의 아이디", required = true)
     private long memberId;
 }

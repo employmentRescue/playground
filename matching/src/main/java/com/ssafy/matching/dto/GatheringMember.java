@@ -20,9 +20,9 @@ public class GatheringMember implements Serializable {
     @ApiModelProperty(value = "운동 모임-멤버 아이디")
     @Id
     private int gatheringMemberId;
-    @ApiModelProperty(value = "운동 모임 번호")
+    @ApiModelProperty(value = "운동 모임 번호", required = true)
     private int gatheringId;
-    @ApiModelProperty(value = "멤버의 아이디")
+    @ApiModelProperty(value = "멤버의 아이디", required = true)
     private long memberId;
 
     @ManyToOne
