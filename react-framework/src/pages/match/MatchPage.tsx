@@ -9,23 +9,14 @@ import filterEtc from "@/assets/icons/filter-etc.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
 
 
-type TabAction = { type: 'AUTOMATCH' | 'LIST' };
-
+// ============ 기타 타입 =================================================
 
 type propsTab = {
     clickedTab: string, 
     changeType: () => void;
 }
-
-type listItem = {
-    sportType: string,
-    member: string,
-    title: string,
-    date: string,
-    
-}
-// 더미 목록들
-// #
+// ============== 상단 탭 관련 ====================================================
+type TabAction = { type: 'AUTOMATCH' | 'LIST' };
 
 interface TabState {
     tabType : string;
@@ -34,14 +25,6 @@ interface TabState {
 const initialTabState: TabState = {
     tabType : 'AUTOMATCH',
 }
-
-// interface sportTypeState {
-//     sportType : string;
-// }
-
-// const initialSportTypeState: sportTypeState = {
-//     sportType : 'BASKETBALL',
-// } 
 
 function registerTabType(state: TabState, action: TabAction) {
     switch (action.type) {
@@ -58,6 +41,53 @@ function registerTabType(state: TabState, action: TabAction) {
     }
 }
 
+// ======================= 목록 아이템 관련 =============================================
+type listItem = {
+    sportType: string,
+    member: string,
+    title: string,
+    date: string,
+    
+}
+
+type sportAction = { type: 'ISCLICKED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON'}
+
+interface sportTypeState {
+    isClicked : boolean;
+    sportType : string;
+}
+
+const initialSportTypeState: sportTypeState = {
+    isClicked : false,
+    sportType : 'BASKETBALL',
+} 
+
+function registerSportType(state: sportTypeState, action: sportAction){
+    switch(action.type) {
+        case 'ISCLICKED':
+            return {
+                ...state,
+                isClicked: true
+            }
+        case 'BASKETBALL':
+            return {
+                ...state,
+                sportType: 'BASKETBALL'
+            }
+        case 'SOCCER':
+            return {
+                ...state,
+                sportType: 'SOCCER'
+            }
+        case 'BADMINTON':
+            return {
+                ...state,
+                sportType: 'BADMINTON'
+            }
+    }
+}
+
+// ========================= 상단 탭 ===================================================
 // 자동 매치 탭
 function AutoMatchTab({clickedTab, changeType}: propsTab) {
 
@@ -140,12 +170,18 @@ function Content({clickedTab}: {clickedTab: string}) {
 // ================ 자동 매칭 관련 컴포넌트 =======================================================
 // 자동 매칭 필터바
 function MatchFilterBar() {
+    const [state, dispatch] = useReducer(registerSportType, initialSportTypeState)
+    const isClicked = () => dispatch({type: 'ISCLICKED'})
+    const basketball = () => dispatch({type: 'BASKETBALL'})
+    const soccer = () => dispatch({type: 'SOCCER'})
+    const badminton = () => dispatch({type: 'BADMINTON'})
+
     return (
         <div className="relative w-[360px] h-53 grow-0 m-0 pt-8 pl-16 bg-[#f1f3ff]">
             <div className="w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] border-[#efad45] rounded-20 bg-[#fde9b4]">
                 <img src={basketBallOriginal} className="w-20 h-20 grow-0"/>
             </div>
-            <MatchFilterType />
+            {state.isClicked === true && <MatchFilterType onChangeMode={()=>{isClicked()}}/>}
             <MatchFilterDistance />
             <MatchFilterDate />
             <MatchFilterTime />
@@ -155,7 +191,7 @@ function MatchFilterBar() {
 }
 
 // 자동 매칭 필터바 - 종목
-function MatchFilterType() {
+function MatchFilterType({onChangeMode} : {onChangeMode : () => void}) {
     return (
         <div className="absolute top-61 left-6 w-60 h-[157px] m-0 pt-7 px-10 rounded-15 border-solid border-1 border-[#303EFF]/50 bg-[#f1f3ff] z-10">
             <div className="w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8  rounded-20 bg-[#fde9b4] border-solid border-[2.5px] border-[#efad45]">
