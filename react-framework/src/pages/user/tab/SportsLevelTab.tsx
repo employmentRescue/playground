@@ -5,6 +5,7 @@ import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
 import LevelCard from "@/components/userRegister/LevelCard"
 
 export default function SportsLevelTab() {
+
     return (
         <div className="flex flex-col h-[calc(100vh-149px)] justify-between">
             <div className="flex flex-col mt-37 self-center">
@@ -16,6 +17,7 @@ export default function SportsLevelTab() {
                             imageSrc={soccerImg}
                             imageSize={"w-45 h-45 mr-25 mt-4"}
                             innerText="축구"
+                            sportName="soccer"
                         />
                     </div>
                     <div className="flex">
@@ -24,6 +26,7 @@ export default function SportsLevelTab() {
                             imageSrc={basketballImg}
                             imageSize={"w-45 h-45 mr-25 mt-4"}
                             innerText="농구"
+                            sportName="basketball"
                         />
                     </div>
                     <div className="flex">
@@ -32,6 +35,7 @@ export default function SportsLevelTab() {
                             imageSrc={badmintonImg}
                             imageSize={"w-45 h-45 mr-25 mt-4"}
                             innerText="배드민턴"
+                            sportName="badminton"
                         />
                     </div>
                 </div>

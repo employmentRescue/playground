@@ -1,4 +1,10 @@
 import LevelButton from "./Buttons/LevelButton";
+import { useSelector } from "react-redux"
+import { User } from "@/stores/register/user"
+
+interface userState {
+  user: User
+}
 
 interface ClassNameProps {
     className: any;
@@ -6,13 +12,26 @@ interface ClassNameProps {
     imageSize: any;
     onClick?: any;
     innerText?: any;
+    sportName: "soccer" | "basketball" | "badminton" | null;
 }
 
-export default function LevelCard({ className, imageSrc, imageSize, onClick, innerText }: ClassNameProps) {
+export default function LevelCard({ className, imageSrc, imageSize, onClick, innerText, sportName }: ClassNameProps) {
+
+    const userSportsLevel = useSelector((state: userState) => {
+        if (sportName == "soccer") {
+            return state.user.sportsLevel.soccer;
+        }
+        else if (sportName == "basketball") {
+            return state.user.sportsLevel.basketball;
+        }
+        else {
+            return state.user.sportsLevel.badminton;
+        }
+    })
+
     return (
         <div
             className={"flex rounded-15 " + className}
-            onClick={onClick}
         >
             <div>
                 <img src={imageSrc} className={imageSize} />
@@ -27,10 +46,26 @@ export default function LevelCard({ className, imageSrc, imageSize, onClick, inn
                     고수 : 사회인 {innerText} 대회 참여 경험<br />
                 </p>
                 <div className="flex">
-                    <LevelButton className={"bg-white border-1 border-blue-700 rounded-5 mr-10 mt-9"} level="입문"></LevelButton>
-                    <LevelButton className={"bg-white border-1 border-blue-700 rounded-5 mr-10 mt-9"} level="초수"></LevelButton>
-                    <LevelButton className={"bg-white border-1 border-blue-700 rounded-5 mr-10 mt-9"} level="중수"></LevelButton>
-                    <LevelButton className={"bg-white border-1 border-blue-700 rounded-5 mr-10 mt-9"} level="고수"></LevelButton>
+                    <LevelButton 
+                        level="입문"
+                        sportName={sportName}
+                        className={userSportsLevel == "입문"? "text-white bg-blue-700 border-1 border-white" : "text-blue-700 bg-white border-1 border-blue-700"}
+                    />
+                    <LevelButton 
+                        level="초수"
+                        sportName={sportName}
+                        className={userSportsLevel == "초수"? "text-white bg-blue-700 border-1 border-white" : "text-blue-700 bg-white border-1 border-blue-700"}
+                    />
+                    <LevelButton                         
+                        level="중수"
+                        sportName={sportName}
+                        className={userSportsLevel == "중수"? "text-white bg-blue-700 border-1 border-white" : "text-blue-700 bg-white border-1 border-blue-700"}
+                    />
+                    <LevelButton                         
+                        level="고수"
+                        sportName={sportName}
+                        className={userSportsLevel == "고수"? "text-white bg-blue-700 border-1 border-white" : "text-blue-700 bg-white border-1 border-blue-700"}
+                    />
                 </div>
             </div>
 

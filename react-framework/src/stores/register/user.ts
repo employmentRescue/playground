@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-type Level = "입문" | "초보" | "중수" | "고수" | null
+type Level = "입문" | "초수" | "중수" | "고수" | null
 
 interface NicknameAction {
     payload: string
@@ -9,10 +9,10 @@ interface FavoriteTimeAction {
     payload: number | number[]
 }
 interface FavoriteSportsAction {
-    payload: { sportName: String, isSelected: boolean }
+    payload: { sportName: "soccer" | "basketball" | "badminton" | null, isSelected: boolean }
 }
 interface SportsLevelAction {
-    payload: { sportName: String, level: Level }
+    payload: { sportName: "soccer" | "basketball" | "badminton" | null, level: Level }
 }
 
 export interface User {
@@ -61,15 +61,12 @@ const userSlice = createSlice({
             console.log(action.payload)
             switch(action.payload.sportName) {
                 case "soccer":
-                    console.log("soccer")
                     state.favoriteSports.soccer = action.payload.isSelected
                     break;
                 case "basketball":
-                    console.log("basketball")
                     state.favoriteSports.basketball = action.payload.isSelected
                     break;
                 case "badminton":
-                    console.log("badminton")
                     state.favoriteSports.badminton = action.payload.isSelected
                     break;
             }
@@ -78,15 +75,12 @@ const userSlice = createSlice({
             console.log(action.payload)
             switch(action.payload.sportName) {
                 case "soccer":
-                    console.log("soccer")
                     state.sportsLevel.soccer = action.payload.level
                     break;
                 case "basketball":
-                    console.log("basketball")
                     state.sportsLevel.basketball = action.payload.level
                     break;
                 case "badminton":
-                    console.log("badminton")
                     state.sportsLevel.badminton = action.payload.level
                     break;
             }
