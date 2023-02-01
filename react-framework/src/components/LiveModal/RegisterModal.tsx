@@ -33,6 +33,7 @@ export default function RegisterModal(props: Iprops) {
         }
         else {
             resize2(5);
+
             resizeHeight2(66);
         }
 

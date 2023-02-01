@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useReducer } from "react"
 import useGeolocation from "react-hook-geolocation"
 import RegisterModal from "@/components/LiveModal/RegisterModal"
@@ -9,10 +9,9 @@ import badmintonMap from "@/assets/icons/badminton-map.png"
 import currentPos from "@/assets/icons/current-position.png"
 import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
-import live from "@/stores/live/live"
-import { useSelector } from "react-redux"
+import useLiveMatchListQuery from "@/hooks/useLiveMatchListQuery"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' | 'DEFAULT' };
 
 interface State {
     isPressed: boolean;
@@ -22,8 +21,8 @@ interface State {
 
 const initialState: State = {
     isPressed: false,
-    sportType: '',
-    modalType: 'basic',
+    sportType: 'default',
+    modalType: 'none',
 }
 
 function registReducer(state: State, action: Action) {
@@ -47,6 +46,11 @@ function registReducer(state: State, action: Action) {
             return {
                 ...state,
                 sportType: 'badminton'
+            }
+        case 'DEFAULT':
+            return {
+                ...state,
+                sportType: 'default'
             }
         case 'REGISTER':
             return {
@@ -75,10 +79,13 @@ function registReducer(state: State, action: Action) {
 export default function HomePage() {
 
     const [state, dispatch] = useReducer(registReducer, initialState);
+    const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
+    const [markers, setMarkers] = useState([]);
     const onPressed = () => dispatch({ type: 'ISPRESSED' });
     const basketBall = () => dispatch({ type: 'BASKETBALL' });
     const soccer = () => dispatch({ type: 'SOCCER' });
     const badminton = () => dispatch({ type: 'BADMINTON' });
+    const defaultSportType = () => dispatch({ type: 'DEFAULT' });
     const registerMeeting = () => dispatch({ type: 'REGISTER' });
     const modifyMeeting = () => dispatch({ type: 'MODIFY' });
     const deleteMeeting = () => dispatch({ type: 'DELETE' });
@@ -87,8 +94,8 @@ export default function HomePage() {
 
     const mapElement: any | null = useRef(undefined);
     const geolocation = useGeolocation();
-    const liveMatchInfo = useSelector((state: any) => state.live);
 
+    const liveMatchList = useLiveMatchListQuery();
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
         return new naver.maps.Marker({
             position: location,
@@ -114,36 +121,68 @@ export default function HomePage() {
             zoom: 14,
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
-        setMapIcon(currentPos, location, map, 40, 40, false);
-        for (const e of liveMatchInfo.liveList) {
-            switch (e.type) {
-                case "basketball":
-                    setMapIcon(basketBallMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                    break;
-                case "soccer":
-                    setMapIcon(soccerMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                    break;
-                case "badminton":
-                    setMapIcon(badmintonMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                    break;
-            }
-        };
+        setNaverMap(map);
+    }, []);
 
+    useEffect(() => {
+        if (naverMap === null)
+            return;
+
+        const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
+        naverMap.setCenter(location);
+
+        if (liveMatchList != undefined) {
+            for (const e in liveMatchList) {
+                //console.log(liveMatchList.data.title);
+                // switch (e.title) {
+                //     case "basketball":
+                //         setMapIcon(basketBallMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+                //         break;
+                //     case "soccer":
+                //         setMapIcon(soccerMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+                //         break;
+                //     case "badminton":
+                //         setMapIcon(badmintonMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
+                //         break;
+                //     default:
+                //         console.log(data);
+                //         break;
+                // }
+            };
+        }
+
+        const map = setMapIcon(currentPos, location, naverMap, 40, 40, false);
+    }, [geolocation.latitude, geolocation.longitude]);
+
+    useEffect(() => {
+        if (naverMap === null)
+            return;
+
+        const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
+        naverMap.setCenter(location);
+
+        let marker: naver.maps.Marker;
         switch (state.sportType) {
             case 'basketball':
-                setMapIcon(basketBallMap, location, map, 60, 60, true);
+                marker = setMapIcon(basketBallMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
             case 'soccer':
-                setMapIcon(soccerMap, location, map, 60, 60, true);
+                marker = setMapIcon(soccerMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
             case 'badminton':
-                setMapIcon(badmintonMap, location, map, 60, 60, true);
+                marker = setMapIcon(badmintonMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
         }
-    }, [state.sportType, geolocation.latitude, geolocation.longitude]);
+
+        return () => {
+            if (marker) {
+                marker.setMap(null);
+            }
+        }
+    }, [state.sportType])
 
     return (
         <div ref={mapElement} className="w-full h-full relative">
@@ -161,10 +200,11 @@ export default function HomePage() {
                     </div>
             }
             </div>
-            {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={closeModal}></RegisterModal>}
-            {state.modalType === 'modify' && <ModifyModal />}
-            {state.modalType === 'join' && <JoinModal></JoinModal>}
-            {state.modalType === 'quit' && <QuitModal />}
+            {state.modalType === 'register2' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
+            {state.modalType === 'modify' &&
+                <ModifyModal liveMatch={liveMatchList.data} openModal={state.modalType} closeModal={closeModal} />}
+            {state.modalType === 'register' && <JoinModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
+            {state.modalType === 'quit' && <QuitModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></QuitModal>}
         </div>
     )
 }
