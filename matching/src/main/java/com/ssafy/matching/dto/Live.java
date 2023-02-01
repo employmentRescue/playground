@@ -32,7 +32,7 @@ public class Live implements Serializable {
     @ApiModelProperty(value = "총 인원", required = true)
     private int totalPeopleNum;
     @ApiModelProperty(value = "등록 시간", required = true)
-    private Time registTime;
+    private String registTime;
     @ApiModelProperty(value = "모임장의 memberId", required = true)
     private long hostId;
     @ApiModelProperty(value = "실시간 운동 모임의 종류", required = true)
@@ -51,7 +51,7 @@ public class Live implements Serializable {
 
     @ApiModelProperty(value = "실시간 운동 모임의 멤버 리스트")
     @OneToMany
-    @JoinColumn(name = "liveId")
+    @JoinColumn(name = "liveId", updatable=false)
     private List<LiveMember> liveMemberList;
 
 }

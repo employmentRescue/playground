@@ -58,7 +58,6 @@ public class GatheringServiceImpl implements GatheringService {
 
     @Override
     public void updateGathering(Gathering gathering) {
-        //TODO ERROR : Column 'gathering_id' cannot be null
         gatheringRepository.save(gathering);
     }
 
