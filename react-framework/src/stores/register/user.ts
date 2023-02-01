@@ -32,7 +32,7 @@ export interface User {
 
 const initialState: User = {
     nickname: "",
-    favoriteTime: [0, 0],
+    favoriteTime: [6, 18],
     favoriteSports: {
         soccer: false,
         basketball: false,
