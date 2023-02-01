@@ -49,10 +49,10 @@ export default function JoinModal(props: Iprops) {
                 </div>
                 <div className='text-15'>고운뜰공원</div>
             </div>
-            <div className='w-[284px] h-2 mt-10 bg-gray-600'></div>
+            <div className='w-[284px] h-1 mt-10 bg-gray-600'></div>
             <div className='w-[284px] h-100 mt-16 mb-16 flex justify-between'>
                 <div className='w-63 h-100 ml-20 flex flex-col justify-center'>
-                    <img className='w-63 h-63' src={profileIcon}></img>
+                    <img className='w-63 h-63 rounded-50 border-1' src={profileIcon}></img>
                     <div className='text-11'>슈슈슈터님</div>
                 </div>
                 <div className='w-160 h-100 rounded-10 bg-gray-500'></div>
