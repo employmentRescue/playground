@@ -11,9 +11,10 @@ export default function RegisterCompletePage() {
 
       <img src={RegisterCompleteImg} className="w-[240px] mb-50 self-center" />
 
-      <div className="self-center">
-        <ChoiceCompoleteButton innerText="운동하러 가기"/>
+      <div className="self-center sticky bottom-0">
+        <div className="self-center bg-gradient-to-t from-white pt-50" />
+        <ChoiceCompoleteButton innerText="운동하러 가기" />
       </div>
-    </div>
+    </div >
   )
 }

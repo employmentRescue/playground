@@ -27,7 +27,7 @@ export default function FavoriteSportsTab() {
     const storeState = useSelector((state: any) => {
         return state.user.favoriteSports;
     });
-   
+
 
     return (
         <div className="flex flex-col h-[calc(100vh-149px)] justify-between">
@@ -74,6 +74,7 @@ export default function FavoriteSportsTab() {
             </div>
 
             <div className="self-center sticky bottom-0">
+                <div className="self-center bg-gradient-to-t from-white pt-50" />
                 <ChoiceCompoleteButton innerText="선택 완료" />
             </div>
         </div>

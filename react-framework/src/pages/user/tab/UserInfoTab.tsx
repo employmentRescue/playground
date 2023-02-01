@@ -119,6 +119,7 @@ export default function UserInfoTab() {
             </div>
 
             <div className="self-center sticky bottom-0">
+                <div className="self-center bg-gradient-to-t from-white pt-50" />
                 <ChoiceCompoleteButton innerText="선택 완료" />
             </div>
         </div>

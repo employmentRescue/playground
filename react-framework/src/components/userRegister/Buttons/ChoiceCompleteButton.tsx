@@ -24,15 +24,15 @@ export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps
                 console.log(userInfo)
                 if (innerText == "선택 완료") {
                     if (currentIndex == 2) {
-                        location.href = "https://localhost:3000/login/register/complete"
+                        location.href = "/login/register/complete"
                     } else {
                         dispatch(activeIndex(currentIndex + 1))
                     }
                 }
                 else if (innerText == "운동하러 가기") {
-                    location.href = "https://localhost:3000/"
+                    location.href = "/"
                 }
-                
+
             }}
             className="w-[300px] h-38 rounded-5 bg-blue-700 text-16 mb-32 text-white tracking-tight"
         >
