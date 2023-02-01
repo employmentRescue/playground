@@ -15,6 +15,7 @@ import LoginPage from './pages/user/LoginPage';
 import LoginRegisterPage from './pages/user/LoginRegisterPage';
 import LoginFailPage from './pages/user/LoginFailPage';
 import LoginSuccessPage from './pages/user/LoginSuccessPage';
+import RegisterCompletePage from './pages/user/RegisterCompletePage';
 
 
 const container = document.getElementById('root') as HTMLElement;
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
         path: 'login/success',
         element: <LoginSuccessPage />,
       },
+      {
+        path: 'login/register/complete',
+        element: <RegisterCompletePage />,
+      }
     ]
   }
 ]);
