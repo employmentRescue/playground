@@ -58,7 +58,7 @@ public class Gathering implements Serializable {
 
     @ApiModelProperty(value = "운동 모임의 멤버 리스트")
     @OneToMany
-    @JoinColumn(name = "gatheringId")
+    @JoinColumn(name = "gatheringId", updatable=false)
     private List<GatheringMember> memberGatheringList;
 
 }
