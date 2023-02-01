@@ -1,12 +1,10 @@
 export interface liveMatch {
-    type: string,
     place: string,
     detail: string,
-    lat: number,
-    lng: number,
+    hostId: number,
+    hostNickName: string,
     currentPeopleNum: number,
     totalPeopleNum: number,
-    startTime: Date,
-    userNickName: string,
-    userPicture: string,
+    registTime: string,
+    memberList?: number[] | null,
 }

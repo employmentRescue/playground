@@ -10,8 +10,9 @@ import currentPos from "@/assets/icons/current-position.png"
 import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
 import useLiveMatchListQuery from "@/hooks/useLiveMatchListQuery"
+import { liveMatch } from "@/models/liveMatch"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' | 'DEFAULT' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'JOIN' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' | 'DEFAULT' };
 
 interface State {
     isPressed: boolean;
@@ -52,6 +53,11 @@ function registReducer(state: State, action: Action) {
                 ...state,
                 sportType: 'default'
             }
+        case 'JOIN':
+            return {
+                ...state,
+                modalType: 'join'
+            }
         case 'REGISTER':
             return {
                 ...state,
@@ -77,24 +83,30 @@ function registReducer(state: State, action: Action) {
     }
 }
 export default function HomePage() {
-
+    // Regist Reducer
     const [state, dispatch] = useReducer(registReducer, initialState);
-    const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
-    const [markers, setMarkers] = useState<any | null>([]);
     const onPressed = () => dispatch({ type: 'ISPRESSED' });
     const basketBall = () => dispatch({ type: 'BASKETBALL' });
     const soccer = () => dispatch({ type: 'SOCCER' });
     const badminton = () => dispatch({ type: 'BADMINTON' });
     const defaultSportType = () => dispatch({ type: 'DEFAULT' });
+    const joinMeeting = () => dispatch({ type: 'JOIN' });
     const registerMeeting = () => dispatch({ type: 'REGISTER' });
     const modifyMeeting = () => dispatch({ type: 'MODIFY' });
     const deleteMeeting = () => dispatch({ type: 'DELETE' });
     const quitMetting = () => dispatch({ type: 'QUIT' });
     const closeModal = () => dispatch({ type: 'NONE' });
 
-    const mapElement: any | null = useRef(undefined);
-    const geolocation = useGeolocation();
+    // other state
+    const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
+    const [markers, setMarkers] = useState<any | null>([]);
+    const [liveMatch, setLiveMatch] = useState<liveMatch | null>(null);
 
+    // naver map
+    const mapElement: any | null = useRef(undefined);
+
+    // initial call
+    const geolocation = useGeolocation();
     const liveMatchList = useLiveMatchListQuery();
 
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
@@ -122,6 +134,7 @@ export default function HomePage() {
             zoom: 14,
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
+
         setNaverMap(map);
     }, []);
 
@@ -133,6 +146,10 @@ export default function HomePage() {
         naverMap.setCenter(location);
         console.log(location)
         console.log(liveMatchList);
+
+        setMapIcon(currentPos, location, naverMap, 40, 40, false);
+
+        setMarkers(null);
 
         if (liveMatchList.isSuccess) {
             let newMarkers: naver.maps.Marker[] = []
@@ -149,11 +166,27 @@ export default function HomePage() {
                         newMarkers.push(setMapIcon(badmintonMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
                 }
+            };
+            for (let i = 0; i < newMarkers.length; i++) {
+                naver.maps.Event.addListener(newMarkers[i], "click", () => {
+                    setLiveMatch({
+                        place: liveMatchList.data[i].place.address,
+                        detail: liveMatchList.data[i].detail,
+                        hostId: liveMatchList.data[i].hostId,
+                        hostNickName: liveMatchList.data[i].host.nickName,
+                        currentPeopleNum: liveMatchList.data[i].currentPeopleNum,
+                        totalPeopleNum: liveMatchList.data[i].totalPeopleNum,
+                        registTime: liveMatchList.data[i].registTime,
+                        memberList: liveMatchList.data[i].liveMemberList?.memberId
+                    })
+                    joinMeeting();
+                });
             }
             setMarkers(newMarkers);
             console.log(newMarkers);
         }
-    }, [geolocation.latitude, geolocation.longitude]);
+
+    }, [geolocation.latitude, geolocation.longitude, liveMatchList.isSuccess]);
 
     useEffect(() => {
         if (naverMap === null)
@@ -185,6 +218,10 @@ export default function HomePage() {
         }
     }, [state.sportType])
 
+    useEffect(() => {
+        console.log(state.modalType)
+    }, [markers, state.modalType]);
+
     return (
         <div ref={mapElement} className="w-full h-full relative">
             <div className="w-60 h-193 flex flex-col relative float-right mt-12 mr-9 z-10 ">{
@@ -201,10 +238,10 @@ export default function HomePage() {
                     </div>
             }
             </div>
-            {state.modalType === 'register2' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
+            {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
             {state.modalType === 'modify' &&
                 <ModifyModal liveMatch={liveMatchList.data} openModal={state.modalType} closeModal={closeModal} />}
-            {state.modalType === 'register' && <JoinModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
+            {state.modalType === 'join' && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
             {state.modalType === 'quit' && <QuitModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></QuitModal>}
         </div>
     )
