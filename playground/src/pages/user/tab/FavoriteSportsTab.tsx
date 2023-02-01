@@ -64,7 +64,7 @@ export default function FavoriteSportsTab() {
                 </div>
             </div>
 
-            <div className="self-center">
+            <div className="self-center sticky bottom-0">
                 <ChoiceCompoleteButton />
             </div>
         </div>

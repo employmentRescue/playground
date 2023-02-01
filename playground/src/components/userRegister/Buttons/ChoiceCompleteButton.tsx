@@ -19,6 +19,7 @@ export default function ChoiceCompoleteButton() {
             className="w-[300px] h-38 rounded-5 bg-blue-700 text-16 mb-32 text-white tracking-tight"
         >
             선택 완료
+            
         </button>
     )
 }

@@ -13,12 +13,14 @@ export default function UserInfoTab() {
     const [nickname, setNickname] = useState("");
 
     const handleChange = (event: Event, value: number | number[]) => {
+        event.preventDefault();
         setFavoriteTime(value)
         console.log(value)
     }
 
     const handleNickname = (e: React.BaseSyntheticEvent) => {
         // console.log(e.target.value)
+        e.preventDefault();
         setNickname(e.target.value)
     }
 
@@ -108,7 +110,7 @@ export default function UserInfoTab() {
                 </div>
             </div>
 
-            <div className="self-center">
+            <div className="self-center sticky bottom-0">
                 <ChoiceCompoleteButton />
             </div>
         </div>
