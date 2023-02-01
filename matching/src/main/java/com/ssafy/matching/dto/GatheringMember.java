@@ -19,11 +19,11 @@ import java.io.Serializable;
 public class GatheringMember implements Serializable {
     @ApiModelProperty(value = "운동 모임-멤버 아이디")
     @Id
-    private int memberGatheringId;
+    private int gatheringMemberId;
     @ApiModelProperty(value = "운동 모임 번호")
     private int gatheringId;
     @ApiModelProperty(value = "멤버의 아이디")
-    private int memberId;
+    private long memberId;
 
     @ManyToOne
     @JoinColumn(name = "memberId", insertable=false, updatable=false)
