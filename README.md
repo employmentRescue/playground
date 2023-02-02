@@ -62,9 +62,10 @@
 <br>
 
 # 2. 프로젝트 설계
+- ### 회의록 [Notion link](https://robust-sailfish-09f.notion.site/3db2ad371a2c4f26adf864f4ed18a370?v=568f14f9a2f54768b22f32388d8610c3)
 - ### 초기 기획서 [Notion link](https://www.notion.so/b35493c281da4c27aed52d064d5f6605)
 
-- ### 와이어프레임 [figma link](https://www.figma.com/file/YlOB3Ah579DUXWWMRReYjI/Team-project1?node-id=0%3A1&t=GafPuwx93aH6e3QT-0)
+- ### 와이어프레임 & 스토리보드 [figma link](https://www.figma.com/file/YlOB3Ah579DUXWWMRReYjI/Team-project1?node-id=0%3A1&t=GafPuwx93aH6e3QT-0)
 
 - ### 기능명세서 [Notion link](https://sparkly-condition-4b3.notion.site/75a8fd7421be41dda09b7c1927d26d3e?v=a84d49ac8707462e8181598f300b88a8)
 
@@ -81,6 +82,67 @@
 <br>
 
 # 3. 프로젝트 구조
+
+## 🛠 기술 스택
+
+### IDE
+- Visual Studio Code
+- IntelliJ
+
+### Frontend
+- React
+- Redux
+- Tailwind
+- Typescript
+
+### Backend
+- Springboot
+- Spring Data JPA
+- Spring Web
+- Spring Cloud
+- WebSocket
+- Redis
+- MySql
+- Swagger
+- Firebase
+
+<br>
+<br>
+<br>
+
+## 📂 파일 구조
+
+### Front
+```
+playground
+  ├── public
+  └── src
+      ├── assets
+      ├── components
+      │   ├── DefaultLayout
+      │   ├── LiveModel
+      │   ├── Meeting
+      │   └── uerserRegister
+      |
+      ├── hooks
+      ├── models
+      └── pages
+          ├── home
+          ├── match
+          └── user
+```
+
+### Back
+```
+playground
+  |
+  ├── config
+  ├── controller
+  ├── dto
+  ├── repository
+  ├── service
+  └── utils
+```
 
 <br>
 <br>
