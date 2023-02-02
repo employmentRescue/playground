@@ -30,12 +30,26 @@ Hystrix는 msa 아키텍처에서 회로 차단기(맞다, 당신이 생각하�
 A,B,C,D 서비스가 하나의 트랜잭션일때 각 서비스는 순서대로 동작한다. 이때 B가 고장나서 비정상적인 응답이 어떤 특정한 방식(예를 들면 kafka에 의해 장애 발생 - 상상이 잘 안가지만 실제로 가능한 경우가 있다고 함.)으로 전달된다고 하면, B의 순서 뒤에 있는 서비스들도 invalid_error나 internal_server_error를 내 뿜을거다.
 만약 B의 순서 뒤에 있는 서비스가 50개, 100개 등 더 많다면? B때문에 나머지 서비스도 고장(버그)가 있는것처럼 보일거다. 이걸 막아주는게 CIRCUIT BREAKER이다.
 
+# Spring Cloud Eureka  
+스프링 기반 Service Registry이다.  
+
+# Software Load Balancer  
+- Ribbon
+- K8S
+- zookeeper(얘는 Kafka랑 연관이 있다. 리눅스에서 얘를 설치안하면, kafka도 못 설치한다. 아마 kafka가 zookeeper를 사용하는 듯 하다.)
+
+# DB 트랜잭션? 아니죠! MSA 트랜잭션입니다만!! : SAGA 패턴
+하나의 동작(예를 들면 OAUTH 인증 후에 User 등록, OAUTH 서비스 서버 -- (사용자 등록 요청) --> User 서비스 서버)이 MSA로 되면, @Transactional 사용이 안된다는 것을 알고 있을 것이다. 왜냐하면 a,b,c 서비스에서 한 서비스가 고장나면, 나머지 서비스에게 이를 알려서 롤백되어야하는데 알릴 방도가 없기 때문이다. SAGA 패턴은 Kafka, RabbitMQ 등을 사용해서 트랜잭션을 처리하는 방법을 담고 있다.  
+
 # QueryDSL. Jpa랑 역할이 같은 dependency이다.
 Jpa가 쿼리를 string으로 날려야한다면, queryDSL은 코드 기반으로도 동작할수있다.
 예를 들면 queryFactory.select(qMember.name, qDepartment.employ_number).from(qMember).join(qDepartmebr).where(...)나 update(qMember).set(qMember.salary, 999,999,999).set(qMember.depName,"회계").where(...)으로 사용할 수 있다.
 Builder 패턴이기 때문에 update 쿼리의 set을 여러개 사용할 수 있다.
 구현을 편리하게 만들어주는 아이이지만, 얘가 더 발전할 때까지는 다시 만나고 싶지는 않다.  
-왜냐하면 dependecy 설정에 많은 시간투자를 해야하는 것과, Entity클래스 내용이 변경되면 build라는 폴더에 Q 클래스를 실행 혹은 배포할 때마다 새로 생성을 해야한다.  그게 여간 성가시더라..  
+왜냐하면 dependecy 설정에 많은 시간투자를 해야하는 것과, Entity클래스 내용이 변경되면 build라는 폴더에 Q 클래스를 실행 혹은 배포할 때마다 새로 생성을 해야한다.  그게 여간 성가시더라.. 
+  
++  QueryDSL 예전버전은 연관관계를 정의해주어야만, 조인을 할 수 있었다고 한다.(이 점을 알면 덜 고생한다.)  
+처음 JPA를 사용했을 때 Hibernate가 내뿜는 에러한테 많이 혼났었는데, 그 중에 연관관계를 전혀 모른 상태로 사용했을때다. 근데 운좋게 태어난 나는 연관관계에 대해 나중에 공부하고 일단 코드 기반 SQL 작성으로 문제를 해결하여, 1인분이라도 할 수 있었다..(나.. 너무 많이 저지른것같다.. 앱 개발.. ci/cd.. 아키텍처 fcm... 허헣... 적당히 해야 하루하루가 심리적 압박이 덜 할텐데.. 기술을 습득하고 싶은 욕심, 잘 하고 싶고 취업에 잘 쓰여서 높은 점수를 받고 싶은 거, 팀원으로써 기여하고 싶은 거.. 여러가지때문에 저질렇다.... 그렇다..)
 
 # docker-compose.
 도커 컴포즈는 여러개의 컨테이너를 하나로 관리하는 툴이다. 
