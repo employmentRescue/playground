@@ -7,11 +7,13 @@ import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import soccerOriginal from "@/assets/icons/soccer-original.png"
 import filterEtc from "@/assets/icons/filter-etc.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
+import closeIcon from "@/assets/icons/exit.png"
+import searchIcon from "@/assets/icons/search-icon.png"
 import { sign } from "crypto";
 
 
 // ============ 기타 타입 =================================================
-
+// 자동 매칭, 목록 선택 탭
 type propsTab = {
     clickedTab: string, 
     changeType: () => void;
@@ -282,6 +284,8 @@ function MatchDistanceSetting() {
     return (
         <div className="fixed top-[187px] w-[359px] h-[558px] flex-grow-0 bg-[#fff]">
             <span className="w-63 h-16 flex-grow-0 mr-[121px] font-inter text-[15px] ">지역 선택</span>
+            <img src={closeIcon} alt="" className="w-10 h-10 flex-grow-0 my-3 ml-[121px]"/>
+            <img src={searchIcon} alt="" className="w-20 h-20 flex-grow-0 "/>
         </div>
     )
 }
@@ -323,6 +327,7 @@ function MatchContent() {
             <div className="absolute w-[124px] h-45 flex-grow-0 top-[360px] left-[118px] pt-11 pl-22 rounded-30 bg-[#303eff]">
                 <span className="w-70 h-24 flex-grow-0 font-inter text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
             </div>
+            <MatchDistanceSetting />
         </div>
     )
 }
