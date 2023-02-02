@@ -4,7 +4,7 @@ export function Profile() {
     return (
         <img
             src={sampleProfile}
-            className="ml-20 w-40 h-40 rounded-20"
+            className="mt-5 ml-20 w-40 h-40 rounded-20"
         />
     )
 }

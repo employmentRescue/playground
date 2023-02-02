@@ -5,15 +5,19 @@ interface SpeechBubbleProps {
     innerText: string
 }
 
-export function SpeechBubble({ innerText }: SpeechBubbleProps) {
+export function SpeechBubble({ innerText, isMine }: SpeechBubbleProps) {
+    let bubbleReverse = ""
+    if (isMine) {
+        bubbleReverse = "-scale-x-100"
+    }
     return (
-        <div className="flex">
+        <div className={"flex " + bubbleReverse}>
             <Profile />
-            <div className="border-b-12 border-b-white border-l-transparent border-l-0 border-r-16 border-r-transparent border-solid rotate-180 mt-10">
+            <div className="border-b-12 border-b-white border-l-transparent border-l-0 border-r-16 border-r-transparent border-solid rotate-180 mt-20 ml-5">
 
             </div>
-            <div className="flex w-[200px]">
-                <div className="w-auto h-auto bg-white rounded-10 p-12 font-inter justify-self-start">
+            <div className="flex w-[200px] my-10">
+                <div className={"w-auto h-auto bg-white rounded-10 p-12 font-inter justify-self-start " + bubbleReverse}>
                     <p>{innerText}</p>
                 </div>
             </div>
