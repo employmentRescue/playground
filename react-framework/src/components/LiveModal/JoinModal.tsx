@@ -6,6 +6,7 @@ import profileIcon from '@/assets/profiles/taek.png'
 import { useDispatch } from 'react-redux';
 import JoinButton from './Buttons/JoinButton';
 import { liveMatch } from '@/models/liveMatch'
+import useLiveMatchJoin from '@/hooks/useLiveMatchJoin'
 
 interface Iprops {
     liveMatch: liveMatch;
@@ -13,12 +14,13 @@ interface Iprops {
     closeModal: () => void;
 }
 
-export default function JoinModal(props: Iprops) {
-    const dispatch = useDispatch();
 
+export default function JoinModal(props: Iprops) {
     const join = () => {
         props.closeModal();
     }
+
+    const { mutate } = useLiveMatchJoin();
 
     return (props.openModal === "join" ?
         <div className="w-[322px] h-[341px] z-10 absolute left-1/2 ml-[-161px] bottom-14 rounded-15 bg-white flex flex-col items-center justify-center">
@@ -60,8 +62,13 @@ export default function JoinModal(props: Iprops) {
             </div>
 
 
-            <JoinButton onClick={join}>참여하기</JoinButton>
-        </div>
+            <JoinButton onClick={() => {
+                mutate({
+                    liveId: props.liveMatch.liveId,
+                    memberId: 111,
+                }), join();
+            }}>참여하기</JoinButton>
+        </div >
         : null
     )
 }
