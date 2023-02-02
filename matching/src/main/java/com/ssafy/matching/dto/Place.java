@@ -19,11 +19,12 @@ import java.io.Serializable;
 public class Place implements Serializable {
     @ApiModelProperty(value = "장소 번호")
     @Id
-    @Column(name = "place_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int placeId;
+    @ApiModelProperty(value = "주소", required = true)
     private String address;
-    @ApiModelProperty(value = "위도")
+    @ApiModelProperty(value = "위도", required = true)
     private double lat;
-    @ApiModelProperty(value = "경도")
+    @ApiModelProperty(value = "경도", required = true)
     private double lng;
 }

@@ -31,7 +31,8 @@ public class LiveServiceImpl implements LiveService {
 
     @Override
     public void registerLive(Live live) {
-        liveRepository.save(live);
+        Live savedLive = liveRepository.save(live);
+        liveMemberRepository.save(new LiveMember(0, savedLive.getLiveId(), savedLive.getHostId())); //호스트 멤버에 넣기
     }
 
     @Override
