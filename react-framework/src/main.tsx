@@ -16,7 +16,8 @@ import LoginRegisterPage from './pages/user/LoginRegisterPage';
 import LoginFailPage from './pages/user/LoginFailPage';
 import LoginSuccessPage from './pages/user/LoginSuccessPage';
 import RegisterCompletePage from './pages/user/RegisterCompletePage';
-
+import ChattingListPage from './pages/chatting/ChattingListPage';
+import ChattingRoomPage from './pages/chatting/ChattingRoomPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -65,7 +66,21 @@ const router = createBrowserRouter([
         element: <RegisterCompletePage />,
       }
     ]
-  }
+  },
+  {
+    path: '/',
+    element: <DefaultPage />,
+    children: [
+      {
+        path: 'chatting/list',
+        element: <ChattingListPage />,
+      },
+      {
+        path: 'chatting/room/:roomId',
+        element: <ChattingRoomPage />,
+      },
+    ]
+  },
 ]);
 
 
