@@ -2,22 +2,24 @@ import axios from "axios";
 import { useQuery } from "react-query"
 
 const QUERY_KEY = "userInfo";
+// const SERVER_URL = "https://api.thecatapi.com/v1/images/search"
 const SERVER_URL = "https://i8b309.p.ssafy.io:8080/oauth2/login/kakao"
+
 
 export const useKakaoLogin = (LoginEnable: boolean, setLoginEnable: Function) => {
     return useQuery(QUERY_KEY, fetcher, { enabled: LoginEnable, onSuccess: () => setLoginEnable(!LoginEnable) })
 }
 
-const fetcher = () => 
-  (
+const fetcher = () =>
+(
     axios.get(
-      SERVER_URL
+        SERVER_URL
     )
-      .then((data) => {
-        console.log(data)
-        return data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  )
+        .then((data) => {
+            console.log(data)
+            return data
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+)

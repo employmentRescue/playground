@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { ChattingBubble } from "@/components/Chatting/ChattingBubble";
+import { SpeechBubble } from "@/components/Chatting/SpeechBubble";
 
 export default function ChattingRoomPage() {
     const params = useParams();
@@ -8,7 +8,7 @@ export default function ChattingRoomPage() {
             <div className="self-center font-inter text-20">
                 {params.roomId}번 채팅방
             </div>
-            <ChattingBubble />
+            <SpeechBubble isMine={false} innerText="안녕하세요. 반가워요" />
         </div>
     )
 }
