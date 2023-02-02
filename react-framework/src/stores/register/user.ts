@@ -50,15 +50,15 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setNickname(state, action: NicknameAction) {
-            console.log(action.payload)
+            // console.log(action.payload)
             state.nickname = action.payload
         },
         setFavoriteTime(state, action: FavoriteTimeAction) {
-            console.log(action.payload)
+            // console.log(action.payload)
             state.favoriteTime = action.payload
         },
         setFavoriteSports(state, action: FavoriteSportsAction) {
-            console.log(action.payload)
+            // console.log(action.payload)
             switch(action.payload.sportName) {
                 case "soccer":
                     state.favoriteSports.soccer = action.payload.isSelected
@@ -72,7 +72,7 @@ const userSlice = createSlice({
             }
         },
         setSportsLevel(state, action: SportsLevelAction) {
-            console.log(action.payload)
+            // console.log(action.payload)
             switch(action.payload.sportName) {
                 case "soccer":
                     state.sportsLevel.soccer = action.payload.level
