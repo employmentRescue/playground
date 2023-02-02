@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useReducer } from "react"
-import useGeolocation from "react-hook-geolocation"
+import useGeolocation, { EnrichedGeolocationCoordinates } from "react-hook-geolocation"
 import RegisterModal from "@/components/LiveModal/RegisterModal"
 import JoinModal from "@/components/LiveModal/JoinModal"
 import basketBallMap from "@/assets/icons/basketball-map.png"
@@ -11,6 +11,7 @@ import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
 import useLiveMatchListQuery from "@/hooks/useLiveMatchListQuery"
 import { liveMatch } from "@/models/liveMatch"
+import { UseQueryResult } from "react-query"
 
 type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'JOIN' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' | 'DEFAULT' };
 
@@ -103,12 +104,14 @@ export default function HomePage() {
     const [markers, setMarkers] = useState<naver.maps.Marker[] | null>([]);
     const [liveMatch, setLiveMatch] = useState<liveMatch | null>(null);
 
+
     // naver map
     const mapElement: any | null = useRef(undefined);
 
     // initial call
     const geolocation = useGeolocation();
-    const liveMatchList = useLiveMatchListQuery();
+    const liveMatchList = useLiveMatchListQuery(geolocation.latitude, geolocation.longitude);
+    console.log(liveMatchList);
 
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
         return new naver.maps.Marker({
@@ -140,7 +143,6 @@ export default function HomePage() {
         setNaverMap(map);
     }, []);
 
-    // 마커
     useEffect(() => {
         if (naverMap === null)
             return;
@@ -156,6 +158,13 @@ export default function HomePage() {
         // 현재 위치 맵에 표시
         setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
 
+    }, [geolocation])
+
+    // 마커
+    useEffect(() => {
+        if (naverMap === null || liveMatchList === null)
+            return;
+
         // 기존 실시간 운동 모임 마커 제거
         if (markers) {
             for (const m of markers) {
@@ -167,7 +176,6 @@ export default function HomePage() {
         if (liveMatchList.isSuccess) { // liveMatch리스트를 받아왔으면
             let newMarkers: naver.maps.Marker[] = []
             for (const e of liveMatchList.data) {
-                console.log(e)
                 switch (e.sports) {
                     case "농구":
                         newMarkers.push(setMapIcon(basketBallMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
@@ -183,6 +191,7 @@ export default function HomePage() {
             for (let i = 0; i < newMarkers.length; i++) {
                 naver.maps.Event.addListener(newMarkers[i], "click", () => {
                     setLiveMatch({
+                        liveId: liveMatchList.data[i].liveId,
                         place: liveMatchList.data[i].place.address,
                         detail: liveMatchList.data[i].detail,
                         hostId: liveMatchList.data[i].hostId,
@@ -199,13 +208,13 @@ export default function HomePage() {
             console.log(newMarkers);
         }
 
-    }, [geolocation.latitude, geolocation.longitude, liveMatchList.isSuccess]);
+    }, [liveMatchList.isSuccess]);
 
     // 실시간 운동 모임 등록
     useEffect(() => {
         if (naverMap === null)
             return;
-        console.log(liveMatchList);
+
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         naverMap.setCenter(location);
 
@@ -249,7 +258,7 @@ export default function HomePage() {
             }
             </div>
             {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
-            {state.modalType === 'modify' &&
+            {state.modalType === 'modify' && liveMatchList != null &&
                 <ModifyModal liveMatch={liveMatchList.data} openModal={state.modalType} closeModal={closeModal} />}
             {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
             {state.modalType === 'quit' && <QuitModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></QuitModal>}

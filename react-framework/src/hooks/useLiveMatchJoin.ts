@@ -1,4 +1,11 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 
-export const LIVE_MATCH_LIST = '/live';
+
+const fetcher = (variables: { liveId?: number, memberId?: number }) => axios.post('https://192.168.31.79:8080/live/join', { liveId: variables.liveId, memberId: variables.memberId });
+
+const useLiveMatchJoin = () => {
+    return useMutation(fetcher);
+};
+
+export default useLiveMatchJoin;    
