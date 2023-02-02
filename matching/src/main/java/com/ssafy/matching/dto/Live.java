@@ -6,7 +6,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.List;
 
 @Getter
@@ -21,10 +20,11 @@ import java.util.List;
 @Entity
 public class Live implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "실시간 운동 모임 번호")
     private int liveId;
-    @ApiModelProperty(value = "장소 번호", required = true)
-    private int placeId;
+//    @ApiModelProperty(value = "장소 번호", required = true)
+//    private int placeId;
     @ApiModelProperty(value = "실시간 운동 모임 설명")
     private String detail;
     @ApiModelProperty(value = "현재 인원", required = true)
@@ -38,10 +38,9 @@ public class Live implements Serializable {
     @ApiModelProperty(value = "실시간 운동 모임의 종류", required = true)
     private String sports;
 
-    @OneToOne
-    //TODO 에러나서 추가한거 다시 검토하기
-    @JoinColumn(name = "placeId", insertable=false, updatable=false) //에러나서 추가로 붙임
-    @ApiModelProperty(value = "실시간 운동 모임의 장소")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "placeId")
+    @ApiModelProperty(value = "실시간 운동 모임의 장소", required = true)
     private Place place;
 
     @OneToOne
@@ -51,7 +50,7 @@ public class Live implements Serializable {
 
     @ApiModelProperty(value = "실시간 운동 모임의 멤버 리스트")
     @OneToMany
-    @JoinColumn(name = "liveId", updatable=false)
+    @JoinColumn(name = "liveId", insertable=false, updatable=false)
     private List<LiveMember> liveMemberList;
 
 }
