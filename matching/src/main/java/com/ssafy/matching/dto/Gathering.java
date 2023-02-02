@@ -55,7 +55,10 @@ public class Gathering implements Serializable {
     @JoinColumn(name = "placeId")
     private Place place;
 
-    //TODO 모임장 연결하기
+    @OneToOne
+    @JoinColumn(name = "hostId", insertable=false, updatable=false)
+    @ApiModelProperty(value = "실시간 운동 모임의 모임장 정보")
+    private Member host;
 
     @ApiModelProperty(value = "운동 모임의 멤버 리스트")
     @OneToMany
