@@ -13,13 +13,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 
-@ApiModel(value = "LiveMember : 실시간 운동 모임 정보", description = "실시간 운동 모임의 정보를 나타낸다.")
-
 @SuppressWarnings("serial")
 @Entity
+@ApiModel(value = "LiveMember : 실시간 운동 모임 정보", description = "실시간 운동 모임의 정보를 나타낸다.")
 public class LiveMember implements Serializable {
-    @Id
     @ApiModelProperty(value = "실시간 운동 모임-멤버 아이디")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int live_memberId;
     @ApiModelProperty(value = "실시간 운동 모임 번호", required = true)
     private int liveId;
