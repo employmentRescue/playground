@@ -19,6 +19,7 @@ import java.io.Serializable;
 public class GatheringMember implements Serializable {
     @ApiModelProperty(value = "운동 모임-멤버 아이디")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int gatheringMemberId;
     @ApiModelProperty(value = "운동 모임 번호", required = true)
     private int gatheringId;
@@ -28,4 +29,10 @@ public class GatheringMember implements Serializable {
     @ManyToOne
     @JoinColumn(name = "memberId", insertable=false, updatable=false)
     private Member member;
+
+    public GatheringMember(int gatheringMemberId, int gatheringId, long memberId) {
+        this.gatheringMemberId = gatheringMemberId;
+        this.gatheringId = gatheringId;
+        this.memberId = memberId;
+    }
 }

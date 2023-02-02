@@ -15,16 +15,16 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 
-@ApiModel(value = "Gathering : 운동 모임 정보", description = "운동 모임의 상세 정보를 나타낸다.")
-
 @SuppressWarnings("serial")
 @Entity
+@ApiModel(value = "Gathering : 운동 모임 정보", description = "운동 모임의 상세 정보를 나타낸다.")
 public class Gathering implements Serializable {
     @ApiModelProperty(value = "운동 모임 번호")
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int gatheringId;
-    @ApiModelProperty(value = "지역 등록 번호", required = true)
-    private int placeId;
+//    @ApiModelProperty(value = "지역 등록 번호", required = true)
+//    private int placeId;
     @ApiModelProperty(value = "운동 모임 제목", required = true)
     private String title;
     @ApiModelProperty(value = "운동 모임 설명")
@@ -50,15 +50,16 @@ public class Gathering implements Serializable {
     @ApiModelProperty(value = "운동 모임의 게임 타입", required = true)
     private String gameType;
 
-    @ApiModelProperty(value = "운동 모임 장소")
-    @OneToOne
-    //TODO 에러나서 추가한거 다시 검토하기
-    @JoinColumn(name = "placeId", insertable=false, updatable=false) //에러나서 추가로 붙임
+    @ApiModelProperty(value = "운동 모임 장소", required = true)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "placeId")
     private Place place;
+
+    //TODO 모임장 연결하기
 
     @ApiModelProperty(value = "운동 모임의 멤버 리스트")
     @OneToMany
-    @JoinColumn(name = "gatheringId", updatable=false)
+    @JoinColumn(name = "gatheringId", insertable=false, updatable=false)
     private List<GatheringMember> memberGatheringList;
 
 }

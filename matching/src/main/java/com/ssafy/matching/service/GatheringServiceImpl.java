@@ -17,7 +17,7 @@ public class GatheringServiceImpl implements GatheringService {
     @Autowired
     private GatheringRepository gatheringRepository;
     @Autowired
-    private GatheringMemberRepository memberGatheringRepository;
+    private GatheringMemberRepository gatheringMemberRepository;
 
     @Override
     public List<Gathering> findAll() {
@@ -53,7 +53,8 @@ public class GatheringServiceImpl implements GatheringService {
 
     @Override
     public void registerGathering(Gathering gathering) {
-        gatheringRepository.save(gathering);
+        Gathering savedGathering =  gatheringRepository.save(gathering);
+        gatheringMemberRepository.save(new GatheringMember(0, savedGathering.getGatheringId(), savedGathering.getHostId())); //호스트 멤버에 넣기
     }
 
     @Override
@@ -63,12 +64,13 @@ public class GatheringServiceImpl implements GatheringService {
 
     @Override
     public void deleteGathering(int gatheringId) {
+        gatheringMemberRepository.deleteByGatheringId(gatheringId);
         gatheringRepository.deleteByGatheringId(gatheringId);
     }
 
     @Override
     public void joinGathering(GatheringMember memberGathering) {
-        memberGatheringRepository.save(memberGathering);
+        gatheringMemberRepository.save(memberGathering);
         
         //TODO 의문점
         int gatheringId = memberGathering.getGatheringId();
@@ -93,6 +95,6 @@ public class GatheringServiceImpl implements GatheringService {
             gathering.setHostId(nextHostId);
         }
 
-        memberGatheringRepository.deleteByGatheringIdAndMemberId(gatheringId, memberId);
+        gatheringMemberRepository.deleteByGatheringIdAndMemberId(gatheringId, memberId);
     }
 }
