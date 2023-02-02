@@ -3,7 +3,6 @@ import exitIcon from '@/assets/icons/exit.png'
 import timeIcon from '@/assets/icons/time.png'
 import peopleIcon from '@/assets/icons/people.png'
 import profileIcon from '@/assets/profiles/taek.png'
-import { useDispatch } from 'react-redux';
 import JoinButton from './Buttons/JoinButton';
 import { liveMatch } from '@/models/liveMatch'
 import useLiveMatchJoin from '@/hooks/useLiveMatchJoin'
