@@ -281,6 +281,11 @@ function MatchFilterDistance() {
 
 // 자동 매칭 필터 - 거리범위 지정
 function MatchDistanceSetting() {
+    const [distance, setDistance] = useState('1')
+    const valueChange = (event: React.ChangeEventHandler, value: string) => {
+        setDistance(value);
+    }
+
     return (
         <div className="absolute bottom-0 left-0 p-0 w-[359px] h-[558px] flex-grow-0 bg-[#f3cccc]">
             <div>
@@ -295,7 +300,7 @@ function MatchDistanceSetting() {
                 <h1>지도</h1>
             </div>
             <div className="flex w-full justify-center mt-15"> 
-                <input type="range" min="0" max="30" value="1" className="w-5/6"/>
+                <input type="range" min="0" max="30" className="w-5/6" onChange={valueChange}/>
             </div>
         </div>
     )
