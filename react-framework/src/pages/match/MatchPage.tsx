@@ -7,6 +7,7 @@ import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import soccerOriginal from "@/assets/icons/soccer-original.png"
 import filterEtc from "@/assets/icons/filter-etc.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
+import { sign } from "crypto";
 
 
 // ============ 기타 타입 =================================================
@@ -65,23 +66,34 @@ const initialSportTypeState: sportTypeState = {
 function registerSportType(state: sportTypeState, action: sportAction){
     switch(action.type) {
         case 'ISCLICKED':
-            return {
-                ...state,
-                isClicked: true
+            if (state.isClicked === false) {
+                return {
+                    ...state,
+                    isClicked: true
+                }
+            }
+            else {
+                return {
+                    ...state,
+                    isClicked: false
+                }
             }
         case 'BASKETBALL':
             return {
                 ...state,
+                isClicked : false,
                 sportType: 'BASKETBALL'
             }
         case 'SOCCER':
             return {
                 ...state,
+                isClicked : false,
                 sportType: 'SOCCER'
             }
         case 'BADMINTON':
             return {
                 ...state,
+                isClicked : false,
                 sportType: 'BADMINTON'
             }
     }
@@ -172,16 +184,48 @@ function Content({clickedTab}: {clickedTab: string}) {
 function MatchFilterBar() {
     const [state, dispatch] = useReducer(registerSportType, initialSportTypeState)
     const isClicked = () => dispatch({type: 'ISCLICKED'})
-    const basketball = () => dispatch({type: 'BASKETBALL'})
-    const soccer = () => dispatch({type: 'SOCCER'})
-    const badminton = () => dispatch({type: 'BADMINTON'})
+    const basketball = () => {sportChange("BASKETBALL"); dispatch({type: 'BASKETBALL'});}
+    const soccer = () => {sportChange("SOCCER"); dispatch({type: 'SOCCER'});}
+    const badminton = () => {sportChange("BADMINTON"); dispatch({type: 'BADMINTON'});}
+
+    const [sportIcon, setSportIcon] = useState({border : "border-[#efad45] bg-[#fde9b4]", img : basketBallOriginal})
+    const sportChange = (type: string) => {
+        switch (type) {
+            case "BASKETBALL":
+                setSportIcon({border : "border-[#efad45] bg-[#fde9b4]", img : basketBallOriginal});
+                break;
+            case "SOCCER":
+                setSportIcon({border : "border-[#9C8DD3] bg-[#d8caff]", img : soccerOriginal});
+                break;
+            case "BADMINTON":
+                setSportIcon({border : "border-[#71D354] bg-[#c4ffb6]", img : badmintonOriginal});
+                break;
+        }
+    }
 
     return (
         <div className="relative w-[360px] h-53 grow-0 m-0 pt-8 pl-16 bg-[#f1f3ff]">
-            <div className="w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] border-[#efad45] rounded-20 bg-[#fde9b4]">
-                <img src={basketBallOriginal} className="w-20 h-20 grow-0"/>
+            <div className={"w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] rounded-20 " + sportIcon.border}
+            onClick={(event)=>{
+                event.preventDefault();
+                isClicked();
+            }}>
+                <img src={sportIcon.img} className="w-20 h-20 grow-0"/>
             </div>
-            {state.isClicked === true && <MatchFilterType onChangeMode={()=>{isClicked()}}/>}
+            {state.isClicked === true && <MatchFilterType sportType={state.sportType} onChangeMode={(type)=>{
+                switch(type) {
+                    case "BASKETBALL" :
+                        basketball();
+                        break;
+                    case "SOCCER" : 
+                        soccer();
+                        break;
+                    case "BADMINTON" :
+                        badminton();
+                        break;
+                    }
+                }
+            }/>}
             <MatchFilterDistance />
             <MatchFilterDate />
             <MatchFilterTime />
@@ -191,16 +235,33 @@ function MatchFilterBar() {
 }
 
 // 자동 매칭 필터바 - 종목
-function MatchFilterType({onChangeMode} : {onChangeMode : () => void}) {
+function MatchFilterType({sportType, onChangeMode} : {sportType: string, onChangeMode : (type:string) => void}) {
+    const basketBallBorder = ()=>{return (sportType === 'BASKETBALL' ? "border-[#efad45]" : "border-[#fde9b4]")}
+    const soccerBorder = ()=>{return (sportType === 'SOCCER' ? "border-[#9C8DD3]" : "border-[#d8caff]")}
+    const badmintonBorder = ()=>{return (sportType === 'BADMINTON' ? "border-[#71D354]" : "border-[#c4ffb6]")}
+    
     return (
         <div className="absolute top-61 left-6 w-60 h-[157px] m-0 pt-7 px-10 rounded-15 border-solid border-1 border-[#303EFF]/50 bg-[#f1f3ff] z-10">
-            <div className="w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8  rounded-20 bg-[#fde9b4] border-solid border-[2.5px] border-[#efad45]">
+            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8  rounded-20 bg-[#fde9b4] border-solid border-[2.5px] " + basketBallBorder()}
+            onClick={(event)=>{
+                event.preventDefault();
+                onChangeMode("BASKETBALL");
+
+            }}>
                 <img src={basketBallOriginal} className="w-20 h-20 grow-0"/>
             </div>
-            <div className="w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#d8caff] border-solid border-[2.5px] border-[#9C8DD3]">
+            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#d8caff] border-solid border-[2.5px] " + soccerBorder()}
+            onClick={(event)=>{
+                event.preventDefault();
+                onChangeMode("SOCCER");
+            }}>
                 <img src={soccerOriginal} className="w-20 h-20 grow-0"/>
             </div>
-            <div className="w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#c4ffb6] border-solid border-[2.5px] border-[#71D354]">
+            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#c4ffb6] border-solid border-[2.5px] " + badmintonBorder()}
+            onClick={(event)=>{
+                event.preventDefault();
+                onChangeMode("BADMINTON");
+            }}>
                 <img src={badmintonOriginal} className="w-20 h-20 grow-0"/>
             </div>
         </div>
@@ -212,6 +273,15 @@ function MatchFilterDistance() {
     return (
         <div className="absolute top-15 left-67 w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]">
             <span className="w-41 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">~20km</span>
+        </div>
+    )
+}
+
+// 자동 매칭 필터 - 거리범위
+function MatchDistanceSetting() {
+    return (
+        <div className="fixed top-[187px] w-[359px] h-[558px] flex-grow-0 bg-[#fff]">
+            <span className="w-63 h-16 flex-grow-0 mr-[121px] font-inter text-[15px] ">지역 선택</span>
         </div>
     )
 }
