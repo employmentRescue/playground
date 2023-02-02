@@ -87,16 +87,22 @@ CREATE TABLE IF NOT EXISTS `playground`.`gathering` (
   `start_time` VARCHAR(45) NOT NULL,
   `play_time` INT NOT NULL,
   `is_completed` TINYINT NOT NULL,
-  `host_id` INT NOT NULL,
+  `host_id` BIGINT NOT NULL,
   `sex` VARCHAR(5) NOT NULL,
   `level` VARCHAR(10) NOT NULL,
   `sports` VARCHAR(45) NOT NULL,
   `game_type` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`gathering_id`),
   INDEX `fk_place_id_idx` (`place_id` ASC) VISIBLE,
+  INDEX `fk_gathering_host_id_idx` (`host_id` ASC) VISIBLE,
   CONSTRAINT `fk_gathering_place_id`
     FOREIGN KEY (`place_id`)
     REFERENCES `playground`.`place` (`place_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_gathering_host_id`
+    FOREIGN KEY (`host_id`)
+    REFERENCES `playground`.`member_sometimes` (`member_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -117,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `playground`.`gathering_member` (
     REFERENCES `playground`.`member_sometimes` (`member_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_gathering_member_id`
+  CONSTRAINT `fk_gathering_member_member_id`
     FOREIGN KEY (`gathering_id`)
     REFERENCES `playground`.`gathering` (`gathering_id`)
     ON DELETE NO ACTION
@@ -377,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `playground`.`live` (
     REFERENCES `playground`.`place` (`place_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_host_id`
+  CONSTRAINT `fk_live_host_id`
     FOREIGN KEY (`host_id`)
     REFERENCES `playground`.`member_sometimes` (`member_id`)
     ON DELETE NO ACTION
