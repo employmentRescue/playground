@@ -21,12 +21,16 @@ import java.util.*;
 @RestController
 @RequestMapping("/user")
 public class UserInfoController {
-    final private static ObjectMapper objectMapper = new ObjectMapper();
+
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @PersistenceContext
     private EntityManager entityManager;
     @Autowired
     private JPAQueryFactory queryFactory;
+
 
     final private static QMemberOftenEntity qMemberOften = new QMemberOftenEntity("MEM_OFTEN");
     final private static QMemberSometimesEntity qMemberSometimes = new QMemberSometimesEntity("MEM_SOME");
@@ -52,11 +56,10 @@ public class UserInfoController {
 
     }
 
-    @GetMapping("/search/{user_id}")
+    @PostMapping("/search/{user_id}")
     ResponseEntity searchUserInfo(@PathVariable("user_id") long userID , @RequestBody Set<String> req){
         System.out.println("req : " + req);
 
-        try {
             Map<String, Object> searchResult = new HashMap<>();
 
             // db로부터 데이터 가져옴 --> MemberOftenEntity, MemberSometimesEntity 객체에 데이터 할당하기
@@ -66,7 +69,6 @@ public class UserInfoController {
                     .join(qMemberSometimes)
                     .where(qMemberOften.id.eq(qMemberSometimes.id), qMemberOften.id.eq(userID))
                     .fetchOne();
-
             // ================================================================================================================
 
             Map<String, Object> requestSearchList = null;
@@ -88,6 +90,8 @@ public class UserInfoController {
             for (String key : req){
                 if (key != String.valueOf(userID) && requestSearchList.get(key) != null) searchResult.put(key, requestSearchList.get(key));
             }
+        try {
+
             // ================================================================================================================
 
             // searchResult를 <key,value>값 형식의 json으로 반환
@@ -129,7 +133,8 @@ public class UserInfoController {
             }
 
             // 응답값으로 HttpStatus.OK 보내기
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(
+                    HttpStatus.OK);
         }
         catch (Throwable e){
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
