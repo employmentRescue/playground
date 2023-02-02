@@ -79,8 +79,15 @@ public class LiveController {
     }
 
     @ApiOperation(value = "실시간 운동 모임 참여 취소하기", notes = "모임Id와 유저ID에 해당하는 운동 모임을 삭제한다.")
-    @DeleteMapping("/leave/{gatheringid}")
+    @DeleteMapping("/leave")
     public void delete(int liveId, long memberId) throws Exception {
+        //Optional int parameter 'liveId' is present but cannot be translated into a null value due to being declared as a primitive type.
+        System.out.println("delete 실행");
+
+
+        System.out.println("liveId : " + liveId);
+        System.out.println("memberId : " + memberId);
+
         liveService.leaveLive(liveId, memberId);
     }
 

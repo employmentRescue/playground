@@ -60,5 +60,8 @@ public class LiveServiceImpl implements LiveService {
     @Override
     public void leaveLive(int liveId, long memberId) {
         liveMemberRepository.deleteByLiveIdAndMemberId(liveId, memberId);
+
+        Live live = liveRepository.getByLiveId(liveId);
+        live.setCurrentPeopleNum(live.getCurrentPeopleNum() - 1);
     }
 }
