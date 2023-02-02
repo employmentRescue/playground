@@ -279,13 +279,24 @@ function MatchFilterDistance() {
     )
 }
 
-// 자동 매칭 필터 - 거리범위
+// 자동 매칭 필터 - 거리범위 지정
 function MatchDistanceSetting() {
     return (
-        <div className="fixed top-[187px] w-[359px] h-[558px] flex-grow-0 bg-[#fff]">
-            <span className="w-63 h-16 flex-grow-0 mr-[121px] font-inter text-[15px] ">지역 선택</span>
-            <img src={closeIcon} alt="" className="w-10 h-10 flex-grow-0 my-3 ml-[121px]"/>
-            <img src={searchIcon} alt="" className="w-20 h-20 flex-grow-0 "/>
+        <div className="absolute bottom-0 left-0 p-0 w-[359px] h-[558px] flex-grow-0 bg-[#f3cccc]">
+            <div>
+                <span className="inline-block w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">지역 선택</span>
+                <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"/>
+            </div>
+            <div>
+                <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18"/>
+                <input type="text" value="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/>
+            </div>
+            <div className="w-full h-3/5 bg-[#d99d9d]">
+                <h1>지도</h1>
+            </div>
+            <div className="flex w-full justify-center mt-15"> 
+                <input type="range" min="0" max="30" value="1" className="w-5/6"/>
+            </div>
         </div>
     )
 }
