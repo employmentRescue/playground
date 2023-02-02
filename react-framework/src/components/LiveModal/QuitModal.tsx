@@ -6,6 +6,8 @@ import profileIcon from '@/assets/profiles/taek.png'
 import QuitButton from './Buttons/QuitButton';
 import useLiveMatchQuit from '@/hooks/useLiveMatchQuit'
 import { liveMatch } from '@/models/liveMatch'
+import { useState } from 'react'
+import QuitConfirmModal from './QuitConfirmModal'
 
 interface Iprops {
     liveMatch: liveMatch;
@@ -15,7 +17,13 @@ interface Iprops {
 
 export default function QuitModal(props: Iprops) {
 
+    const [quitConfirmModal, setQuitConfirmModal] = useState<boolean>(false);
+
     const quit = () => {
+        setQuitConfirmModal(true);
+    }
+
+    const quitConfirm = () => {
         props.closeModal();
     }
 
@@ -67,6 +75,8 @@ export default function QuitModal(props: Iprops) {
                     memberId: 111,
                 }); quit()
             }}>참여취소</QuitButton>
+
+            {quitConfirmModal && <QuitConfirmModal></QuitConfirmModal>}
         </div>
         : null
     )
