@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom"
 import { SpeechBubble } from "@/components/Chatting/SpeechBubble";
+import defaultProfile from "@/assets/profiles/default-profile.png"
 
-type TextList = { isMine: boolean, innerText: string }[]
+type TextList = { isMine: boolean, innerText: string, profile: string }[]
 
 
 export default function ChattingRoomPage() {
@@ -9,33 +10,39 @@ export default function ChattingRoomPage() {
     const textList: TextList = [
         {
             isMine: false,
-            innerText: "안녕하세요. 반가워요"
+            innerText: "안녕하세요. 반가워요",
+            profile: defaultProfile
         },
         {
             isMine: false,
-            innerText: "축구할 사람?"
+            innerText: "축구할 사람?",
+            profile: defaultProfile
         },
         {
             isMine: true,
-            innerText: "오늘 야근이에요ㅠㅠ"
+            innerText: "오늘 야근이에요ㅠㅠ",
+            profile: defaultProfile
         },
         {
             isMine: false,
-            innerText: "아쉽네요.."
+            innerText: "아쉽네요..",
+            profile: defaultProfile
         },
         {
             isMine: true,
-            innerText: "내일 6시에 축구 하실분 계신가요?"
+            innerText: "내일 6시에 축구 하실분 계신가요?",
+            profile: defaultProfile
         },
         {
             isMine: false,
-            innerText: "축구 ㄱ?"
+            innerText: "축구 ㄱ?",
+            profile: defaultProfile
         }
     ]
 
     const TextListRendering = () => {
         const Result = textList.map((text) => {
-            return <SpeechBubble key={""} isMine={text.isMine} innerText={text.innerText} />
+            return <SpeechBubble key={""} isMine={text.isMine} innerText={text.innerText} profile={text.profile}/>
         })
         return Result
     }

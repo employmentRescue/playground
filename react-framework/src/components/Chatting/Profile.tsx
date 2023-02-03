@@ -1,10 +1,12 @@
-import sampleProfile from "@/assets/profiles/taek.png"
+interface ProfileProps {
+    profile: string
+}
 
-export function Profile() {
+export function Profile({ profile }: ProfileProps) {
     return (
         <img
-            src={sampleProfile}
-            className="mt-5 ml-20 w-40 h-40 rounded-20"
+            src={profile}
+            className="mt-5 ml-10 w-40 h-40 rounded-20"
         />
     )
 }
