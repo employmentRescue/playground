@@ -222,7 +222,7 @@ playground
 <br>
 <br>
 
-## 개발 일정
+## 📅 개발 일정
 - [Jira](https://ssafy.atlassian.net/jira/software/c/projects/S08P12B309/boards/1371/roadmap)
 
 <br>
