@@ -11,6 +11,14 @@ export default function ChattingListPage() {
             <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
             <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
             <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
+            <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
+            <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
+            <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
+            <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
+            <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
+            <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
+            <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
+            <ListCard roomProfile={basketball} title="슬램덩크" personnel={2} latestMsg="오늘 저녁 농구 ㄱ?" />
         </div>
     )
 }

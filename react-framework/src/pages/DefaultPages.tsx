@@ -25,7 +25,7 @@ export function UserDefaultPage() {
 
 export function ChattingDefaultPage() {
     return (
-        <div className="bg-gray-100 w-screen h-auto flex flex-col justify-between">
+        <div className="bg-gray-100 w-screen h-screen flex flex-col justify-between">
             <Header />
             <Outlet />
             <Footer />
