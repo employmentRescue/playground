@@ -203,9 +203,9 @@ export default function HomePage() {
                         memberList: liveMatchList.data[i].liveMemberList?.memberId
                     })
                     // user가 만든 실시간 모임이 아니거나 참여하지 않았으면
-                    joinMeeting();
+                    //joinMeeting();
                     // user가 만든 실시간 모임이 아니지만 이미 참여하였으면
-                    //quitMetting();
+                    quitMetting();
                     // user가 만든 실시간 모임이면
                     //modifyMeeting();
                 });
@@ -274,7 +274,7 @@ export default function HomePage() {
             {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
             {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }} />}
             {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }}></JoinModal>}
-            {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }}></QuitModal>}
+            {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></QuitModal>}
         </div>
     )
 }
