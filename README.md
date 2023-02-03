@@ -117,7 +117,11 @@
 - Springboot
 - Spring Data JPA
 - Spring Web
-- Spring Cloud
+- Spring cloud(spring cloud gateway, spring cloud eureka, spring cloud config server)
+- queryDSL
+- webflux, netty
+- springdoc-openapi-starter-webmvc-ui:2.0.0
+- oauth2
 - WebSocket
 - Redis
 - MySql
@@ -163,26 +167,6 @@ playground
 ### Back
 
 ```
-matching
-  |
-  ├── config
-  |   └── swagger 
-  ├── controller
-  |   ├── live
-  |   └── gathering
-  ├── dto
-  |   ├── live
-  |   └── gathering
-  ├── repository
-  |   ├── live
-  |   └── gathering  
-  └── service
-      ├── live
-      └── gathering
-```
-
-
-```
 playground
   |
   ├── config
@@ -193,16 +177,6 @@ playground
   └── utils
 ```
 
-```
-playground
-  |
-  ├── config
-  ├── controller
-  ├── dto
-  ├── repository
-  ├── service
-  └── utils
-```
 
 <br>
 <br>
@@ -257,4 +231,14 @@ playground
 <br>
 <br>
 
-### 중간 결과
+## 📢 중간 결과
+
+### 회원 관리 화면
+![회원가입_시연](https://user-images.githubusercontent.com/67595512/216481585-99a46c8a-3b1b-4aec-8f48-7886cee80114.gif)
+
+<br>
+
+### 개인 매칭 화면
+![PlayGround_matching](https://user-images.githubusercontent.com/67595512/216481793-27a12ad9-83cc-4113-9262-a8748adba17f.gif)
+
+
