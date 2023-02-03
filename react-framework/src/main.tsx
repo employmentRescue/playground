@@ -30,6 +30,11 @@ const router = createBrowserRouter([
         path: '',
         element: <HomePage />,
       },
+      {
+        path: 'match/',
+        element: <MatchPage />,
+      },
+    
     ]
   },
   {
@@ -51,10 +56,6 @@ const router = createBrowserRouter([
         // 로그인 실패 페이지
         path: 'login/fail',
         element: <LoginFailPage />,
-      },
-      {
-        path: 'match/',
-        element: <MatchPage />,
       },
       {
         // 백엔드 서버에서 로그인 토큰까지 받아왔을 때 Redirect될 URL
