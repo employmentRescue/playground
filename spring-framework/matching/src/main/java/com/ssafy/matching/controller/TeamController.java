@@ -1,6 +1,8 @@
 package com.ssafy.matching.controller;
 
+import com.ssafy.matching.dto.GatheringMember;
 import com.ssafy.matching.dto.Team;
+import com.ssafy.matching.dto.TeamMember;
 import com.ssafy.matching.service.TeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +34,12 @@ public class TeamController {
         return new ResponseEntity<Team>(teamService.registerTeam(team), HttpStatus.OK);
     }
 
-
+    @ApiOperation(value = "팀에 초대하기", notes = "팀에 초대한다.")
+    @PostMapping("/invite")
+    public void join(@RequestBody @ApiParam(value = "팀-멤버 정보", required = true) TeamMember teamMember) throws Exception {
+        System.out.println(teamMember);
+        teamService.joinTeam(teamMember);
+    }
 
     private ResponseEntity<?> exceptionHandling(Exception e) {
         e.printStackTrace();
