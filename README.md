@@ -222,10 +222,15 @@ playground
 <br>
 
 ## 개발 일정
+- [Jira](https://ssafy.atlassian.net/jira/software/c/projects/S08P12B309/boards/1371/roadmap)
+<br>
 
-### 기획/설계 :
+### 기획/설계
+- 2023.01.09 ~ 2023.01.20
 
-### 개발 :
+### 개발
+- 개발환경 구성 및 DB 구축 : 2023.01.20 ~ 
+- Frontend 
 
 <br>
 <br>
@@ -241,4 +246,12 @@ playground
 ### 개인 매칭 화면
 ![PlayGround_matching](https://user-images.githubusercontent.com/67595512/216481793-27a12ad9-83cc-4113-9262-a8748adba17f.gif)
 
+
+### 실시간 운동 모임 화면
+![참여](https://user-images.githubusercontent.com/67595512/216484557-14a5d3d0-006f-4d26-9720-444d735e5760.PNG)
+
+<br>
+
+### 실시간 운동 모임 및 운동 모임 서버 API
+![matching_api](https://user-images.githubusercontent.com/67595512/216484286-44757490-fc1e-4e30-bd64-3ca58b09335d.PNG)
 
