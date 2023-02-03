@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import store from './stores/store';
 import './index.css';
-import { UserDefaultPage, DefaultPage } from './pages/DefaultPages';
+import { UserDefaultPage, DefaultPage, ChattingDefaultPage } from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
 import MatchPage from './pages/match/MatchPage';
 
@@ -69,10 +69,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <DefaultPage />,
+    element: <ChattingDefaultPage />,
     children: [
       {
-        path: 'chatting/list',
+        path: 'chatting',
         element: <ChattingListPage />,
       },
       {
