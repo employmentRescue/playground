@@ -183,6 +183,7 @@ playground
 <br>
 
 # 4. 프로젝트 기술
+- https://lab.ssafy.com/s08-webmobile2-sub2/S08P12B309/-/blob/master/README-taehun.md
 
 <br>
 <br>
