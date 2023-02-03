@@ -271,7 +271,7 @@ export default function HomePage() {
             }
             </div>
 
-            {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
+            {state.modalType === 'register' && <RegisterModal type={state.sportType} place={{ address: "고운뜰공원", lat: geolocation.latitude, lng: geolocation.longitude }} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
             {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }} />}
             {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }}></JoinModal>}
             {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></QuitModal>}

@@ -1,13 +1,15 @@
+import { place } from "./place";
+
 export interface liveMatch {
     liveId?: number,
     memberId?: number,
-    place: string,
+    place: place,
     lat?: number,
     lng?: number,
-    sportType?: string,
+    sports?: string,
     detail: string,
     hostId: number,
-    hostNickName: string,
+    hostNickName?: string,
     currentPeopleNum: number,
     totalPeopleNum: number,
     registTime: string,
