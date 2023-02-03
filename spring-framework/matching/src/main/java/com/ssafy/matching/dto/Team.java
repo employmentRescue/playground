@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -33,11 +34,11 @@ public class Team implements Serializable {
     
     //TODO 필요하면 팀장 객체 연결하기
 
-    @ApiModelProperty(value = "팀의 멤버 리스트")
-    @OneToMany
-    //TODO 팀 멤버 리스트 : insertable 나중에 수정하기
-    @JoinColumn(name = "teamId", insertable=false, updatable=false)
-    private List<TeamMember> teamMemberList;
+    @ApiModelProperty(value = "팀의 멤버 리스트", required = true)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teamId")
+    //TODO ERROR Cannot add or update a child row: a foreign key constraint fails (`playground`.`team_member`, CONSTRAINT `fk_team_member_team_id` FOREIGN KEY (`team_id`) REFERENCES `team` (`team_id`))
+    private List<TeamMember> teamMemberList = new ArrayList<>();
 
     //TODO 팀 매치 리스트
 }
