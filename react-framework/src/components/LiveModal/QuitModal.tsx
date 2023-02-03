@@ -30,7 +30,7 @@ export default function QuitModal(props: Iprops) {
     console.log(props.liveMatch.liveId);
     const { mutate } = useLiveMatchQuit();
 
-    return (props.openModal === "join" ?
+    return (props.openModal === "quit" ?
         <div className="w-[322px] h-[341px] z-10 absolute left-1/2 ml-[-161px] bottom-14 rounded-15 bg-white flex flex-col items-center justify-center">
             <div className="w-[322px] flex h-18 mt-14">
                 <div className="ml-120 text-15">실시간 참여</div>

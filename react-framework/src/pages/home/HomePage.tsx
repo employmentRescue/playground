@@ -4,8 +4,11 @@ import useGeolocation, { EnrichedGeolocationCoordinates } from "react-hook-geolo
 import RegisterModal from "@/components/LiveModal/RegisterModal"
 import JoinModal from "@/components/LiveModal/JoinModal"
 import basketBallMap from "@/assets/icons/basketball-map.png"
+import basketBallIcon from "@/assets/icons/basketball-original.png"
 import soccerMap from "@/assets/icons/soccer-map.png"
+import soccerIcon from "@/assets/icons/soccer-original.png"
 import badmintonMap from "@/assets/icons/badminton-map.png"
+import badmintonIcon from "@/assets/icons/badminton-original.png"
 import currentPos from "@/assets/icons/current-position.png"
 import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
@@ -13,7 +16,7 @@ import useLiveMatchListQuery from "@/hooks/useLiveMatchListQuery"
 import { liveMatch } from "@/models/liveMatch"
 import { UseQueryResult } from "react-query"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'JOIN' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' | 'DEFAULT' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
 
 interface State {
     isPressed: boolean;
@@ -94,7 +97,6 @@ export default function HomePage() {
     const joinMeeting = () => dispatch({ type: 'JOIN' });
     const registerMeeting = () => dispatch({ type: 'REGISTER' });
     const modifyMeeting = () => dispatch({ type: 'MODIFY' });
-    const deleteMeeting = () => dispatch({ type: 'DELETE' });
     const quitMetting = () => dispatch({ type: 'QUIT' });
     const closeModal = () => dispatch({ type: 'NONE' });
 
@@ -103,7 +105,6 @@ export default function HomePage() {
     const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
     const [markers, setMarkers] = useState<naver.maps.Marker[] | null>([]);
     const [liveMatch, setLiveMatch] = useState<liveMatch | null>(null);
-
 
     // naver map
     const mapElement: any | null = useRef(undefined);
@@ -201,11 +202,17 @@ export default function HomePage() {
                         registTime: liveMatchList.data[i].registTime,
                         memberList: liveMatchList.data[i].liveMemberList?.memberId
                     })
+                    // user가 만든 실시간 모임이 아니거나 참여하지 않았으면
                     joinMeeting();
+                    // user가 만든 실시간 모임이 아니지만 이미 참여하였으면
+                    quitMetting();
+                    // user가 만든 실시간 모임이면
+                    modifyMeeting();
                 });
             }
             setMarkers(newMarkers);
             console.log(newMarkers);
+            console.log(state.modalType);
         }
 
     }, [liveMatchList.isSuccess]);
@@ -250,18 +257,24 @@ export default function HomePage() {
                     <div>
                         <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>취소</button>
                         <div className="flex flex-col justify-between items-center w-60 h-157 mt-4 rounded-15 border-1 border-[#303eff80] bg-blue-300">
-                            <div className="w-40 h-40 mt-7 rounded-50 bg-yellow-200" onClick={basketBall} ></div>
-                            <div className="w-40 h-40 rounded-50 bg-blue-400" onClick={soccer}></div>
-                            <div className="w-40 h-40 mb-7 rounded-50 bg-green-400" onClick={badminton}></div>
+                            <div className="w-40 h-40 flex justify-center items-center mt-7 rounded-50 border-3 border-yellow-600 bg-yellow-200" onClick={basketBall} >
+                                <img src={basketBallIcon} className="w-20 h-20"></img>
+                            </div>
+                            <div className="w-40 h-40 flex justify-center items-center rounded-50 border-3 border-[#9c8dd3] bg-blue-400" onClick={soccer}>
+                                <img src={soccerIcon} className="w-20 h-20"></img>
+                            </div>
+                            <div className="w-40 h-40 flex justify-center items-center mb-7 rounded-50 border-3 border-[#71d354] bg-green-400" onClick={badminton}>
+                                <img src={badmintonIcon} className="w-20 h-20"></img>
+                            </div>
                         </div>
                     </div>
             }
             </div>
+
             {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
-            {state.modalType === 'modify' && liveMatchList != null &&
-                <ModifyModal liveMatch={liveMatchList.data} openModal={state.modalType} closeModal={closeModal} />}
-            {state.modalType === 'join2' && liveMatch && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
-            {state.modalType === 'join' && liveMatch && <QuitModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></QuitModal>}
+            {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }} />}
+            {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }}></JoinModal>}
+            {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }}></QuitModal>}
         </div>
     )
 }
