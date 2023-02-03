@@ -4,14 +4,12 @@ import timeIcon from '@/assets/icons/time.png'
 import peopleIcon from '@/assets/icons/people.png'
 import profileIcon from '@/assets/profiles/taek.png'
 import QuitButton from './Buttons/QuitButton';
-import useLiveMatchQuit from '@/hooks/useLiveMatchQuit'
 import { liveMatch } from '@/models/liveMatch'
 import { useState } from 'react'
 import QuitConfirmModal from './QuitConfirmModal'
 
 interface Iprops {
     liveMatch: liveMatch;
-    openModal: string;
     closeModal: () => void;
 }
 
@@ -19,18 +17,11 @@ export default function QuitModal(props: Iprops) {
 
     const [quitConfirmModal, setQuitConfirmModal] = useState<boolean>(false);
 
-    const quit = () => {
-        setQuitConfirmModal(true);
+    const quitConfirm = (b: boolean) => {
+        setQuitConfirmModal(b);
     }
 
-    const quitConfirm = () => {
-        props.closeModal();
-    }
-
-    console.log(props.liveMatch.liveId);
-    const { mutate } = useLiveMatchQuit();
-
-    return (props.openModal === "quit" ?
+    return (
         <div className="w-[322px] h-[341px] z-10 absolute left-1/2 ml-[-161px] bottom-14 rounded-15 bg-white flex flex-col items-center justify-center">
             <div className="w-[322px] flex h-18 mt-14">
                 <div className="ml-120 text-15">실시간 참여</div>
@@ -56,7 +47,7 @@ export default function QuitModal(props: Iprops) {
                     <img src={placeIcon} className="w-20 h-20"></img>
                     <div className='text-15 ml-6'>장소</div>
                 </div>
-                <div className='text-15'>{props.liveMatch.place}</div>
+                <div className='text-15'>{props.liveMatch.place.address}</div>
             </div>
             <div className='w-[284px] h-1 mt-10 bg-gray-600'></div>
             <div className='w-[284px] h-100 mt-16 mb-16 flex justify-between'>
@@ -70,14 +61,11 @@ export default function QuitModal(props: Iprops) {
             </div>
 
             <QuitButton onClick={() => {
-                mutate({
-                    liveId: props.liveMatch.liveId,
-                    memberId: 111,
-                }); quit()
+                quitConfirm(true);
             }}>참여취소</QuitButton>
 
-            {quitConfirmModal && <QuitConfirmModal></QuitConfirmModal>}
+            {quitConfirmModal && <QuitConfirmModal liveMatch={props.liveMatch} closeQuitModal={() => quitConfirm(false)} closeModal={props.closeModal}></QuitConfirmModal>}
         </div>
-        : null
+
     )
 }

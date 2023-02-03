@@ -47,7 +47,7 @@ export default function JoinModal(props: Iprops) {
                     <img src={placeIcon} className="w-20 h-20"></img>
                     <div className='text-15 ml-6'>장소</div>
                 </div>
-                <div className='text-15'>{props.liveMatch.place}</div>
+                <div className='text-15'>{props.liveMatch.place.address}</div>
             </div>
             <div className='w-[284px] h-1 mt-10 bg-gray-600'></div>
             <div className='w-[284px] h-100 mt-16 mb-16 flex justify-between'>

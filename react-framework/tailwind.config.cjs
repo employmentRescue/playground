@@ -23,6 +23,7 @@ module.exports = {
         "blue-400": "#d8caff",
         "blue-700": "#303EFF",
         "blue-800": "#2632cc",
+        "gray-400": "#858e94",
         "gray-500": "#D9D9D9",
         "gray-600": "#DBDBDB",
         "gray-700": "#969696",

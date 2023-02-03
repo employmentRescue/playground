@@ -1,17 +1,19 @@
 import useMouse from "@react-hook/mouse-position";
 import { useState, useEffect, useRef } from "react"
-import { useReducer } from "react"
+import { useReducer, ComponentProps } from "react"
 
 import basketBallOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import soccerOriginal from "@/assets/icons/soccer-original.png"
 import filterEtc from "@/assets/icons/filter-etc.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
+import closeIcon from "@/assets/icons/exit.png"
+import searchIcon from "@/assets/icons/search-icon.png"
 import { sign } from "crypto";
 
 
 // ============ 기타 타입 =================================================
-
+// 자동 매칭, 목록 선택 탭
 type propsTab = {
     clickedTab: string, 
     changeType: () => void;
@@ -277,11 +279,35 @@ function MatchFilterDistance() {
     )
 }
 
-// 자동 매칭 필터 - 거리범위
+// 자동 매칭 필터 - 거리범위 지정
 function MatchDistanceSetting() {
+    const [distance, setDistance] = useState('1')
+    const valueChange : ComponentProps<'input'>['onChange'] = (event) => {
+        setDistance(event.target.value);
+    }
+
     return (
-        <div className="fixed top-[187px] w-[359px] h-[558px] flex-grow-0 bg-[#fff]">
-            <span className="w-63 h-16 flex-grow-0 mr-[121px] font-inter text-[15px] ">지역 선택</span>
+        <div className="absolute bottom-0 left-0 p-0 w-[359px] h-[558px] flex-grow-0 bg-[#f3cccc]">
+            <div>
+                <span className="inline-block w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">지역 선택</span>
+                <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"/>
+            </div>
+            <div>
+                <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18"/>
+                <input type="text" value="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/>
+            </div>
+            <div className="w-full h-3/5 bg-[#d99d9d]">
+                <h1>지도</h1>
+            </div>
+            <div className="flex-row h-1/9 justify-center mt-15 mx-18"> 
+                <input type="range" min="0" max="22" className="w-full" value={distance} onChange={valueChange}/>
+                <div className="flex">
+                    <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
+                    <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
+                    <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
+                </div>
+                <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
+            </div>
         </div>
     )
 }
@@ -323,6 +349,7 @@ function MatchContent() {
             <div className="absolute w-[124px] h-45 flex-grow-0 top-[360px] left-[118px] pt-11 pl-22 rounded-30 bg-[#303eff]">
                 <span className="w-70 h-24 flex-grow-0 font-inter text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
             </div>
+            <MatchDistanceSetting />
         </div>
     )
 }
@@ -360,7 +387,7 @@ function ListItem() {
 // 목록 전체 내용
 function ListContent(){
     return (
-        <div className="w-360px h-full m-0 pt-10 bg=[#f5f5f5]">
+        <div className="flex flex-col w-360px h-full m-0 pt-10 bg=[#f5f5f5]">
             <ListItem />
         </div>
     )
