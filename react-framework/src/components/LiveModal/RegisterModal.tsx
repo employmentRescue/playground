@@ -77,14 +77,14 @@ export default function RegisterModal(props: Iprops) {
             <textarea onChange={handleDetailChange} value={detail} className="w-[284px] h-80 mt-12 bg-gray-600 text-gray-700 pl-15 pt-11 rounded-5" placeholder='하고 싶은 말을 작성하세요.'></textarea>
             <div className="w-[284px] h-22 mt-14 mb-13 flex">
                 <div className="text-15">현재 인원</div>
-                <select style={{ height: height }} size={size} onFocus={() => open(true)} onBlur={() => close(true)} onChange={(e) => { close(true); e.target.blur(); handleCurrentPeopleNumChange; }} className='w-36 h-22 bg-blue-600 rounded-5 text-12 pl-5 ml-14 text-white z-20'>
+                <select style={{ height: height }} size={size} onFocus={() => open(true)} onBlur={() => close(true)} onChange={(e) => { close(true); e.target.blur(); handleCurrentPeopleNumChange; }} className='w-36 h-22 bg-blue-600 rounded-5 text-12 pl-5 ml-14 text-white'>
                     {arr.map((item, index) => (
                         <option key={index} value={item}>{item}</option>
                     ))}
                 </select>
                 <div className="text-15 opacity-50 ml-6">명</div>
                 <div className="ml-46 text-15">정원</div>
-                <select style={{ height: height2 }} size={size2} onFocus={() => open(false)} onBlur={() => close(false)} onChange={(e) => { close(false); e.target.blur(); handleTotalPeopleNumChange }} className='w-36 h-22 bg-blue-600 rounded-5 text-12 pl-5 ml-14 text-white z-20'>
+                <select style={{ height: height2 }} size={size2} onFocus={() => open(false)} onBlur={() => close(false)} onChange={(e) => { close(false); e.target.blur(); handleTotalPeopleNumChange }} className='w-36 h-22 bg-blue-600 rounded-5 text-12 pl-5 ml-14 text-white'>
                     {arr.map((item, index) => (
                         <option key={index} value={item}>{item}</option>
                     ))}

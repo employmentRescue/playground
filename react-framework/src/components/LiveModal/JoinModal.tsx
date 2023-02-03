@@ -9,7 +9,6 @@ import useLiveMatchJoin from '@/hooks/useLiveMatchJoin'
 
 interface Iprops {
     liveMatch: liveMatch;
-    openModal: string;
     closeModal: () => void;
 }
 
@@ -21,7 +20,7 @@ export default function JoinModal(props: Iprops) {
 
     const { mutate } = useLiveMatchJoin();
 
-    return (props.openModal === "join" ?
+    return (
         <div className="w-[322px] h-[341px] z-10 absolute left-1/2 ml-[-161px] bottom-14 rounded-15 bg-white flex flex-col items-center justify-center">
             <div className="w-[322px] flex h-18 mt-14">
                 <div className="ml-120 text-15">실시간 참여</div>
@@ -68,6 +67,5 @@ export default function JoinModal(props: Iprops) {
                 }), join();
             }}>참여하기</JoinButton>
         </div >
-        : null
     )
 }
