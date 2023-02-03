@@ -85,20 +85,11 @@ class OauthServiceApplicationTests {
 
     @Test
     void refresh_token_getAgain() throws Exception {
-        KakaoLoginRefreshTokenCache loginRefreshTokenCache = loginRefreshTokenCacheRepository.findById("MDYzOTgzN2UtYzkwNC00ZjUzLWIwM2EtNWM2NDkxMTgyMjk1").orElse(null);
-        KakaoLoginAccessTokenCache loginAccessTokenCache = loginAccessTokenCacheRepository.findById(loginRefreshTokenCache.getConnected_access_token()).orElse(null);
-
-        loginAccessTokenCacheRepository.deleteById(loginAccessTokenCache.getKakao_accessToken());
-        loginRefreshTokenCacheRepository.deleteById(loginAccessTokenCache.getKakao_refreshToken());
-
-        System.out.println(loginRefreshTokenCache);
-        System.out.println(loginAccessTokenCache);
-
         URL url = UriComponentsBuilder
                 .fromHttpUrl("https://kauth.kakao.com/oauth/token")
                 .queryParam("grant_type", "refresh_token")
                 .queryParam("client_id",kakao_cliendID)
-                .queryParam("refresh_token",refresh_token)
+                .queryParam("refresh_token","ZDY1MDRmZDgtOWM4NC00ZDQwLTk5ODYtM2Q5ZmE5ZDk1MWY0")
                 .build()
                 .toUri().toURL();
 
@@ -111,16 +102,6 @@ class OauthServiceApplicationTests {
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> map = objectMapper.convertValue(ret, Map.class);
 
-        loginAccessTokenCache.setKakao_accessToken((String) map.get("access_token"));;
-        if (map.get("refresh_token") != null){
-            loginAccessTokenCache.setKakao_refreshToken((String) map.get("refresh_token"));
-        }
-
-        loginAccessTokenCache.setToken(UUID.randomUUID().toString());
-        loginRefreshTokenCache.setToken(UUID.randomUUID().toString());
-        loginRefreshTokenCache.setConnected_access_token(loginAccessTokenCache.getToken());
-        loginAccessTokenCacheRepository.save(loginAccessTokenCache);
-        loginRefreshTokenCacheRepository.save(loginRefreshTokenCache);
     }
 
     @Test

@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.*;
@@ -31,6 +28,9 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/oauth2")
+@CrossOrigin("*") // https://shinsunyoung.tistory.com/86
+//@CrossOrigin(origins = {"http://domain1.com","http://domain2.com"})
+//@CrossOrigin(origins = {"https://kauth.kakao.com","https://localhost:3000", "https://192.168.31.246", "https://192.168.31.246:3000", "https://192.168.31.246/oauth2/login/kakao"})
 public class oauthController {
     @Autowired
     private ObjectMapper objectMapper;
@@ -38,7 +38,7 @@ public class oauthController {
     @Autowired
     ServletContext servletContext;
 
-    String ReactFramework_baseUrl = "http://localhost:3000";
+//    String ReactFramework_baseUrl = "http://localhost:3000";
 
     @Value("${oauth2.client.registration.client-id.kakao}")
     String kakao_cliendID;
@@ -64,6 +64,17 @@ public class oauthController {
         return requestURL.getProtocol() + "://" + requestURL.getHost() + port;
 
     }
+
+    @RequestMapping("hello")
+    @ResponseBody
+    String hello(/*@RequestHeader*/ String userID){
+        System.out.println(userID);
+//        return "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+
+        return "hello woooooooooooo!!";
+    }
+
 
     @RequestMapping("/test")
     ResponseEntity test(@RequestBody Map<String, Object> map){
@@ -129,7 +140,7 @@ public class oauthController {
     {
         System.out.println("login : " + map);
         System.out.println(getURLBase(req));
-        if (map.isEmpty() || !map.containsKey("code")) return "redirect:" + ReactFramework_baseUrl + "/login/fail";
+        if (map.isEmpty() || !map.containsKey("code")) return "redirect:" + getURLBase(req) + "/login/fail";
 
         String code = (String) map.get("code");
 
@@ -193,7 +204,7 @@ public class oauthController {
 
 
             return "redirect:" + UriComponentsBuilder
-                    .fromHttpUrl(ReactFramework_baseUrl + "/login/success")
+                    .fromHttpUrl(getURLBase(req) + "/login/success")
                     .queryParam("access_token",accessToken)
                     .queryParam("refresh_token",refreshToken)
                     .build()
@@ -217,7 +228,7 @@ public class oauthController {
 
 
             return "redirect:" + UriComponentsBuilder
-                    .fromHttpUrl(ReactFramework_baseUrl + "/login/regist")
+                    .fromHttpUrl(getURLBase(req) + "/login/regist")
                     .queryParam("code",registerCache.getToken())
                     .build().toUriString();
             //return "redirect:" + ReactFramework_baseUrl + "/login/regist?code=" + registerCache.getToken();
@@ -237,60 +248,60 @@ public class oauthController {
         System.out.println("regist : " + loginCache);
 
 
-
-        //JSON 데이터 받을 URL 객체 생성
-        URL url = new URL ("http://localhost:9000/user/regist/" + loginCache.getKakao_userID());
-        //HttpURLConnection 객체를 생성해 openConnection 메소드로 url 연결
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        //전송 방식 (POST)
-        httpConn.setRequestMethod("POST");
-        //application/json 형식으로 전송, Request body를 JSON으로 던져줌.
-        httpConn.setRequestProperty("Content-Type", "application/json; utf-8");
-        //Response data를 JSON으로 받도록 설정
-        httpConn.setRequestProperty("Accept", "application/json");
-        //Output Stream을 POST 데이터로 전송
-        httpConn.setDoOutput(true);
-        //json data
-        String jsonInputString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-        System.out.println(jsonInputString);
-
-        //JSON 보내는 Output stream
-        try(OutputStream os = httpConn.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
-        httpConn.connect();
-        httpConn.getInputStream().readAllBytes();
-
-
-
-        if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
-        oAuthRegisterCacheRepository.delete(loginCache);
-
+//
+//        //JSON 데이터 받을 URL 객체 생성
+//        URL url = new URL ("http://localhost:9000/user/regist/" + loginCache.getKakao_userID());
+//        //HttpURLConnection 객체를 생성해 openConnection 메소드로 url 연결
+//        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+//        //전송 방식 (POST)
+//        httpConn.setRequestMethod("POST");
+//        //application/json 형식으로 전송, Request body를 JSON으로 던져줌.
+//        httpConn.setRequestProperty("Content-Type", "application/json; utf-8");
+//        //Response data를 JSON으로 받도록 설정
+//        httpConn.setRequestProperty("Accept", "application/json");
+//        //Output Stream을 POST 데이터로 전송
+//        httpConn.setDoOutput(true);
+//        //json data
+//        String jsonInputString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+//        System.out.println(jsonInputString);
+//
+//        //JSON 보내는 Output stream
+//        try(OutputStream os = httpConn.getOutputStream()) {
+//            byte[] input = jsonInputString.getBytes("utf-8");
+//            os.write(input, 0, input.length);
+//        }
+//        httpConn.connect();
+//        httpConn.getInputStream().readAllBytes();
+//
+//
+//
+//        if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
+//        oAuthRegisterCacheRepository.delete(loginCache);
+//
         String accessToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
         String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-
-
-        kakaoLoginAccessTokenCacheRepository
-                .save(
-                        KakaoLoginAccessTokenCache
-                                .builder()
-                                .token(accessToken)
-                                .kakao_accessToken(loginCache.getKakao_accessToken())
-                                .kakao_refreshToken(loginCache.getKakao_refreshToken())
-                                .kakao_userID(loginCache.getKakao_userID())
-                                .build()
-                );
-
-        // 연결된 access_token에 대해서만 refresh
-        kakaoLoginRefreshTokenCacheRepository
-                .save(
-                        KakaoLoginRefreshTokenCache
-                                .builder()
-                                .token(refreshToken)
-                                .connected_access_token(accessToken)
-                                .build()
-                );
+//
+//
+//        kakaoLoginAccessTokenCacheRepository
+//                .save(
+//                        KakaoLoginAccessTokenCache
+//                                .builder()
+//                                .token(accessToken)
+//                                .kakao_accessToken(loginCache.getKakao_accessToken())
+//                                .kakao_refreshToken(loginCache.getKakao_refreshToken())
+//                                .kakao_userID(loginCache.getKakao_userID())
+//                                .build()
+//                );
+//
+//        // 연결된 access_token에 대해서만 refresh
+//        kakaoLoginRefreshTokenCacheRepository
+//                .save(
+//                        KakaoLoginRefreshTokenCache
+//                                .builder()
+//                                .token(refreshToken)
+//                                .connected_access_token(accessToken)
+//                                .build()
+//                );
 
         return new ResponseEntity(Map.of(
                 "user-id", loginCache.getKakao_userID(),
