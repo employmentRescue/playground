@@ -1,17 +1,22 @@
 import { useState, useEffect, useRef } from "react"
 import { useReducer } from "react"
-import useGeolocation from "react-hook-geolocation"
+import useGeolocation, { EnrichedGeolocationCoordinates } from "react-hook-geolocation"
 import RegisterModal from "@/components/LiveModal/RegisterModal"
 import JoinModal from "@/components/LiveModal/JoinModal"
 import basketBallMap from "@/assets/icons/basketball-map.png"
+import basketBallIcon from "@/assets/icons/basketball-original.png"
 import soccerMap from "@/assets/icons/soccer-map.png"
+import soccerIcon from "@/assets/icons/soccer-original.png"
 import badmintonMap from "@/assets/icons/badminton-map.png"
+import badmintonIcon from "@/assets/icons/badminton-original.png"
 import currentPos from "@/assets/icons/current-position.png"
 import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
 import useLiveMatchListQuery from "@/hooks/useLiveMatchListQuery"
+import { liveMatch } from "@/models/liveMatch"
+import { UseQueryResult } from "react-query"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'REGISTER' | 'MODIFY' | 'DELETE' | 'QUIT' | 'NONE' | 'DEFAULT' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
 
 interface State {
     isPressed: boolean;
@@ -52,6 +57,11 @@ function registReducer(state: State, action: Action) {
                 ...state,
                 sportType: 'default'
             }
+        case 'JOIN':
+            return {
+                ...state,
+                modalType: 'join'
+            }
         case 'REGISTER':
             return {
                 ...state,
@@ -77,25 +87,33 @@ function registReducer(state: State, action: Action) {
     }
 }
 export default function HomePage() {
-
+    // Regist Reducer
     const [state, dispatch] = useReducer(registReducer, initialState);
-    const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
-    const [markers, setMarkers] = useState([]);
     const onPressed = () => dispatch({ type: 'ISPRESSED' });
     const basketBall = () => dispatch({ type: 'BASKETBALL' });
     const soccer = () => dispatch({ type: 'SOCCER' });
     const badminton = () => dispatch({ type: 'BADMINTON' });
     const defaultSportType = () => dispatch({ type: 'DEFAULT' });
+    const joinMeeting = () => dispatch({ type: 'JOIN' });
     const registerMeeting = () => dispatch({ type: 'REGISTER' });
     const modifyMeeting = () => dispatch({ type: 'MODIFY' });
-    const deleteMeeting = () => dispatch({ type: 'DELETE' });
     const quitMetting = () => dispatch({ type: 'QUIT' });
     const closeModal = () => dispatch({ type: 'NONE' });
 
-    const mapElement: any | null = useRef(undefined);
-    const geolocation = useGeolocation();
+    // other state
+    const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
+    const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
+    const [markers, setMarkers] = useState<naver.maps.Marker[] | null>([]);
+    const [liveMatch, setLiveMatch] = useState<liveMatch | null>(null);
 
-    const liveMatchList = useLiveMatchListQuery();
+    // naver map
+    const mapElement: any | null = useRef(undefined);
+
+    // initial call
+    const geolocation = useGeolocation();
+    const liveMatchList = useLiveMatchListQuery(geolocation.latitude, geolocation.longitude);
+    console.log(liveMatchList);
+
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
         return new naver.maps.Marker({
             position: location,
@@ -107,10 +125,11 @@ export default function HomePage() {
                 origin: new naver.maps.Point(0, 0),
                 anchor: new naver.maps.Point(sizeX / 2, sizeY),
             },
-            animation: isBounce ? naver.maps.Animation.BOUNCE : undefined
+            animation: isBounce ? naver.maps.Animation.BOUNCE : undefined,
         });
     }
 
+    // 네이버 지도 생성
     useEffect(() => {
         const { naver } = window;
         if (!mapElement.current || !naver) return;
@@ -121,6 +140,7 @@ export default function HomePage() {
             zoom: 14,
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
+
         setNaverMap(map);
     }, []);
 
@@ -131,29 +151,73 @@ export default function HomePage() {
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         naverMap.setCenter(location);
 
-        if (liveMatchList != undefined) {
-            for (const e in liveMatchList) {
-                //console.log(liveMatchList.data.title);
-                // switch (e.title) {
-                //     case "basketball":
-                //         setMapIcon(basketBallMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                //         break;
-                //     case "soccer":
-                //         setMapIcon(soccerMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                //         break;
-                //     case "badminton":
-                //         setMapIcon(badmintonMap, new naver.maps.LatLng(e.lat, e.lng), map, 60, 60, true);
-                //         break;
-                //     default:
-                //         console.log(data);
-                //         break;
-                // }
-            };
+        // 기존 현재 위치 마커 제거
+        if (curPos) {
+            curPos.setMap(null);
         }
 
-        const map = setMapIcon(currentPos, location, naverMap, 40, 40, false);
-    }, [geolocation.latitude, geolocation.longitude]);
+        // 현재 위치 맵에 표시
+        setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
 
+    }, [geolocation])
+
+    // 마커
+    useEffect(() => {
+        if (naverMap === null || liveMatchList === null)
+            return;
+
+        // 기존 실시간 운동 모임 마커 제거
+        if (markers) {
+            for (const m of markers) {
+                m.setMap(null);
+            }
+        }
+
+        // 실시간 운동 모임 마커 생성
+        if (liveMatchList.isSuccess) { // liveMatch리스트를 받아왔으면
+            let newMarkers: naver.maps.Marker[] = []
+            for (const e of liveMatchList.data) {
+                switch (e.sports) {
+                    case "농구":
+                        newMarkers.push(setMapIcon(basketBallMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
+                        break;
+                    case "축구":
+                        newMarkers.push(setMapIcon(soccerMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
+                        break;
+                    case "배드민턴":
+                        newMarkers.push(setMapIcon(badmintonMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
+                        break;
+                }
+            };
+            for (let i = 0; i < newMarkers.length; i++) {
+                naver.maps.Event.addListener(newMarkers[i], "click", () => {
+                    setLiveMatch({
+                        liveId: liveMatchList.data[i].liveId,
+                        place: liveMatchList.data[i].place.address,
+                        detail: liveMatchList.data[i].detail,
+                        hostId: liveMatchList.data[i].hostId,
+                        hostNickName: liveMatchList.data[i].host.nickname,
+                        currentPeopleNum: liveMatchList.data[i].currentPeopleNum,
+                        totalPeopleNum: liveMatchList.data[i].totalPeopleNum,
+                        registTime: liveMatchList.data[i].registTime,
+                        memberList: liveMatchList.data[i].liveMemberList?.memberId
+                    })
+                    // user가 만든 실시간 모임이 아니거나 참여하지 않았으면
+                    joinMeeting();
+                    // user가 만든 실시간 모임이 아니지만 이미 참여하였으면
+                    quitMetting();
+                    // user가 만든 실시간 모임이면
+                    modifyMeeting();
+                });
+            }
+            setMarkers(newMarkers);
+            console.log(newMarkers);
+            console.log(state.modalType);
+        }
+
+    }, [liveMatchList.isSuccess]);
+
+    // 실시간 운동 모임 등록
     useEffect(() => {
         if (naverMap === null)
             return;
@@ -193,18 +257,24 @@ export default function HomePage() {
                     <div>
                         <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>취소</button>
                         <div className="flex flex-col justify-between items-center w-60 h-157 mt-4 rounded-15 border-1 border-[#303eff80] bg-blue-300">
-                            <div className="w-40 h-40 mt-7 rounded-50 bg-yellow-200" onClick={basketBall} ></div>
-                            <div className="w-40 h-40 rounded-50 bg-blue-400" onClick={soccer}></div>
-                            <div className="w-40 h-40 mb-7 rounded-50 bg-green-400" onClick={badminton}></div>
+                            <div className="w-40 h-40 flex justify-center items-center mt-7 rounded-50 border-3 border-yellow-600 bg-yellow-200" onClick={basketBall} >
+                                <img src={basketBallIcon} className="w-20 h-20"></img>
+                            </div>
+                            <div className="w-40 h-40 flex justify-center items-center rounded-50 border-3 border-[#9c8dd3] bg-blue-400" onClick={soccer}>
+                                <img src={soccerIcon} className="w-20 h-20"></img>
+                            </div>
+                            <div className="w-40 h-40 flex justify-center items-center mb-7 rounded-50 border-3 border-[#71d354] bg-green-400" onClick={badminton}>
+                                <img src={badmintonIcon} className="w-20 h-20"></img>
+                            </div>
                         </div>
                     </div>
             }
             </div>
-            {state.modalType === 'register2' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
-            {state.modalType === 'modify' &&
-                <ModifyModal liveMatch={liveMatchList.data} openModal={state.modalType} closeModal={closeModal} />}
-            {state.modalType === 'register' && <JoinModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></JoinModal>}
-            {state.modalType === 'quit' && <QuitModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></QuitModal>}
+
+            {state.modalType === 'register' && <RegisterModal type={state.sportType} lat={geolocation.latitude} lng={geolocation.longitude} openModal={state.modalType} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
+            {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }} />}
+            {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }}></JoinModal>}
+            {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }}></QuitModal>}
         </div>
     )
 }
