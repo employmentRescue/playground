@@ -205,9 +205,9 @@ export default function HomePage() {
                     // user가 만든 실시간 모임이 아니거나 참여하지 않았으면
                     joinMeeting();
                     // user가 만든 실시간 모임이 아니지만 이미 참여하였으면
-                    quitMetting();
+                    //quitMetting();
                     // user가 만든 실시간 모임이면
-                    modifyMeeting();
+                    //modifyMeeting();
                 });
             }
             setMarkers(newMarkers);
@@ -249,7 +249,7 @@ export default function HomePage() {
     }, [state.sportType])
 
     return (
-        <div ref={mapElement} className="w-full h-full relative">
+        <div ref={mapElement} className="w-full h-[calc(100%-110px)] relative">
             <div className="w-60 h-193 flex flex-col relative float-right mt-12 mr-9 z-10 ">{
                 state.isPressed === false ?
                     <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>등록</button>

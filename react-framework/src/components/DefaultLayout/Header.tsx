@@ -1,4 +1,4 @@
-export default function HomePage() {
+export default function Header() {
     return (
         <div className="w-full h-55 border-b-1 border-gray-600 bg-opacity-95 bg-white sticky top-0">
             <div className="w-full h-7 bg-blue-600"></div>
