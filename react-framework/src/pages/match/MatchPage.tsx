@@ -387,7 +387,7 @@ function ListItem() {
 // 목록 전체 내용
 function ListContent(){
     return (
-        <div className="w-360px h-full m-0 pt-10 bg=[#f5f5f5]">
+        <div className="flex flex-col w-360px h-full m-0 pt-10 bg=[#f5f5f5]">
             <ListItem />
         </div>
     )
