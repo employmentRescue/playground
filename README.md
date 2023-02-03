@@ -176,11 +176,13 @@ matching
   ├── repository
   |   ├── live
   |   └── gathering  
-  ├── service
-  |   ├── live
+  └── service
+      ├── live
       └── gathering
 ```
 
+
+```
 playground
   |
   ├── config
@@ -189,6 +191,8 @@ playground
   ├── repository
   ├── service
   └── utils
+```
+
 ```
 playground
   |
@@ -225,7 +229,7 @@ playground
 <br>
 <br>
 
-## 👨‍💻 역할 분담
+## 😎 역할 분담
 
 ### Frontend
 
