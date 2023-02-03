@@ -1,6 +1,6 @@
 import useMouse from "@react-hook/mouse-position";
 import { useState, useEffect, useRef } from "react"
-import { useReducer } from "react"
+import { useReducer, ComponentProps } from "react"
 
 import basketBallOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
@@ -282,8 +282,8 @@ function MatchFilterDistance() {
 // 자동 매칭 필터 - 거리범위 지정
 function MatchDistanceSetting() {
     const [distance, setDistance] = useState('1')
-    const valueChange = (event: React.ChangeEventHandler, value: string) => {
-        setDistance(value);
+    const valueChange : ComponentProps<'input'>['onChange'] = (event) => {
+        setDistance(event.target.value);
     }
 
     return (
@@ -299,8 +299,14 @@ function MatchDistanceSetting() {
             <div className="w-full h-3/5 bg-[#d99d9d]">
                 <h1>지도</h1>
             </div>
-            <div className="flex w-full justify-center mt-15"> 
-                <input type="range" min="0" max="30" className="w-5/6" onChange={valueChange}/>
+            <div className="flex-row h-1/9 justify-center mt-15 mx-18"> 
+                <input type="range" min="0" max="22" className="w-full" value={distance} onChange={valueChange}/>
+                <div className="flex">
+                    <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
+                    <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
+                    <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
+                </div>
+                <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
             </div>
         </div>
     )
