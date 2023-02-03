@@ -178,13 +178,13 @@ export default function HomePage() {
             let newMarkers: naver.maps.Marker[] = []
             for (const e of liveMatchList.data) {
                 switch (e.sports) {
-                    case "농구":
+                    case "basketball":
                         newMarkers.push(setMapIcon(basketBallMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
-                    case "축구":
+                    case "football":
                         newMarkers.push(setMapIcon(soccerMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
-                    case "배드민턴":
+                    case "badminton":
                         newMarkers.push(setMapIcon(badmintonMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
                 }
@@ -193,21 +193,26 @@ export default function HomePage() {
                 naver.maps.Event.addListener(newMarkers[i], "click", () => {
                     setLiveMatch({
                         liveId: liveMatchList.data[i].liveId,
-                        place: liveMatchList.data[i].place.address,
+                        place: {
+                            address: liveMatchList.data[i].place.address,
+                            lat: liveMatchList.data[i].place.lat,
+                            lng: liveMatchList.data[i].place.lng
+                        },
                         detail: liveMatchList.data[i].detail,
                         hostId: liveMatchList.data[i].hostId,
                         hostNickName: liveMatchList.data[i].host.nickname,
                         currentPeopleNum: liveMatchList.data[i].currentPeopleNum,
                         totalPeopleNum: liveMatchList.data[i].totalPeopleNum,
                         registTime: liveMatchList.data[i].registTime,
+                        sports: liveMatchList.data[i].sports,
                         memberList: liveMatchList.data[i].liveMemberList?.memberId
                     })
                     // user가 만든 실시간 모임이 아니거나 참여하지 않았으면
                     //joinMeeting();
                     // user가 만든 실시간 모임이 아니지만 이미 참여하였으면
-                    quitMetting();
+                    //quitMetting();
                     // user가 만든 실시간 모임이면
-                    //modifyMeeting();
+                    modifyMeeting();
                 });
             }
             setMarkers(newMarkers);
@@ -231,7 +236,7 @@ export default function HomePage() {
                 marker = setMapIcon(basketBallMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
-            case 'soccer':
+            case 'football':
                 marker = setMapIcon(soccerMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
@@ -272,8 +277,8 @@ export default function HomePage() {
             </div>
 
             {state.modalType === 'register' && <RegisterModal type={state.sportType} place={{ address: "고운뜰공원", lat: geolocation.latitude, lng: geolocation.longitude }} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
-            {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }} />}
-            {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} openModal={state.modalType} closeModal={() => { closeModal(); }}></JoinModal>}
+            {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} closeModal={() => { closeModal(); }} />}
+            {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></JoinModal>}
             {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></QuitModal>}
         </div>
     )

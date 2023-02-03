@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 
 export const LIVE_MATCH_LIST = '/live';
 const SERVER_URL = 'https://192.168.31.79:8080/live'
+const LOCAL_SERVER_URL = 'https://localhost:8080/live'
 
 const fetcher = (lat: number, lng: number) => axios.get(SERVER_URL, { params: { lat: lat, lng: lng } }).then(({ data }) => data)
 
