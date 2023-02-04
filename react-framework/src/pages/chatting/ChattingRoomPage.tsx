@@ -45,26 +45,25 @@ export default function ChattingRoomPage() {
     const [textList, setTextList] = useState(initialTextList)
     const [activateSend, setActivateSend] = useState("opacity-40")
     const [inputValue, setInputValue] = useState("")
-    const [editDone, setEditDone] = useState(false)
 
     const newTextList = {
         isMine: true,
         innerText: inputValue,
         profile: defaultProfile
     }
-    let scrollRef: any = useRef<HTMLUListElement>();
-    let inputRef: any = useRef();
+    let scrollRef: any | undefined = useRef(null);
+    let inputRef: any | undefined = useRef(null);
 
     const TextListRendering = () => {
         let index = 0
         const Result = textList.map((text) => {
             index++;
-            return <SpeechBubble key={index} isMine={text.isMine} innerText={text.innerText} profile={text.profile}/>
+            return <SpeechBubble key={index} isMine={text.isMine} innerText={text.innerText} profile={text.profile} />
         })
         return Result
     }
 
-    
+
     const handleOnChange = (e: any) => {
         console.log(e.target.value)
         setInputValue(e.target.value)
@@ -79,14 +78,13 @@ export default function ChattingRoomPage() {
         if (e.code === "Enter") {
             if (!inputValue) return
             console.log(e.target.value)
-            
+
             setTextList(
                 [...textList, newTextList]
             )
             setInputValue("")
             setActivateSend("opacity-40")
             inputRef.current.focus()
-            scrollToBottom();
         }
     }
 
@@ -98,23 +96,18 @@ export default function ChattingRoomPage() {
         inputRef.current.focus()
     }
 
-    const scrollToBottom = () => {
-        if (scrollRef.current) {
-            scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-        }
-    }
-
     useEffect(() => {
-        scrollToBottom();
-    }, [inputValue])
+        window.scrollTo(0, scrollRef.current.scrollHeight)
+    }, [textList])
 
     return (
-        <div className="w-full h-full flex flex-col justify-between bg-gray-100 " ref={scrollRef}>
+        <div className="w-full h-full flex flex-col justify-between bg-gray-100">
             <div>
                 <div className="flex justify-center font-inter text-20">
                     {params.roomId}번 채팅방
                 </div>
-                <div>{TextListRendering()}</div>
+                <div ref={scrollRef}>{TextListRendering()}</div>
+                <div className="pb-100 bg-gray-100"></div>
             </div>
             <div className="flex h-40 bg-white w-full fixed bottom-55">
                 <img src={emoticonButton} className="w-21 h-21 ml-18 self-center sticky bottom-55" />
