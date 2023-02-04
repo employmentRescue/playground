@@ -12,22 +12,22 @@ export default function ListCard({ roomProfile, title, personnel, latestMsg }: L
     function handleOnClickToChattingRoom() {
         return (
             // room/1 대신 변수 사용하기
-            location.href="/chatting/room/1"
+            location.href = "/chatting/room/1"
         )
     }
 
     return (
-        <div className="flex bg-white w-full h-60" onClick={() => handleOnClickToChattingRoom()}>
-            <Profile profile={roomProfile} className="self-center mx-14"/>
+        <div className="flex bg-white w-full h-60 py-10" onClick={() => handleOnClickToChattingRoom()}>
+            <Profile profile={roomProfile} className="self-center mx-14" />
             <div className="flex flex-col font-inter">
-                <div className="flex mt-10">
+                <div className="flex mt-5">
                     <p className="text-15 font-semibold">{title}</p>
                     <p className="ml-5 -mt-1 text-15 opacity-20">{personnel}</p>
                 </div>
                 <div className="text-13 opacity-50">
                     <p>{latestMsg}</p>
                 </div>
-                
+
             </div>
         </div>
     )
