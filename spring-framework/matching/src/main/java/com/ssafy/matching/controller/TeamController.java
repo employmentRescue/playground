@@ -33,7 +33,8 @@ public class TeamController {
         return new ResponseEntity<Team>(teamService.registerTeam(team), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "팀에 초대하기", notes = "팀에 초대한다.")
+    //TODO Entity 변경으로 인한 수정있음
+    @ApiOperation(value = "팀에 초대하기(수정중)", notes = "팀에 초대한다.")
     @PostMapping("/invite")
     public void join(@RequestBody @ApiParam(value = "팀-멤버 정보", required = true) TeamMember teamMember) throws Exception {
         System.out.println(teamMember);
