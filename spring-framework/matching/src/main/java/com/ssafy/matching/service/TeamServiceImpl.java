@@ -25,6 +25,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team registerTeam(Team team) {
+        System.out.println(team);
+
+        for(TeamMember teamMember : team.getTeamMemberList()) {
+            teamMember.setTeam(team);
+        }
+
         return teamRepository.save(team);
     }
 

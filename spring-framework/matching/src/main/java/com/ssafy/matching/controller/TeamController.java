@@ -26,8 +26,7 @@ public class TeamController {
         return new ResponseEntity<Team>(teamService.viewTeamByTeamId(teamId), HttpStatus.OK);
     }
     
-    //TODO 팀 등록 - ERROR
-    @ApiOperation(value = "팀 등록하기(구현중)", notes = "새로 팀을 등록한다.")
+    @ApiOperation(value = "팀 등록하기", notes = "새로 팀을 등록한다.")
     @PostMapping("/register")
     public ResponseEntity<Team> register(@RequestBody @ApiParam(value = "팀 정보", required = true) Team team) throws Exception {
         System.out.println(team);

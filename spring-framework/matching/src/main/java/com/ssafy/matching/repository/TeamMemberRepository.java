@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TeamMemberRepository extends JpaRepository<TeamMember, Integer> {
     TeamMember save(TeamMember teamMember);
-    void deleteByTeamIdAndAndMemberId(int teamId, long memberId);
 }
