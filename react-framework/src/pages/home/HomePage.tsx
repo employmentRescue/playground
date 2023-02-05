@@ -12,7 +12,7 @@ import badmintonIcon from "@/assets/icons/badminton-original.png"
 import currentPos from "@/assets/icons/current-position.png"
 import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
-import useLiveMatchListQuery from "@/hooks/useLiveMatchListQuery"
+import useLiveMatchListQuery from "@/hooks/liveMatch/useLiveMatchListQuery"
 import { liveMatch } from "@/models/liveMatch"
 import { UseQueryResult } from "react-query"
 

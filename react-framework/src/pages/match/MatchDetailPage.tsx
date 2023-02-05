@@ -7,10 +7,9 @@ import soccerMap from "@/assets/icons/soccer-map.png"
 import soccerIcon from "@/assets/icons/soccer-original.png"
 import badmintonMap from "@/assets/icons/badminton-map.png"
 import badmintonIcon from "@/assets/icons/badminton-original.png"
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import { match } from "@/models/match";
-import useMatchDetailQuery from "@/hooks/useMatchDetailQuery";
+import useMatchDetailQuery from "@/hooks/match/useMatchDetailQuery";
 import JoinButton from "@/components/Match/Buttons/JoinButton";
 
 
@@ -18,14 +17,13 @@ import JoinButton from "@/components/Match/Buttons/JoinButton";
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
   const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
-  const [markers, setMarkers] = useState<naver.maps.Marker[] | null>([]);
 
   // naver map
   const mapElement: any | null = useRef(undefined);
 
   // initial call
   const geolocation = useGeolocation();
-    
+
   const matchId = useSelector((state: RootState) => {
     return state.match.id;
   })
@@ -78,7 +76,7 @@ export default function MatchDetailPage() {
         break;
     }
   }, []);
-  
+
   useEffect(() => {
     if (naverMap === null)
       return;
@@ -95,68 +93,68 @@ export default function MatchDetailPage() {
     setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
 
   }, [geolocation])
-  
+
   return (
-      match.isSuccess ?
-        <div>
-      <div ref = { mapElement } className = "w-full h-[364px]" ></div >
-      <div className="w-[320px] pl-23 pt-21">
-        <div className="flex">
-          <img src={imgUrl}></img>
-          <div>{match.data.title}</div>
-        </div>
-        <div className="w-[320px] h-2 bg-gray-600"></div>
-        <div>
+    match.isSuccess ?
+      <div>
+        <div ref={mapElement} className="w-full h-[364px]" ></div >
+        <div className="w-[320px] pl-23 pt-21">
           <div className="flex">
-            <img></img>
-            <div>장소</div>
+            <img src={imgUrl}></img>
+            <div>{match.data.title}</div>
           </div>
-          <div>{match.data.place.address}</div>
-        </div>
-        <div className="flex">
+          <div className="w-[320px] h-2 bg-gray-600"></div>
           <div>
             <div className="flex">
               <img></img>
-              <div>일시</div>
+              <div>장소</div>
             </div>
-            <div>{match.data.registerDate}</div>
+            <div>{match.data.place.address}</div>
           </div>
-          <div>
-            <div className="flex">
-              <img></img>
-              <div>게임 시간</div>
-            </div>
-            <div>{match.data.time}시간</div>
-          </div>
-        </div>
-        <div className="flex">
-          <div>
-            <div className="flex">
-              <img></img>
-              <div>게임 종류</div>
-            </div>
-            <div>{match.data.type}</div>
-          </div>
-          <div>
-            <div className="flex">
-              <img></img>
-              <div>게임 수준</div>
-            </div>
-            <div>{match.data.level}시간</div>
-          </div>
-        </div>
-        <div>
           <div className="flex">
-            <img></img>
-            <div>성별</div>
+            <div>
+              <div className="flex">
+                <img></img>
+                <div>일시</div>
+              </div>
+              <div>{match.data.registerDate}</div>
+            </div>
+            <div>
+              <div className="flex">
+                <img></img>
+                <div>게임 시간</div>
+              </div>
+              <div>{match.data.time}시간</div>
+            </div>
           </div>
-          <div>{match.data.sex}</div>
+          <div className="flex">
+            <div>
+              <div className="flex">
+                <img></img>
+                <div>게임 종류</div>
+              </div>
+              <div>{match.data.type}</div>
+            </div>
+            <div>
+              <div className="flex">
+                <img></img>
+                <div>게임 수준</div>
+              </div>
+              <div>{match.data.level}시간</div>
+            </div>
+          </div>
+          <div>
+            <div className="flex">
+              <img></img>
+              <div>성별</div>
+            </div>
+            <div>{match.data.sex}</div>
+          </div>
+          <div className="w-[320px] h-2 bg-gray-600"></div>
         </div>
-        <div className="w-[320px] h-2 bg-gray-600"></div>
-      </div> 
-      
-      <JoinButton onClick={join}>참여 하기</JoinButton>
-    </div > : <div></div>
+
+        <JoinButton onClick={join}>참여 하기</JoinButton>
+      </div > : <div></div>
 
   )
 }
