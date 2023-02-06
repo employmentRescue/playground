@@ -4,7 +4,7 @@ import { useReducer, ComponentProps } from "react"
 
 import basketBallOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
-import soccerOriginal from "@/assets/icons/soccer-original.png"
+import footballOriginal from "@/assets/icons/football-original.png"
 import filterEtc from "@/assets/icons/filter-etc.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
 import closeIcon from "@/assets/icons/exit.png"
@@ -15,18 +15,18 @@ import { sign } from "crypto";
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
 type propsTab = {
-    clickedTab: string, 
+    clickedTab: string,
     changeType: () => void;
 }
 // ============== 상단 탭 관련 ====================================================
 type TabAction = { type: 'AUTOMATCH' | 'LIST' };
 
 interface TabState {
-    tabType : string;
+    tabType: string;
 }
 
 const initialTabState: TabState = {
-    tabType : 'AUTOMATCH',
+    tabType: 'AUTOMATCH',
 }
 
 function registerTabType(state: TabState, action: TabAction) {
@@ -50,23 +50,23 @@ type listItem = {
     member: string,
     title: string,
     date: string,
-    
+
 }
 
-type sportAction = { type: 'ISCLICKED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON'}
+type sportAction = { type: 'ISCLICKED' | 'BASKETBALL' | 'football' | 'BADMINTON' }
 
 interface sportTypeState {
-    isClicked : boolean;
-    sportType : string;
+    isClicked: boolean;
+    sportType: string;
 }
 
 const initialSportTypeState: sportTypeState = {
-    isClicked : false,
-    sportType : 'BASKETBALL',
-} 
+    isClicked: false,
+    sportType: 'BASKETBALL',
+}
 
-function registerSportType(state: sportTypeState, action: sportAction){
-    switch(action.type) {
+function registerSportType(state: sportTypeState, action: sportAction) {
+    switch (action.type) {
         case 'ISCLICKED':
             if (state.isClicked === false) {
                 return {
@@ -83,19 +83,19 @@ function registerSportType(state: sportTypeState, action: sportAction){
         case 'BASKETBALL':
             return {
                 ...state,
-                isClicked : false,
+                isClicked: false,
                 sportType: 'BASKETBALL'
             }
-        case 'SOCCER':
+        case 'football':
             return {
                 ...state,
-                isClicked : false,
-                sportType: 'SOCCER'
+                isClicked: false,
+                sportType: 'football'
             }
         case 'BADMINTON':
             return {
                 ...state,
-                isClicked : false,
+                isClicked: false,
                 sportType: 'BADMINTON'
             }
     }
@@ -103,24 +103,24 @@ function registerSportType(state: sportTypeState, action: sportAction){
 
 // ========================= 상단 탭 ===================================================
 // 자동 매치 탭
-function AutoMatchTab({clickedTab, changeType}: propsTab) {
+function AutoMatchTab({ clickedTab, changeType }: propsTab) {
 
-    if (clickedTab === 'LIST'){
+    if (clickedTab === 'LIST') {
         return (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-            <div className="w-164 h-50 pt-15 pl-47 {solid} bg-[#fff]" onClick={(event)=>{
+            <div className="w-164 h-50 pt-15 pl-47 {solid} bg-[#fff]" onClick={(event) => {
                 event.preventDefault();
                 changeType();
             }}>
                 <span className="w-71 h-24 font-normal font-inter text-[17px] leading-normal text-left text-[#000]" >
-                    자동 매칭   
+                    자동 매칭
                 </span>
             </div>
         )
     }
     else {
         return (
-            <div className="w-164 h-50 pt-15 pl-47 border-b-1 border-solid border-[#303eff] bg-[#fff]" onClick={(event)=>{
+            <div className="w-164 h-50 pt-15 pl-47 border-b-1 border-solid border-[#303eff] bg-[#fff]" onClick={(event) => {
                 event.preventDefault();
                 changeType();
             }}>
@@ -130,14 +130,14 @@ function AutoMatchTab({clickedTab, changeType}: propsTab) {
             </div>
         )
     }
-    
+
 }
 
 // 목록 텝
-function ListTab({clickedTab, changeType}: propsTab) {
-    if (clickedTab === 'AUTOMATCH'){
+function ListTab({ clickedTab, changeType }: propsTab) {
+    if (clickedTab === 'AUTOMATCH') {
         return (
-            <div className="w-164 h-50 pt-15 pl-66 bg-[#fff]" onClick={(event)=>{
+            <div className="w-164 h-50 pt-15 pl-66 bg-[#fff]" onClick={(event) => {
                 event.preventDefault();
                 changeType();
             }}>
@@ -149,7 +149,7 @@ function ListTab({clickedTab, changeType}: propsTab) {
     }
     else {
         return (
-            <div className="w-164 h-50 pt-15 pl-66 border-b-1 border-solid border-[#303eff] bg-[#fff]" onClick={(event)=>{
+            <div className="w-164 h-50 pt-15 pl-66 border-b-1 border-solid border-[#303eff] bg-[#fff]" onClick={(event) => {
                 event.preventDefault();
                 changeType();
             }}>
@@ -162,8 +162,8 @@ function ListTab({clickedTab, changeType}: propsTab) {
 }
 
 // 내용 - 자동매칭인지 목록인지
-function Content({clickedTab}: {clickedTab: string}) {
-    if (clickedTab === 'AUTOMATCH'){
+function Content({ clickedTab }: { clickedTab: string }) {
+    if (clickedTab === 'AUTOMATCH') {
         return (
             <div>
                 <MatchFilterBar />
@@ -185,22 +185,22 @@ function Content({clickedTab}: {clickedTab: string}) {
 // 자동 매칭 필터바
 function MatchFilterBar() {
     const [state, dispatch] = useReducer(registerSportType, initialSportTypeState)
-    const isClicked = () => dispatch({type: 'ISCLICKED'})
-    const basketball = () => {sportChange("BASKETBALL"); dispatch({type: 'BASKETBALL'});}
-    const soccer = () => {sportChange("SOCCER"); dispatch({type: 'SOCCER'});}
-    const badminton = () => {sportChange("BADMINTON"); dispatch({type: 'BADMINTON'});}
+    const isClicked = () => dispatch({ type: 'ISCLICKED' })
+    const basketball = () => { sportChange("BASKETBALL"); dispatch({ type: 'BASKETBALL' }); }
+    const football = () => { sportChange("football"); dispatch({ type: 'football' }); }
+    const badminton = () => { sportChange("BADMINTON"); dispatch({ type: 'BADMINTON' }); }
 
-    const [sportIcon, setSportIcon] = useState({border : "border-[#efad45] bg-[#fde9b4]", img : basketBallOriginal})
+    const [sportIcon, setSportIcon] = useState({ border: "border-[#efad45] bg-[#fde9b4]", img: basketBallOriginal })
     const sportChange = (type: string) => {
         switch (type) {
             case "BASKETBALL":
-                setSportIcon({border : "border-[#efad45] bg-[#fde9b4]", img : basketBallOriginal});
+                setSportIcon({ border: "border-[#efad45] bg-[#fde9b4]", img: basketBallOriginal });
                 break;
-            case "SOCCER":
-                setSportIcon({border : "border-[#9C8DD3] bg-[#d8caff]", img : soccerOriginal});
+            case "football":
+                setSportIcon({ border: "border-[#9C8DD3] bg-[#d8caff]", img: footballOriginal });
                 break;
             case "BADMINTON":
-                setSportIcon({border : "border-[#71D354] bg-[#c4ffb6]", img : badmintonOriginal});
+                setSportIcon({ border: "border-[#71D354] bg-[#c4ffb6]", img: badmintonOriginal });
                 break;
         }
     }
@@ -208,26 +208,26 @@ function MatchFilterBar() {
     return (
         <div className="relative w-[360px] h-53 grow-0 m-0 pt-8 pl-16 bg-[#f1f3ff]">
             <div className={"w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] rounded-20 " + sportIcon.border}
-            onClick={(event)=>{
-                event.preventDefault();
-                isClicked();
-            }}>
-                <img src={sportIcon.img} className="w-20 h-20 grow-0"/>
+                onClick={(event) => {
+                    event.preventDefault();
+                    isClicked();
+                }}>
+                <img src={sportIcon.img} className="w-20 h-20 grow-0" />
             </div>
-            {state.isClicked === true && <MatchFilterType sportType={state.sportType} onChangeMode={(type)=>{
-                switch(type) {
-                    case "BASKETBALL" :
+            {state.isClicked === true && <MatchFilterType sportType={state.sportType} onChangeMode={(type) => {
+                switch (type) {
+                    case "BASKETBALL":
                         basketball();
                         break;
-                    case "SOCCER" : 
-                        soccer();
+                    case "football":
+                        football();
                         break;
-                    case "BADMINTON" :
+                    case "BADMINTON":
                         badminton();
                         break;
-                    }
                 }
-            }/>}
+            }
+            } />}
             <MatchFilterDistance />
             <MatchFilterDate />
             <MatchFilterTime />
@@ -237,34 +237,34 @@ function MatchFilterBar() {
 }
 
 // 자동 매칭 필터바 - 종목
-function MatchFilterType({sportType, onChangeMode} : {sportType: string, onChangeMode : (type:string) => void}) {
-    const basketBallBorder = ()=>{return (sportType === 'BASKETBALL' ? "border-[#efad45]" : "border-[#fde9b4]")}
-    const soccerBorder = ()=>{return (sportType === 'SOCCER' ? "border-[#9C8DD3]" : "border-[#d8caff]")}
-    const badmintonBorder = ()=>{return (sportType === 'BADMINTON' ? "border-[#71D354]" : "border-[#c4ffb6]")}
-    
+function MatchFilterType({ sportType, onChangeMode }: { sportType: string, onChangeMode: (type: string) => void }) {
+    const basketBallBorder = () => { return (sportType === 'BASKETBALL' ? "border-[#efad45]" : "border-[#fde9b4]") }
+    const footballBorder = () => { return (sportType === 'football' ? "border-[#9C8DD3]" : "border-[#d8caff]") }
+    const badmintonBorder = () => { return (sportType === 'BADMINTON' ? "border-[#71D354]" : "border-[#c4ffb6]") }
+
     return (
         <div className="absolute top-61 left-6 w-60 h-[157px] m-0 pt-7 px-10 rounded-15 border-solid border-1 border-[#303EFF]/50 bg-[#f1f3ff] z-10">
             <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8  rounded-20 bg-[#fde9b4] border-solid border-[2.5px] " + basketBallBorder()}
-            onClick={(event)=>{
-                event.preventDefault();
-                onChangeMode("BASKETBALL");
+                onClick={(event) => {
+                    event.preventDefault();
+                    onChangeMode("BASKETBALL");
 
-            }}>
-                <img src={basketBallOriginal} className="w-20 h-20 grow-0"/>
+                }}>
+                <img src={basketBallOriginal} className="w-20 h-20 grow-0" />
             </div>
-            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#d8caff] border-solid border-[2.5px] " + soccerBorder()}
-            onClick={(event)=>{
-                event.preventDefault();
-                onChangeMode("SOCCER");
-            }}>
-                <img src={soccerOriginal} className="w-20 h-20 grow-0"/>
+            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#d8caff] border-solid border-[2.5px] " + footballBorder()}
+                onClick={(event) => {
+                    event.preventDefault();
+                    onChangeMode("football");
+                }}>
+                <img src={footballOriginal} className="w-20 h-20 grow-0" />
             </div>
             <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#c4ffb6] border-solid border-[2.5px] " + badmintonBorder()}
-            onClick={(event)=>{
-                event.preventDefault();
-                onChangeMode("BADMINTON");
-            }}>
-                <img src={badmintonOriginal} className="w-20 h-20 grow-0"/>
+                onClick={(event) => {
+                    event.preventDefault();
+                    onChangeMode("BADMINTON");
+                }}>
+                <img src={badmintonOriginal} className="w-20 h-20 grow-0" />
             </div>
         </div>
     )
@@ -282,7 +282,7 @@ function MatchFilterDistance() {
 // 자동 매칭 필터 - 거리범위 지정
 function MatchDistanceSetting() {
     const [distance, setDistance] = useState('1')
-    const valueChange : ComponentProps<'input'>['onChange'] = (event) => {
+    const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
     }
 
@@ -290,17 +290,17 @@ function MatchDistanceSetting() {
         <div className="absolute bottom-0 left-0 p-0 w-[359px] h-[558px] flex-grow-0 bg-[#f3cccc]">
             <div>
                 <span className="inline-block w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">지역 선택</span>
-                <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"/>
+                <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]" />
             </div>
             <div>
-                <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18"/>
-                <input type="text" value="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/>
+                <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18" />
+                <input type="text" value="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]" />
             </div>
             <div className="w-full h-3/5 bg-[#d99d9d]">
                 <h1>지도</h1>
             </div>
-            <div className="flex-row h-1/9 justify-center mt-15 mx-18"> 
-                <input type="range" min="0" max="22" className="w-full" value={distance} onChange={valueChange}/>
+            <div className="flex-row h-1/9 justify-center mt-15 mx-18">
+                <input type="range" min="0" max="22" className="w-full" value={distance} onChange={valueChange} />
                 <div className="flex">
                     <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
                     <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
@@ -315,9 +315,9 @@ function MatchDistanceSetting() {
 // 자동 매칭 필터바 - 날짜
 function MatchFilterDate() {
     return (
-        <div className="absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]"> 
+        <div className="absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]">
             <span className="w-45 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">1월 15일</span>
-            
+
         </div>
     )
 }
@@ -327,7 +327,7 @@ function MatchFilterTime() {
     return (
         <div className="absolute top-15 left-[233px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]">
             <span className="w-43 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">18 ~ 22</span>
-            
+
         </div>
     )
 }
@@ -336,7 +336,7 @@ function MatchFilterTime() {
 function MatchFilterEtc() {
     return (
         <div className="absolute top-15 left-[318px] w-25 h-25 flex-grow-0 pt-3 pl-3 rounded-5 bg-[#303eff]">
-            <img src={filterEtc} alt="" className="w-20 h-20 flex-grow-0"/>
+            <img src={filterEtc} alt="" className="w-20 h-20 flex-grow-0" />
         </div>
     )
 }
@@ -345,7 +345,7 @@ function MatchFilterEtc() {
 function MatchContent() {
     return (
         <div className="relative w-[360px] h-[575px] m-0 pt-8 pl-6 bg-[#fff]">
-            <img src={matchButton} alt="" className="absolute top-[133px] left-[80px] w-[200px] h-[200px] "/>
+            <img src={matchButton} alt="" className="absolute top-[133px] left-[80px] w-[200px] h-[200px] " />
             <div className="absolute w-[124px] h-45 flex-grow-0 top-[360px] left-[118px] pt-11 pl-22 rounded-30 bg-[#303eff]">
                 <span className="w-70 h-24 flex-grow-0 font-inter text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
             </div>
@@ -359,7 +359,7 @@ function MatchContent() {
 function ListFilterBar() {
     return (
         <div className="w-[360px] h-93 grow-0 m-0 pt-8 pl-16 border-b-1 border-solid border-[#D8CAFF] bg-[#f1f3ff]">
-            <img src={basketBallOriginal} className="w-40 h-40 grow-0 mr-11"/>
+            <img src={basketBallOriginal} className="w-40 h-40 grow-0 mr-11" />
         </div>
     )
 }
@@ -385,7 +385,7 @@ function ListItem() {
 }
 
 // 목록 전체 내용
-function ListContent(){
+function ListContent() {
     return (
         <div className="flex flex-col w-360px h-full m-0 pt-10 bg=[#f5f5f5]">
             <ListItem />
@@ -397,23 +397,23 @@ function ListContent(){
 
 // 매치 페이지 출력
 export default function MatchPage() {
-    
+
     const [state, dispatch] = useReducer(registerTabType, initialTabState);
 
-    const autoMatch = () => dispatch({type : 'AUTOMATCH'});
-    const list = () => dispatch({type: 'LIST'});
+    const autoMatch = () => dispatch({ type: 'AUTOMATCH' });
+    const list = () => dispatch({ type: 'LIST' });
 
     return (
         <div className="h-full bg-[#f5f5f5] m-0 pt-12">
             <div className="w-[360px] h-50 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
-                <AutoMatchTab clickedTab={state.tabType} changeType={()=>{
+                <AutoMatchTab clickedTab={state.tabType} changeType={() => {
                     autoMatch();
-                }}/>
-                <ListTab clickedTab={state.tabType} changeType={()=>{
+                }} />
+                <ListTab clickedTab={state.tabType} changeType={() => {
                     list();
-                }}/>
+                }} />
             </div>
-            <Content clickedTab={state.tabType}/>
+            <Content clickedTab={state.tabType} />
         </div>
     )
 }

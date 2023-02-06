@@ -5,8 +5,8 @@ import RegisterModal from "@/components/LiveModal/RegisterModal"
 import JoinModal from "@/components/LiveModal/JoinModal"
 import basketBallMap from "@/assets/icons/basketball-map.png"
 import basketBallIcon from "@/assets/icons/basketball-original.png"
-import soccerMap from "@/assets/icons/soccer-map.png"
-import soccerIcon from "@/assets/icons/soccer-original.png"
+import footballMap from "@/assets/icons/football-map.png"
+import footballIcon from "@/assets/icons/football-original.png"
 import badmintonMap from "@/assets/icons/badminton-map.png"
 import badmintonIcon from "@/assets/icons/badminton-original.png"
 import currentPos from "@/assets/icons/current-position.png"
@@ -16,7 +16,7 @@ import useLiveMatchListQuery from "@/hooks/liveMatch/useLiveMatchListQuery"
 import { liveMatch } from "@/models/liveMatch"
 import { UseQueryResult } from "react-query"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'football' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
 
 interface State {
     isPressed: boolean;
@@ -42,10 +42,10 @@ function registReducer(state: State, action: Action) {
                 ...state,
                 sportType: 'basketball'
             }
-        case 'SOCCER':
+        case 'football':
             return {
                 ...state,
-                sportType: 'soccer'
+                sportType: 'football'
             }
         case 'BADMINTON':
             return {
@@ -91,7 +91,7 @@ export default function HomePage() {
     const [state, dispatch] = useReducer(registReducer, initialState);
     const onPressed = () => dispatch({ type: 'ISPRESSED' });
     const basketBall = () => dispatch({ type: 'BASKETBALL' });
-    const soccer = () => dispatch({ type: 'SOCCER' });
+    const football = () => dispatch({ type: 'football' });
     const badminton = () => dispatch({ type: 'BADMINTON' });
     const defaultSportType = () => dispatch({ type: 'DEFAULT' });
     const joinMeeting = () => dispatch({ type: 'JOIN' });
@@ -182,7 +182,7 @@ export default function HomePage() {
                         newMarkers.push(setMapIcon(basketBallMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
                     case "football":
-                        newMarkers.push(setMapIcon(soccerMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
+                        newMarkers.push(setMapIcon(footballMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
                     case "badminton":
                         newMarkers.push(setMapIcon(badmintonMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
@@ -237,7 +237,7 @@ export default function HomePage() {
                 registerMeeting();
                 break;
             case 'football':
-                marker = setMapIcon(soccerMap, location, naverMap, 60, 60, true)
+                marker = setMapIcon(footballMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
             case 'badminton':
@@ -265,8 +265,8 @@ export default function HomePage() {
                             <div className="w-40 h-40 flex justify-center items-center mt-7 rounded-50 border-3 border-yellow-600 bg-yellow-200" onClick={basketBall} >
                                 <img src={basketBallIcon} className="w-20 h-20"></img>
                             </div>
-                            <div className="w-40 h-40 flex justify-center items-center rounded-50 border-3 border-[#9c8dd3] bg-blue-400" onClick={soccer}>
-                                <img src={soccerIcon} className="w-20 h-20"></img>
+                            <div className="w-40 h-40 flex justify-center items-center rounded-50 border-3 border-[#9c8dd3] bg-blue-400" onClick={football}>
+                                <img src={footballIcon} className="w-20 h-20"></img>
                             </div>
                             <div className="w-40 h-40 flex justify-center items-center mb-7 rounded-50 border-3 border-[#71d354] bg-green-400" onClick={badminton}>
                                 <img src={badmintonIcon} className="w-20 h-20"></img>

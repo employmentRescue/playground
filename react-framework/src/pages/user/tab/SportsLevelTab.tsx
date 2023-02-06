@@ -1,5 +1,5 @@
 import ChoiceCompoleteButton from "@/components/userRegister/Buttons/ChoiceCompleteButton"
-import soccerImg from "@/assets/icons/soccer-bg-colored.png"
+import footballImg from "@/assets/icons/football-bg-colored.png"
 import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
 import LevelCard from "@/components/userRegister/LevelCard"
@@ -14,10 +14,10 @@ export default function SportsLevelTab() {
                     <div className="flex">
                         <LevelCard
                             className={"w-[300px] h-122 mb-15 pt-20 pl-20 bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 "}
-                            imageSrc={soccerImg}
+                            imageSrc={footballImg}
                             imageSize={"w-45 h-45 mr-25 mt-4"}
                             innerText="축구"
-                            sportName="soccer"
+                            sportName="football"
                         />
                     </div>
                     <div className="flex">
