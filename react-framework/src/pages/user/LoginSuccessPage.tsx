@@ -1,10 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
-
+import { useNavigate } from "react-router-dom";
 
 export default function LoginSuccessPage() {
     // 이 페이지는 굳이 만들 필요 없이 바로 메인 페이지로 연결시켜도 될 듯 함
     // Your web app's Firebase configuration
+    const navigate = useNavigate();
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
         apiKey: "AIzaSyCZSaWxtPJKnVTUtkmIDxIMCreCEr0ScbA",
@@ -25,6 +26,7 @@ export default function LoginSuccessPage() {
         await Notification.requestPermission().then((permission) => {
             if (permission === 'granted') {
                 console.log('Notification permission granted.');
+                navigate("/");
             }
         })
     }
@@ -48,7 +50,7 @@ export default function LoginSuccessPage() {
         // ...
     });
 
-    location.href = "/"
+
 
     return (
         <div>
