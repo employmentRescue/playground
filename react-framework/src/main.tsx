@@ -23,7 +23,7 @@ import RegisterCompletePage from './pages/user/RegisterCompletePage';
 import ChattingListPage from './pages/chatting/ChattingListPage';
 import ChattingRoomPage from './pages/chatting/ChattingRoomPage';
 import MatchDetailPage from './pages/match/MatchDetailPage';
-import MatchRegisterPage from './pages/match/MatchRegister';
+import MatchRegisterPage from './pages/match/MatchRegisterPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();

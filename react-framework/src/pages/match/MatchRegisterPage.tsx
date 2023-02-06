@@ -18,10 +18,30 @@ import sportsIcon from '@/assets/icons/sports.png';
 import levelIcon from '@/assets/icons/level.png';
 import sexIcon from '@/assets/icons/sex.png';
 import taek from '../../assets/profiles/taek.png';
+import { place } from '@/models/place';
+
+interface options{
+  sportsType: string,
+  level: string,
+  gameTime: number,
+  sex: string,
+  gameType: string,
+}
 
 export default function MatchRegisterPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
   const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
+  const [title, setTitle] = useState<string | null>(null);
+  const [detail, setDetail] = useState<string | null>(null);
+  const [date, setDate] = useState<string | null>(null);
+  const [place, setplace] = useState<place | null>(null);
+  const [sportsType, setSportsType] = useState<string | null>(null);
+  const [level, setLevel] = useState<string | null>(null);
+  const [gameTime, setGameTime] = useState<number | null>(null);
+  const [sex, setSex] = useState<string | null>(null);
+  const [gameType, setGameType] = useState<string | null>(null);
+  const [options, setOptions] = useState<options | null>(null);
+
 
   // naver map
   const mapElement: any | null = useRef(undefined);
@@ -33,7 +53,7 @@ export default function MatchRegisterPage() {
     return state.match.id;
   });
 
-  const match = useMatchDetailQuery(1);
+  //const match = useMatchDetailQuery(1);
 
   const join = () => {
     console.log('join');
@@ -133,61 +153,114 @@ export default function MatchRegisterPage() {
         <div className="ml-7 text-15">종목</div>
       </div>
       <div className="flex mt-5">
+        {sportsType === 'basketball' ?
         <button
-          className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="basketball"
+          className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
+        >
+          농구
+        </button> :
+        <button
+            className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={()=>setSportsType('basketball')}
         >
           농구
         </button>
-        <button
-          className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="football"
+        }
+        {sportsType === 'football' ?
+          <button
+            className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            축구
+          </button> :
+          <button
+            className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={() => setSportsType('football')}
         >
           축구
         </button>
-        <button
-          className="w-73 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="badminton"
-        >
-          배드민턴
-        </button>
+        }
+        {sportsType === 'badminton' ?
+          <button
+            className="w-73 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            배드민턴
+          </button> :
+          <button
+            className="w-73 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={() => setSportsType('badminton')}
+          >
+            배드민턴
+          </button>
+        }
       </div>
       <div className="flex mt-24">
         <img className="w-20 h-20"></img>
         <div className="ml-7 text-15">수준</div>
       </div>
       <div className="flex mt-5">
+        {level === 'level1' ?
         <button
-          className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="level1"
+          className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
         >
           입문
-        </button>
+          </button>
+          :
+          <button
+            className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={()=>setLevel('level1')}
+        >
+          입문
+          </button>
+      }
+        {level === 'level2' ?
         <button
-          className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="level2"
+          className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
         >
           초수
-        </button>
+          </button>
+          :
+          <button
+            className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={()=>setLevel('level2')}
+        >
+          초수
+          </button>
+      }
+        {level === 'level3' ?
         <button
-          className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="level3"
+          className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+        >
+         중수
+          </button>
+          :
+          <button
+            className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={()=>setLevel('level3')}
         >
           중수
-        </button>
+          </button>
+      }
+        {level === 'level4' ?
         <button
-          className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="level4"
+          className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
         >
           고수
-        </button>
+          </button>
+          :
+          <button
+            className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={()=>setLevel('level4')}
+        >
+          고수
+          </button>
+      }
       </div>
       <div className="flex mt-24">
         <img className="w-20 h-20"></img>
         <div className="ml-7 text-15">게임 시간</div>
       </div>
       <div className="flex mt-5 items-center">
-        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10"></input>
+        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={()=>setGameTime}></input>
         <div className="text-13 text-gray-400">시간</div>
       </div>
       <div className="flex mt-24">
@@ -195,48 +268,90 @@ export default function MatchRegisterPage() {
         <div className="ml-7 text-15">성별</div>
       </div>
       <div className="flex mt-5">
+      {sex === 'M' ?
         <button
-          className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="basketball"
+          className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
+        >
+          남자
+        </button> :
+        <button
+            className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={()=>setSex('M')}
         >
           남자
         </button>
-        <button
-          className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="football"
+        }
+        {sex === 'F' ?
+          <button
+            className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            여자
+          </button> :
+          <button
+            className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={() => setSex('F')}
         >
           여자
         </button>
-        <button
-          className="w-73 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="allSexType"
-        >
-          성별무관
-        </button>
+        }
+        {sex === 'MF' ?
+          <button
+            className="w-73 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            성별무관
+          </button> :
+          <button
+            className="w-73 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={() => setSex('MF')}
+          >
+            성별무관
+          </button>
+        }
       </div>
       <div className="flex mt-24">
         <img className="w-20 h-20"></img>
         <div className="ml-7 text-15">게임 종류</div>
       </div>
       <div className="flex mt-5 mb-24">
-        <button
-          className="w-63 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="3on3"
-        >
-          3 on 3
-        </button>
-        <button
-          className="w-63 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="5on5"
-        >
-          5 on 5
-        </button>
-        <button
-          className="w-63 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-          value="allGameType"
-        >
-          종류무관
-        </button>
+        {gameType === '3on3' ?
+          <button
+            className="w-63 h-25 text-12 text-white bg-blue-700 rounded-5"
+          >
+            3 on 3
+          </button> :
+          <button
+            className="w-63 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={() => setGameType('3on3')}
+          >
+            3 on 3
+          </button>
+        }
+        {gameType === '5on5' ?
+          <button
+            className="w-63 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            5 on 5
+          </button> :
+          <button
+            className="w-63 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={() => setGameType('5on5')}
+          >
+            5 on 5
+          </button>
+        }
+        {gameType === 'any' ?
+          <button
+            className="w-73 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            종류무관
+          </button> :
+          <button
+            className="w-73 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
+            onClick={() => setGameType('any')}
+          >
+            종류무관
+          </button>
+        }
       </div>
     </div>
   );
