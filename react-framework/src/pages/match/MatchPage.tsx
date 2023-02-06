@@ -183,7 +183,7 @@ function Content({clickedTab}: {clickedTab: string}) {
         return (
             <div>
                 <ListFilterBar />
-                {/* <ListContent /> */}
+                <ListContent />
             </div>
         )
     }
@@ -478,8 +478,9 @@ function ListContent(){
     const gatheringListQuery = useGatheringListQuery();
     console.log(gatheringListQuery);
     const [gatheringData, setGatheringDate] = useState(gatheringListQuery.data);
+    console.log(gatheringData)
+    // useQuery가 알아서 업데이트되는지 확인해야함 
     
-
     useEffect(() => {
         if (gatheringListQuery.isSuccess) {
             setGatheringDate(gatheringListQuery.data)
