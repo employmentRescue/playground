@@ -6,12 +6,14 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @ToString
 
 @SuppressWarnings("serial")
@@ -33,11 +35,14 @@ public class Team implements Serializable {
     
     //TODO 필요하면 팀장 객체 연결하기
 
-    @ApiModelProperty(value = "팀의 멤버 리스트")
-    @OneToMany
-    //TODO 팀 멤버 리스트 : insertable 나중에 수정하기
-    @JoinColumn(name = "teamId", insertable=false, updatable=false)
-    private List<TeamMember> teamMemberList;
+    @ApiModelProperty(value = "팀의 멤버 리스트", required = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "teamId")
+    private List<TeamMember> teamMemberList = new ArrayList<>();
 
-    //TODO 팀 매치 리스트
+    //TODO ERRIR : Could not write JSON: could not extract ResultSet; nested exception is com.fasterxml.jackson.databind.JsonMappingException: could not extract ResultSet (through reference chain: com.ssafy.matching.dto.Team["teamMatchResultList"])]
+//    @ApiModelProperty(value = "팀의의 경기 리스트")
+//    @OneToMany
+//    @JoinColumn(name = "teamId", insertable=false, updatable=false)
+//    private List<TeamMatchResult> teamMatchResultList;
 }
