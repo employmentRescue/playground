@@ -37,7 +37,7 @@ public class oauthController {
     @Autowired
     ServletContext servletContext;
 
-    String ReactFramework_baseUrl = "http://localhost:3000";
+    String ReactFramework_baseUrl = "https://localhost:3000";
 
     @Value("${oauth2.client.registration.client-id.kakao}")
     String kakao_cliendID;
@@ -245,8 +245,8 @@ public class oauthController {
 
     @Transactional
     @RequestMapping("/regist")
-    ResponseEntity regist(String code/*, @RequestBody Map<String, Object> json*/) throws Exception {
-
+    ResponseEntity regist(String code, @RequestBody Map<String, Object> json/**/) throws Exception {
+        System.out.println(json);
 
 //        System.out.println(code);
 //        OAuthRegisterCache loginCache = oAuthRegisterCacheRepository.findById(code).orElse(null);
