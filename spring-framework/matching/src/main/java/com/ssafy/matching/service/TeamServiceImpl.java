@@ -45,7 +45,9 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void joinTeam(TeamMember teamMember) {
+    public void joinTeam(TeamMember teamMember, int teamId) {
+        Team team = teamRepository.getByTeamId(teamId);
+        teamMember.setTeam(team);
         teamMemberRepository.save(teamMember);
     }
 

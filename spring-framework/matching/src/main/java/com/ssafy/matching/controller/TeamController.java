@@ -48,12 +48,12 @@ public class TeamController {
         teamService.deleteTeam(teamId);
     }
 
-    //TODO Entity 변경으로 인한 수정있음
-    @ApiOperation(value = "팀에 초대하기(수정중)", notes = "팀에 초대한다.")
-    @PostMapping("/invite")
-    public void join(@RequestBody @ApiParam(value = "팀-멤버 정보", required = true) TeamMember teamMember) throws Exception {
+    @ApiOperation(value = "팀에 초대하기", notes = "팀에 초대한다.")
+    @PostMapping("/invite/{teamid}")
+    public void join(@PathVariable("teamid") int teamId, @RequestBody @ApiParam(value = "팀-멤버 정보", required = true) TeamMember teamMember) throws Exception {
         System.out.println(teamMember);
-        teamService.joinTeam(teamMember);
+        System.out.println(teamId);
+        teamService.joinTeam(teamMember, teamId);
     }
 
     private ResponseEntity<?> exceptionHandling(Exception e) {
