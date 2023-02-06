@@ -22,4 +22,13 @@ public class MatchServiceImpl implements MatchService {
 
         return matchRepository.save(match);
     }
+
+    @Override
+    public Match updateMatch(Match match) {
+        for(TeamMatchResult teamMatchResult : match.getTeamMatchResultList()) {
+            teamMatchResult.setMatch(match);
+        }
+
+        return matchRepository.save(match);
+    }
 }
