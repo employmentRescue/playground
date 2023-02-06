@@ -28,8 +28,7 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/oauth2")
-@CrossOrigin("*") // https://shinsunyoung.tistory.com/86
-//@CrossOrigin(origins = {"http://domain1.com","http://domain2.com"})
+//@CrossOrigin(origins = {"*"})
 //@CrossOrigin(origins = {"https://kauth.kakao.com","https://localhost:3000", "https://192.168.31.246", "https://192.168.31.246:3000", "https://192.168.31.246/oauth2/login/kakao"})
 public class oauthController {
     @Autowired
@@ -38,7 +37,7 @@ public class oauthController {
     @Autowired
     ServletContext servletContext;
 
-//    String ReactFramework_baseUrl = "http://localhost:3000";
+    String ReactFramework_baseUrl = "http://localhost:3000";
 
     @Value("${oauth2.client.registration.client-id.kakao}")
     String kakao_cliendID;
@@ -152,6 +151,13 @@ public class oauthController {
                                 "code=" + code //(String) map.get("code")
                         );
 
+
+        System.out.println("KAKAO REDIRECT : " + "https://kauth.kakao.com/oauth/token"+ "?" +
+                "grant_type=authorization_code&" +
+                "client_id=" + kakao_cliendID + "&" +
+                "redirect_uri=" + URLEncoder.encode(getURLBase(req) + "/oauth2/login", StandardCharsets.UTF_8) + "&" +
+                "code=" + code);
+
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("POST");
         httpConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -203,16 +209,16 @@ public class oauthController {
                     );
 
 
-            return "redirect:" + UriComponentsBuilder
-                    .fromHttpUrl(getURLBase(req) + "/login/success")
-                    .queryParam("access_token",accessToken)
-                    .queryParam("refresh_token",refreshToken)
-                    .build()
-                    .toUriString();
+//            return "redirect:" + UriComponentsBuilder
+//                    .fromHttpUrl(getURLBase(req) + "/login/success")
+//                    .queryParam("access_token",accessToken)
+//                    .queryParam("refresh_token",refreshToken)
+//                    .build()
+//                    .toUriString();
 
-//            return "redirect:" + ReactFramework_baseUrl + "/login/success?"
-//                    + "access_token=" + accessToken
-//                    + "&refresh_token=" + refreshToken;
+            return "redirect:" + ReactFramework_baseUrl + "/login/success?"
+                    + "access_token=" + accessToken
+                    + "&refresh_token=" + refreshToken;
         }
         else {
             OAuthRegisterCache registerCache = OAuthRegisterCache
@@ -226,12 +232,12 @@ public class oauthController {
             oAuthRegisterCacheRepository.save(registerCache);
             System.out.println(registerCache);
 
-
-            return "redirect:" + UriComponentsBuilder
-                    .fromHttpUrl(getURLBase(req) + "/login/regist")
-                    .queryParam("code",registerCache.getToken())
-                    .build().toUriString();
-            //return "redirect:" + ReactFramework_baseUrl + "/login/regist?code=" + registerCache.getToken();
+//            System.out.println(getURLBase(req));
+//            return "redirect:" + UriComponentsBuilder
+//                    .fromHttpUrl(getURLBase(req) + "/login/regist")
+//                    .queryParam("code",registerCache.getToken())
+//                    .build().toUriString();
+            return "redirect:" + ReactFramework_baseUrl + "/login/regist?code=" + registerCache.getToken();
         }
 
 
@@ -239,13 +245,15 @@ public class oauthController {
 
     @Transactional
     @RequestMapping("/regist")
-    ResponseEntity regist(String code, @RequestBody Map<String, Object> json) throws Exception {
-        System.out.println(code);
-        OAuthRegisterCache loginCache = oAuthRegisterCacheRepository.findById(code).orElse(null);
-        System.out.println("regist : " + loginCache);
-        if (loginCache == null || code == null || code.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    ResponseEntity regist(String code/*, @RequestBody Map<String, Object> json*/) throws Exception {
 
-        System.out.println("regist : " + loginCache);
+
+//        System.out.println(code);
+//        OAuthRegisterCache loginCache = oAuthRegisterCacheRepository.findById(code).orElse(null);
+//        System.out.println("regist : " + loginCache);
+//        if (loginCache == null || code == null || code.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+//
+//        System.out.println("regist : " + loginCache);
 
 
 //
@@ -278,8 +286,8 @@ public class oauthController {
 //        if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
 //        oAuthRegisterCacheRepository.delete(loginCache);
 //
-        String accessToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-        String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+//        String accessToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+//        String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
 //
 //
 //        kakaoLoginAccessTokenCacheRepository
@@ -303,15 +311,18 @@ public class oauthController {
 //                                .build()
 //                );
 
-        return new ResponseEntity(Map.of(
-                "user-id", loginCache.getKakao_userID(),
-                "access_token", accessToken
-                    , "refresh_token", refreshToken
-        ) , HttpStatus.OK);
+//        return new ResponseEntity(Map.of(
+//                "user-id", loginCache.getKakao_userID(),
+//                "access_token", accessToken
+//                    , "refresh_token", refreshToken
+//        ) , HttpStatus.OK);
 //        try {
 //        }
 //        catch (Throwable e){
 //            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
+
+
+        return new ResponseEntity("hi",HttpStatus.OK);
     }
 }

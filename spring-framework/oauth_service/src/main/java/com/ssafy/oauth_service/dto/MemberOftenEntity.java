@@ -1,11 +1,11 @@
 package com.ssafy.oauth_service.dto;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -23,8 +23,10 @@ public class MemberOftenEntity extends BaseTimeEntity {
     String web_fcm_token;
     String mobile_fcm_token;
     String user_profile_img_url;
-//    @ElementCollection
-////    @JoinColumn
+
+    // cascade 써야하는 이유 : https://stackoverflow.com/questions/33038202/how-do-i-solve-this-error-of-object-references-an-unsaved-transient-instance-s
+    @OneToMany(cascade= CascadeType.ALL)
 //            @JoinTable(name = "PREFER_ACTIVITIES", joinColumns = @JoinColumn(name = "MEMBER_ID"))
-//    Set<String> preferActivities = new HashSet<>();
+    @JoinColumn(name = "MEMBER_ID")
+    List<activitiesEntity> prefer_activities = new LinkedList<>();
 }
