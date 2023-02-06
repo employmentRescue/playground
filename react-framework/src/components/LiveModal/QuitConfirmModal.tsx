@@ -1,4 +1,4 @@
-import useLiveMatchQuit from "@/hooks/useLiveMatchQuit";
+import useLiveMatchQuit from "@/hooks/liveMatch/useLiveMatchQuit";
 import { liveMatch } from "@/models/liveMatch";
 
 interface Iprops {
