@@ -348,13 +348,13 @@ function MatchDistanceSetting({clicked} : {clicked:() => void}) {
                 </div>
                 <div>
                     <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18"/>
-                    <input type="text" value="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/>
+                    <form action=""><input type="text" defaultValue="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/></form>
                 </div>
                 <div className="w-full h-3/5 bg-[#d99d9d]">
                     <h1>지도</h1>
                 </div>
                 <div className="flex-row h-1/9 justify-center mt-15 mx-18">
-                    <input type="range" min="0" max="22" className="w-full" value={distance} onChange={valueChange}/>
+                    <form action=""><input type="range" min="0" max="22" className="w-full" placeholder={distance} defaultValue="1" onChange={valueChange}/></form>
                     <div className="flex mb-12">
                         <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
                         <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
@@ -389,7 +389,7 @@ function MatchDateSetting({clicked} : {clicked:() => void}) {
                 </div>
                 <div>
                     <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18"/>
-                    <input type="text" value="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/>
+                    <input type="text" defaultValue="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/>
                 </div>
                 <div className="w-full h-3/5 bg-[#d99d9d]">
                     <h1>지도</h1>
