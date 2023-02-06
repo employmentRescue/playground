@@ -97,67 +97,74 @@ export default function MatchDetailPage() {
 
   return (
     match.isSuccess ?
-      <div className="bg-white">
-        <div ref={mapElement} className="h-[364px]" ></div >
-        <div className="w-[320px] pl-23 pt-21">
-          <div className="flex">
-            {match.data.sports === "basketball" && <img className="w-30 h-30" src={basketBallIcon} ></img>}
-            {match.data.sports === "football" && <img className="w-30 h-30" src={footballIcon}></img>}
-            {match.data.sports === "badminton" && <img className="w-30 h-30" src={badmintonIcon}></img>}
-            <div>{match.data.title}</div>
-          </div>
-          <div className="w-[320px] h-2 bg-gray-600"></div>
-          <div>
-            <div className="flex">
-              <img className="w-20 h-20" src={placeIcon}></img>
-              <div>장소</div>
+      <div className="bg-white h-full">
+        <div className="w-full h-[calc(100vh-118px)] flex flex-col items-center overflow-auto">
+          <div ref={mapElement} className="w-full h-[364px] pt-[364px] mb-21" ></div >
+          <div className="w-[320px]">
+            <div className="flex mb-13 items-center">
+              {match.data.sports === "basketball" && <img className="w-30 h-30" src={basketBallIcon} ></img>}
+              {match.data.sports === "football" && <img className="w-30 h-30" src={footballIcon}></img>}
+              {match.data.sports === "badminton" && <img className="w-30 h-30" src={badmintonIcon}></img>}
+              <div className="ml-11">{match.data.title}</div>
             </div>
-            <div>{match.data.place.address}</div>
-          </div>
-          <div className="flex justify-between">
-            <div>
+            <div className="w-[320px] h-1 mb-11 bg-gray-600"></div>
+            <div className="mb-22">
               <div className="flex">
-                <img className="w-20 h-20" src={calendarIcon}></img>
-                <div>일시</div>
+                <img className="w-20 h-20" src={placeIcon}></img>
+                <div className="ml-4 text-15 font-bold">장소</div>
               </div>
-              <div>{match.data.startDate}</div>
+              <div className="text-13">{match.data.place.address}</div>
             </div>
-            <div>
-              <div className="flex">
-                <img className="w-20 h-20" src={timeIcon}></img>
-                <div>게임 시간</div>
+            <div className="flex justify-between">
+              <div className="mb-22">
+                <div className="flex">
+                  <img className="w-20 h-20" src={calendarIcon}></img>
+                  <div className="ml-4 text-15 font-bold">일시</div>
+                </div>
+                <div>{match.data.startDate}</div>
               </div>
-              <div>{match.data.playTime}시간</div>
+              <div>
+                <div className="flex">
+                  <img className="w-20 h-20" src={timeIcon}></img>
+                  <div className="ml-4 text-15 font-bold">게임 시간</div>
+                </div>
+                <div>{match.data.playTime}시간</div>
+              </div>
+            </div>
+            <div className="flex justify-between">
+              <div className="mb-22">
+                <div className="flex">
+                  <img className="w-20 h-20" src={sportsIcon}></img>
+                  <div className="ml-4 text-15 font-bold">게임 종류</div>
+                </div>
+                <div>{match.data.gameType}</div>
+              </div>
+              <div>
+                <div className="flex">
+                  <img className="w-20 h-20" src={levelIcon}></img>
+                  <div className="ml-4 text-15 font-bold">게임 수준</div>
+                </div>
+                <div>{match.data.level}</div>
+              </div>
+            </div>
+            <div className="mb-22">
+              <div className="flex">
+                <img className="w-20 h-20" src={sexIcon}></img>
+                <div className="ml-4 text-15 font-bold">성별</div>
+              </div>
+              <div>{match.data.sex}</div>
+            </div>
+            <div className="w-[320px] h-1 mb-24 bg-gray-600"></div>
+            <div className="flex items-center justify-between">
+              <div className="text-15 font-bold">참여인원</div>
+              <div className="w-180 h-1 bg-gray-600"></div>
+              <div className="text-20 font-bold">{match.data.memberGatheringList.length}/{match.data.people}</div>
             </div>
           </div>
-          <div className="flex justify-between">
-            <div>
-              <div className="flex">
-                <img className="w-20 h-20" src={sportsIcon}></img>
-                <div>게임 종류</div>
-              </div>
-              <div>{match.data.gameType}</div>
-            </div>
-            <div>
-              <div className="flex">
-                <img className="w-20 h-20" src={levelIcon}></img>
-                <div>게임 수준</div>
-              </div>
-              <div>{match.data.level}</div>
-            </div>
-          </div>
-          <div>
-            <div className="flex">
-              <img className="w-20 h-20" src={sexIcon}></img>
-              <div>성별</div>
-            </div>
-            <div>{match.data.sex}</div>
-          </div>
-          <div className="w-[320px] h-2 bg-gray-600"></div>
-        </div>
 
-        <JoinButton onClick={join}>참여 하기</JoinButton>
-      </div > : <div></div>
+          <JoinButton onClick={join}>참여 하기</JoinButton>
+        </div>
+      </div > : null
 
   )
 }
