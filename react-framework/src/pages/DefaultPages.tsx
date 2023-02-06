@@ -9,7 +9,6 @@ export function DefaultPage() {
             <Outlet />
             <Footer />
         </div>
-
     )
 }
 
