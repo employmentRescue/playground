@@ -1,4 +1,4 @@
-package com.ssafy.userservice.dto;
+package com.ssafy.oauth_service.dto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,13 +1,10 @@
-package com.ssafy.userservice.dto;
+package com.ssafy.oauth_service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 
 @Entity
 @Getter @Setter
@@ -22,4 +19,3 @@ public class MemberSometimesEntity {
     String nickname;
     String name;
 }
-

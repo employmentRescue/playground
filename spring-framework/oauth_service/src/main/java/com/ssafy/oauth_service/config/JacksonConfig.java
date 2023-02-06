@@ -1,4 +1,4 @@
-package com.ssafy.userservice.config;
+package com.ssafy.oauth_service.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

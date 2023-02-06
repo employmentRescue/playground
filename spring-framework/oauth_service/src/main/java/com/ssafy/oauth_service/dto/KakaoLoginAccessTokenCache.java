@@ -1,4 +1,4 @@
-package com.ssafy.edu.api_gateway.dto;
+package com.ssafy.oauth_service.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

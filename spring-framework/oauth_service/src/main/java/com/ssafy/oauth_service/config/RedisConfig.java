@@ -1,4 +1,4 @@
-package com.ssafy.edu.api_gateway.config;
+package com.ssafy.oauth_service.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
