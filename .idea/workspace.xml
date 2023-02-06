@@ -78,7 +78,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../fcm-service/fcm-service" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/spring-framework/oauth_service" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -243,6 +243,7 @@
       <workItem from="1675507892523" duration="797000" />
       <workItem from="1675556589731" duration="5933000" />
       <workItem from="1675640770663" duration="5831000" />
+      <workItem from="1675658152162" duration="12000" />
     </task>
     <task id="LOCAL-00001" summary="docker 테스트용">
       <created>1675436548462</created>
