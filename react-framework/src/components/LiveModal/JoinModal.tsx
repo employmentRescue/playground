@@ -3,24 +3,24 @@ import exitIcon from '@/assets/icons/exit.png'
 import timeIcon from '@/assets/icons/time.png'
 import peopleIcon from '@/assets/icons/people.png'
 import profileIcon from '@/assets/profiles/taek.png'
-import { useDispatch } from 'react-redux';
 import JoinButton from './Buttons/JoinButton';
 import { liveMatch } from '@/models/liveMatch'
+import useLiveMatchJoin from '@/hooks/liveMatch/useLiveMatchJoin'
 
 interface Iprops {
     liveMatch: liveMatch;
-    openModal: string;
     closeModal: () => void;
 }
 
-export default function JoinModal(props: Iprops) {
-    const dispatch = useDispatch();
 
+export default function JoinModal(props: Iprops) {
     const join = () => {
         props.closeModal();
     }
 
-    return (props.openModal === "join" ?
+    const { mutate } = useLiveMatchJoin();
+
+    return (
         <div className="w-[322px] h-[341px] z-10 absolute left-1/2 ml-[-161px] bottom-14 rounded-15 bg-white flex flex-col items-center justify-center">
             <div className="w-[322px] flex h-18 mt-14">
                 <div className="ml-120 text-15">실시간 참여</div>
@@ -46,7 +46,7 @@ export default function JoinModal(props: Iprops) {
                     <img src={placeIcon} className="w-20 h-20"></img>
                     <div className='text-15 ml-6'>장소</div>
                 </div>
-                <div className='text-15'>{props.liveMatch.place}</div>
+                <div className='text-15'>{props.liveMatch.place.address}</div>
             </div>
             <div className='w-[284px] h-1 mt-10 bg-gray-600'></div>
             <div className='w-[284px] h-100 mt-16 mb-16 flex justify-between'>
@@ -60,8 +60,12 @@ export default function JoinModal(props: Iprops) {
             </div>
 
 
-            <JoinButton onClick={join}>참여하기</JoinButton>
-        </div>
-        : null
+            <JoinButton onClick={() => {
+                mutate({
+                    liveId: props.liveMatch.liveId,
+                    memberId: 111,
+                }), join();
+            }}>참여하기</JoinButton>
+        </div >
     )
 }

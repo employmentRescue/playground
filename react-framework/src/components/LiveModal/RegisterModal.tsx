@@ -1,30 +1,27 @@
-import React, { useState, useRef, ReactElement } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import JoinButton from './Buttons/JoinButton'
 import exit from '@/assets/icons/exit.png'
 import placeIcon from '@/assets/icons/place.png'
-import { addLiveMatch } from '@/stores/live/live';
+import { place } from '@/models/place';
+import RegisterConfirmModal from './RegisterConfirmModal';
 
 const arr: number[] = [... new Array(15)].map((_, i) => i + 1);
 
 interface Iprops {
     type: string;
-    lat: number;
-    lng: number;
-    openModal: string;
+    place: place;
     closeModal: () => void;
 }
 
 export default function RegisterModal(props: Iprops) {
-    const dispatch = useDispatch();
-    const [size, resize] = useState(1); // 현재 인원 size
-    const [size2, resize2] = useState(1); // 정원 size
-    const [height, resizeHeight] = useState(22); // 현재 인원 height
-    const [height2, resizeHeight2] = useState(22); // 정원 height
-    const [place, setPlace] = useState('');
-    const [detail, setDetail] = useState('');
-    const [currentPeopleNum, setCurrentPeopleNum] = useState(1);
-    const [totalPeopleNum, setTotalPeopleNum] = useState(1);
+    const [size, resize] = useState<number>(1); // 현재 인원 size
+    const [size2, resize2] = useState<number>(1); // 정원 size
+    const [height, resizeHeight] = useState<number>(22); // 현재 인원 height
+    const [height2, resizeHeight2] = useState<number>(22); // 정원 height
+    const [detail, setDetail] = useState<string>('');
+    const [currentPeopleNum, setCurrentPeopleNum] = useState<number>(1);
+    const [totalPeopleNum, setTotalPeopleNum] = useState<number>(1);
+    const [registConfirmModal, setRegistConfirmModal] = useState<boolean>(false);
 
     const open = (b: boolean) => {
         if (b) {
@@ -33,7 +30,6 @@ export default function RegisterModal(props: Iprops) {
         }
         else {
             resize2(5);
-
             resizeHeight2(66);
         }
 
@@ -50,10 +46,12 @@ export default function RegisterModal(props: Iprops) {
     }
 
     const handleDetailChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        console.log(e.target.value)
         setDetail(e.target.value);
     }
 
     const handleCurrentPeopleNumChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
         setCurrentPeopleNum(Number(e.target.value));
     }
 
@@ -61,24 +59,11 @@ export default function RegisterModal(props: Iprops) {
         setTotalPeopleNum(Number(e.target.value));
     }
 
-    const register = () => {
-        dispatch(addLiveMatch({
-            type: props.type,
-            place: "고운뜰공원",
-            detail: detail,
-            lat: props.lat,
-            lng: props.lng,
-            currentPeopleNum: currentPeopleNum,
-            totalPeopleNum: totalPeopleNum,
-            remainTime: 1800,
-            userNickName: "이경택",
-            userPicture: "userPicture",
-        }));
-        props.closeModal();
-
+    const registConfirm = (b: boolean) => {
+        setRegistConfirmModal(b);
     }
 
-    return (props.openModal === "register" ?
+    return (
         <div className="w-[322px] h-[265px] z-10 absolute left-1/2 ml-[-161px] bottom-14 rounded-15 bg-white flex flex-col items-center justify-center">
             <div className="w-[322px] flex h-18 mt-14">
                 <div className="ml-110 text-15">실시간 운동 등록</div>
@@ -92,23 +77,24 @@ export default function RegisterModal(props: Iprops) {
             <textarea onChange={handleDetailChange} value={detail} className="w-[284px] h-80 mt-12 bg-gray-600 text-gray-700 pl-15 pt-11 rounded-5" placeholder='하고 싶은 말을 작성하세요.'></textarea>
             <div className="w-[284px] h-22 mt-14 mb-13 flex">
                 <div className="text-15">현재 인원</div>
-                <select style={{ height: height }} size={size} onFocus={() => open(true)} onBlur={() => close(true)} onChange={(e) => { close(true); e.target.blur(); handleCurrentPeopleNumChange }} value={currentPeopleNum} className='w-36 h-22 bg-blue-600 rounded-5 text-12 pl-5 ml-14 text-white z-20'>
+                <select style={{ height: height }} size={size} onFocus={() => open(true)} onBlur={() => close(true)} onChange={(e) => { close(true); e.target.blur(); handleCurrentPeopleNumChange; }} className='w-36 h-22 bg-blue-600 rounded-5 text-12 pl-5 ml-14 text-white'>
                     {arr.map((item, index) => (
                         <option key={index} value={item}>{item}</option>
                     ))}
                 </select>
                 <div className="text-15 opacity-50 ml-6">명</div>
                 <div className="ml-46 text-15">정원</div>
-                <select style={{ height: height2 }} size={size2} onFocus={() => open(false)} onBlur={() => close(false)} onChange={(e) => { close(false); e.target.blur(); handleTotalPeopleNumChange }} value={totalPeopleNum} className='w-36 h-22 bg-blue-600 rounded-5 text-12 pl-5 ml-14 text-white z-20'>
+                <select style={{ height: height2 }} size={size2} onFocus={() => open(false)} onBlur={() => close(false)} onChange={(e) => { close(false); e.target.blur(); handleTotalPeopleNumChange }} className='w-36 h-22 bg-blue-600 rounded-5 text-12 pl-5 ml-14 text-white'>
                     {arr.map((item, index) => (
                         <option key={index} value={item}>{item}</option>
                     ))}
                 </select>
                 <div className="text-15 opacity-50 ml-6">명</div>
             </div>
-            <JoinButton onClick={register}>등록하기</JoinButton>
+            <JoinButton onClick={() => registConfirm(true)}>등록하기</JoinButton>
+            {registConfirmModal && <RegisterConfirmModal currentPeopleNum={currentPeopleNum} totalPeopleNum={totalPeopleNum} detail={detail} place={props.place} sports={props.type} closeRegisterModal={() => registConfirm(false)} closeModal={props.closeModal}></RegisterConfirmModal>}
         </div>
-        : null
+
     )
 
 }

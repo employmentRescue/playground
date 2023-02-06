@@ -11,7 +11,7 @@ interface IndexState {
 export default function LoginRegisterPage() {
     const dispatch = useDispatch();
     const currentIndex = useSelector((state: IndexState) => {
-        console.log(state)
+        // console.log(state)
         return state.registerTab.currentIndex
     })
 

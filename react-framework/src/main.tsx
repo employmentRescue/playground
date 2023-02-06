@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import store from './stores/store';
 import './index.css';
-import { UserDefaultPage, DefaultPage } from './pages/DefaultPages';
+import { UserDefaultPage, DefaultPage, ChattingDefaultPage } from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
 import MatchPage from './pages/match/MatchPage';
 
@@ -16,7 +16,9 @@ import LoginRegisterPage from './pages/user/LoginRegisterPage';
 import LoginFailPage from './pages/user/LoginFailPage';
 import LoginSuccessPage from './pages/user/LoginSuccessPage';
 import RegisterCompletePage from './pages/user/RegisterCompletePage';
-
+import ChattingListPage from './pages/chatting/ChattingListPage';
+import ChattingRoomPage from './pages/chatting/ChattingRoomPage';
+import MatchDetailPage from './pages/match/MatchDetailPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
         path: '',
         element: <HomePage />,
       },
+      {
+        path: 'match/',
+        element: <MatchPage />,
+      },
+      {
+        path: 'match/detail',
+        element: <MatchDetailPage/>,
+      }
     ]
   },
   {
@@ -52,10 +62,6 @@ const router = createBrowserRouter([
         element: <LoginFailPage />,
       },
       {
-        path: 'match/',
-        element: <MatchPage />,
-      },
-      {
         // 백엔드 서버에서 로그인 토큰까지 받아왔을 때 Redirect될 URL
         path: 'login/success',
         element: <LoginSuccessPage />,
@@ -65,7 +71,21 @@ const router = createBrowserRouter([
         element: <RegisterCompletePage />,
       }
     ]
-  }
+  },
+  {
+    path: '/',
+    element: <ChattingDefaultPage />,
+    children: [
+      {
+        path: 'chatting',
+        element: <ChattingListPage />,
+      },
+      {
+        path: 'chatting/room/:roomId',
+        element: <ChattingRoomPage />,
+      },
+    ]
+  },
 ]);
 
 

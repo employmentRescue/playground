@@ -24,6 +24,8 @@ export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps
                 console.log(userInfo)
                 if (innerText == "선택 완료") {
                     if (currentIndex == 2) {
+                        const CODE = location.search.split('=')[1];
+                        console.log(CODE)
                         location.href = "/login/register/complete"
                     } else {
                         dispatch(activeIndex(currentIndex + 1))
