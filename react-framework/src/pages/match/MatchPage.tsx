@@ -11,6 +11,9 @@ import closeIcon from "@/assets/icons/exit.png"
 import searchIcon from "@/assets/icons/search-icon.png"
 import { sign } from "crypto";
 
+import useGatheringListQuery from "@/hooks/useGatheringListQuery"
+
+
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
@@ -450,7 +453,8 @@ function ListFilterBar() {
 }
 
 // 목록 각 컴포넌트
-function ListItem() {
+function ListItem({data}: {data: Object}) {
+    console.log(data)
     return (
         <div className="relative w-328 h-120 flex-grow-0 my-10 mr-15 ml-17 pr-17 rounded-15 bg-[#fff] overflow-hidden">
             <div className="absolute w-59 h-120 flex-grow-0 pt-51 text-center  mr-11 inline-block bg-[#fde8b4]">
@@ -471,9 +475,37 @@ function ListItem() {
 
 // 목록 전체 내용
 function ListContent(){
+    const gatheringListQuery = useGatheringListQuery();
+    console.log(gatheringListQuery);
+    const [gatheringData, setGatheringDate] = useState(gatheringListQuery.data);
+    
+
+    useEffect(() => {
+        if (gatheringListQuery.isSuccess) {
+            setGatheringDate(gatheringListQuery.data)
+            console.log(gatheringData);
+        }
+        }, [gatheringListQuery.isLoading, gatheringListQuery.isSuccess])
+        
+    const listItems = () => {
+        if (gatheringListQuery.isSuccess) {
+            const gatheringList = gatheringData.map(({data}: {data: Object}) => <ListItem data={data}/>)
+            return (
+                <div>{gatheringList}</div>
+            )
+        }
+        else {
+            return (
+                <div>
+                    로딩중
+                </div>
+            )
+        }
+    }
+
     return (
         <div className="flex flex-col w-360px h-full m-0 pt-10 bg=[#f5f5f5]">
-            <ListItem />
+            {listItems()}
         </div>
     )
 }
