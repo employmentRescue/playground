@@ -4,7 +4,7 @@ import { useReducer, ComponentProps } from "react"
 
 import basketBallOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
-import soccerOriginal from "@/assets/icons/soccer-original.png"
+import footBallOriginal from "@/assets/icons/soccer-original.png"
 import filterEtc from "@/assets/icons/filter-etc.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
 import closeIcon from "@/assets/icons/exit.png"
@@ -20,6 +20,60 @@ import useGatheringListQuery from "@/hooks/useGatheringListQuery"
 type propsTab = {
     clickedTab: string, 
     changeType: () => void;
+}
+
+interface gatheringType {
+    gatheringId: number, // 1
+    title: string, // "3대3 농구하실분~"
+    description: string, // "같이 농구해요"
+    people: number, // 6
+    startDate: string, // "2023년 2월 15일"
+    startTime: string, // "18:30"
+    playTime: number, // 2
+    hostId: number, //111
+    sex: string, // "남성"
+    level: string, // "중수"
+    sports: string, // "basketball"
+    gameType: string, // "3대3"
+    place: object, 
+    // {
+    //   "placeId": 1,
+    //   "address": "고운뜰공원",
+    //   "lat": 36.3663369,
+    //   "lng": 127.2961423
+    // }
+    host: object, 
+    // {
+    //   "memberId": 111,
+    //   "name": "이경택",
+    //   "nickname": "이경택",
+    //   "memberDetail": {
+    //     "memberId": 111,
+    //     "statusMessage": "상태메시지1",
+    //     "preferTime": "10:00~11:00",
+    //     "userProfileImgUrl": "taek.png"
+    //   }
+    // }
+    memberGatheringList: any,
+    // [
+    //   {
+    //     "gatheringMemberId": 1,
+    //     "gatheringId": 1,
+    //     "memberId": 111,
+    //     "member": {
+    //       "memberId": 111,
+    //       "name": "이경택",
+    //       "nickname": "이경택",
+    //       "memberDetail": {
+    //         "memberId": 111,
+    //         "statusMessage": "상태메시지1",
+    //         "preferTime": "10:00~11:00",
+    //         "userProfileImgUrl": "taek.png"
+    //       }
+    //     }
+    //   }
+    // ],
+    completed: boolean
 }
 
 // ============ 상단 탭 관련 ====================================================
@@ -61,7 +115,7 @@ type listItem = {
     
 }
 
-type sportAction = { type: 'ISCLICKED' | 'BASKETBALL' | 'SOCCER' | 'BADMINTON'}
+type sportAction = { type: 'ISCLICKED' | 'BASKETBALL' | 'footBall' | 'BADMINTON'}
 
 interface sportTypeState {
     isClicked : boolean;
@@ -94,11 +148,11 @@ function registerSportType(state: sportTypeState, action: sportAction){
                 isClicked : false,
                 sportType: 'BASKETBALL'
             }
-        case 'SOCCER':
+        case 'footBall':
             return {
                 ...state,
                 isClicked : false,
-                sportType: 'SOCCER'
+                sportType: 'footBall'
             }
         case 'BADMINTON':
             return {
@@ -196,7 +250,7 @@ function MatchFilterBar() {
     const [state, dispatch] = useReducer(registerSportType, initialSportTypeState)
     const isClicked = () => dispatch({type: 'ISCLICKED'})
     const basketball = () => {sportChange("BASKETBALL"); dispatch({type: 'BASKETBALL'});}
-    const soccer = () => {sportChange("SOCCER"); dispatch({type: 'SOCCER'});}
+    const footBall = () => {sportChange("footBall"); dispatch({type: 'footBall'});}
     const badminton = () => {sportChange("BADMINTON"); dispatch({type: 'BADMINTON'});}
 
     const [sportIcon, setSportIcon] = useState({border : "border-[#efad45] bg-[#fde9b4]", img : basketBallOriginal})
@@ -205,8 +259,8 @@ function MatchFilterBar() {
             case "BASKETBALL":
                 setSportIcon({border : "border-[#efad45] bg-[#fde9b4]", img : basketBallOriginal});
                 break;
-            case "SOCCER":
-                setSportIcon({border : "border-[#9C8DD3] bg-[#d8caff]", img : soccerOriginal});
+            case "footBall":
+                setSportIcon({border : "border-[#9C8DD3] bg-[#d8caff]", img : footBallOriginal});
                 break;
             case "BADMINTON":
                 setSportIcon({border : "border-[#71D354] bg-[#c4ffb6]", img : badmintonOriginal});
@@ -257,8 +311,8 @@ function MatchFilterBar() {
                     case "BASKETBALL" :
                         basketball();
                         break;
-                    case "SOCCER" : 
-                        soccer();
+                    case "footBall" : 
+                        footBall();
                         break;
                     case "BADMINTON" :
                         badminton();
@@ -289,7 +343,7 @@ function MatchFilterBar() {
 // 자동 매칭 필터바 - 종목
 function MatchFilterType({sportType, onChangeMode} : {sportType: string, onChangeMode : (type:string) => void}) {
     const basketBallBorder = ()=>{return (sportType === 'BASKETBALL' ? "border-[#efad45]" : "border-[#fde9b4]")}
-    const soccerBorder = ()=>{return (sportType === 'SOCCER' ? "border-[#9C8DD3]" : "border-[#d8caff]")}
+    const footBallBorder = ()=>{return (sportType === 'footBall' ? "border-[#9C8DD3]" : "border-[#d8caff]")}
     const badmintonBorder = ()=>{return (sportType === 'BADMINTON' ? "border-[#71D354]" : "border-[#c4ffb6]")}
     
     return (
@@ -302,12 +356,12 @@ function MatchFilterType({sportType, onChangeMode} : {sportType: string, onChang
             }}>
                 <img src={basketBallOriginal} className="w-20 h-20 grow-0"/>
             </div>
-            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#d8caff] border-solid border-[2.5px] " + soccerBorder()}
+            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#d8caff] border-solid border-[2.5px] " + footBallBorder()}
             onClick={(event)=>{
                 event.preventDefault();
-                onChangeMode("SOCCER");
+                onChangeMode("footBall");
             }}>
-                <img src={soccerOriginal} className="w-20 h-20 grow-0"/>
+                <img src={footBallOriginal} className="w-20 h-20 grow-0"/>
             </div>
             <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#c4ffb6] border-solid border-[2.5px] " + badmintonBorder()}
             onClick={(event)=>{
@@ -453,21 +507,35 @@ function ListFilterBar() {
 }
 
 // 목록 각 컴포넌트
-function ListItem({data}: {data: Object}) {
-    console.log(data)
+function ListItem({data}: {data: gatheringType}) {
+    console.log(data);
+    let sportImg
+    switch(data?.sports) {
+        case "basketball":
+            sportImg = basketBallOriginal
+            break;
+        case "football":
+            sportImg = footBallOriginal
+            break;
+        case "badminton":
+            sportImg = badmintonOriginal
+            break;
+    }
+
     return (
-        <div className="relative w-328 h-120 flex-grow-0 my-10 mr-15 ml-17 pr-17 rounded-15 bg-[#fff] overflow-hidden">
+        <div className="relative w-[328px] h-120 flex-grow-0 my-10 mr-15 ml-17 pr-17 rounded-15 bg-[#fff] overflow-hidden">
             <div className="absolute w-59 h-120 flex-grow-0 pt-51 text-center  mr-11 inline-block bg-[#fde8b4]">
                 <span className="h-18 flex-grow-0 font-inter text-[15px] font-bold text-left text-[#000]">
-                    4/6
+                    4/6{string(data.memberGatheringList.length) + '/' + data.people}
                 </span>
             </div>
-            <img src={basketBallOriginal} className="absolute w-20 h-20 flex-grow-0 top-17 left-70 p-0 inline-block " />
-            <span className="absolute w-[117px] h-18 flex-grow-0 top-18 left-[101px] font-inter text-[15px] font-bold test-left inline-block text-[#000]">3대 3 농구하실분~</span>
+            <img src={sportImg} className="absolute w-20 h-20 flex-grow-0 top-17 left-70 p-0 inline-block " />
+            <span className="absolute w-130 h-18 flex-grow-0 top-18 left-[101px] font-inter text-[15px] font-bold test-left inline-block text-[#000]">{data?.title}</span>
             <div className="absolute w-1 h-105 flex-grow-0 top-8 left-[259px] bg-[#d9d9d9]"></div>
-            <span className="absolute w-35 h-37 flex-grow-0 top-41 left-[276px] font-inter text-[13px] text-left font-[#000]">
-                01-15
-                19:00
+            <span className="absolute w-40 h-37 flex-grow-0 top-41 left-[276px] font-inter text-[13px] text-left font-[#000]">
+                {data?.startDate.slice(5)}
+                <br></br>
+                {data?.startTime.slice(0,5)}
             </span>
         </div>
     )
@@ -476,17 +544,12 @@ function ListItem({data}: {data: Object}) {
 // 목록 전체 내용
 function ListContent(){
     const gatheringListQuery = useGatheringListQuery();
-    console.log(gatheringListQuery);
     // useQuery가 알아서 업데이트되는지 확인해야함 
-    
-    useEffect(() => {
-        if (gatheringListQuery.isSuccess) {
-        }
-        }, [gatheringListQuery.isLoading, gatheringListQuery.isSuccess])
         
     const listItems = () => {
         if (gatheringListQuery.isSuccess) {
-            const gatheringList = gatheringListQuery.data.map(({data}: {data: Object}) => <ListItem data={data}/>)
+
+            const gatheringList = gatheringListQuery.data.map((eachData : gatheringType, i: number ) => <ListItem key={i} data={eachData}/>)
             return (
                 <div>{gatheringList}</div>
             )
@@ -502,7 +565,7 @@ function ListContent(){
 
     return (
         <div className="flex flex-col w-360px h-full m-0 pt-10 bg=[#f5f5f5]">
-            {listItems()}
+            {gatheringListQuery.isSuccess && listItems()}
         </div>
     )
 }
