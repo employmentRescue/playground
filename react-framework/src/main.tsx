@@ -12,7 +12,7 @@ import MatchPage from './pages/match/MatchPage';
 
 import persistStore from 'redux-persist/es/persistStore';
 import LoginPage from './pages/user/LoginPage';
-import LoginRegisterPage from './pages/user/LoginRegisterPage';
+import LoginRegistPage from './pages/user/LoginRegistPage';
 import LoginFailPage from './pages/user/LoginFailPage';
 import LoginSuccessPage from './pages/user/LoginSuccessPage';
 import RegisterCompletePage from './pages/user/RegisterCompletePage';
@@ -53,8 +53,8 @@ const router = createBrowserRouter([
       // 앱 계정이 없는 사용자에게 보여줄 회원가입 페이지
       {
         // 개인정보, 관심정보, 운동레벨 변경 탭
-        path: 'login/register',
-        element: <LoginRegisterPage />,
+        path: 'login/regist',
+        element: <LoginRegistPage />,
       },
       {
         // 로그인 실패 페이지

@@ -1,9 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from "../register/user";
-
-interface Action {
-   
-}
 
 export interface Chatting {
    userProfile: { userId: number, profilePath : string }[],

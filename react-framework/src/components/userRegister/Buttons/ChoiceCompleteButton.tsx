@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { activeIndex } from "@/stores/register/registerTab";
+import useKakaoLogin from "@/hooks/login/useKakaoLogin";
+import { useState } from "react";
 
 type IndexState = {
     registerTab: { currentIndex: 0 | 1 | 2 }
@@ -11,12 +13,20 @@ interface CompleteButtonProps {
 
 export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps) {
     const dispatch = useDispatch();
+    const [info, setInfo] = useState();
+    
     const currentIndex = useSelector((state: IndexState) => {
         return state.registerTab.currentIndex
     })
     const userInfo = useSelector((state: any) => {
         return state.user
     })
+    let code = location.search.split('=')[1];
+    const kakaoLogin = useKakaoLogin(code);
+
+    const saveInfo = () => {
+        kakaoLogin.mutate(info)
+    }
 
     return (
         <button
@@ -24,8 +34,8 @@ export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps
                 console.log(userInfo)
                 if (innerText == "선택 완료") {
                     if (currentIndex == 2) {
-                        const CODE = location.search.split('=')[1];
-                        console.log(CODE)
+                        saveInfo();
+                        console.log(info)
                         location.href = "/login/register/complete"
                     } else {
                         dispatch(activeIndex(currentIndex + 1))

@@ -3,15 +3,11 @@ import FavoriteSportsTab from "./tab/FavoriteSportsTab"
 import SportsLevelTab from "./tab/SportsLevelTab"
 import { useDispatch, useSelector } from "react-redux"
 import { activeIndex } from "@/stores/register/registerTab"
+import { RootState } from "@/stores/store"
 
-interface IndexState {
-    registerTab: { currentIndex: 0 | 1 | 2 }
-};
-
-export default function LoginRegisterPage() {
+export default function LoginRegistPage() {
     const dispatch = useDispatch();
-    const currentIndex = useSelector((state: IndexState) => {
-        // console.log(state)
+    const currentIndex = useSelector((state: RootState) => {
         return state.registerTab.currentIndex
     })
 

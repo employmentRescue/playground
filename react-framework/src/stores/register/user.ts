@@ -6,7 +6,7 @@ interface NicknameAction {
     payload: string
 }
 interface FavoriteTimeAction {
-    payload: number | number[]
+    payload: number[]
 }
 interface FavoriteSportsAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, isSelected: boolean }
@@ -15,9 +15,9 @@ interface SportsLevelAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, level: Level }
 }
 
-export interface User {
+interface User {
     nickname: string,
-    favoriteTime?: number | number[],
+    favoriteTime: number[],
     favoriteSports: {
         football: boolean,
         basketball: boolean,

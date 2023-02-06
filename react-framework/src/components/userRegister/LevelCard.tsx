@@ -1,10 +1,6 @@
 import LevelButton from "./Buttons/LevelButton";
 import { useSelector } from "react-redux"
-import { User } from "@/stores/register/user"
-
-interface userState {
-    user: User
-}
+import { RootState } from "@/stores/store";
 
 interface ClassNameProps {
     className: any;
@@ -17,7 +13,7 @@ interface ClassNameProps {
 
 export default function LevelCard({ className, imageSrc, imageSize, onClick, innerText, sportName }: ClassNameProps) {
 
-    const userSportsLevel = useSelector((state: userState) => {
+    const userSportsLevel = useSelector((state: RootState) => {
         if (sportName == "football") {
             return state.user.sportsLevel.football;
         }
