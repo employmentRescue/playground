@@ -38,12 +38,20 @@ const router = createBrowserRouter([
       },
       {
         path: 'match/detail',
-        element: <MatchDetailPage/>,
+        element: <MatchDetailPage />,
       },
       {
         path: 'menu/',
-        element: <MenuListPage/>,
-      }
+        element: <MenuListPage />,
+      },
+      {
+        path: 'chatting/',
+        element: <ChattingListPage />,
+      },
+      {
+        path: 'chatting/room/:roomId',
+        element: <ChattingRoomPage />,
+      },
     ]
   },
   {
@@ -75,20 +83,6 @@ const router = createBrowserRouter([
         path: 'login/register/complete',
         element: <RegisterCompletePage />,
       }
-    ]
-  },
-  {
-    path: '/',
-    element: <ChattingDefaultPage />,
-    children: [
-      {
-        path: 'chatting',
-        element: <ChattingListPage />,
-      },
-      {
-        path: 'chatting/room/:roomId',
-        element: <ChattingRoomPage />,
-      },
     ]
   },
 ]);
