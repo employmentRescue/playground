@@ -56,6 +56,12 @@ public class TeamController {
         teamService.joinTeam(teamMember, teamId);
     }
 
+    @ApiOperation(value = "팀에서 나가기", notes = "팀Id와 유저ID에 해당하는 팀에서 나간다.")
+    @DeleteMapping("/leave")
+    public void delete(int teamId, long memberId) throws Exception {
+        teamService.leaveTeam(teamId, memberId);
+    }
+
     private ResponseEntity<?> exceptionHandling(Exception e) {
         e.printStackTrace();
         return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

@@ -51,4 +51,10 @@ public class TeamServiceImpl implements TeamService {
         teamMemberRepository.save(teamMember);
     }
 
+    @Override
+    public void leaveTeam(int teamId, long memberId) {
+        Team team = teamRepository.getByTeamId(teamId);
+        teamMemberRepository.deleteByTeamAndMemberId(team, memberId);
+    }
+
 }

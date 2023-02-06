@@ -11,4 +11,5 @@ public interface TeamService {
     void deleteTeam(int teamId);
 
     void joinTeam(TeamMember teamMember, int teamId);
+    void leaveTeam(int teamId, long memberId);
 }
