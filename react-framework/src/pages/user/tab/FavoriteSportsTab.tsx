@@ -1,6 +1,6 @@
 import ChoiceCompoleteButton from "@/components/userRegister/Buttons/ChoiceCompleteButton"
 import ImageCard from "@/components/userRegister/ImageCard"
-import soccerImg from "@/assets/icons/soccer-original.png"
+import footballImg from "@/assets/icons/football-original.png"
 import basketballImg from "@/assets/icons/basketball-original.png"
 import badmintonImg from "@/assets/icons/badminton-original.png"
 import { useDispatch, useSelector } from "react-redux"
@@ -14,8 +14,8 @@ interface userState {
 export default function FavoriteSportsTab() {
     const dispatch = useDispatch();
 
-    const isFavoriteSoccer = useSelector((state: userState) => {
-        return state.user.favoriteSports.soccer;
+    const isFavoritefootball = useSelector((state: userState) => {
+        return state.user.favoriteSports.football;
     });
     const isFavoriteBasketball = useSelector((state: userState) => {
         return state.user.favoriteSports.basketball;
@@ -40,10 +40,10 @@ export default function FavoriteSportsTab() {
                     <div className="flex-col">
                         <ImageCard
                             onClick={() =>
-                                dispatch(setFavoriteSports({ sportName: "soccer", isSelected: !(isFavoriteSoccer) }))
+                                dispatch(setFavoriteSports({ sportName: "football", isSelected: !(isFavoritefootball) }))
                             }
-                            className={"w-80 h-80 mx-12 pt-19 pl-19 " + ((isFavoriteSoccer) ? "bg-[#BEE0F7] border-1 border-blue-700 " : "bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 ")}
-                            imageSrc={soccerImg}
+                            className={"w-80 h-80 mx-12 pt-19 pl-19 " + ((isFavoritefootball) ? "bg-[#BEE0F7] border-1 border-blue-700 " : "bg-[#BCD2F5]/25 border-1 border-[#BCD2F5]/25 ")}
+                            imageSrc={footballImg}
                             imageSize={"w-42 h-42"}
                         />
                         <p className="text-center font-inter text-11 mt-6">축구</p>
