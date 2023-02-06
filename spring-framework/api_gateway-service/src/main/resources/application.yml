@@ -1,6 +1,6 @@
 server:
   port: 443
-    http: 80
+    # http: 80
 
 
 spring:
