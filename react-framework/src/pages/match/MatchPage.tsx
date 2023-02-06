@@ -183,7 +183,7 @@ function Content({clickedTab}: {clickedTab: string}) {
         return (
             <div>
                 <ListFilterBar />
-                <ListContent />
+                {/* <ListContent /> */}
             </div>
         )
     }
