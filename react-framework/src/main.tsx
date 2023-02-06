@@ -19,6 +19,7 @@ import RegisterCompletePage from './pages/user/RegisterCompletePage';
 import ChattingListPage from './pages/chatting/ChattingListPage';
 import ChattingRoomPage from './pages/chatting/ChattingRoomPage';
 import MatchDetailPage from './pages/match/MatchDetailPage';
+import MenuListPage from './pages/menu/MenuListPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: 'match/detail',
         element: <MatchDetailPage/>,
+      },
+      {
+        path: 'menu/',
+        element: <MenuListPage/>,
       }
     ]
   },

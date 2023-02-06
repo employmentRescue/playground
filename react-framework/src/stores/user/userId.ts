@@ -9,7 +9,7 @@ const userIdSlice = createSlice({
     initialState,
     reducers: {
         saveUserId(state, action) {
-
+            // axios 요청 넣기
         },
     }
 })
