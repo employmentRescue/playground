@@ -6,7 +6,11 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import store from './stores/store';
 import './index.css';
-import { UserDefaultPage, DefaultPage, ChattingDefaultPage } from './pages/DefaultPages';
+import {
+  UserDefaultPage,
+  DefaultPage,
+  ChattingDefaultPage,
+} from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
 import MatchPage from './pages/match/MatchPage';
 
@@ -19,6 +23,7 @@ import RegisterCompletePage from './pages/user/RegisterCompletePage';
 import ChattingListPage from './pages/chatting/ChattingListPage';
 import ChattingRoomPage from './pages/chatting/ChattingRoomPage';
 import MatchDetailPage from './pages/match/MatchDetailPage';
+import MatchRegisterPage from './pages/match/MatchRegister';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -37,9 +42,13 @@ const router = createBrowserRouter([
       },
       {
         path: 'match/detail',
-        element: <MatchDetailPage/>,
-      }
-    ]
+        element: <MatchDetailPage />,
+      },
+      {
+        path: 'match/register',
+        element: <MatchRegisterPage />,
+      },
+    ],
   },
   {
     path: '/',
@@ -69,8 +78,8 @@ const router = createBrowserRouter([
       {
         path: 'login/register/complete',
         element: <RegisterCompletePage />,
-      }
-    ]
+      },
+    ],
   },
   {
     path: '/',
@@ -84,10 +93,9 @@ const router = createBrowserRouter([
         path: 'chatting/room/:roomId',
         element: <ChattingRoomPage />,
       },
-    ]
+    ],
   },
 ]);
-
 
 createRoot(container).render(
   <QueryClientProvider client={queryClient}>
@@ -95,7 +103,6 @@ createRoot(container).render(
       <PersistGate persistor={persistStore(store)}>
         <RouterProvider router={router} />
       </PersistGate>
-    </Provider >
+    </Provider>
   </QueryClientProvider>
-
 );
