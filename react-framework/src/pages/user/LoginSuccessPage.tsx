@@ -16,20 +16,20 @@ export default function LoginSuccessPage() {
         appId: "1:808423483984:web:abdb73b3b73219b3b1bf55",
         measurementId: "G-S20W3SX3K1"
     };
-  
-  // Initialize Firebase
+
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-  
+
     async function requestPermission() {
         console.log('Requesting permission...');
         await Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-            console.log('Notification permission granted.');
-        }
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+            }
         })
     }
     requestPermission()
-  
+
     // Initialize Firebase Cloud Messaging and get a reference to the service
     const messaging = getMessaging(app);
     // Add the public key generated from the console here.
@@ -43,9 +43,9 @@ export default function LoginSuccessPage() {
             console.log('No registration token available. Request permission to generate one.');
             // ...
         }
-        }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
-            // ...
+    }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+        // ...
     });
 
     location.href = "/"

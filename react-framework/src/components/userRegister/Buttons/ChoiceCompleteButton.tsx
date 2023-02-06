@@ -3,6 +3,7 @@ import { activeIndex } from "@/stores/register/registerTab";
 import useKakaoLogin from "@/hooks/login/useKakaoLogin";
 import { useState } from "react";
 import { RootState } from "@/stores/store";
+import { useNavigate } from "react-router-dom";
 
 interface CompleteButtonProps {
     innerText: string
@@ -21,6 +22,8 @@ export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps
     let code = location.search.split('=')[1];
     const kakaoLogin = useKakaoLogin(code);
 
+    const navigate = useNavigate();
+
     const saveInfo = () => {
         kakaoLogin.mutate(info)
     }
@@ -33,13 +36,13 @@ export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps
                     if (currentIndex == 2) {
                         saveInfo();
                         console.log(info)
-                        location.href = "/login/register/complete"
+                        navigate("/login/register/complete")
                     } else {
                         dispatch(activeIndex(currentIndex + 1))
                     }
                 }
                 else if (innerText == "운동하러 가기") {
-                    location.href = "/"
+                    navigate("/")
                 }
 
             }}
