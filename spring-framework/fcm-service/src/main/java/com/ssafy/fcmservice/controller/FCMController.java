@@ -12,6 +12,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/notify")
 public class FCMController {
+    @RequestMapping("/hello")
+    @ResponseBody
+    String hello(){
+        return "hello";
+    }
+
+
     @PostMapping("/send/token-list")
     ResponseEntity sendByToken(String title, String body/*, @RequestParam("data") Map<String, String> fcm_data*/, @RequestBody List<String> tokenList){
         title = title.substring(0, Math.min(1000, title.length()));
