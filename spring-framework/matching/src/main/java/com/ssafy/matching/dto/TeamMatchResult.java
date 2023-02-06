@@ -12,7 +12,6 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @ToString
 
 @SuppressWarnings("serial")
@@ -27,6 +26,10 @@ public class TeamMatchResult implements Serializable {
 //    private int match_id;
     @ApiModelProperty(value = "경기 결과")
     private String result;
+
+    @ManyToOne
+    @JoinColumn(name = "teamId", insertable=false, updatable=false)
+    private Team team;
 
     @ManyToOne
     @JoinColumn(name = "matchId")

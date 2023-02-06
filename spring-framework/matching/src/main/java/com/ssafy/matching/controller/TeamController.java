@@ -1,7 +1,5 @@
 package com.ssafy.matching.controller;
 
-import com.ssafy.matching.dto.Gathering;
-import com.ssafy.matching.dto.GatheringMember;
 import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMember;
 import com.ssafy.matching.service.TeamService;
