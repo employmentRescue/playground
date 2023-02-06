@@ -22,7 +22,12 @@ spring:
 #            - RewritePath=/oauth/(?<path>.*),/$\{path}
 
         - id: matcing-service
-          uri: http://user-service:8080
+          uri: http://matcing-service:8080
+          predicates:
+            - Path=/matcing/**
+
+        - id: notify-service
+          uri: http://notify-service:8080
           predicates:
             - Path=/matcing/**
 
