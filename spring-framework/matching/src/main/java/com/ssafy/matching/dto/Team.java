@@ -40,5 +40,9 @@ public class Team implements Serializable {
     @JoinColumn(name = "teamId")
     private List<TeamMember> teamMemberList = new ArrayList<>();
 
-    //TODO 팀 매치 리스트
+    //TODO ERRIR : Could not write JSON: could not extract ResultSet; nested exception is com.fasterxml.jackson.databind.JsonMappingException: could not extract ResultSet (through reference chain: com.ssafy.matching.dto.Team["teamMatchResultList"])]
+//    @ApiModelProperty(value = "팀의의 경기 리스트")
+//    @OneToMany
+//    @JoinColumn(name = "teamId", insertable=false, updatable=false)
+//    private List<TeamMatchResult> teamMatchResultList;
 }

@@ -22,8 +22,8 @@ public class TeamMatchResult implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "팀 경기 결과 번호")
-    private int team_match_result_id;
-    private int team_id;
+    private int teamMatchResultId;
+    private int teamId;
 //    private int match_id;
     @ApiModelProperty(value = "경기 결과")
     private String result;

@@ -27,15 +27,20 @@ public class Match implements Serializable {
 //    private int placeId;
     @ApiModelProperty(value = "경기 날짜", required = true)
     private String matchDate;
-    @ApiModelProperty(value = "경기 시간", required = true)
-    private String play_Time;
+    @ApiModelProperty(value = "경기 선호 최소 시작 시간", required = true)
+    private String minStartTime;
+    @ApiModelProperty(value = "경기 선호 최대 시작 시간", required = true)
+    private String maxStartTime;
+    @ApiModelProperty(value = "선호 지역의 최대 반경", required = true)
+    private int distance;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "placeId")
-    @ApiModelProperty(value = "경기의 장소", required = true)
-    private Place place;
-    
-    @OneToMany(cascade = CascadeType.ALL)
+    @ApiModelProperty(value = "경기의 선호 장소", required = true)
+    private PreferredPlace preferredPlace;
+
+    //TODO ERROR : You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'match match1_ on teammatchr0_.match_id=match1_.match_id left outer join preferre' at line 1
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "matchId")
     private List<TeamMatchResult> teamMatchResultList = new ArrayList<>();
 }
