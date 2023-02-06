@@ -17,10 +17,12 @@ import timeIcon from "@/assets/icons/time.png"
 import sportsIcon from "@/assets/icons/sports.png"
 import levelIcon from "@/assets/icons/level.png"
 import sexIcon from "@/assets/icons/sex.png"
+import taek from "../../assets/profiles/taek.png"
 
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
   const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   // naver map
   const mapElement: any | null = useRef(undefined);
@@ -53,6 +55,10 @@ export default function MatchDetailPage() {
     });
   }
 
+  function getImgUrl(name: string) {
+    return new URL(`../../assets/profiles/${name}.png`, import.meta.url).href
+  }
+
   // 네이버 지도 생성
   useEffect(() => {
     const { naver } = window;
@@ -77,6 +83,7 @@ export default function MatchDetailPage() {
         setMapIcon(badmintonMap, new naver.maps.LatLng(match.data.place.lat, match.data.place.lng), map, 60, 60, true);
         break;
     }
+
   }, [match.isSuccess]);
 
   useEffect(() => {
@@ -99,13 +106,13 @@ export default function MatchDetailPage() {
     match.isSuccess ?
       <div className="bg-white h-full">
         <div className="w-full h-[calc(100vh-118px)] flex flex-col items-center overflow-auto">
-          <div ref={mapElement} className="w-full h-[364px] pt-[364px] mb-21" ></div >
+          <div ref={mapElement} className="w-full h-[364px] pt-[419px] mb-21" ></div >
           <div className="w-[320px]">
             <div className="flex mb-13 items-center">
               {match.data.sports === "basketball" && <img className="w-30 h-30" src={basketBallIcon} ></img>}
               {match.data.sports === "football" && <img className="w-30 h-30" src={footballIcon}></img>}
               {match.data.sports === "badminton" && <img className="w-30 h-30" src={badmintonIcon}></img>}
-              <div className="ml-11">{match.data.title}</div>
+              <div className="ml-11 text-18">{match.data.title}</div>
             </div>
             <div className="w-[320px] h-1 mb-11 bg-gray-600"></div>
             <div className="mb-22">
@@ -113,7 +120,7 @@ export default function MatchDetailPage() {
                 <img className="w-20 h-20" src={placeIcon}></img>
                 <div className="ml-4 text-15 font-bold">장소</div>
               </div>
-              <div className="text-13">{match.data.place.address}</div>
+              <div className="mt-2 text-13">{match.data.place.address}</div>
             </div>
             <div className="flex justify-between">
               <div className="mb-22">
@@ -121,14 +128,14 @@ export default function MatchDetailPage() {
                   <img className="w-20 h-20" src={calendarIcon}></img>
                   <div className="ml-4 text-15 font-bold">일시</div>
                 </div>
-                <div>{match.data.startDate}</div>
+                <div className="mt-2 text-13">{match.data.startDate}</div>
               </div>
               <div>
-                <div className="flex">
+                <div className="flex mr-30">
                   <img className="w-20 h-20" src={timeIcon}></img>
                   <div className="ml-4 text-15 font-bold">게임 시간</div>
                 </div>
-                <div>{match.data.playTime}시간</div>
+                <div className="mt-2 text-13">{match.data.playTime}시간</div>
               </div>
             </div>
             <div className="flex justify-between">
@@ -137,14 +144,14 @@ export default function MatchDetailPage() {
                   <img className="w-20 h-20" src={sportsIcon}></img>
                   <div className="ml-4 text-15 font-bold">게임 종류</div>
                 </div>
-                <div>{match.data.gameType}</div>
+                <div className="mt-2 text-13">{match.data.gameType}</div>
               </div>
               <div>
-                <div className="flex">
+                <div className="flex mr-30">
                   <img className="w-20 h-20" src={levelIcon}></img>
                   <div className="ml-4 text-15 font-bold">게임 수준</div>
                 </div>
-                <div>{match.data.level}</div>
+                <div className="mt-2 text-13">{match.data.level}</div>
               </div>
             </div>
             <div className="mb-22">
@@ -152,13 +159,23 @@ export default function MatchDetailPage() {
                 <img className="w-20 h-20" src={sexIcon}></img>
                 <div className="ml-4 text-15 font-bold">성별</div>
               </div>
-              <div>{match.data.sex}</div>
+              <div className="mt-2 text-13">{match.data.sex}</div>
             </div>
             <div className="w-[320px] h-1 mb-24 bg-gray-600"></div>
-            <div className="flex items-center justify-between">
+            <div className="mb-20 flex items-center justify-between">
               <div className="text-15 font-bold">참여인원</div>
               <div className="w-180 h-1 bg-gray-600"></div>
-              <div className="text-20 font-bold">{match.data.memberGatheringList.length}/{match.data.people}</div>
+              <div className="text-18 font-bold">{match.data.memberGatheringList.length}/{match.data.people}</div>
+            </div>
+            <div className="flex">
+              {match.data.memberGatheringList.map((e: any, index: number) => {
+                return (
+                  <div key={index} className="w-60 h-60 flex flex-col justify-center items-center">
+                    <img className="w-40 h-40" src={getImgUrl(e.member.memberId)}></img>
+                    <div className="text-10 mt-4">{e.member.nickname}</div>
+                  </div>
+                )
+              })}
             </div>
           </div>
 
