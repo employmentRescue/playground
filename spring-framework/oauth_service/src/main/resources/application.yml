@@ -1,0 +1,42 @@
+server:
+  port: 8080
+
+#  ssl:
+#    key-store: classpath:keystore.p12
+#    key-store-type: PKCS12
+#    key-password: password
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://mysql-server:3306/jpatest?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://mysql-server:3306/playground?serverTimezone=UTC&characterEncoding=UTF-8
+    username: ssafy
+    password: ssafy
+
+
+  jpa:
+    show-sq: true
+    hibernate:
+      ddl-auto: update # validate
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: redis # i8b309.p.ssafy.io
+      port: 6379
+
+
+oauth2:
+  client:
+    registration:
+      client-id:
+        kakao: 79c6d214ca859ea2806d6bd426ffb1fe
+
+
+
+
+
+

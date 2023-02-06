@@ -1,6 +1,5 @@
 server:
-  port: 443
-    http: 80
+  port: 80
 
 
 spring:
@@ -11,37 +10,34 @@ spring:
     gateway:
       routes:
         - id: oauth2-service
-          uri: https://oauth2-service:8080
+          uri: http://oauth2-service:8080
           predicates:
             - Path=/oauth2/**
 
         - id: user-service
-          uri: https://user-service:8080
+          uri: http://user-service:8080
           predicates:
             - Path=/user/**, /file/**
 #          filters:
 #            - RewritePath=/oauth/(?<path>.*),/$\{path}
 
-        - id: matcing-service
-          uri: https://user-service:8080
+        - id: matching-service
+          uri: http://matching-service:8080
           predicates:
-            - Path=/matcing/**
+            - Path=/matching/**
 
         - id: notify-service
-          uri: https://user-service:8080
+          uri: http://notify-service:8080
           predicates:
             - Path=/notify/**
-#          filters:
-#            - RewritePath=/oauth/(?<path>.*),/$\{path}
 
 
         - id: react-framework
-          uri: https://react-framework:3000/
+          uri: http://react-framework:3000/
           predicates:
             - Path=/playground/**
 #          filters:
 #            - RewritePath=/pages/(?<path>.*),/$\{path}
-
 
 
 

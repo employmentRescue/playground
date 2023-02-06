@@ -2,7 +2,8 @@ version: '3'
 
 services:
   api-gateway:
-    build: ./spring-framework/api_gateway-service
+    build:
+      context: ./spring-framework/api_gateway-service
     ports:
       - "80:80"
       - "443:443"
@@ -40,20 +41,13 @@ services:
     - user-service
 
 
-  # file-manage-service:
+
+  # react-framework:
   #   build: 
-  #     context: ./matching
-  #   depends_on:
-  #   - mysql-server
-  #   - redis
-
-
-  react-framework:
-    build: 
-      context: ./react-framework
-    expose: 3000
-    ports:
-      - "3000:3000" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
+  #     context: ./react-framework
+  #   expose: 3000
+  #   ports:
+  #     - "3000:3000" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
 
   mysql-server:
     image: mysql
