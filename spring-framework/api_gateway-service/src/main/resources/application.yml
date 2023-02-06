@@ -21,15 +21,15 @@ spring:
 #          filters:
 #            - RewritePath=/oauth/(?<path>.*),/$\{path}
 
-        - id: matcing-service
-          uri: http://matcing-service:8080
+        - id: matching-service
+          uri: http://matching-service:8080
           predicates:
-            - Path=/matcing/**
+            - Path=/matching/**
 
         - id: notify-service
           uri: http://notify-service:8080
           predicates:
-            - Path=/matcing/**
+            - Path=/notify/**
 
 
         - id: react-framework

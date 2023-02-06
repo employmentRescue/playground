@@ -12,12 +12,12 @@ services:
     - redis
 
 
-  # oauth2-service:
-  #   build: 
-  #     context: ./spring-framework/oauth_service
-  #   depends_on:
-  #   - mysql-server
-  #   - redis
+  oauth2-service:
+    build: 
+      context: ./spring-framework/oauth_service
+    depends_on:
+    - mysql-server
+    - redis
 
   user-service:
     build: 

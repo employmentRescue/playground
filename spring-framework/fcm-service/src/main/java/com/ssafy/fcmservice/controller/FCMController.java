@@ -15,6 +15,8 @@ public class FCMController {
     @RequestMapping("/hello")
     @ResponseBody
     String hello(){
+System.out.println("FCMController hello");
+
         return "hello";
     }
 
