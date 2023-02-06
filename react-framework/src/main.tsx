@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import store from './stores/store';
 import './index.css';
-import { UserDefaultPage, DefaultPage, ChattingDefaultPage } from './pages/DefaultPages';
+import { UserDefaultPage, DefaultPage } from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
 import MatchPage from './pages/match/MatchPage';
 
@@ -20,6 +20,11 @@ import ChattingListPage from './pages/chatting/ChattingListPage';
 import ChattingRoomPage from './pages/chatting/ChattingRoomPage';
 import MatchDetailPage from './pages/match/MatchDetailPage';
 import MenuListPage from './pages/menu/MenuListPage';
+import ProfilePage from './pages/menu/ProfilePage';
+import RankPage from './pages/menu/RankPage';
+import MatchListPage from './pages/menu/MatchListPage';
+import MyTeamPage from './pages/menu/MyTeamPage';
+import TeamCreatePage from './pages/menu/TeamCreatePage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -28,10 +33,13 @@ const router = createBrowserRouter([
     path: '/',
     element: <DefaultPage />,
     children: [
+      // 메인 페이지
       {
         path: '',
         element: <HomePage />,
       },
+
+      // 매칭 페이지
       {
         path: 'match/',
         element: <MatchPage />,
@@ -40,10 +48,34 @@ const router = createBrowserRouter([
         path: 'match/detail',
         element: <MatchDetailPage />,
       },
+
+      // 전체 메뉴(프로필, 통게, 매칭, 팀, 도움말)
       {
         path: 'menu/',
         element: <MenuListPage />,
       },
+      {
+        path: 'menu/profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: 'menu/rank',
+        element: <RankPage />,
+      },
+      {
+        path: 'menu/match',
+        element: <MatchListPage />,
+      },
+      {
+        path: 'menu/team/create',
+        element: <TeamCreatePage />,
+      },
+      {
+        path: 'menu/team',
+        element: <MyTeamPage />,
+      },
+
+      // 채팅
       {
         path: 'chatting/',
         element: <ChattingListPage />,
