@@ -15,7 +15,7 @@ interface SportsLevelAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, level: Level }
 }
 
-interface User {
+interface UserInfo {
     nickname: string,
     favoriteTime: number[],
     favoriteSports: {
@@ -30,7 +30,7 @@ interface User {
     },
 }
 
-const initialState: User = {
+const initialState: UserInfo = {
     nickname: "",
     favoriteTime: [6, 18],
     favoriteSports: {
@@ -45,7 +45,7 @@ const initialState: User = {
     },
 }
 
-const userSlice = createSlice({
+const userInfoSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
@@ -93,6 +93,6 @@ export const {
     setFavoriteTime,
     setFavoriteSports,
     setSportsLevel
-} = userSlice.actions;
+} = userInfoSlice.actions;
 
-export default userSlice.reducer;
+export default userInfoSlice.reducer;

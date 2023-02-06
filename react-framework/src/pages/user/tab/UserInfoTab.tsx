@@ -3,7 +3,7 @@ import { Slider } from "@mui/material"
 import ChoiceCompoleteButton from "@/components/userRegister/Buttons/ChoiceCompleteButton"
 import NicknameCheckButton from "@/components/userRegister/Buttons/NicknameCheckButton"
 import { useDispatch, useSelector } from "react-redux"
-import { setNickname, setFavoriteTime } from "@/stores/register/user"
+import { setNickname, setFavoriteTime } from "@/stores/register/userInfo"
 import { RootState } from "@/stores/store";
 
 
@@ -12,10 +12,10 @@ export default function UserInfoTab() {
     // const [nickname, setNickname] = useState("");
     const dispatch = useDispatch();
     const favoriteTime = useSelector((state: RootState) => {
-        return state.user.favoriteTime;
+        return state.userInfo.favoriteTime;
     });
     const nickname = useSelector((state: RootState) => {
-        return state.user.nickname;
+        return state.userInfo.nickname;
     });
 
     const handleChange = (event: Event, value: number | number[]) => {

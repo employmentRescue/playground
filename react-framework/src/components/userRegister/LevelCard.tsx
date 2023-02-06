@@ -15,13 +15,13 @@ export default function LevelCard({ className, imageSrc, imageSize, onClick, inn
 
     const userSportsLevel = useSelector((state: RootState) => {
         if (sportName == "football") {
-            return state.user.sportsLevel.football;
+            return state.userInfo.sportsLevel.football;
         }
         else if (sportName == "basketball") {
-            return state.user.sportsLevel.basketball;
+            return state.userInfo.sportsLevel.basketball;
         }
         else {
-            return state.user.sportsLevel.badminton;
+            return state.userInfo.sportsLevel.badminton;
         }
     })
 
