@@ -1,5 +1,6 @@
 package com.ssafy.matching.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -21,12 +22,17 @@ public class TeamMember implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int teamMemberId;
-    @ApiModelProperty(value = "팀 번호", required = true)
-    private int teamId;
+//    @ApiModelProperty(value = "팀 번호", required = true)
+//    private int teamId;
     @ApiModelProperty(value = "멤버의 아이디", required = true)
     private long memberId;
 
     @ManyToOne
     @JoinColumn(name = "memberId", insertable=false, updatable=false)
     private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "teamId")
+    @JsonIgnore
+    private Team team;
 }
