@@ -2,11 +2,10 @@ version: '3'
 
 services:
   api-gateway:
-    build: ./api_gateway-service
+    build: ./spring-framework/api_gateway-service
     ports:
       - "80:80"
       - "443:443"
-    expose: 8080
     depends_on:
     # - mysql-server
     - redis
@@ -14,33 +13,36 @@ services:
 
   oauth2-service:
     build: 
-      context: ./oauth_service
-    expose: 8080
+      context: ./spring-framework/oauth_service
     depends_on:
     - mysql-server
     - redis
 
   user-service:
     build: 
-      context: ./user-service
-    expose: 8080
+      context: ./spring-framework/user-service
     depends_on:
     - mysql-server
     - redis
 
   matching-service:
     build: 
-      context: ./matching
-    expose: 8080
+      context: ./spring-framework/matching
     depends_on:
     - mysql-server
     - redis
+
+  notify-service:
+    build: 
+      context: ./spring-framework/fcm-service
+    depends_on:
+    - matching-service
+    - user-service
 
 
   # file-manage-service:
   #   build: 
   #     context: ./matching
-  #   expose: 8080
   #   depends_on:
   #   - mysql-server
   #   - redis
