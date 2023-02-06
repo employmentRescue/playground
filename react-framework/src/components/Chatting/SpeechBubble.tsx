@@ -27,7 +27,7 @@ export function SpeechBubble({ innerText, isMine, profile, nickName, dateTime }:
         triangleBgColor = "border-b-white "
     }
     return (
-        <div className={"flex bg-gray-100 -m-5 " + Reversed}>
+        <div className={"flex bg-gray-100 " + Reversed}>
             <Profile profile={profile} className={"mt-10 ml-15 " + Reversed} />
             <div className={"border-b-12 border-l-transparent border-l-0 border-r-16 border-r-transparent border-solid rotate-180 mt-30 ml-5 " + triangleBgColor}>
             </div>

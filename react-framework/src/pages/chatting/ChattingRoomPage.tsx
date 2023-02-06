@@ -126,25 +126,25 @@ export default function ChattingRoomPage() {
     }, [textList])
 
     return (
-        <div className="w-full h-full flex flex-col justify-between bg-gray-100">
+        <div className="flex flex-col h-auto w-full bg-gray-100">
             <div>
                 <div className="flex justify-center font-inter text-20 my-10">
                     {params.roomId}번 채팅방
                 </div>
                 <div ref={scrollRef}>{TextListRendering()}</div>
-                <div className="pb-100 bg-gray-100"></div>
+                <div className="pb-40 bg-gray-100"></div>
             </div>
             <div className="flex h-40 bg-white w-full fixed bottom-55">
-                <img src={emoticonButton} className="w-21 h-21 ml-18 self-center sticky bottom-55" />
+                <img src={emoticonButton} className="w-21 h-21 ml-18 self-center" />
                 <input
                     value={inputValue}
                     onChange={(e) => handleOnChange(e)}
-                    className="ml-13 w-full sticky bottom-55 outline-none"
+                    className="ml-13 w-full outline-none"
                     placeholder="메시지 입력"
                     onKeyPress={(e) => handleKeyPress(e)}
                     ref={inputRef}
                 />
-                <img src={sendButton} onClick={() => handleOnClick()} className={"w-21 h-21 ml-10 mr-18 self-center sticky bottom-55 " + activateSend} />
+                <img src={sendButton} onClick={() => handleOnClick()} className={"w-21 h-21 ml-10 mr-18 self-center " + activateSend} />
             </div>
         </div>
     )
