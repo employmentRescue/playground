@@ -1,5 +1,7 @@
 export default function MenuListPage() {
     return (
-        <h1 className="self-center text-20">메뉴 목록</h1>
+        <div className="bg-white">
+            <h1 className="text-center text-20">메뉴 목록</h1>
+        </div>
     )
 }
