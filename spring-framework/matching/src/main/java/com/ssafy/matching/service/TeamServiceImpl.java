@@ -35,6 +35,16 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Team updateTeam(Team team) {
+        return teamRepository.save(team);
+    }
+
+    @Override
+    public void deleteTeam(int teamId) {
+        teamRepository.deleteByTeamId(teamId);
+    }
+
+    @Override
     public void joinTeam(TeamMember teamMember) {
         teamMemberRepository.save(teamMember);
     }
