@@ -18,7 +18,9 @@ type propsTab = {
     clickedTab: string, 
     changeType: () => void;
 }
-// ============== 상단 탭 관련 ====================================================
+
+// ============ 상단 탭 관련 ====================================================
+// 종목 탭
 type TabAction = { type: 'AUTOMATCH' | 'LIST' };
 
 interface TabState {
@@ -43,6 +45,9 @@ function registerTabType(state: TabState, action: TabAction) {
             }
     }
 }
+
+// 거리 탭
+
 
 // ======================= 목록 아이템 관련 =============================================
 type listItem = {
@@ -130,7 +135,6 @@ function AutoMatchTab({clickedTab, changeType}: propsTab) {
             </div>
         )
     }
-    
 }
 
 // 목록 텝
@@ -163,6 +167,7 @@ function ListTab({clickedTab, changeType}: propsTab) {
 
 // 내용 - 자동매칭인지 목록인지
 function Content({clickedTab}: {clickedTab: string}) {
+    
     if (clickedTab === 'AUTOMATCH'){
         return (
             <div>
@@ -184,6 +189,7 @@ function Content({clickedTab}: {clickedTab: string}) {
 // ================ 자동 매칭 관련 컴포넌트 =======================================================
 // 자동 매칭 필터바
 function MatchFilterBar() {
+    // 종목 탭
     const [state, dispatch] = useReducer(registerSportType, initialSportTypeState)
     const isClicked = () => dispatch({type: 'ISCLICKED'})
     const basketball = () => {sportChange("BASKETBALL"); dispatch({type: 'BASKETBALL'});}
@@ -201,6 +207,35 @@ function MatchFilterBar() {
                 break;
             case "BADMINTON":
                 setSportIcon({border : "border-[#71D354] bg-[#c4ffb6]", img : badmintonOriginal});
+                break;
+        }
+    }
+
+    // 거리 탭
+    const [distanceState, setDistanceState] = useState(false);
+    const distancePage = () => {
+        switch (distanceState) {
+            case true:
+                setDistanceState(false);
+                break;
+            case false:
+                setDistanceState(true);
+                break;
+        }
+        
+    }
+
+    // 날짜 탭
+    const [dateState, setDateState] = useState(false);
+    const datePage = () => {
+        switch (dateState) {
+            case true:
+                setDateState(false);
+                console.log(dateState);
+                break;
+            case false:
+                setDateState(true);
+                console.log(dateState);
                 break;
         }
     }
@@ -228,8 +263,20 @@ function MatchFilterBar() {
                     }
                 }
             }/>}
-            <MatchFilterDistance />
-            <MatchFilterDate />
+            <MatchFilterDistance clicked={()=>{
+                distancePage();
+            }}/>
+            {distanceState === true && <MatchDistanceSetting clicked={()=>{
+                distancePage();
+            }} />}
+
+            <MatchFilterDate clicked={()=>{
+                datePage();
+            }}/>
+            {dateState === true && <MatchDateSetting clicked={()=>{
+                datePage();
+            }}/>}
+
             <MatchFilterTime />
             <MatchFilterEtc />
         </div>
@@ -271,53 +318,92 @@ function MatchFilterType({sportType, onChangeMode} : {sportType: string, onChang
 }
 
 // 자동 매칭 필터바 - 거리범위
-function MatchFilterDistance() {
+function MatchFilterDistance({clicked} : {clicked:() => void}) {
     return (
-        <div className="absolute top-15 left-67 w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]">
+        <div className="absolute top-15 left-67 w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]" 
+        onClick={(e)=>{
+            e.preventDefault();
+            clicked();
+        }}>
             <span className="w-41 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">~20km</span>
         </div>
     )
 }
 
 // 자동 매칭 필터 - 거리범위 지정
-function MatchDistanceSetting() {
+function MatchDistanceSetting({clicked} : {clicked:() => void}) {
     const [distance, setDistance] = useState('1')
     const valueChange : ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
     }
 
     return (
-        <div className="absolute bottom-0 left-0 p-0 w-[359px] h-[558px] flex-grow-0 bg-[#f3cccc]">
-            <div>
-                <span className="inline-block w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">지역 선택</span>
-                <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"/>
-            </div>
-            <div>
-                <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18"/>
-                <input type="text" value="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/>
-            </div>
-            <div className="w-full h-3/5 bg-[#d99d9d]">
-                <h1>지도</h1>
-            </div>
-            <div className="flex-row h-1/9 justify-center mt-15 mx-18"> 
-                <input type="range" min="0" max="22" className="w-full" value={distance} onChange={valueChange}/>
-                <div className="flex">
-                    <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
-                    <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
-                    <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
+        <div className="absolute top-[-117px] left-0 w-[360px] h-[745px] m-0 p-0 z-20">
+            <div className="absolute top-0 h-1/4 w-full bg-[#000] opacity-50" onClick={(e)=>{e.preventDefault(); clicked();}}></div>
+            <div className="absolute bottom-0 left-0 p-0 w-full h-3/4 flex-grow-0 bg-[#fff] z-20">
+                <div>
+                    <span className="inline-block w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">지역 선택</span>
+                    <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"
+                    onClick={(e)=>{e.preventDefault(); clicked();}}/>
                 </div>
-                <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
+                <div>
+                    <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18"/>
+                    <form action=""><input type="text" defaultValue="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/></form>
+                </div>
+                <div className="w-full h-3/5 bg-[#d99d9d]">
+                    <h1>지도</h1>
+                </div>
+                <div className="flex-row h-1/9 justify-center mt-15 mx-18">
+                    <form action=""><input type="range" min="0" max="22" className="w-full" placeholder={distance} defaultValue="1" onChange={valueChange}/></form>
+                    <div className="flex mb-12">
+                        <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
+                        <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
+                        <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
+                    </div>
+                    <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
+                </div>
             </div>
         </div>
     )
 }
 
 // 자동 매칭 필터바 - 날짜
-function MatchFilterDate() {
+function MatchFilterDate({clicked} : {clicked:() => void}) {
     return (
-        <div className="absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]"> 
+        <div className="absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]" onClick={(e)=>{e.preventDefault(); clicked();}}> 
             <span className="w-45 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">1월 15일</span>
             
+        </div>
+    )
+}
+
+function MatchDateSetting({clicked} : {clicked:() => void}) {
+    return (
+        <div className="absolute top-[-117px] left-0 w-[360px] h-[745px] m-0 p-0 z-20">
+            <div className="h-1/4 w-full bg-[#000] opacity-50" onClick={(e)=>{e.preventDefault(); clicked();}}></div>
+            <div className="absolute bottom-0 left-0 p-0 w-full h-3/4 flex-grow-0 bg-[#fff] z-20">
+                <div>
+                    <span className="inline-block w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">날짜 선택</span>
+                    <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"
+                    onClick={(e)=>{e.preventDefault(); clicked();}}/>
+                </div>
+                <div>
+                    <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18"/>
+                    <input type="text" defaultValue="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]"/>
+                </div>
+                <div className="w-full h-3/5 bg-[#d99d9d]">
+                    <h1>지도</h1>
+                </div>
+                <div className="flex-row h-1/9 justify-center mt-15 mx-18">
+                    <input type="range" min="0" max="22" className="w-full" />
+                    <div className="flex mb-12">
+                        <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
+                        <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]"></div>
+                        <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
+                    </div>
+                    <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
+                </div>
+            </div>
         </div>
     )
 }
@@ -349,7 +435,6 @@ function MatchContent() {
             <div className="absolute w-[124px] h-45 flex-grow-0 top-[360px] left-[118px] pt-11 pl-22 rounded-30 bg-[#303eff]">
                 <span className="w-70 h-24 flex-grow-0 font-inter text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
             </div>
-            <MatchDistanceSetting />
         </div>
     )
 }
