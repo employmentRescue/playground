@@ -8,7 +8,7 @@ import autoMatchBadminton from "@/assets/profiles/auto-match-badminton.png"
 
 export default function ChattingListPage() {
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-auto">
             <Notice title="오늘 운동은 어떠셨나요?" content="팀원들에게 격려의 메세지를 남겨주세요!" />
             <ListCard roomProfile={basketball} title="슬램덩크" personnel={6} latestMsg="오늘 저녁 농구 ㄱ?" />
             <ListCard roomProfile={basketball2} title="대전농구팀" personnel={8} latestMsg="오늘 슬램덩크 팀과 대결 있습니다." />
