@@ -4,9 +4,11 @@ import { Outlet } from "react-router-dom"
 
 export function DefaultPage() {
     return (
-        <div className="bg-gray-100 w-screen h-screen">
+        <div className="bg-gray-100 w-screen h-screen flex flex-col justify-between">
             <Header />
+            <div className="pt-55" />
             <Outlet />
+            <div className="pt-55" />
             <Footer />
         </div>
 

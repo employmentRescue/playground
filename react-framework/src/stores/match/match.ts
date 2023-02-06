@@ -1,25 +1,33 @@
-import { createSlice} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface matchId {
-  id: number;
+interface match {
+    title: string | null,
 }
 
-const initialState: matchId = {
-  id: 0,
+interface matchListState {
+    matchList: match[];
 }
 
-const matchIdSlice = createSlice({
-    name: "matchId",
+const initialState: matchListState = {
+    matchList: [
+        {
+            title: "농구할 사람",
+        }
+    ]
+}
+
+const matchSlice = createSlice({
+    name: "match",
     initialState,
     reducers: {
-        setMatchId(state, action) {
-        state.id = action.payload;
+        addMatch(state, action) {
+            state.matchList.push(action.payload);
         },
     }
 })
 
 export const {
-    setMatchId,
-} = matchIdSlice.actions;
+    addMatch,
+} = matchSlice.actions;
 
-export default matchIdSlice.reducer;
+export default matchSlice.reducer;

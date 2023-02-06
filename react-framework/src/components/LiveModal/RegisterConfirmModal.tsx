@@ -1,5 +1,5 @@
-import useLiveMatchQuit from "@/hooks/liveMatch/useLiveMatchQuit";
-import useLiveMatchRegister from "@/hooks/liveMatch/useLiveMatchRegister";
+import useLiveMatchQuit from "@/hooks/useLiveMatchQuit";
+import useLiveMatchRegister from "@/hooks/useLiveMatchRegister";
 import { place } from "@/models/place";
 import moment from 'moment';
 

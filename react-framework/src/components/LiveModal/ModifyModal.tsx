@@ -6,8 +6,8 @@ import placeIcon from '@/assets/icons/place.png'
 import { addLiveMatch } from '@/stores/live/live';
 import { liveMatch } from '@/models/liveMatch';
 import ModifyButton from './Buttons/ModifyButton';
-import useLiveMatchModify from '@/hooks/liveMatch/useLiveMatchModify';
-import useLiveMatchDelete from '@/hooks/liveMatch/useLiveMatchDelete';
+import useLiveMatchModify from '@/hooks/useLiveMatchModify';
+import useLiveMatchDelete from '@/hooks/useLiveMatchDelete';
 
 const arr: number[] = [... new Array(15)].map((_, i) => i + 1);
 

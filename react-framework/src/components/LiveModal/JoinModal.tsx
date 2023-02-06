@@ -5,7 +5,7 @@ import peopleIcon from '@/assets/icons/people.png'
 import profileIcon from '@/assets/profiles/taek.png'
 import JoinButton from './Buttons/JoinButton';
 import { liveMatch } from '@/models/liveMatch'
-import useLiveMatchJoin from '@/hooks/liveMatch/useLiveMatchJoin'
+import useLiveMatchJoin from '@/hooks/useLiveMatchJoin'
 
 interface Iprops {
     liveMatch: liveMatch;

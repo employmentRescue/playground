@@ -9,22 +9,22 @@ interface FavoriteTimeAction {
     payload: number | number[]
 }
 interface FavoriteSportsAction {
-    payload: { sportName: "football" | "basketball" | "badminton" | null, isSelected: boolean }
+    payload: { sportName: "soccer" | "basketball" | "badminton" | null, isSelected: boolean }
 }
 interface SportsLevelAction {
-    payload: { sportName: "football" | "basketball" | "badminton" | null, level: Level }
+    payload: { sportName: "soccer" | "basketball" | "badminton" | null, level: Level }
 }
 
 export interface User {
     nickname: string,
     favoriteTime?: number | number[],
     favoriteSports: {
-        football: boolean,
+        soccer: boolean,
         basketball: boolean,
         badminton: boolean,
     },
     sportsLevel: {
-        football?: Level,
+        soccer?: Level,
         basketball?: Level,
         badminton?: Level,
     },
@@ -34,12 +34,12 @@ const initialState: User = {
     nickname: "",
     favoriteTime: [6, 18],
     favoriteSports: {
-        football: false,
+        soccer: false,
         basketball: false,
         badminton: false,
     },
     sportsLevel: {
-        football: null,
+        soccer: null,
         basketball: null,
         badminton: null,
     },
@@ -59,9 +59,9 @@ const userSlice = createSlice({
         },
         setFavoriteSports(state, action: FavoriteSportsAction) {
             // console.log(action.payload)
-            switch (action.payload.sportName) {
-                case "football":
-                    state.favoriteSports.football = action.payload.isSelected
+            switch(action.payload.sportName) {
+                case "soccer":
+                    state.favoriteSports.soccer = action.payload.isSelected
                     break;
                 case "basketball":
                     state.favoriteSports.basketball = action.payload.isSelected
@@ -73,9 +73,9 @@ const userSlice = createSlice({
         },
         setSportsLevel(state, action: SportsLevelAction) {
             // console.log(action.payload)
-            switch (action.payload.sportName) {
-                case "football":
-                    state.sportsLevel.football = action.payload.level
+            switch(action.payload.sportName) {
+                case "soccer":
+                    state.sportsLevel.soccer = action.payload.level
                     break;
                 case "basketball":
                     state.sportsLevel.basketball = action.payload.level

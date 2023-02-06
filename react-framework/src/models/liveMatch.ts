@@ -4,6 +4,8 @@ export interface liveMatch {
     liveId?: number,
     memberId?: number,
     place: place,
+    lat?: number,
+    lng?: number,
     sports?: string,
     detail: string,
     hostId: number,
