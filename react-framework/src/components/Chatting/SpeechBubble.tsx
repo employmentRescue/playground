@@ -36,7 +36,7 @@ export function SpeechBubble({ innerText, isMine, profile, nickName, dateTime }:
                 <div className="flex flex-col">
                     <div className={"-mt-5 font-inter text-10 tracking-tight " + (isMine && "pt-15 ")}>{nickName}</div>
                     <div className={"flex "}>
-                        <div className={"h-auto -ml-2 rounded-10 p-12 font-inter text-15 tracking-tight justify-self-start " + squareBgColor + Reversed}>
+                        <div className={"h-auto -ml-2 rounded-10 p-12 font-inter text-15 break-all tracking-tight justify-self-start " + squareBgColor + Reversed}>
                             <p>{innerText}</p>
                         </div>
                         <div className={Reversed + "ml-4 self-end text-10"}>
