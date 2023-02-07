@@ -3,10 +3,9 @@ import useGeolocation from 'react-hook-geolocation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/stores/store';
 import useMatchDetailQuery from '@/hooks/match/useMatchDetailQuery';
-import JoinButton from '@/components/Match/Buttons/JoinButton';
 import currentPos from '@/assets/icons/current-position.png';
-import basketBallMap from '@/assets/icons/basketball-map.png';
-import basketBallIcon from '@/assets/icons/basketball-bg-colored.png';
+import basketballMap from '@/assets/icons/basketball-map.png';
+import basketballIcon from '@/assets/icons/basketball-bg-colored.png';
 import footballMap from '@/assets/icons/football-map.png';
 import footballIcon from '@/assets/icons/football-bg-colored.png';
 import badmintonMap from '@/assets/icons/badminton-map.png';
@@ -17,7 +16,7 @@ import timeIcon from '@/assets/icons/time.png';
 import sportsIcon from '@/assets/icons/sports.png';
 import levelIcon from '@/assets/icons/level.png';
 import sexIcon from '@/assets/icons/sex.png';
-import taek from '../../assets/profiles/taek.png';
+import JoinButton from '@/components/Match/Buttons/JoinButton';
 
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
@@ -85,7 +84,7 @@ export default function MatchDetailPage() {
     switch (match.data.sports) {
       case 'basketball':
         setMapIcon(
-          basketBallMap,
+          basketballMap,
           new naver.maps.LatLng(match.data.place.lat, match.data.place.lng),
           map,
           60,
@@ -143,7 +142,7 @@ export default function MatchDetailPage() {
         <div className="w-[320px]">
           <div className="flex mb-13 items-center">
             {match.data.sports === 'basketball' && (
-              <img className="w-30 h-30" src={basketBallIcon}></img>
+              <img className="w-30 h-30" src={basketballIcon}></img>
             )}
             {match.data.sports === 'football' && (
               <img className="w-30 h-30" src={footballIcon}></img>
