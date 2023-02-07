@@ -16,6 +16,7 @@ const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
     playTime: match.playTime,
     sex: match.sex,
     hostId: match.hostId,
+    people: match.people,
   }
 );
 
