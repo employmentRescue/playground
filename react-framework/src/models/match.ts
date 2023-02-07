@@ -2,14 +2,16 @@ import { place } from "./place";
 
 export interface match {
   title: string;
-  date: string;
-  time: number;
-  place: place,
+  description?: string,
   sports: string,
-  type: string;
-  detail: string,
+  gameType: string,
+  place: place,
+  startDate: string,
+  startTime: string,
+  playTime: string,
+  level: string,
+  sex: string,
+  people: number,
   hostId: number,
-  hostNickName: string,
-  registTime: string,
-  memberList?: number[] | null,
+  memberGatheringList?: number[],
 }

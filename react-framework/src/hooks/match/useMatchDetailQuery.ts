@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
-export const MATCH = '/live';
+export const MATCH = '/match';
 const SERVER_URL = 'https://192.168.31.79:8080/gathering'
 const LOCAL_SERVER_URL = 'https://localhost:8080/gathering'
 
