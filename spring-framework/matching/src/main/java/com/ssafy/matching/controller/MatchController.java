@@ -1,7 +1,6 @@
 package com.ssafy.matching.controller;
 
 import com.ssafy.matching.dto.Match;
-import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMatchResult;
 import com.ssafy.matching.service.MatchService;
 import io.swagger.annotations.Api;
@@ -12,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/match")
@@ -20,9 +21,15 @@ public class MatchController {
     private MatchService matchService;
 
     @ApiOperation(value = "팀 경기 보기", notes = "경기id에 해당하는 팀 경기를 확인한다.")
-    @GetMapping("/{matchid}}")
-    public ResponseEntity<Match> register(@PathVariable("matchid") int matchId) throws Exception {
+    @GetMapping("/{matchid}")
+    public ResponseEntity<Match> view(@PathVariable("matchid") int matchId) throws Exception {
         return new ResponseEntity<Match>(matchService.viewMatchById(matchId), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "팀 경기 팀 이름으로 검색", notes = "팀이름에 해당하는 팀 경기를 확인한다.")
+    @GetMapping("search/{teamname}")
+    public ResponseEntity<List<Match>> search(@PathVariable("teamname") String teamName) throws Exception {
+        return new ResponseEntity<List<Match>>(matchService.searchMatchByTeamName(teamName), HttpStatus.OK);
     }
 
     @ApiOperation(value = "팀 경기 등록하기", notes = "새로 팀 경기를 등록한다.")
@@ -59,7 +66,7 @@ public class MatchController {
 
     @ApiOperation(value = "경기에서 팀이 나간다", notes = "경기에서 팀이 나간다.")
     @PostMapping("/leave")
-    public void delete(int matchId, int teamId) throws Exception {
+    public void leave(int matchId, int teamId) throws Exception {
         matchService.leaveMatch(matchId, teamId);
     }
 

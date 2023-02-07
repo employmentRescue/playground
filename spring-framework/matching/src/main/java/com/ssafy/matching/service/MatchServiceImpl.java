@@ -44,6 +44,11 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
+    public List<Match> searchMatchByTeamName(String teamName) {
+        return matchRepository.getMatchByTeamName(teamName);
+    }
+
+    @Override
     public Match registerMatch(Match match) {
         TeamMatchResult teamMatchResult = match.getTeamMatchResultList().get(0);
         teamMatchResult.setMatch(match);
