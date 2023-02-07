@@ -8,7 +8,7 @@ export interface match {
   place: place,
   startDate: string,
   startTime: string,
-  playTime: string,
+  playTime: number,
   level: string,
   sex: string,
   people: number,

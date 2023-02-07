@@ -17,11 +17,12 @@ import levelIcon from '@/assets/icons/level.png';
 import sexIcon from '@/assets/icons/sex.png';
 import useMatchRegister from '@/hooks/match/useMatchRegister';
 import RegisterButton from '@/components/Match/Buttons/RegisterButton';
+import { useNavigate } from 'react-router';
 
 interface options {
   sportsType: string,
   level: string,
-  gameTime: number,
+  playTime: number,
   sex: string,
   gameType: string,
 }
@@ -31,15 +32,18 @@ export default function MatchRegisterPage() {
   const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
   const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
   const [title, setTitle] = useState<string | null>(null);
-  const [description, setDescription] = useState<string | null>(null);
+  const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string | null>(null);
+  const [hour, setHour] = useState<number | null>(null);
+  const [minute, setMinute] = useState<number | null>(null);
   const [place, setplace] = useState<place | null>(null);
-  const [deailPlace, setDetailPlace] = useState<place | null>(null);
+  const [detailPlace, setDetailPlace] = useState<string>('');
   const [sportsType, setSportsType] = useState<string | null>(null);
   const [level, setLevel] = useState<string | null>(null);
-  const [gameTime, setGameTime] = useState<number | null>(null);
+  const [playTime, setplayTime] = useState<number | null>(null);
   const [sex, setSex] = useState<string | null>(null);
   const [gameType, setGameType] = useState<string | null>(null);
+  const [people, setPeople] = useState<number | null>(null);
   const [options, setOptions] = useState<options | null>(null);
 
 
@@ -53,11 +57,36 @@ export default function MatchRegisterPage() {
     return state.match.id;
   });
 
-  //const match = useMatchDetailQuery(1);
+  const { mutate } = useMatchRegister();
+  const movePage = useNavigate();
 
   const register = () => {
-    console.log('register');
-    const { mutate } = useMatchRegister();
+    if (sportsType && title && place && level && gameType && playTime && sex && people) {
+      console.log('register');
+      mutate({
+        sports: sportsType,
+        title: title,
+        description: description,
+        startDate: "2023-02-07",
+        startTime: hour + ":" + minute,
+        place: {
+          address: place.address + " " + detailPlace,
+          lat: place.lat,
+          lng: place.lng,
+        },
+        level: level,
+        gameType: gameType,
+        playTime: playTime,
+        sex: sex,
+        hostId: 111,
+        people: people,
+      })
+
+      movePage('/match')
+    } else {
+      console.log('fail!')
+    }
+
   };
 
   function setMapIcon(
@@ -80,10 +109,6 @@ export default function MatchRegisterPage() {
       },
       animation: isBounce ? naver.maps.Animation.BOUNCE : undefined,
     });
-  }
-
-  function getImgUrl(name: string) {
-    return new URL(`../../assets/profiles/${name}.png`, import.meta.url).href;
   }
 
   // 네이버 지도 생성
@@ -177,8 +202,6 @@ export default function MatchRegisterPage() {
             break;
         }
       }
-      console.log(marker);
-      console.log(sportsType);
 
       naver.maps.Service.reverseGeocode({
         coords: new naver.maps.LatLng(latlng._lat, latlng._lng),
@@ -254,12 +277,12 @@ export default function MatchRegisterPage() {
       <input
         className="w-full h-30 mt-12 bg-gray-600 text-gray-700 pl-15 rounded-5 text-12"
         placeholder="제목을 입력해주세요."
-        onChange={() => setTitle}
+        onChange={(e) => setTitle(e.target.value)}
       ></input>
       <textarea
         className="w-full h-80 mt-12 bg-gray-600 text-gray-700 pl-15 pt-6 rounded-5 text-12"
         placeholder="내용을 입력해주세요."
-        onChange={() => setDescription}
+        onChange={(e) => setDescription(e.target.value)}
       ></textarea>
       <div className="flex mt-24">
         <img className="w-20 h-20" src={placeIcon}></img>
@@ -289,9 +312,9 @@ export default function MatchRegisterPage() {
         <div className="ml-7 text-15">일시</div>
       </div>
       <div className="flex mt-5 items-center">
-        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={() => setDate}></input>
+        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={(e) => setHour(Number(e.target.value))}></input>
         <div className="text-13 text-gray-400 mr-10">시</div>
-        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={() => setDate}></input>
+        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={(e) => setMinute(Number(e.target.value))}></input>
         <div className="text-13 text-gray-400">분</div>
       </div>
       <div className="flex mt-24">
@@ -361,7 +384,7 @@ export default function MatchRegisterPage() {
         <div className="ml-7 text-15">게임 시간</div>
       </div>
       <div className="flex mt-5 items-center">
-        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={() => setGameTime}></input>
+        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={(e) => setplayTime(Number(e.target.value))}></input>
         <div className="text-13 text-gray-400">시간</div>
       </div>
       <div className="flex mt-24">
@@ -453,6 +476,14 @@ export default function MatchRegisterPage() {
             종류무관
           </button>
         }
+      </div>
+      <div className="flex mt-24">
+        <img className="w-20 h-20" src={timeIcon}></img>
+        <div className="ml-7 text-15">정원</div>
+      </div>
+      <div className="flex mt-5 items-center mb-24">
+        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={(e) => setPeople(Number(e.target.value))}></input>
+        <div className="text-13 text-gray-400">명</div>
       </div>
       <RegisterButton onClick={register}>모임 등록</RegisterButton>
     </div>
