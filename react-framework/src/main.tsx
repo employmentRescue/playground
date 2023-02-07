@@ -19,6 +19,7 @@ import RegisterCompletePage from './pages/user/RegisterCompletePage';
 import ChattingListPage from './pages/chatting/ChattingListPage';
 import ChattingRoomPage from './pages/chatting/ChattingRoomPage';
 import MatchDetailPage from './pages/match/MatchDetailPage';
+import MatchRegisterPage from './pages/match/MatchRegisterPage';
 import MenuListPage from './pages/menu/MenuListPage';
 import ProfilePage from './pages/menu/ProfilePage';
 import RankPage from './pages/menu/RankPage';
@@ -48,7 +49,10 @@ const router = createBrowserRouter([
         path: 'match/detail',
         element: <MatchDetailPage />,
       },
-
+      {
+        path: 'match/register',
+        element: <MatchRegisterPage />,
+      },
       // 전체 메뉴(프로필, 통게, 매칭, 팀, 도움말)
       {
         path: 'menu/',
@@ -114,11 +118,10 @@ const router = createBrowserRouter([
       {
         path: 'login/register/complete',
         element: <RegisterCompletePage />,
-      }
-    ]
+      },
+    ],
   },
 ]);
-
 
 createRoot(container).render(
   <QueryClientProvider client={queryClient}>
@@ -126,7 +129,6 @@ createRoot(container).render(
       <PersistGate persistor={persistStore(store)}>
         <RouterProvider router={router} />
       </PersistGate>
-    </Provider >
+    </Provider>
   </QueryClientProvider>
-
 );
