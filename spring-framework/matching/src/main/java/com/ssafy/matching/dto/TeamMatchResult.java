@@ -34,7 +34,7 @@ public class TeamMatchResult implements Serializable {
     private Team team;
 
     @ManyToOne
-    @JoinColumn(name = "matchId")
+    @JoinColumn(name = "matchId", insertable=false, updatable=false)
     @JsonIgnore
     private Match match;
 }

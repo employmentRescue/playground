@@ -19,6 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class MatchController {
     private MatchService matchService;
 
+    @ApiOperation(value = "팀 경기 보기", notes = "경기id에 해당하는 팀 경기를 확인한다.")
+    @GetMapping("/{matchid}}")
+    public ResponseEntity<Match> register(@PathVariable("matchid") int matchId) throws Exception {
+        return new ResponseEntity<Match>(matchService.viewMatchById(matchId), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "팀 경기 등록하기", notes = "새로 팀 경기를 등록한다.")
     @PostMapping("/register")
     public ResponseEntity<Match> register(@RequestBody @ApiParam(value = "경기 정보", required = true) Match match) throws Exception {
