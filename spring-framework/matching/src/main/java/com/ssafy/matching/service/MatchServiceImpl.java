@@ -50,4 +50,17 @@ public class MatchServiceImpl implements MatchService {
         return teamMatchResultRepository.save(teamMatchResult);
     }
 
+    @Override
+    public TeamMatchResult joinMatch(TeamMatchResult teamMatchResult, int matchId) {
+        Match match = matchRepository.getByMatchId(matchId);
+        teamMatchResult.setMatch(match);
+        return teamMatchResultRepository.save(teamMatchResult);
+    }
+
+    @Override
+    public void leaveMatch(int matchId, int teamId) {
+        Match match = matchRepository.getByMatchId(matchId);
+        teamMatchResultRepository.deleteByMatchAndTeamId(match, teamId);
+    }
+
 }

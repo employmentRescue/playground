@@ -45,6 +45,18 @@ public class MatchController {
         return new ResponseEntity<TeamMatchResult>(matchService.updateTeamMatchResult(teamMatchResult, matchId), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "경기에서 팀이 참여한다", notes = "경기에서 팀이 참여한다.")
+    @PostMapping("/join/{matchid}")
+    public ResponseEntity<TeamMatchResult> join(@PathVariable("matchid") int matchId, @RequestBody @ApiParam(value = "팀 경기 정보", required = true) TeamMatchResult teamMatchResult) throws Exception {
+        return new ResponseEntity<TeamMatchResult>(matchService.joinMatch(teamMatchResult, matchId), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "경기에서 팀이 나간다", notes = "경기에서 팀이 나간다.")
+    @PostMapping("/leave")
+    public void delete(int matchId, int teamId) throws Exception {
+        matchService.leaveMatch(matchId, teamId);
+    }
+
     private ResponseEntity<?> exceptionHandling(Exception e) {
         e.printStackTrace();
         return new ResponseEntity<String>("Error : " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
