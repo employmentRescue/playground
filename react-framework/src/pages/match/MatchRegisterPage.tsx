@@ -11,6 +11,8 @@ import footballMap from '@/assets/icons/football-map.png';
 import footballIcon from '@/assets/icons/football-bg-colored.png';
 import badmintonMap from '@/assets/icons/badminton-map.png';
 import badmintonIcon from '@/assets/icons/badminton-bg-colored.png';
+import writeIcon from "@/assets/icons/write.png"
+import searchIcon from "@/assets/icons/search.png"
 import placeIcon from '@/assets/icons/place.png';
 import calendarIcon from '@/assets/icons/calendar.png';
 import timeIcon from '@/assets/icons/time.png';
@@ -20,7 +22,7 @@ import sexIcon from '@/assets/icons/sex.png';
 import taek from '../../assets/profiles/taek.png';
 import { place } from '@/models/place';
 
-interface options{
+interface options {
   sportsType: string,
   level: string,
   gameTime: number,
@@ -101,6 +103,15 @@ export default function MatchRegisterPage() {
     };
     const map = new naver.maps.Map(mapElement.current, mapOptions);
     setNaverMap(map);
+
+    naver.maps.Event.addListener(map, 'click', function (e) {
+      const latlng = e.coord;
+      switch (sportsType) {
+        case 'basketball':
+      }
+      console.log(latlng);
+      return;
+    })
   }, []);
 
   useEffect(() => {
@@ -123,48 +134,24 @@ export default function MatchRegisterPage() {
   }, [geolocation]);
 
   return (
-    <div className="bg-white h-screen pt-55 pl-24 pr-24 pb-55 overflow-auto">
+    <div className="bg-white h-screen pl-24 pr-24 overflow-auto">
       <div className="flex mt-24">
-        <img className="w-20 h-20"></img>
-        <div className="ml-7 text-15">글쓰기</div>
-      </div>
-      <input
-        className="w-full h-30 mt-12 bg-gray-600 text-gray-700 pl-15 rounded-5 text-12"
-        placeholder="제목을 입력해주세요."
-      ></input>
-      <textarea
-        className="w-full h-80 mt-12 bg-gray-600 text-gray-700 pl-15 pt-6 rounded-5 text-12"
-        placeholder="내용을 입력해주세요."
-      ></textarea>
-      <div className="flex mt-24">
-        <img className="w-20 h-20"></img>
-        <div className="ml-7 text-15">장소</div>
-      </div>
-      <div className="flex items-center mt-12">
-        <img className="w-20 h-20"></img>
-        <input
-          className="w-full h-30 bg-gray-600 text-gray-700 ml-6 pl-15 rounded-5 text-12"
-          placeholder="검색하고 싶은 지역을 입력해주세요."
-        ></input>
-      </div>
-      <div ref={mapElement} className="w-full h-[364px] mt-12"></div>
-      <div className="flex mt-24">
-        <img className="w-20 h-20"></img>
+        <img className="w-20 h-20" src={sportsIcon}></img>
         <div className="ml-7 text-15">종목</div>
       </div>
       <div className="flex mt-5">
         {sportsType === 'basketball' ?
-        <button
-          className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
-        >
-          농구
-        </button> :
-        <button
+          <button
+            className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
+          >
+            농구
+          </button> :
+          <button
             className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={()=>setSportsType('basketball')}
-        >
-          농구
-        </button>
+            onClick={() => setSportsType('basketball')}
+          >
+            농구
+          </button>
         }
         {sportsType === 'football' ?
           <button
@@ -175,9 +162,9 @@ export default function MatchRegisterPage() {
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
             onClick={() => setSportsType('football')}
-        >
-          축구
-        </button>
+          >
+            축구
+          </button>
         }
         {sportsType === 'badminton' ?
           <button
@@ -194,92 +181,126 @@ export default function MatchRegisterPage() {
         }
       </div>
       <div className="flex mt-24">
-        <img className="w-20 h-20"></img>
+        <img className="w-20 h-20" src={writeIcon}></img>
+        <div className="ml-7 text-15">글쓰기</div>
+      </div>
+      <input
+        className="w-full h-30 mt-12 bg-gray-600 text-gray-700 pl-15 rounded-5 text-12"
+        placeholder="제목을 입력해주세요."
+      ></input>
+      <textarea
+        className="w-full h-80 mt-12 bg-gray-600 text-gray-700 pl-15 pt-6 rounded-5 text-12"
+        placeholder="내용을 입력해주세요."
+      ></textarea>
+      <div className="flex mt-24">
+        <img className="w-20 h-20" src={placeIcon}></img>
+        <div className="ml-7 text-15">장소</div>
+      </div>
+      <div className="flex items-center mt-12">
+        <img className="w-20 h-20" src={searchIcon}></img>
+        <input
+          className="w-full h-30 bg-gray-600 text-gray-700 ml-6 pl-15 rounded-5 text-12"
+          placeholder="검색하고 싶은 지역을 입력해주세요."
+        ></input>
+      </div>
+      <div ref={mapElement} className="w-full h-[364px] mt-12"></div>
+      <div className="flex mt-24">
+        <img className="w-20 h-20" src={calendarIcon}></img>
+        <div className="ml-7 text-15">일시</div>
+      </div>
+      <div className="flex mt-5 items-center">
+        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={() => setDate}></input>
+        <div className="text-13 text-gray-400 mr-10">시</div>
+        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={() => setDate}></input>
+        <div className="text-13 text-gray-400">분</div>
+      </div>
+      <div className="flex mt-24">
+        <img className="w-20 h-20" src={levelIcon}></img>
         <div className="ml-7 text-15">수준</div>
       </div>
       <div className="flex mt-5">
         {level === 'level1' ?
-        <button
-          className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
-        >
-          입문
+          <button
+            className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
+          >
+            입문
           </button>
           :
           <button
             className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={()=>setLevel('level1')}
-        >
-          입문
+            onClick={() => setLevel('level1')}
+          >
+            입문
           </button>
-      }
+        }
         {level === 'level2' ?
-        <button
-          className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
-        >
-          초수
+          <button
+            className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            초수
           </button>
           :
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={()=>setLevel('level2')}
-        >
-          초수
+            onClick={() => setLevel('level2')}
+          >
+            초수
           </button>
-      }
+        }
         {level === 'level3' ?
-        <button
-          className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
-        >
-         중수
+          <button
+            className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            중수
           </button>
           :
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={()=>setLevel('level3')}
-        >
-          중수
+            onClick={() => setLevel('level3')}
+          >
+            중수
           </button>
-      }
+        }
         {level === 'level4' ?
-        <button
-          className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
-        >
-          고수
+          <button
+            className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
+          >
+            고수
           </button>
           :
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={()=>setLevel('level4')}
-        >
-          고수
+            onClick={() => setLevel('level4')}
+          >
+            고수
           </button>
-      }
+        }
       </div>
       <div className="flex mt-24">
-        <img className="w-20 h-20"></img>
+        <img className="w-20 h-20" src={timeIcon}></img>
         <div className="ml-7 text-15">게임 시간</div>
       </div>
       <div className="flex mt-5 items-center">
-        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={()=>setGameTime}></input>
+        <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={() => setGameTime}></input>
         <div className="text-13 text-gray-400">시간</div>
       </div>
       <div className="flex mt-24">
-        <img className="w-20 h-20"></img>
+        <img className="w-20 h-20" src={sexIcon}></img>
         <div className="ml-7 text-15">성별</div>
       </div>
       <div className="flex mt-5">
-      {sex === 'M' ?
-        <button
-          className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
-        >
-          남자
-        </button> :
-        <button
+        {sex === 'M' ?
+          <button
+            className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
+          >
+            남자
+          </button> :
+          <button
             className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={()=>setSex('M')}
-        >
-          남자
-        </button>
+            onClick={() => setSex('M')}
+          >
+            남자
+          </button>
         }
         {sex === 'F' ?
           <button
@@ -290,9 +311,9 @@ export default function MatchRegisterPage() {
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
             onClick={() => setSex('F')}
-        >
-          여자
-        </button>
+          >
+            여자
+          </button>
         }
         {sex === 'MF' ?
           <button
@@ -309,7 +330,7 @@ export default function MatchRegisterPage() {
         }
       </div>
       <div className="flex mt-24">
-        <img className="w-20 h-20"></img>
+        <img className="w-20 h-20" src={sportsIcon}></img>
         <div className="ml-7 text-15">게임 종류</div>
       </div>
       <div className="flex mt-5 mb-24">
