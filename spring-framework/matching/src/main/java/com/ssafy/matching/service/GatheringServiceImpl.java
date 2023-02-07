@@ -27,7 +27,7 @@ public class GatheringServiceImpl implements GatheringService {
 
     @Override
     public List<Gathering> findGatheringsByFilter(Map<String, Object> map) {
-        //필터 조건 : 날짜, 지역(lat, lng), 반경, 최소 시작시간, 최대 시작시간, 수준, 최소 게임시간, 최대 게임시간, 성별, 운동종류, 게임종류
+        //필터 조건 : 날짜, 지역(lat, lng), 반경, 최소 시작시간, 최대 시작시간, 수준, 최소 게임시간, 최대 게임시간, 성별, 운동종류, 게임종류, 정렬
         String startDate = (String)map.get("startDate");
         double lat =  (double)map.get("lat");
         double lng =  (double)map.get("lng");
@@ -40,12 +40,18 @@ public class GatheringServiceImpl implements GatheringService {
         String sex = (String)map.get("sex");
         String sports = (String)map.get("sports");
         String gameType = (String)map.get("gameType");
+        String sort = (String)map.get("sort");
         
         if(sex.equals("성별무관")) sex = "";
         if(gameType.equals("종류무관")) gameType = "";
         
-        //TODO sort 구현해야 함
-        return gatheringRepository.findGatheringsByFilter(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
+        switch (sort) {
+            case "time" : return gatheringRepository.findGatheringsByFilterTimeASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
+            case "people" : return gatheringRepository.findGatheringsByFilterDistanceASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
+            case "distance" : return gatheringRepository.findGatheringsByFilterRemainPeopleASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
+        }
+
+        return gatheringRepository.findGatheringsByFilterRemainPeopleASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
     }
 
     @Override
