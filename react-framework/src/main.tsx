@@ -21,7 +21,7 @@ import ChattingRoomPage from './pages/chatting/ChattingRoomPage';
 import MatchDetailPage from './pages/match/MatchDetailPage';
 import MatchRegisterPage from './pages/match/MatchRegisterPage';
 import MenuListPage from './pages/menu/MenuListPage';
-import ProfilePage from './pages/menu/ProfilePage';
+import ProfilePage from './pages/menu/profile/ProfilePage';
 import RankPage from './pages/menu/RankPage';
 import MatchListPage from './pages/menu/MatchListPage';
 import MyTeamPage from './pages/menu/MyTeamPage';
