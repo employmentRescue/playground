@@ -17,6 +17,7 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity
+@Table(name = "`match`")
 @ApiModel(value = "Match : 팀 경기 정보", description = "팀의 경기 정보를 나타낸다.")
 public class Match implements Serializable {
     @Id
