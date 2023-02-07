@@ -1,7 +1,5 @@
 package com.ssafy.matching.controller;
 
-import com.ssafy.matching.dto.Gathering;
-import com.ssafy.matching.dto.GatheringMember;
 import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMember;
 import com.ssafy.matching.service.TeamService;
@@ -39,7 +37,7 @@ public class TeamController {
     public ResponseEntity<Team> update(@RequestBody @ApiParam(value = "팀 정보", required = true) Team team) throws Exception {
         System.out.println(team);
 
-        return new ResponseEntity<Team>(teamService.registerTeam(team), HttpStatus.OK);
+        return new ResponseEntity<Team>(teamService.updateTeam(team), HttpStatus.OK);
     }
 
     @ApiOperation(value = "팀 삭제하기(구현중)", notes = "팀Id에 해당하는 팀을 삭제한다.")
