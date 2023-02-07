@@ -18,6 +18,8 @@ import sexIcon from '@/assets/icons/sex.png';
 import useMatchRegister from '@/hooks/match/useMatchRegister';
 import RegisterButton from '@/components/Match/Buttons/RegisterButton';
 import { useNavigate } from 'react-router';
+import { Slider } from '@mui/material';
+import { blue } from '@mui/material/colors';
 
 export default function TeamMatchRegisterPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
@@ -26,16 +28,10 @@ export default function TeamMatchRegisterPage() {
   const [title, setTitle] = useState<string | null>(null);
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string | null>(null);
-  const [hour, setHour] = useState<number | null>(null);
-  const [minute, setMinute] = useState<number | null>(null);
-  const [place, setplace] = useState<place | null>(null);
-  const [detailPlace, setDetailPlace] = useState<string>('');
-  const [sportsType, setSportsType] = useState<string | null>(null);
-  const [level, setLevel] = useState<string | null>(null);
-  const [playTime, setplayTime] = useState<number | null>(null);
-  const [sex, setSex] = useState<string | null>(null);
-  const [gameType, setGameType] = useState<string | null>(null);
-  const [people, setPeople] = useState<number | null>(null);
+  const [place, setPlace] = useState<place | null>(null);
+  const [preferDist, setPreferDist] = useState<number>(0);
+  const [preferTime, setPreferTime] = useState<number[]>([0, 24]);
+
 
   // naver map
   const mapElement: any | null = useRef(undefined);
@@ -50,36 +46,68 @@ export default function TeamMatchRegisterPage() {
   const { mutate } = useMatchRegister();
   const movePage = useNavigate();
 
-  const register = () => {
-    if (sportsType && title && place && level && gameType && playTime && sex && people) {
-      console.log('register');
-      console.log(people);
-      mutate({
-        sports: sportsType,
-        title: title,
-        description: description,
-        startDate: "2023-02-07",
-        startTime: hour + ":" + minute,
-        place: {
-          address: place.address + " " + detailPlace,
-          lat: place.lat,
-          lng: place.lng,
-        },
-        level: level,
-        gameType: gameType,
-        playTime: playTime,
-        sex: sex,
-        hostId: 111,
-        people: people,
-      })
+  const distMarks = [
+    {
+        value: 0,
+        label: '0km',
+    },
+    {
+        value: 15,
+        label: '15km',
+    },
+    {
+        value: 30,
+        label: '30km',
+    },
+  ];
 
-      movePage('/match')
-    } else {
-      console.log('fail!')
-      console.log(people)
-    }
-
+  
+  const timeMarks = [
+    {
+        value: 0,
+        label: '0시',
+    },
+    {
+        value: 12,
+        label: '12시',
+    },
+    {
+        value: 24,
+        label: '24시',
+    },
+  ];
+    
+  const handlePreferDistChange = (event: Event, newValue: number | number[]) => {
+    setPreferDist(newValue as number);
   };
+
+  const handlePreferTimeChange = (event: Event, newValue: number | number[]) => {
+    setPreferTime(newValue as number[]);
+  };
+
+   const register = () => {
+  //   if () {
+  //     console.log('register');
+  //     console.log(people);
+  //     mutate({
+  //       startDate: "2023-02-07",
+  //       endDate: "2023-02-08",
+  //       preferTime: preferTime,
+  //       place: {
+  //         address: place.address + " " + detailPlace,
+  //         lat: place.lat,
+  //         lng: place.lng,
+  //       },
+  //       hostId: 111,
+  //     })
+
+  //     movePage('/match')
+  //   } else {
+  //     console.log('fail!')
+  //     console.log(people)
+  //   }
+
+   };
 
   function setMapIcon(
     icon: string,
@@ -129,7 +157,8 @@ export default function TeamMatchRegisterPage() {
       geolocation.longitude
     );
 
-    naverMap.setCenter(location);
+    if(!curPos)
+      naverMap.setCenter(location);
 
     // 기존 현재 위치 마커 제거
     if (curPos) {
@@ -140,90 +169,90 @@ export default function TeamMatchRegisterPage() {
     setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
   }, [geolocation]);
 
-  useEffect(() => {
-    if (naverMap === null) return;
+  // useEffect(() => {
+  //   if (naverMap === null) return;
 
-    if (marker) {
-      switch (sportsType) {
-        case 'basketball':
-          marker.setIcon({
-            url: basketballMap,
-            size: new naver.maps.Size(60, 60),
-            scaledSize: new naver.maps.Size(60, 60),
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(30, 60)
-          });
-          break;
-        case 'football':
-          marker.setIcon({
-            url: footballMap,
-            size: new naver.maps.Size(60, 60),
-            scaledSize: new naver.maps.Size(60, 60),
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(30, 60)
-          });
-          break;
-        case 'badminton':
-          marker.setIcon({
-            url: badmintonMap,
-            size: new naver.maps.Size(60, 60),
-            scaledSize: new naver.maps.Size(60, 60),
-            origin: new naver.maps.Point(0, 0),
-            anchor: new naver.maps.Point(30, 60)
-          });
-          break;
-      }
-    }
+  //   if (marker) {
+  //     switch (sportsType) {
+  //       case 'basketball':
+  //         marker.setIcon({
+  //           url: basketballMap,
+  //           size: new naver.maps.Size(60, 60),
+  //           scaledSize: new naver.maps.Size(60, 60),
+  //           origin: new naver.maps.Point(0, 0),
+  //           anchor: new naver.maps.Point(30, 60)
+  //         });
+  //         break;
+  //       case 'football':
+  //         marker.setIcon({
+  //           url: footballMap,
+  //           size: new naver.maps.Size(60, 60),
+  //           scaledSize: new naver.maps.Size(60, 60),
+  //           origin: new naver.maps.Point(0, 0),
+  //           anchor: new naver.maps.Point(30, 60)
+  //         });
+  //         break;
+  //       case 'badminton':
+  //         marker.setIcon({
+  //           url: badmintonMap,
+  //           size: new naver.maps.Size(60, 60),
+  //           scaledSize: new naver.maps.Size(60, 60),
+  //           origin: new naver.maps.Point(0, 0),
+  //           anchor: new naver.maps.Point(30, 60)
+  //         });
+  //         break;
+  //     }
+  //   }
 
-    naver.maps.Event.addListener(naverMap, 'click', function (e) {
-      const latlng = e.coord;
+  //   naver.maps.Event.addListener(naverMap, 'click', function (e) {
+  //     const latlng = e.coord;
 
-      if (marker) {
-        marker.setPosition(latlng);
-      }
-      else {
-        switch (sportsType) {
-          case 'basketball':
-            setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
-            break;
-          case 'football':
-            setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
-            break;
-          case 'badminton':
-            setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
-            break;
-        }
-      }
+  //     if (marker) {
+  //       marker.setPosition(latlng);
+  //     }
+  //     else {
+  //       switch (sportsType) {
+  //         case 'basketball':
+  //           setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+  //           break;
+  //         case 'football':
+  //           setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+  //           break;
+  //         case 'badminton':
+  //           setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+  //           break;
+  //       }
+  //     }
 
-      naver.maps.Service.reverseGeocode({
-        coords: new naver.maps.LatLng(latlng._lat, latlng._lng),
-      }, function (status, response) {
-        if (status !== naver.maps.Service.Status.OK) {
-          console.log("wrong!");
-        }
+  //     naver.maps.Service.reverseGeocode({
+  //       coords: new naver.maps.LatLng(latlng._lat, latlng._lng),
+  //     }, function (status, response) {
+  //       if (status !== naver.maps.Service.Status.OK) {
+  //         console.log("wrong!");
+  //       }
 
-        const result = response.v2; // 검색 결과의 컨테이너
-        const address = result.address.jibunAddress; // 검색 결과로 만든 주소
-        console.log(result);
-        setplace({
-          address: address,
-          lat: latlng._lat,
-          lng: latlng._lng,
-        })
-      })
-    });
+  //       const result = response.v2; // 검색 결과의 컨테이너
+  //       const address = result.address.jibunAddress; // 검색 결과로 만든 주소
+  //       console.log(result);
+  //       setplace({
+  //         address: address,
+  //         lat: latlng._lat,
+  //         lng: latlng._lng,
+  //       })
+  //     })
+  //   });
 
-  }, [marker, sportsType])
+  // }, [marker, sportsType])
 
   return (
     <div className="bg-white h-screen pl-24 pr-24 overflow-auto">
       <div className="flex mt-24">
         <img className="w-20 h-20" src={calendarIcon}></img>
-        <div className="ml-7 text-15">일시</div>
+        <div className="ml-7 text-15 font-semibold">일시</div>
       </div>
       <div className="flex mt-24">
         <img className="w-20 h-20" src={placeIcon}></img>
-        <div className="ml-7 text-15">선호 지역</div>
+        <div className="ml-7 text-15 font-semibold">선호 지역</div>
       </div>
       <div className="flex items-center mt-12">
         <img className="w-20 h-20" src={searchIcon}></img>
@@ -235,9 +264,49 @@ export default function TeamMatchRegisterPage() {
       <div ref={mapElement} className="w-full h-[364px] mt-12"></div>
       <div className='w-full text-end text-13 mt-5 font-semibold text-blue-700'>운동 모임 장소를 지도에서 클릭해주세요.</div>
       <div className='text-13 mt-10'>주소 : {place?.address}</div>
-      <div className="flex mt-24">
+      <div className="w-[calc(100%-30px)] ml-auto mr-auto">
+        <Slider
+          value={preferDist}
+          onChange={handlePreferDistChange}
+          valueLabelDisplay="auto"
+          marks={distMarks}
+          min={0}
+          max={30}
+          sx={{
+            color: 'blue',
+            '& .MuiSlider-thumb': {
+              width: '15px',
+              height: '15px',
+              color: 'white',
+              borderWidth: '1px',
+              borderColor: 'blue',
+            },
+          }}
+        />
+      </div>
+      <div className="flex mt-36">
         <img className="w-20 h-20" src={timeIcon}></img>
-        <div className="ml-7 text-15">선호 시간대</div>
+        <div className="ml-7 text-15 font-semibold">선호 시간대</div>
+      </div>
+      <div className="w-[calc(100%-30px)] ml-auto mr-auto mb-18">
+        <Slider
+          value={preferTime}
+          onChange={handlePreferTimeChange}
+          valueLabelDisplay="auto"
+          marks={timeMarks}
+          min={0}
+          max={24}
+          sx={{
+            color: 'blue',
+            '& .MuiSlider-thumb': {
+              width: '15px',
+              height: '15px',
+              color: 'white',
+              borderWidth: '1px',
+              borderColor: 'blue',
+            },
+          }}
+        />
       </div>
 
       <RegisterButton onClick={register}>등록 완료</RegisterButton>

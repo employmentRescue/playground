@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 export function DefaultPage() {
   return (
-    <div className="bg-gray-100 w-screen h-screen">
+    <div className="bg-gray-100 w-screen h-screen spoka">
       <Header />
       <div className="pt-55" />
       <Outlet />
