@@ -1,8 +1,5 @@
 import { useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
-import ProfileModifyButton from "@/components/Profile/Buttons/ProfileModifyButton";
-import { useState } from "react";
-
 import myProfileSampleImage from "@/assets/profiles/my-profile-sample.png"
 import titleFavoriteSports from "@/assets/profiles/title-favorite-sports.png"
 import titleFavoritePlace from "@/assets/profiles/title-favorite-place.png"
@@ -13,12 +10,6 @@ import badmintonImage from "@/assets/profiles/auto-match-badminton.png"
 
 
 export default function ProfileMainPage() {
-    const [isClicked, setIsClicked] = useState(false);
-
-    function handleOnClick() {
-        setIsClicked(!isClicked)
-    }
-
     const userInfo = useSelector((state: RootState) => {
         return state.userInfo
     });
