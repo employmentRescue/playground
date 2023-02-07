@@ -27,22 +27,25 @@ public class GatheringServiceImpl implements GatheringService {
 
     @Override
     public List<Gathering> findGatheringsByFilter(Map<String, Object> map) {
-        //필터 조건 : 날짜, 지역(latX, latY), 반경, 최소 시작시간, 최대 시작시간, 수준, 최소 게임시간, 최대 게임시간, 성별, 게임종류
+        //필터 조건 : 날짜, 지역(lat, lng), 반경, 최소 시작시간, 최대 시작시간, 수준, 최소 게임시간, 최대 게임시간, 성별, 운동종류, 게임종류
         String startDate = (String)map.get("startDate");
-        float latX =  (float)map.get("latX");
-        float latY =  (float)map.get("latX");
+        double lat =  (double)map.get("lat");
+        double lng =  (double)map.get("lng");
         int distance = (int)map.get("distance");
-        int minStartTime = (int)map.get("minStartTime");
-        int maxStartTime = (int)map.get("maxStartTime");
+        String minStartTime = (String) map.get("minStartTime");
+        String maxStartTime = (String) map.get("maxStartTime");
         String level = (String)map.get("level");
-        int minPlayTime = (int)map.get("minPlayTime");
-        int maxPlayTime = (int)map.get("maxPlayTime");
+        int minPlayTime = (int) map.get("minPlayTime");
+        int maxPlayTime = (int) map.get("maxPlayTime");
         String sex = (String)map.get("sex");
         String sports = (String)map.get("sports");
         String gameType = (String)map.get("gameType");
         
+        if(sex.equals("성별무관")) sex = "";
+        if(gameType.equals("종류무관")) gameType = "";
+        
         //TODO sort 구현해야 함
-        return gatheringRepository.findGatheringsByFilter(startDate, latX, latY, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
+        return gatheringRepository.findGatheringsByFilter(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
     }
 
     @Override
