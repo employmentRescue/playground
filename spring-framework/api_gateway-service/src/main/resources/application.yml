@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 443
 
 
 spring:
@@ -8,9 +8,17 @@ spring:
 
   cloud:
     gateway:
+      httpclient:
+        ssl:
+          # useInsecureTrustManager: true # SSL Route(?) 허용
+          # ssl과 domain 관련(https를 사용할 경우 상대 docker container의 name 사용이 불가능한 이유, spring cloud gateway에서 라우팅이 안됨.)
+          #    : https://juinthyme.tistory.com/3
+          trustedX509Certificates:
+            - classpath:cert1.pem
+
       routes:
         - id: oauth2-service
-          uri: http://oauth2-service:8080
+          uri: https://i8b309.p.ssafy.io:8080
           predicates:
             - Path=/oauth2/**
 
