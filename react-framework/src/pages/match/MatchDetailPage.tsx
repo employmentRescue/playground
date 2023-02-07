@@ -20,6 +20,8 @@ import JoinButton from '@/components/Match/Buttons/JoinButton';
 import QuitButton from '@/components/Match/Buttons/QuitButton';
 import DeleteButton from '@/components/Match/Buttons/ModifyButton';
 import ModifyButton from '@/components/Match/Buttons/ModifyButton';
+import useMatchJoin from '@/hooks/match/useMatchJoin';
+import useMatchQuit from '@/hooks/match/useMatchQuit';
 
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
@@ -42,13 +44,23 @@ export default function MatchDetailPage() {
   });
 
   const match = useMatchDetailQuery(1);
+  const joinMatch = useMatchJoin();
+  const quitMatch = useMatchQuit();
 
   const join = () => {
     console.log('join');
+    joinMatch.mutate({
+      gatheringId: 1,
+      memberId: 111,
+    })
   };
 
   const quit = () => {
     console.log('quit');
+    quitMatch.mutate({
+      gatheringId: 1,
+      memberId: 111,
+    })
   };
 
   function setMapIcon(
@@ -126,10 +138,10 @@ export default function MatchDetailPage() {
         break;
     }
 
-
+    console.log(userId);
     let isUserExisted = false;
     for (const member of match.data.memberGatheringList) {
-      if (member.memberId === userId || 111) {
+      if (member.memberId === userId || member.memberId === 111) {
         isUserExisted = true;
         break;
       }
@@ -161,7 +173,7 @@ export default function MatchDetailPage() {
 
   return match.isSuccess ? (
     <div className="bg-white h-full">
-      <div className="w-full h-[calc(100vh-118px)] flex flex-col items-center overflow-auto">
+      <div className="w-full h-screen flex flex-col items-center overflow-auto">
         <div
           ref={mapElement}
           className="w-full h-[364px] pt-[419px] mb-21"

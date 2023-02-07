@@ -1,7 +1,7 @@
 import { match } from '@/models/match';
 import { SERVER_URL } from '@/utils/url';
 import axios from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 
 const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
   {
