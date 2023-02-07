@@ -17,11 +17,15 @@ import sportsIcon from '@/assets/icons/sports.png';
 import levelIcon from '@/assets/icons/level.png';
 import sexIcon from '@/assets/icons/sex.png';
 import JoinButton from '@/components/Match/Buttons/JoinButton';
+import QuitButton from '@/components/Match/Buttons/QuitButton';
+import DeleteButton from '@/components/Match/Buttons/ModifyButton';
+import ModifyButton from '@/components/Match/Buttons/ModifyButton';
 
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
   const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [userType, setUserType] = useState<string | null>(null);
 
   // naver map
   const mapElement: any | null = useRef(undefined);
@@ -33,10 +37,18 @@ export default function MatchDetailPage() {
     return state.match.id;
   });
 
+  const userId = useSelector((state: RootState) => {
+    return state.userId;
+  });
+
   const match = useMatchDetailQuery(1);
 
   const join = () => {
     console.log('join');
+  };
+
+  const quit = () => {
+    console.log('quit');
   };
 
   function setMapIcon(
@@ -113,6 +125,21 @@ export default function MatchDetailPage() {
         );
         break;
     }
+
+
+    let isUserExisted = false;
+    for (const member of match.data.memberGatheringList) {
+      if (member.memberId === userId || 111) {
+        isUserExisted = true;
+        break;
+      }
+    }
+    if (isUserExisted) {
+      setUserType('isMember');
+    } else {
+      setUserType('isNotMember');
+    }
+
   }, [match.isSuccess]);
 
   useEffect(() => {
@@ -223,9 +250,10 @@ export default function MatchDetailPage() {
               );
             })}
           </div>
+          {userType === 'isNotMember' && <JoinButton onClick={join}>참여 하기</JoinButton>}
+          {userType === 'isMember' && <QuitButton onClick={quit}>참여 취소</QuitButton>}
         </div>
 
-        <JoinButton onClick={join}>참여 하기</JoinButton>
       </div>
     </div>
   ) : null;
