@@ -30,7 +30,7 @@ export default function ProfileMainPage() {
 
     return (
         <div>
-            <div className="flex flex-col w-full h-[360px] pt-150 pb-85 bg-[#EEF3FC] justify-start tracking-tight">
+            <div className="flex flex-col w-full h-auto pt-150 bg-[#EEF3FC] justify-start tracking-tight">
                 <div className="flex flex-col bg-white">
                     <img src={myProfileSampleImage} className="w-100 h-100 self-center -mt-50" />
                     <p className="mt-12 text-18 text-inter font-extrabold text-center">{myTeamName} {/* userInfo에 있는 팀 이름 */}</p>

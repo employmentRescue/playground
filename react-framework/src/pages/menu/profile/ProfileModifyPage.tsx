@@ -77,7 +77,7 @@ export default function ProfileModifyPage() {
         <div>
 
 
-            <div className="flex flex-col w-full h-[360px] pt-150 pb-85 bg-[#EEF3FC] justify-start tracking-tight">
+            <div className="flex flex-col w-full h-auto pt-150 bg-[#EEF3FC] justify-start tracking-tight">
                 <div className="flex flex-col bg-white">
                     <img src={myProfileSampleImage} className="w-100 h-100 self-center -mt-50" />
                     <img src={profileModifyImage} className="w-25 h-25 self-center ml-70 -mt-25" onClick={console.log} />
