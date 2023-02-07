@@ -1,4 +1,5 @@
 import { Profile } from "./Profile"
+import { useNavigate } from "react-router-dom";
 
 interface ListCardProps {
     roomProfile: string;    // 채팅방 사진(팀 로고, 기본 이미지 등등)
@@ -9,10 +10,11 @@ interface ListCardProps {
 
 export default function ListCard({ roomProfile, title, personnel, latestMsg }: ListCardProps) {
 
+    const navigate = useNavigate();
     function handleOnClickToChattingRoom() {
         return (
             // room/1 대신 변수 사용하기
-            location.href = "/chatting/room/1"
+            navigate("/chatting/room/1")
         )
     }
 
