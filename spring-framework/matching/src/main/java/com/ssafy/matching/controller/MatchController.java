@@ -2,6 +2,7 @@ package com.ssafy.matching.controller;
 
 import com.ssafy.matching.dto.Match;
 import com.ssafy.matching.dto.Team;
+import com.ssafy.matching.dto.TeamMatchResult;
 import com.ssafy.matching.service.MatchService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,18 @@ public class MatchController {
     public ResponseEntity<Match> update(@RequestBody @ApiParam(value = "팀 경기 정보", required = true) Match match) throws Exception {
         System.out.println(match);
         return new ResponseEntity<Match>(matchService.updateMatch(match), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "팀 경기 결과를 등록하기", notes = "팀 경기 결과를 등록한다.")
+    @PutMapping("/record/{matchid}")
+    public ResponseEntity<TeamMatchResult> record(@PathVariable("matchid") int matchId, @RequestBody @ApiParam(value = "팀 경기 정보", required = true) TeamMatchResult teamMatchResult) throws Exception {
+        return new ResponseEntity<TeamMatchResult>(matchService.registerTeamMatchResult(teamMatchResult, matchId), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "팀 경기 결과를 수정하기", notes = "팀 경기 결과를 수정한다.")
+    @PutMapping("/rewrite/{matchid}")
+    public ResponseEntity<TeamMatchResult> rewrite(@PathVariable("matchid") int matchId, @RequestBody @ApiParam(value = "팀 경기 정보", required = true) TeamMatchResult teamMatchResult) throws Exception {
+        return new ResponseEntity<TeamMatchResult>(matchService.updateTeamMatchResult(teamMatchResult, matchId), HttpStatus.OK);
     }
 
     private ResponseEntity<?> exceptionHandling(Exception e) {
