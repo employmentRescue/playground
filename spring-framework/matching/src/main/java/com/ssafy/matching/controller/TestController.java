@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
     @GetMapping("")
     public String test() throws Exception {
-        return "matchingServer - testController 실행";
+        return "matchingServer -     testController 실행";
     }
 }
