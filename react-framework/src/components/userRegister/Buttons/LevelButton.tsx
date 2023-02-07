@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import { setSportsLevel } from "@/stores/register/user"
+import { setSportsLevel } from "@/stores/register/userInfo"
 
 interface LevelButtonProps {
   sportName: "football" | "basketball" | "badminton" | null;

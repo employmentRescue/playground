@@ -27,7 +27,7 @@ export function SpeechBubble({ innerText, isMine, profile, nickName, dateTime }:
         triangleBgColor = "border-b-white "
     }
     return (
-        <div className={"flex bg-gray-100 -m-5 " + Reversed}>
+        <div className={"flex bg-gray-100 " + Reversed}>
             <Profile profile={profile} className={"mt-10 ml-15 " + Reversed} />
             <div className={"border-b-12 border-l-transparent border-l-0 border-r-16 border-r-transparent border-solid rotate-180 mt-30 ml-5 " + triangleBgColor}>
             </div>
@@ -36,7 +36,7 @@ export function SpeechBubble({ innerText, isMine, profile, nickName, dateTime }:
                 <div className="flex flex-col">
                     <div className={"-mt-5 font-inter text-10 tracking-tight " + (isMine && "pt-15 ")}>{nickName}</div>
                     <div className={"flex "}>
-                        <div className={"h-auto -ml-2 rounded-10 p-12 font-inter text-15 tracking-tight justify-self-start " + squareBgColor + Reversed}>
+                        <div className={"h-auto -ml-2 rounded-10 p-12 font-inter text-15 break-all tracking-tight justify-self-start " + squareBgColor + Reversed}>
                             <p>{innerText}</p>
                         </div>
                         <div className={Reversed + "ml-4 self-end text-10"}>

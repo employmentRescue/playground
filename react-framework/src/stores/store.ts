@@ -4,13 +4,15 @@ import storage from "redux-persist/lib/storage";
 import matchSlice from "./match/match"
 import liveSlice from "./live/live"
 import registerTabSlice from "./register/registerTab";
-import userSlice from "./register/user";
+import userInfoSlice from "./register/userInfo";
+import userIdSlice from "./user/userId";
 
 const reducers = combineReducers({
     match: matchSlice,
     live: liveSlice,
     registerTab: registerTabSlice,
-    user: userSlice,
+    userInfo: userInfoSlice,
+    userId: userIdSlice,
 })
 
 const persistConfig = {
