@@ -1,17 +1,25 @@
 import useMouse from "@react-hook/mouse-position";
-import { useState, useEffect, useRef } from "react"
-import { useReducer, ComponentProps } from "react"
+import { useState, useEffect, useRef } from "react";
+import { useReducer, ComponentProps } from "react";
+import Calender from "react-calendar";
+import dayjs from "dayjs";
+import 'react-calendar/dist/Calendar.css'
 
-import basketBallOriginal from "@/assets/icons/basketball-original.png"
-import badmintonOriginal from "@/assets/icons/badminton-original.png"
-import footBallOriginal from "@/assets/icons/soccer-original.png"
-import filterEtc from "@/assets/icons/filter-etc.png"
-import matchButton from "@/assets/icons/personal-match-button.png"
-import closeIcon from "@/assets/icons/exit.png"
-import searchIcon from "@/assets/icons/search-icon.png"
+import MatchDateSetting from "@/components/Match/MatchDateSetting"
+
+
+import basketBallOriginal from "@/assets/icons/basketball-original.png";
+import badmintonOriginal from "@/assets/icons/badminton-original.png";
+import footBallOriginal from "@/assets/icons/football-original.png";
+import filterEtc from "@/assets/icons/filter-etc.png";
+import matchButton from "@/assets/icons/personal-match-button.png";
+import closeIcon from "@/assets/icons/exit.png";
+import searchIcon from "@/assets/icons/search-icon.png";
+import whiteArrow from "@/assets/icons/white-arrow.png";
+
 import { sign } from "crypto";
 
-import useGatheringListQuery from "@/hooks/useGatheringListQuery"
+import useGatheringListQuery from "@/hooks/useGatheringListQuery";
 
 
 
@@ -267,6 +275,11 @@ function MatchFilterBar() {
                 break;
         }
     }
+    const shutOtherWindow = ()=> {
+        if (state.isClicked === true) {
+            isClicked();
+        }
+    }
 
     // 거리 탭
     const [distanceState, setDistanceState] = useState(false);
@@ -296,6 +309,25 @@ function MatchFilterBar() {
                 break;
         }
     }
+    const [date, setDate] = useState('YYYY-MM-DD')
+    let dateDisplay = 'M-DD'
+    if (date[5] === '0') {
+        if (date[8] === '0') {
+            dateDisplay = date.slice(6,7) + "월 " + date.slice(9) + "일"           
+        }
+        else {
+            dateDisplay = date.slice(6,7) + "월 " + date.slice(8, 10) + "일"
+        }
+    }
+    else {
+        if (date[8] === '0') {
+            dateDisplay = date.slice(5,7) + "월 " + date.slice(9) + "일"
+        }
+        else {
+            dateDisplay = date.slice(5,7) + "월 " + date.slice(8, 10) + "일"
+        }
+    }
+
 
     return (
         <div className="relative w-[360px] h-53 grow-0 m-0 pt-8 pl-16 bg-[#f1f3ff]">
@@ -320,22 +352,23 @@ function MatchFilterBar() {
                 }
             }
             } />}
-            <MatchFilterDistance clicked={() => {
+            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
                 distancePage();
             }} />
             {distanceState === true && <MatchDistanceSetting clicked={() => {
                 distancePage();
             }} />}
 
-            <MatchFilterDate clicked={() => {
+            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
                 datePage();
-            }} />
+            }} date={dateDisplay}/>
             {dateState === true && <MatchDateSetting clicked={() => {
                 datePage();
-            }} />}
+            }}
+            dateSetting={(dateClicked: string)=>setDate(dateClicked)} />}
 
-            <MatchFilterTime />
-            <MatchFilterEtc />
+            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} />
+            <MatchFilterEtc shutOtherWindow={()=>shutOtherWindow()} />
         </div>
     )
 }
@@ -375,14 +408,16 @@ function MatchFilterType({ sportType, onChangeMode }: { sportType: string, onCha
 }
 
 // 자동 매칭 필터바 - 거리범위
-function MatchFilterDistance({ clicked }: { clicked: () => void }) {
+function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWindow: () => void, clicked: () => void }) {
     return (
-        <div className="absolute top-15 left-67 w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
+        <div className="flex flex-row absolute top-15 left-67 w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
             onClick={(e) => {
                 e.preventDefault();
                 clicked();
+                shutOtherWindow();
             }}>
-            <span className="w-41 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">~20km</span>
+            <span className="w-41 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">~20km</span>
+            <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
         </div>
     )
 }
@@ -403,9 +438,9 @@ function MatchDistanceSetting({ clicked }: { clicked: () => void }) {
                     <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"
                         onClick={(e) => { e.preventDefault(); clicked(); }} />
                 </div>
-                <div>
+                <div className="flex flex-row">
                     <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18" />
-                    <form action=""><input type="text" defaultValue="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]" /></form>
+                    <form action=""><input type="text" defaultValue="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-13 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]" /></form>
                 </div>
                 <div className="w-full h-3/5 bg-[#d99d9d]">
                     <h1>지도</h1>
@@ -425,60 +460,31 @@ function MatchDistanceSetting({ clicked }: { clicked: () => void }) {
 }
 
 // 자동 매칭 필터바 - 날짜
-function MatchFilterDate({ clicked }: { clicked: () => void }) {
+function MatchFilterDate({ shutOtherWindow, clicked, date }: { shutOtherWindow: ()=> void, clicked: () => void, date: string }) {
     return (
-        <div className="absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); }}>
-            <span className="w-45 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">1월 15일</span>
+        <div className="flex flex-row absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
+            <span className="w-45 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{date}</span>
+            <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
 
-        </div>
-    )
-}
-
-function MatchDateSetting({ clicked }: { clicked: () => void }) {
-    return (
-        <div className="absolute top-[-117px] left-0 w-[360px] h-[745px] m-0 p-0 z-20">
-            <div className="h-1/4 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
-            <div className="absolute bottom-0 left-0 p-0 w-full h-3/4 flex-grow-0 bg-[#fff] z-20">
-                <div>
-                    <span className="inline-block w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">날짜 선택</span>
-                    <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"
-                        onClick={(e) => { e.preventDefault(); clicked(); }} />
-                </div>
-                <div>
-                    <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18" />
-                    <input type="text" defaultValue="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-20 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]" />
-                </div>
-                <div className="w-full h-3/5 bg-[#d99d9d]">
-                    <h1>지도</h1>
-                </div>
-                <div className="flex-row h-1/9 justify-center mt-15 mx-18">
-                    <input type="range" min="0" max="22" className="w-full" />
-                    <div className="flex mb-12">
-                        <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
-                        <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]"></div>
-                        <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
-                    </div>
-                    <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
-                </div>
-            </div>
         </div>
     )
 }
 
 // 자동 매칭 필터바 - 시간
-function MatchFilterTime() {
+function MatchFilterTime({ shutOtherWindow }: { shutOtherWindow: ()=>void }) {
     return (
-        <div className="absolute top-15 left-[233px] w-74 h-25 flex-grow-0 pt-0 pl-9 rounded-5 bg-[#303eff]">
-            <span className="w-43 h-15 flex-grow m-0 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">18 ~ 22</span>
+        <div className="flex flex-row absolute top-15 left-[233px] w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); shutOtherWindow(); }}>
+            <span className="w-43 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">18 ~ 22</span>
+            <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
 
         </div>
     )
 }
 
 // 자동 매칭 필터바 - 기타
-function MatchFilterEtc() {
+function MatchFilterEtc({ shutOtherWindow }: { shutOtherWindow: ()=>void }) {
     return (
-        <div className="absolute top-15 left-[318px] w-25 h-25 flex-grow-0 pt-3 pl-3 rounded-5 bg-[#303eff]">
+        <div className="absolute top-15 left-[318px] w-25 h-25 flex-grow-0 pt-3 pl-3 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); shutOtherWindow(); }}>
             <img src={filterEtc} alt="" className="w-20 h-20 flex-grow-0" />
         </div>
     )
@@ -509,22 +515,26 @@ function ListFilterBar() {
 // 목록 각 컴포넌트
 function ListItem({ data }: { data: gatheringType }) {
     console.log(data);
-    let sportImg
+    let sportImg;
+    let sportColor;
     switch (data?.sports) {
         case "basketball":
             sportImg = basketBallOriginal
+            sportColor = 'bg-[#fde8b4]'
             break;
         case "football":
             sportImg = footBallOriginal
+            sportColor = 'bg-[#d8caff]'
             break;
         case "badminton":
             sportImg = badmintonOriginal
+            sportColor = 'bg-[#c4ffb6]'
             break;
     }
 
     return (
         <div className="relative w-[328px] h-120 flex-grow-0 my-10 mr-15 ml-17 pr-17 rounded-15 bg-[#fff] overflow-hidden">
-            <div className="absolute w-59 h-120 flex-grow-0 pt-51 text-center  mr-11 inline-block bg-[#fde8b4]">
+            <div className={"absolute w-59 h-120 flex-grow-0 pt-51 text-center  mr-11 inline-block " + sportColor}>
                 <span className="h-18 flex-grow-0 font-inter text-[15px] font-bold text-left text-[#000]">
                     {String(data.memberGatheringList.length) + '/' + data.people}
                 </span>
@@ -581,7 +591,7 @@ export default function MatchPage() {
     const list = () => dispatch({ type: 'LIST' });
 
     return (
-        <div className="h-full bg-[#f5f5f5] m-0 pt-12">
+        <div className="h-auto bg-[#f5f5f5] m-0 pt-12">
             <div className="w-[360px] h-50 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
                 <AutoMatchTab clickedTab={state.tabType} changeType={() => {
                     autoMatch();
