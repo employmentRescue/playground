@@ -12,6 +12,7 @@ interface MatchInfo {
     matchPersonnel: string;     // 3 on 3, 5 on 5 같은 매칭 인원
     matchType: "개인" | "팀";
     isOldMatch: boolean;
+    linkToDetailPage: string;     // "/match/detail"
 }
 
 const initialMatchInfo: MatchInfo[] = [
@@ -22,6 +23,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "3 on 3",
         matchType: "개인",
         isOldMatch: false,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "football",
@@ -30,6 +32,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "5 on 5",
         matchType: "개인",
         isOldMatch: false,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "basketball",
@@ -38,6 +41,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "3 on 3",
         matchType: "개인",
         isOldMatch: true,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "badminton",
@@ -46,6 +50,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "1 on 1",
         matchType: "팀",
         isOldMatch: true,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "badminton",
@@ -54,6 +59,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "3 on 3",
         matchType: "팀",
         isOldMatch: true,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "badminton",
@@ -62,6 +68,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "3 on 3",
         matchType: "팀",
         isOldMatch: false,
+        linkToDetailPage: "/match/detail"
     },
 
 ]
@@ -103,6 +110,7 @@ export default function MatchListPage() {
                         matchType={match.matchType}
                         isOldMatch={match.isOldMatch}
                         buttonColor={buttonColor}
+                        linkToDetailPage={match.linkToDetailPage}
                     />
                 )
             )
@@ -142,6 +150,7 @@ export default function MatchListPage() {
                         matchType={match.matchType}
                         isOldMatch={match.isOldMatch}
                         buttonColor={buttonColor}
+                        linkToDetailPage={match.linkToDetailPage}
                     />
                 )
             )

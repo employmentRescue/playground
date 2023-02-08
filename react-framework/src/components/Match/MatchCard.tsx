@@ -1,4 +1,5 @@
 import goButtonImage from "@/assets/profiles/go-button.png"
+import { useNavigate } from "react-router-dom";
 
 interface Iprops {
     imgSrc: string;
@@ -9,11 +10,14 @@ interface Iprops {
     matchType: "개인" | "팀";
     isOldMatch: boolean;        // 약속 시간을 넘어간 매칭은 전부 흐릿하게 표시됨
     buttonColor: string;
+    linkToDetailPage: string;
 }
 
-export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, matchType, isOldMatch, buttonColor }: Iprops) {
+export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, matchType, isOldMatch, buttonColor, linkToDetailPage }: Iprops) {
     let bgOpacity = ""
     isOldMatch ? bgOpacity = "opacity-70" : ""
+    const navigate = useNavigate();
+
     return (
         <div className={"flex w-full h-80 bg-white mb-3 justify-between " + bgOpacity}>
             <div className="flex">
@@ -26,9 +30,9 @@ export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, m
                     <p className="text-10 mt-0 text-[#969696]">{matchPersonnel}</p>
                 </div>
             </div>
-            <div className={"flex w-60 px-22 " + buttonColor}>
+            <button className={"flex w-60 px-22 " + buttonColor} onClick={() => navigate(linkToDetailPage)} disabled={isOldMatch}>
                 <img src={goButtonImage} className={"w-15 h-15 self-center"} />
-            </div>
+            </button>
         </div >
     )
 }
