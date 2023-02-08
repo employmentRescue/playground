@@ -25,7 +25,7 @@ export default function MatchDateSetting({ clicked, dateSetting }: { clicked: ()
                 <div className="w-full h-3/5 place-content-centeer bg-[#fff]">
                     <Calender onChange={onChange} value={value} formatDay={(locale, date) => dayjs(date).format('DD')}/>
                 </div>
-                <div className="flex-row h-1/9 justify-center mt-15 mx-18">
+                <div className="absolute bottom-0 h-1/8 justify-center mb-15 mx-13">
                     <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
                 </div>
             </div>
