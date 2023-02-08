@@ -2,7 +2,7 @@ import placeIcon from '@/assets/icons/place.png'
 import exitIcon from '@/assets/icons/exit.png'
 import timeIcon from '@/assets/icons/time.png'
 import peopleIcon from '@/assets/icons/people.png'
-import profileIcon from '@/assets/profiles/taek.png'
+import profileIcon from '@/assets/profiles/111.png'
 import QuitButton from './Buttons/QuitButton';
 import { liveMatch } from '@/models/liveMatch'
 import { useState } from 'react'
