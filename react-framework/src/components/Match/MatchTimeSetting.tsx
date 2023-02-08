@@ -1,15 +1,24 @@
 import useMouse from "@react-hook/mouse-position";
 import { useState, useEffect, useRef } from "react";
 import { useReducer, ComponentProps } from "react";
+import { useDispatch, useSelector } from "react-redux"
 import { Slider } from "@mui/material"
+import { User } from "@/stores/register/user"
 
 import closeIcon from "@/assets/icons/exit.png";
+
+interface userState {
+    user: User
+}
 
 export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
     const [distance, setDistance] = useState('1')
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
     }
+    const favoriteTime = useSelector((state: userState) => {
+        return state.user.favoriteTime;
+    });
 
     return (
         <div className="absolute top-[-117px] left-0 w-[360px] h-[745px] m-0 p-0 z-20">
@@ -21,16 +30,17 @@ export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
                         onClick={(e) => { e.preventDefault(); clicked(); }} />
                 </div>
                 <div className="flex-row h-1/9 justify-center mt-15 mx-18">
-                    {/* <Slider
-                        value={favoriteTime}
-                        onChange={handleChange}
+                    <Slider
+                        // value={favoriteTime}
+                        // onChange={handleChange}
                         valueLabelDisplay="auto"
-                        marks={marks}
+                        defaultValue={favoriteTime}
+                        // marks={marks}
                         min={0}
                         max={24}
-                        getAriaValueText={valueText}
+                        // getAriaValueText={valueText}
                         className="mt-12"
-                    /> */}
+                    />
                     <div className="flex mb-12">
                         <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
                         <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>

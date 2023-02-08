@@ -23,7 +23,7 @@ export default function MatchDateSetting({ clicked, dateSetting }: { clicked: ()
                         onClick={(e) => { e.preventDefault(); clicked(); }} />
                 </div>
                 <div className="w-full h-3/5 place-content-centeer bg-[#fff]">
-                    <Calender onChange={onChange} value={value} formatDay={(locale, date) => dayjs(date).format('DD')}/>
+                    <Calender onChange={onChange} value={value} formatDay={(date) => dayjs(date).format('DD')}/>
                 </div>
                 <div className="absolute bottom-0 h-1/8 justify-center mb-15 mx-13">
                     <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
