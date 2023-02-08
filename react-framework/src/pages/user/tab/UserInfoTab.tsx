@@ -78,7 +78,8 @@ export default function UserInfoTab() {
                     <input
                         type="text"
                         value={nickname}
-                        className="border-b-2 mx-11 border-gray-600 w-160 h-26"
+                        className="border-b-2 mx-11 border-gray-600 w-160 h-26 outline-none text-center"
+                        placeholder="닉네임 입력"
                         onChange={handleNickname}
                         ref={nicknameInput}
                     />
