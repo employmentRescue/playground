@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import matchSlice from "./match/match"
+import sortInfoSlice from "./match/matchSort"
 import liveSlice from "./live/live"
 import registerTabSlice from "./register/registerTab";
 import userInfoSlice from "./register/userInfo";
@@ -9,6 +10,7 @@ import userIdSlice from "./user/userId";
 
 const reducers = combineReducers({
     match: matchSlice,
+    matchSort: sortInfoSlice,
     live: liveSlice,
     registerTab: registerTabSlice,
     userInfo: userInfoSlice,

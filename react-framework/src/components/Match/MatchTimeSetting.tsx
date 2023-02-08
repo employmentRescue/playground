@@ -14,7 +14,7 @@ export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
         setDistance(event.target.value);
     }
     const favoriteTime = useSelector((state: RootState) => {
-        return state.userInfo.favoriteTime;
+        return state.matchSort.timeRange;
     });
 
     return (
