@@ -22,10 +22,10 @@ import MatchDetailPage from './pages/match/MatchDetailPage';
 import MatchRegisterPage from './pages/match/MatchRegisterPage';
 import MenuListPage from './pages/menu/MenuListPage';
 import ProfilePage from './pages/menu/profile/ProfilePage';
-import RankPage from './pages/menu/RankPage';
+import RankPage from './pages/menu/rank/RankPage';
 import MatchListPage from './pages/menu/MatchListPage';
-import MyTeamPage from './pages/menu/MyTeamPage';
-import TeamCreatePage from './pages/menu/TeamCreatePage';
+import MyTeamPage from './pages/menu/myTeam/MyTeamPage';
+import TeamCreatePage from './pages/menu/teamCreate/TeamCreatePage';
 import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
 
 const container = document.getElementById('root') as HTMLElement;
