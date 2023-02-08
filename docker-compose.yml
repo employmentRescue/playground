@@ -60,12 +60,13 @@ services:
 
 
 
-  # react-framework:
-  #   build: 
-  #     context: ./react-framework
-  #   expose: 3000
-  #   ports:
-  #     - "3000:3000" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
+  react-framework:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: react-framework
+    container_name: react-framework
+    ports:
+      - "3000:80"
 
   mysql-server:
     image: mysql

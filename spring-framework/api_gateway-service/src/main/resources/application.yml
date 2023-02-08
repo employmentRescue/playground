@@ -43,9 +43,10 @@ spring:
 
 
         - id: react-framework
-          uri: https://i8b309.p.ssafy.io:3000/
+          uri: http://i8b309.p.ssafy.io:3000/
+          order: 1
           predicates:
-            - Path=/playground/**
+            - Path=/**
 #          filters:
 #            - RewritePath=/pages/(?<path>.*),/$\{path}
 
