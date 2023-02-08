@@ -111,11 +111,16 @@
 - Typescript
 - TailwindCss
 - Vite
+- Android Studio
+- XCode
+- VMWare
+- Flutter
 
 ### Backend
 
 - Springboot
 - Spring Data JPA
+- Spring Data Redis(lettuce)
 - Spring Web
 - Spring cloud(spring cloud gateway, spring cloud eureka, spring cloud config server)
 - queryDSL
@@ -127,6 +132,8 @@
 - MySql
 - Swagger
 - Firebase
+- SSL
+- CertBot(CA Certificates)
 
 <br>
 <br>
