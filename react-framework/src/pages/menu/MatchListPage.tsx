@@ -45,7 +45,7 @@ const initialMatchInfo: MatchInfo[] = [
         place: "서울특별시 양천구 목동동로 111 양천공원",
         matchPersonnel: "1 on 1",
         matchType: "팀",
-        isOldMatch: false,
+        isOldMatch: true,
     },
     {
         sportsType: "badminton",
@@ -55,8 +55,17 @@ const initialMatchInfo: MatchInfo[] = [
         matchType: "팀",
         isOldMatch: true,
     },
+    {
+        sportsType: "badminton",
+        matchTitle: "오늘도배드민턴 팀과의 매치",
+        place: "서울특별시 양천구 목동동로 111 양천공원",
+        matchPersonnel: "3 on 3",
+        matchType: "팀",
+        isOldMatch: false,
+    },
 
 ]
+initialMatchInfo.sort((a: MatchInfo, b: MatchInfo) => a.isOldMatch === b.isOldMatch ? 0 : a.isOldMatch ? 1 : -1)
 
 export default function MatchListPage() {
 
