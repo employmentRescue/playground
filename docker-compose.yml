@@ -14,38 +14,38 @@ services:
     - redis
 
 
-  # oauth2-service:
-  #   # build: 
-  #   #   context: ./spring-framework/oauth_service
-  #   image: oauth2-service
-  #   container_name: playground-oauth2-service
-  #   ports:
-  #     - "9001:8080"
-  #   depends_on:
-  #   - mysql-server
-  #   - redis
+  oauth2-service:
+    # build: 
+    #   context: ./spring-framework/oauth_service
+    image: oauth2-service
+    container_name: playground-oauth2-service
+    ports:
+      - "9001:8080"
+    depends_on:
+    - mysql-server
+    - redis
 
-  # user-service:
-  #   # build: 
-  #   #   context: ./spring-framework/user-service
-  #   image: user-service
-  #   container_name: user-service
-  #   ports:
-  #     - "9002:8080"
-  #   depends_on:
-  #   - mysql-server
-  #   - redis
+  user-service:
+    # build: 
+    #   context: ./spring-framework/user-service
+    image: user-service
+    container_name: user-service
+    ports:
+      - "9002:8080"
+    depends_on:
+    - mysql-server
+    - redis
 
-  # matching-service:
-  #   # build: 
-  #   #   context: ./spring-framework/matching
-  #   image: matching-service
-  #   container_name: matching-service
-  #   ports:
-  #     - "9003:8080"
-  #   depends_on:
-  #   - mysql-server
-  #   - redis
+  matching-service:
+    # build: 
+    #   context: ./spring-framework/matching
+    image: matching-service
+    container_name: matching-service
+    ports:
+      - "9003:8080"
+    depends_on:
+    - mysql-server
+    - redis
 
   notify-service:
     # build: 
