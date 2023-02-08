@@ -1,10 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
-
+import { useNavigate } from "react-router-dom";
 
 export default function LoginSuccessPage() {
     // 이 페이지는 굳이 만들 필요 없이 바로 메인 페이지로 연결시켜도 될 듯 함
     // Your web app's Firebase configuration
+    const navigate = useNavigate();
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
         apiKey: "AIzaSyCZSaWxtPJKnVTUtkmIDxIMCreCEr0ScbA",
@@ -16,20 +17,21 @@ export default function LoginSuccessPage() {
         appId: "1:808423483984:web:abdb73b3b73219b3b1bf55",
         measurementId: "G-S20W3SX3K1"
     };
-  
-  // Initialize Firebase
+
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-  
+
     async function requestPermission() {
         console.log('Requesting permission...');
         await Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-            console.log('Notification permission granted.');
-        }
+            if (permission === 'granted') {
+                console.log('Notification permission granted.');
+                navigate("/");
+            }
         })
     }
     requestPermission()
-  
+
     // Initialize Firebase Cloud Messaging and get a reference to the service
     const messaging = getMessaging(app);
     // Add the public key generated from the console here.
@@ -43,12 +45,12 @@ export default function LoginSuccessPage() {
             console.log('No registration token available. Request permission to generate one.');
             // ...
         }
-        }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
-            // ...
+    }).catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+        // ...
     });
 
-    location.href = "/"
+
 
     return (
         <div>

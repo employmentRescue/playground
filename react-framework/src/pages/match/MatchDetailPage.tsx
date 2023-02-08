@@ -3,10 +3,9 @@ import useGeolocation from 'react-hook-geolocation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/stores/store';
 import useMatchDetailQuery from '@/hooks/match/useMatchDetailQuery';
-import JoinButton from '@/components/Match/Buttons/JoinButton';
 import currentPos from '@/assets/icons/current-position.png';
-import basketBallMap from '@/assets/icons/basketball-map.png';
-import basketBallIcon from '@/assets/icons/basketball-bg-colored.png';
+import basketballMap from '@/assets/icons/basketball-map.png';
+import basketballIcon from '@/assets/icons/basketball-bg-colored.png';
 import footballMap from '@/assets/icons/football-map.png';
 import footballIcon from '@/assets/icons/football-bg-colored.png';
 import badmintonMap from '@/assets/icons/badminton-map.png';
@@ -17,12 +16,18 @@ import timeIcon from '@/assets/icons/time.png';
 import sportsIcon from '@/assets/icons/sports.png';
 import levelIcon from '@/assets/icons/level.png';
 import sexIcon from '@/assets/icons/sex.png';
-import taek from '../../assets/profiles/taek.png';
+import JoinButton from '@/components/Match/Buttons/JoinButton';
+import QuitButton from '@/components/Match/Buttons/QuitButton';
+import DeleteButton from '@/components/Match/Buttons/ModifyButton';
+import ModifyButton from '@/components/Match/Buttons/ModifyButton';
+import useMatchJoin from '@/hooks/match/useMatchJoin';
+import useMatchQuit from '@/hooks/match/useMatchQuit';
 
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
   const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
   const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [userType, setUserType] = useState<string | null>(null);
 
   // naver map
   const mapElement: any | null = useRef(undefined);
@@ -34,10 +39,28 @@ export default function MatchDetailPage() {
     return state.match.id;
   });
 
+  const userId = useSelector((state: RootState) => {
+    return state.userId;
+  });
+
   const match = useMatchDetailQuery(1);
+  const joinMatch = useMatchJoin();
+  const quitMatch = useMatchQuit();
 
   const join = () => {
     console.log('join');
+    joinMatch.mutate({
+      gatheringId: 1,
+      memberId: 111,
+    })
+  };
+
+  const quit = () => {
+    console.log('quit');
+    quitMatch.mutate({
+      gatheringId: 1,
+      memberId: 111,
+    })
   };
 
   function setMapIcon(
@@ -85,7 +108,7 @@ export default function MatchDetailPage() {
     switch (match.data.sports) {
       case 'basketball':
         setMapIcon(
-          basketBallMap,
+          basketballMap,
           new naver.maps.LatLng(match.data.place.lat, match.data.place.lng),
           map,
           60,
@@ -114,6 +137,21 @@ export default function MatchDetailPage() {
         );
         break;
     }
+
+    console.log(userId);
+    let isUserExisted = false;
+    for (const member of match.data.memberGatheringList) {
+      if (member.memberId === userId || member.memberId === 111) {
+        isUserExisted = true;
+        break;
+      }
+    }
+    if (isUserExisted) {
+      setUserType('isMember');
+    } else {
+      setUserType('isNotMember');
+    }
+
   }, [match.isSuccess]);
 
   useEffect(() => {
@@ -135,7 +173,7 @@ export default function MatchDetailPage() {
 
   return match.isSuccess ? (
     <div className="bg-white h-full">
-      <div className="w-full h-[calc(100vh-118px)] flex flex-col items-center overflow-auto">
+      <div className="w-full h-screen flex flex-col items-center overflow-auto">
         <div
           ref={mapElement}
           className="w-full h-[364px] pt-[419px] mb-21"
@@ -143,7 +181,7 @@ export default function MatchDetailPage() {
         <div className="w-[320px]">
           <div className="flex mb-13 items-center">
             {match.data.sports === 'basketball' && (
-              <img className="w-30 h-30" src={basketBallIcon}></img>
+              <img className="w-30 h-30" src={basketballIcon}></img>
             )}
             {match.data.sports === 'football' && (
               <img className="w-30 h-30" src={footballIcon}></img>
@@ -224,9 +262,10 @@ export default function MatchDetailPage() {
               );
             })}
           </div>
+          {userType === 'isNotMember' && <JoinButton onClick={join}>참여 하기</JoinButton>}
+          {userType === 'isMember' && <QuitButton onClick={quit}>참여 취소</QuitButton>}
         </div>
 
-        <JoinButton onClick={join}>참여 하기</JoinButton>
       </div>
     </div>
   ) : null;

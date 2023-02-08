@@ -1,24 +1,34 @@
+import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
+import { RootState } from "@/stores/store"
+
 import ProfileCard from "@/components/Profile/ProfileCard"
 import myProfile from "@/assets/profiles/my-profile-sample.png"
 import matchListImage from "@/assets/menu/match-list.png"
 import teamRankingImage from "@/assets/menu/team-ranking.png"
 import teamCreateImage from "@/assets/menu/team-create.png"
 import myTeamImage from "@/assets/menu/my-team.png"
-import { Link } from "react-router-dom"
+
 
 export default function MenuListPage() {
+    const nickname = useSelector((state: RootState) => {
+        return state.userInfo.nickname
+    });
+
     return (
         <div className="flex flex-col bg-white h-[calc(100%-110px)]">
             <h1 className="ml-31 mt-41 font-inter font-bold text-18 tracking-tight">프로필</h1>
-            <ProfileCard
-                className={"flex bg-[#F1F3FF] mx-15 mt-15 pl-15 py-20 rounded-15 tracking-tight justify-between"}
-                imageSize="w-60 h-60"
-                imageSrc={myProfile}
-                teamName="슬램덩크"
-                nickname="박진성"
-                rating="bronze.1"
-                onClick={() => location.href = "/menu/profile"}
-            />
+            <Link to="/menu/profile">
+                <ProfileCard
+                    className={"flex bg-[#F1F3FF] mx-15 mt-15 pl-15 py-20 rounded-15 tracking-tight justify-between"}
+                    imageSize="w-60 h-60"
+                    imageSrc={myProfile}
+                    name="카톡 닉네임(본명)"
+                    nickname={nickname}
+                    rating="bronze.1"
+                />
+            </Link>
+
             <h1 className="ml-31 mt-40 font-inter font-bold text-18 tracking-tight">통계</h1>
             <Link to="/menu/rank" className="flex">
                 <img src={teamRankingImage} className="w-15 h-15 ml-33 mt-17" />

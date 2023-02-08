@@ -14,6 +14,12 @@ interface FavoriteSportsAction {
 interface SportsLevelAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, level: Level }
 }
+interface myTeamNameAction {
+    payload: string
+}
+interface statusMessageAction {
+    payload: string
+}
 
 interface UserInfo {
     nickname: string,
@@ -28,6 +34,8 @@ interface UserInfo {
         basketball?: Level,
         badminton?: Level,
     },
+    myTeamName: string,
+    statusMessage: string,
 }
 
 const initialState: UserInfo = {
@@ -43,6 +51,8 @@ const initialState: UserInfo = {
         basketball: null,
         badminton: null,
     },
+    myTeamName: "팀 이름",
+    statusMessage: "상태 메시지",
 }
 
 const userInfoSlice = createSlice({
@@ -84,7 +94,13 @@ const userInfoSlice = createSlice({
                     state.sportsLevel.badminton = action.payload.level
                     break;
             }
-        }
+        },
+        setMyTeamName(state, action: myTeamNameAction) {
+            state.myTeamName = action.payload
+        },
+        setStatusMessage(state, action: statusMessageAction) {
+            state.statusMessage = action.payload
+        },
     }
 })
 
@@ -92,7 +108,9 @@ export const {
     setNickname,
     setFavoriteTime,
     setFavoriteSports,
-    setSportsLevel
+    setSportsLevel,
+    setMyTeamName,
+    setStatusMessage,
 } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;
