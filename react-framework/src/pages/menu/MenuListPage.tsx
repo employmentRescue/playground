@@ -11,9 +11,6 @@ import myTeamImage from "@/assets/menu/my-team.png"
 
 
 export default function MenuListPage() {
-    const myTeamName = useSelector((state: RootState) => {
-        return state.userInfo.myTeamName
-    });
     const nickname = useSelector((state: RootState) => {
         return state.userInfo.nickname
     });
@@ -26,7 +23,7 @@ export default function MenuListPage() {
                     className={"flex bg-[#F1F3FF] mx-15 mt-15 pl-15 py-20 rounded-15 tracking-tight justify-between"}
                     imageSize="w-60 h-60"
                     imageSrc={myProfile}
-                    teamName={myTeamName}
+                    name="카톡 닉네임(본명)"
                     nickname={nickname}
                     rating="bronze.1"
                 />

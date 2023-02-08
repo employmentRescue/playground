@@ -13,9 +13,6 @@ export default function ProfileMainPage() {
     const userInfo = useSelector((state: RootState) => {
         return state.userInfo
     });
-    const myTeamName = useSelector((state: RootState) => {
-        return state.userInfo.myTeamName
-    });
     const nickname = useSelector((state: RootState) => {
         return state.userInfo.nickname;
     });
@@ -33,8 +30,8 @@ export default function ProfileMainPage() {
             <div className="flex flex-col w-full h-auto pt-150 bg-[#EEF3FC] justify-start tracking-tight">
                 <div className="flex flex-col bg-white">
                     <img src={myProfileSampleImage} className="w-100 h-100 self-center -mt-50" />
-                    <p className="mt-12 text-18 text-inter font-extrabold text-center">{myTeamName} {/* userInfo에 있는 팀 이름 */}</p>
-                    <p className="mt-4 text-16 text-[#969696] text-inter text-center">{nickname} {/* userInfo.nickname */}</p>
+                    <p className="mt-12 text-18 text-inter font-extrabold text-center">{nickname} {/* userInfo.nickname  */}</p>
+                    <p className="mt-4 text-16 text-[#969696] text-inter text-center">카카오톡 닉네임(본명){/* "카카오톡"에서 쓰는 닉네임. 아마도 userInfo.name으로 받을 듯 */}</p>
                     <p className="w-[180px] mt-16 mb-36 self-center text-14 text-inter text-center">{statusMessage} {/* userInfo.statusMessage */}</p>
                 </div>
             </div>
@@ -62,7 +59,7 @@ export default function ProfileMainPage() {
                     <img src={titleFavoriteTime} className="w-20 h-20 mr-8 mt-2" />
                     <div className="flex flex-col">
                         <p>선호 시간대</p>
-                        <p className="-ml-15 mt-8 mb-8 text-14 font-normal">{`${userInfo.favoriteTime[0]}시 ~ ${userInfo.favoriteTime[1]}시`}{/* userInfo.favoriteTime */}</p>
+                        <p className="-ml-15 mt-8 mb-8 text-14 font-normal">{`${favoriteTime[0]}시 ~ ${favoriteTime[1]}시`}{/* userInfo.favoriteTime */}</p>
                     </div>
                 </div>
             </div>
