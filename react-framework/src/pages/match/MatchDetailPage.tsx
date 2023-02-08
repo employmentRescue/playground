@@ -106,7 +106,7 @@ export default function MatchDetailPage() {
     setNaverMap(map);
 
     switch (match.data.sports) {
-      case 'basketball':
+      case '농구':
         setMapIcon(
           basketballMap,
           new naver.maps.LatLng(match.data.place.lat, match.data.place.lng),
@@ -116,7 +116,7 @@ export default function MatchDetailPage() {
           true
         );
         break;
-      case 'football':
+      case '축구':
         setMapIcon(
           footballMap,
           new naver.maps.LatLng(match.data.place.lat, match.data.place.lng),
@@ -126,7 +126,7 @@ export default function MatchDetailPage() {
           true
         );
         break;
-      case 'badminton':
+      case '배드민턴':
         setMapIcon(
           badmintonMap,
           new naver.maps.LatLng(match.data.place.lat, match.data.place.lng),
@@ -180,13 +180,13 @@ export default function MatchDetailPage() {
         ></div>
         <div className="w-[320px]">
           <div className="flex mb-13 items-center">
-            {match.data.sports === 'basketball' && (
+            {match.data.sports === '농구' && (
               <img className="w-30 h-30" src={basketballIcon}></img>
             )}
-            {match.data.sports === 'football' && (
+            {match.data.sports === '축구' && (
               <img className="w-30 h-30" src={footballIcon}></img>
             )}
-            {match.data.sports === 'badminton' && (
+            {match.data.sports === '배드민턴' && (
               <img className="w-30 h-30" src={badmintonIcon}></img>
             )}
             <div className="ml-11 text-18">{match.data.title}</div>

@@ -16,7 +16,7 @@ import useLiveMatchListQuery from "@/hooks/liveMatch/useLiveMatchListQuery"
 import { liveMatch } from "@/models/liveMatch"
 import { UseQueryResult } from "react-query"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'football' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'FOOTBALL' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
 
 interface State {
     isPressed: boolean;
@@ -40,17 +40,17 @@ function registReducer(state: State, action: Action) {
         case 'BASKETBALL':
             return {
                 ...state,
-                sportType: 'basketball'
+                sportType: '농구'
             }
-        case 'football':
+        case 'FOOTBALL':
             return {
                 ...state,
-                sportType: 'football'
+                sportType: '축구'
             }
         case 'BADMINTON':
             return {
                 ...state,
-                sportType: 'badminton'
+                sportType: '배드민턴'
             }
         case 'DEFAULT':
             return {
@@ -91,7 +91,7 @@ export default function HomePage() {
     const [state, dispatch] = useReducer(registReducer, initialState);
     const onPressed = () => dispatch({ type: 'ISPRESSED' });
     const basketball = () => dispatch({ type: 'BASKETBALL' });
-    const football = () => dispatch({ type: 'football' });
+    const football = () => dispatch({ type: 'FOOTBALL' });
     const badminton = () => dispatch({ type: 'BADMINTON' });
     const defaultSportType = () => dispatch({ type: 'DEFAULT' });
     const joinMeeting = () => dispatch({ type: 'JOIN' });
@@ -179,13 +179,13 @@ export default function HomePage() {
             let newMarkers: naver.maps.Marker[] = []
             for (const e of liveMatchList.data) {
                 switch (e.sports) {
-                    case "basketball":
+                    case '농구':
                         newMarkers.push(setMapIcon(basketballMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
-                    case "football":
+                    case '축구':
                         newMarkers.push(setMapIcon(footballMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
-                    case "badminton":
+                    case '배드민턴':
                         newMarkers.push(setMapIcon(badmintonMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
                 }
@@ -211,9 +211,9 @@ export default function HomePage() {
                     // user가 만든 실시간 모임이 아니거나 참여하지 않았으면
                     //joinMeeting();
                     // user가 만든 실시간 모임이 아니지만 이미 참여하였으면
-                    //quitMetting();
+                    quitMetting();
                     // user가 만든 실시간 모임이면
-                    modifyMeeting();
+                    //modifyMeeting();
                 });
             }
             setMarkers(newMarkers);
@@ -233,15 +233,15 @@ export default function HomePage() {
 
         let marker: naver.maps.Marker;
         switch (state.sportType) {
-            case 'basketball':
+            case '농구':
                 marker = setMapIcon(basketballMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
-            case 'football':
+            case '축구':
                 marker = setMapIcon(footballMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
-            case 'badminton':
+            case '배드민턴':
                 marker = setMapIcon(badmintonMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
