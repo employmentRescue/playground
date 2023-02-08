@@ -1,7 +1,6 @@
 server:
   port: 443
 
-
 spring:
   application:
     name: gateway-service
@@ -10,38 +9,41 @@ spring:
     gateway:
       httpclient:
         ssl:
-          # useInsecureTrustManager: true # SSL Route(?) 허용
+          useInsecureTrustManager: true # SSL Route(?) 허용
           # ssl과 domain 관련(https를 사용할 경우 상대 docker container의 name 사용이 불가능한 이유, spring cloud gateway에서 라우팅이 안됨.)
           #    : https://juinthyme.tistory.com/3
-          trustedX509Certificates:
-            - classpath:cert1.pem
+          # trustedX509Certificates:
+          #   - classpath:cert1.pem
 
       routes:
         - id: oauth2-service
-          uri: https://i8b309.p.ssafy.io:8080
+          uri: https://i8b309.p.ssafy.io:9001
           predicates:
             - Path=/oauth2/**
+#          filters:
+#            - RewritePath=/oauth/(?<path>.*),/$\{path}
 
+        
         - id: user-service
-          uri: http://user-service:8080
+          uri: https://i8b309.p.ssafy.io:9002
           predicates:
             - Path=/user/**, /file/**
 #          filters:
 #            - RewritePath=/oauth/(?<path>.*),/$\{path}
 
         - id: matching-service
-          uri: http://matching-service:8080
+          uri: https://i8b309.p.ssafy.io:9003
           predicates:
             - Path=/matching/**
 
         - id: notify-service
-          uri: http://notify-service:8080
+          uri: https://i8b309.p.ssafy.io:9004
           predicates:
             - Path=/notify/**
 
 
         - id: react-framework
-          uri: http://react-framework:3000/
+          uri: https://i8b309.p.ssafy.io:3000/
           predicates:
             - Path=/playground/**
 #          filters:

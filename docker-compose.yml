@@ -2,43 +2,61 @@ version: '3'
 
 services:
   api-gateway:
-    build:
-      context: ./spring-framework/api_gateway-service
+    # build:
+    #   context: ./spring-framework/api_gateway-service
+    image: api-gateway-service
+    container_name: api-gateway
     ports:
-      - "80:80"
+      # - "80:80"
       - "443:443"
     depends_on:
     # - mysql-server
     - redis
 
 
-  oauth2-service:
-    build: 
-      context: ./spring-framework/oauth_service
-    depends_on:
-    - mysql-server
-    - redis
+  # oauth2-service:
+  #   # build: 
+  #   #   context: ./spring-framework/oauth_service
+  #   image: oauth2-service
+  #   container_name: playground-oauth2-service
+  #   ports:
+  #     - "9001:8080"
+  #   depends_on:
+  #   - mysql-server
+  #   - redis
 
-  user-service:
-    build: 
-      context: ./spring-framework/user-service
-    depends_on:
-    - mysql-server
-    - redis
+  # user-service:
+  #   # build: 
+  #   #   context: ./spring-framework/user-service
+  #   image: user-service
+  #   container_name: user-service
+  #   ports:
+  #     - "9002:8080"
+  #   depends_on:
+  #   - mysql-server
+  #   - redis
 
-  matching-service:
-    build: 
-      context: ./spring-framework/matching
-    depends_on:
-    - mysql-server
-    - redis
+  # matching-service:
+  #   # build: 
+  #   #   context: ./spring-framework/matching
+  #   image: matching-service
+  #   container_name: matching-service
+  #   ports:
+  #     - "9003:8080"
+  #   depends_on:
+  #   - mysql-server
+  #   - redis
 
   notify-service:
-    build: 
-      context: ./spring-framework/fcm-service
-    depends_on:
-    - matching-service
-    - user-service
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: notify-service
+    container_name: notify-service
+    ports:
+      - "9004:8080"
+    # depends_on:
+    # - matching-service
+    # - user-service
 
 
 
