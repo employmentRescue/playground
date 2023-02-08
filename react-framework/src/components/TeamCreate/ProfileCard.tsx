@@ -1,25 +1,25 @@
 import CheckBox from "./CheckBox";
 
 interface ClassNameProps {
+    id: number;
     className: string;
     imageSrc: string;
     imageSize: string;
-    onClick?: any;
     nickname: string;
-    isSelected: boolean;
 }
 
-export default function ProfileCard({ className, imageSrc, imageSize, nickname, onClick, isSelected }: ClassNameProps) {
+export default function ProfileCard({ id, className, imageSrc, imageSize, nickname }: ClassNameProps) {
     return (
         <div
             className={className}
-            onClick={onClick}
         >
-            <img src={imageSrc} className={imageSize + " self-center"} />
-            <div className="flex flex-col ml-15 my-15 h-35 justify-center w-full place-self-start">
-                <h2 className="text-15 font-inter">{nickname}</h2>
+            <div className="flex">
+                <img src={imageSrc} className={imageSize + " rounded-26 self-center"} />
+                <div className="flex flex-col ml-15 my-15 h-35 justify-center ">
+                    <h2 className="text-15 font-inter">{nickname}</h2>
+                </div>
             </div>
-            <CheckBox isSelected={isSelected} />
+            <CheckBox className="flex ml-15 mr-24 w-19 h-19 border-2 rounded-20 self-center" id={id} imageSrc={imageSrc} nickname={nickname} />
         </div>
     )
 }

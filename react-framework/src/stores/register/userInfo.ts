@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { MyTeam } from "../user/myTeam";
 
 type Level = "입문" | "초수" | "중수" | "고수" | null
 
@@ -14,8 +15,8 @@ interface FavoriteSportsAction {
 interface SportsLevelAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, level: Level }
 }
-interface myTeamNameAction {
-    payload: string
+interface myTeamAction {
+    payload: MyTeam
 }
 interface statusMessageAction {
     payload: string
@@ -34,7 +35,7 @@ interface UserInfo {
         basketball?: Level,
         badminton?: Level,
     },
-    myTeamName: string,
+    myTeam: MyTeam,
     statusMessage: string,
 }
 
@@ -51,12 +52,15 @@ const initialState: UserInfo = {
         basketball: null,
         badminton: null,
     },
-    myTeamName: "팀 이름",
+    myTeam: {
+        myTeamName: "팀 이름",
+        memberIds: []
+    },
     statusMessage: "상태 메시지",
 }
 
 const userInfoSlice = createSlice({
-    name: "user",
+    name: "userInfo",
     initialState,
     reducers: {
         setNickname(state, action: NicknameAction) {
@@ -95,8 +99,8 @@ const userInfoSlice = createSlice({
                     break;
             }
         },
-        setMyTeamName(state, action: myTeamNameAction) {
-            state.myTeamName = action.payload
+        setMyTeamName(state, action: myTeamAction) {
+            state.myTeam = action.payload
         },
         setStatusMessage(state, action: statusMessageAction) {
             state.statusMessage = action.payload
