@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
         List<Gathering> timeNotPastGatheringList = gatheringRepository.getGatheringsTimeNotPast(memberId);
         map.put("timeNotPastGatheringList", timeNotPastGatheringList);
 
-        //TODO ERROR : java.lang.StackOverflowError: null
         //팀 경기 리스트(날짜 지남)
         List<Match> timePastMatchList = matchRepository.getMatchesTimePast(memberId);
         map.put("timePastMatchList", timePastMatchList);
