@@ -288,7 +288,9 @@ export default function MatchRegisterPage() {
         ></input>
       </div>
       <div ref={mapElement} className="w-full h-[364px] mt-12"></div>
-      <div className='w-full text-end text-13 mt-5 font-semibold text-blue-700'>운동 모임 장소를 지도에서 클릭해주세요.</div>
+      {sportsType ?
+        <div className='w-full text-end text-13 mt-5 text-blue-700'>운동 모임 장소를 지도에서 클릭해주세요.</div> :
+        <div className='w-full text-end text-13 mt-5 text-blue-700'>운동 종목을 먼저 선택해주세요!</div>}
       <div className='text-13 mt-10'>주소 : {place?.address}</div>
       <div className='flex mt-10 items-center'>
         <div className='text-13 w-80'>상세 주소: </div>

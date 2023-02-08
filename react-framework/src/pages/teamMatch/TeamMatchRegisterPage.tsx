@@ -29,6 +29,7 @@ export default function TeamMatchRegisterPage() {
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<string | null>(null);
   const [place, setPlace] = useState<place | null>(null);
+  const [detailPlace, setDetailPlace] = useState<string>('');
   const [preferDist, setPreferDist] = useState<number>(0);
   const [preferTime, setPreferTime] = useState<number[]>([0, 24]);
 
@@ -48,35 +49,35 @@ export default function TeamMatchRegisterPage() {
 
   const distMarks = [
     {
-        value: 0,
-        label: '0km',
+      value: 0,
+      label: '0km',
     },
     {
-        value: 15,
-        label: '15km',
+      value: 15,
+      label: '15km',
     },
     {
-        value: 30,
-        label: '30km',
+      value: 30,
+      label: '30km',
     },
   ];
 
-  
+
   const timeMarks = [
     {
-        value: 0,
-        label: '0시',
+      value: 0,
+      label: '0시',
     },
     {
-        value: 12,
-        label: '12시',
+      value: 12,
+      label: '12시',
     },
     {
-        value: 24,
-        label: '24시',
+      value: 24,
+      label: '24시',
     },
   ];
-    
+
   const handlePreferDistChange = (event: Event, newValue: number | number[]) => {
     setPreferDist(newValue as number);
   };
@@ -85,29 +86,29 @@ export default function TeamMatchRegisterPage() {
     setPreferTime(newValue as number[]);
   };
 
-   const register = () => {
-  //   if () {
-  //     console.log('register');
-  //     console.log(people);
-  //     mutate({
-  //       startDate: "2023-02-07",
-  //       endDate: "2023-02-08",
-  //       preferTime: preferTime,
-  //       place: {
-  //         address: place.address + " " + detailPlace,
-  //         lat: place.lat,
-  //         lng: place.lng,
-  //       },
-  //       hostId: 111,
-  //     })
+  const register = () => {
+    //   if () {
+    //     console.log('register');
+    //     console.log(people);
+    //     mutate({
+    //       startDate: "2023-02-07",
+    //       endDate: "2023-02-08",
+    //       preferTime: preferTime,
+    //       place: {
+    //         address: place.address + " " + detailPlace,
+    //         lat: place.lat,
+    //         lng: place.lng,
+    //       },
+    //       hostId: 111,
+    //     })
 
-  //     movePage('/match')
-  //   } else {
-  //     console.log('fail!')
-  //     console.log(people)
-  //   }
+    //     movePage('/match')
+    //   } else {
+    //     console.log('fail!')
+    //     console.log(people)
+    //   }
 
-   };
+  };
 
   function setMapIcon(
     icon: string,
@@ -157,7 +158,7 @@ export default function TeamMatchRegisterPage() {
       geolocation.longitude
     );
 
-    if(!curPos)
+    if (!curPos)
       naverMap.setCenter(location);
 
     // 기존 현재 위치 마커 제거
@@ -264,6 +265,14 @@ export default function TeamMatchRegisterPage() {
       <div ref={mapElement} className="w-full h-[364px] mt-12"></div>
       <div className='w-full text-end text-13 mt-5 font-semibold text-blue-700'>운동 모임 장소를 지도에서 클릭해주세요.</div>
       <div className='text-13 mt-10'>주소 : {place?.address}</div>
+      <div className='flex mt-10 items-center'>
+        <div className='text-13 w-80'>상세 주소: </div>
+        <input
+          className="w-full h-30 bg-gray-600 text-gray-700 ml-6 pl-15 rounded-5 text-12"
+          placeholder="선호 지역을 입력해 주세요. 예) 고운뜰공원"
+          onChange={(e) => setDetailPlace(e.target.value)}
+        ></input>
+      </div>
       <div className="w-[calc(100%-30px)] ml-auto mr-auto">
         <Slider
           value={preferDist}
