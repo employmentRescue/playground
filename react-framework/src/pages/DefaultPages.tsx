@@ -1,6 +1,7 @@
 import Header from '../components/DefaultLayout/Header';
 import Footer from '../components/DefaultLayout/Footer';
 import { Outlet } from 'react-router-dom';
+import TeamMatchNotificationModal from '@/components/TeamMatch/TeamMatchNotificationModal';
 
 export function DefaultPage() {
   return (
@@ -10,6 +11,7 @@ export function DefaultPage() {
       <Outlet />
       <div className="pt-55" />
       <Footer />
+      {/* <TeamMatchNotificationModal/> */}
     </div>
   )
 }
