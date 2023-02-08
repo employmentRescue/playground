@@ -19,14 +19,6 @@ import useMatchRegister from '@/hooks/match/useMatchRegister';
 import RegisterButton from '@/components/Match/Buttons/RegisterButton';
 import { useNavigate } from 'react-router';
 
-interface options {
-  sportsType: string,
-  level: string,
-  playTime: number,
-  sex: string,
-  gameType: string,
-}
-
 export default function MatchRegisterPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
   const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
@@ -44,8 +36,6 @@ export default function MatchRegisterPage() {
   const [sex, setSex] = useState<string | null>(null);
   const [gameType, setGameType] = useState<string | null>(null);
   const [people, setPeople] = useState<number | null>(null);
-  const [options, setOptions] = useState<options | null>(null);
-
 
   // naver map
   const mapElement: any | null = useRef(undefined);
@@ -63,6 +53,7 @@ export default function MatchRegisterPage() {
   const register = () => {
     if (sportsType && title && place && level && gameType && playTime && sex && people) {
       console.log('register');
+      console.log(people);
       mutate({
         sports: sportsType,
         title: title,
@@ -85,6 +76,7 @@ export default function MatchRegisterPage() {
       movePage('/match')
     } else {
       console.log('fail!')
+      console.log(people)
     }
 
   };
@@ -296,14 +288,16 @@ export default function MatchRegisterPage() {
         ></input>
       </div>
       <div ref={mapElement} className="w-full h-[364px] mt-12"></div>
-      <div className='w-full text-end text-13 mt-5 font-semibold text-blue-700'>운동 모임 장소를 지도에서 클릭해주세요.</div>
+      {sportsType ?
+        <div className='w-full text-end text-13 mt-5 text-blue-700'>운동 모임 장소를 지도에서 클릭해주세요.</div> :
+        <div className='w-full text-end text-13 mt-5 text-blue-700'>운동 종목을 먼저 선택해주세요!</div>}
       <div className='text-13 mt-10'>주소 : {place?.address}</div>
       <div className='flex mt-10 items-center'>
         <div className='text-13 w-80'>상세 주소: </div>
         <input
           className="w-full h-30 bg-gray-600 text-gray-700 ml-6 pl-15 rounded-5 text-12"
           placeholder="운동 모임 장소를 입력해주세요."
-          onChange={() => setDetailPlace}
+          onChange={(e) => setDetailPlace(e.target.value)}
         ></input>
       </div>
 
@@ -322,7 +316,7 @@ export default function MatchRegisterPage() {
         <div className="ml-7 text-15">수준</div>
       </div>
       <div className="flex mt-5">
-        {level === 'level1' ?
+        {level === '입문' ?
           <button
             className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -331,12 +325,12 @@ export default function MatchRegisterPage() {
           :
           <button
             className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setLevel('level1')}
+            onClick={() => setLevel('입문')}
           >
             입문
           </button>
         }
-        {level === 'level2' ?
+        {level === '초수' ?
           <button
             className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -345,12 +339,12 @@ export default function MatchRegisterPage() {
           :
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setLevel('level2')}
+            onClick={() => setLevel('초수')}
           >
             초수
           </button>
         }
-        {level === 'level3' ?
+        {level === '중수' ?
           <button
             className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -359,12 +353,12 @@ export default function MatchRegisterPage() {
           :
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setLevel('level3')}
+            onClick={() => setLevel('중수')}
           >
             중수
           </button>
         }
-        {level === 'level4' ?
+        {level === '고수' ?
           <button
             className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -373,7 +367,7 @@ export default function MatchRegisterPage() {
           :
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setLevel('level4')}
+            onClick={() => setLevel('고수')}
           >
             고수
           </button>
@@ -392,7 +386,7 @@ export default function MatchRegisterPage() {
         <div className="ml-7 text-15">성별</div>
       </div>
       <div className="flex mt-5">
-        {sex === 'M' ?
+        {sex === '남자' ?
           <button
             className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -400,12 +394,12 @@ export default function MatchRegisterPage() {
           </button> :
           <button
             className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setSex('M')}
+            onClick={() => setSex('남자')}
           >
             남자
           </button>
         }
-        {sex === 'F' ?
+        {sex === '여자' ?
           <button
             className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -413,12 +407,12 @@ export default function MatchRegisterPage() {
           </button> :
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setSex('F')}
+            onClick={() => setSex('여자')}
           >
             여자
           </button>
         }
-        {sex === 'MF' ?
+        {sex === '성별무관' ?
           <button
             className="w-73 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -426,7 +420,7 @@ export default function MatchRegisterPage() {
           </button> :
           <button
             className="w-73 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setSex('MF')}
+            onClick={() => setSex('성별무관')}
           >
             성별무관
           </button>
@@ -437,33 +431,33 @@ export default function MatchRegisterPage() {
         <div className="ml-7 text-15">게임 종류</div>
       </div>
       <div className="flex mt-5 mb-24">
-        {gameType === '3on3' ?
+        {gameType === '3대3' ?
           <button
             className="w-63 h-25 text-12 text-white bg-blue-700 rounded-5"
           >
-            3 on 3
+            3 대 3
           </button> :
           <button
             className="w-63 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setGameType('3on3')}
+            onClick={() => setGameType('3대3')}
           >
-            3 on 3
+            3 대 3
           </button>
         }
-        {gameType === '5on5' ?
+        {gameType === '5대5' ?
           <button
             className="w-63 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
-            5 on 5
+            5 대 5
           </button> :
           <button
             className="w-63 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setGameType('5on5')}
+            onClick={() => setGameType('5대5')}
           >
-            5 on 5
+            5 대 5
           </button>
         }
-        {gameType === 'any' ?
+        {gameType === '종류무관' ?
           <button
             className="w-73 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -471,7 +465,7 @@ export default function MatchRegisterPage() {
           </button> :
           <button
             className="w-73 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setGameType('any')}
+            onClick={() => setGameType('종류무관')}
           >
             종류무관
           </button>
