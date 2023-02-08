@@ -145,7 +145,7 @@ export default function MatchRegisterPage() {
 
     if (marker) {
       switch (sportsType) {
-        case 'basketball':
+        case '농구':
           marker.setIcon({
             url: basketballMap,
             size: new naver.maps.Size(60, 60),
@@ -154,7 +154,7 @@ export default function MatchRegisterPage() {
             anchor: new naver.maps.Point(30, 60)
           });
           break;
-        case 'football':
+        case '축구':
           marker.setIcon({
             url: footballMap,
             size: new naver.maps.Size(60, 60),
@@ -163,7 +163,7 @@ export default function MatchRegisterPage() {
             anchor: new naver.maps.Point(30, 60)
           });
           break;
-        case 'badminton':
+        case '배드민턴':
           marker.setIcon({
             url: badmintonMap,
             size: new naver.maps.Size(60, 60),
@@ -183,13 +183,13 @@ export default function MatchRegisterPage() {
       }
       else {
         switch (sportsType) {
-          case 'basketball':
+          case '농구':
             setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
             break;
-          case 'football':
+          case '축구':
             setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
             break;
-          case 'badminton':
+          case '배드민턴':
             setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
             break;
         }
@@ -222,7 +222,7 @@ export default function MatchRegisterPage() {
         <div className="ml-7 text-15">종목</div>
       </div>
       <div className="flex mt-5">
-        {sportsType === 'basketball' ?
+        {sportsType === '농구' ?
           <button
             className="w-50 h-25 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -230,12 +230,12 @@ export default function MatchRegisterPage() {
           </button> :
           <button
             className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setSportsType('basketball')}
+            onClick={() => setSportsType('농구')}
           >
             농구
           </button>
         }
-        {sportsType === 'football' ?
+        {sportsType === '축구' ?
           <button
             className="w-50 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -243,12 +243,12 @@ export default function MatchRegisterPage() {
           </button> :
           <button
             className="w-50 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setSportsType('football')}
+            onClick={() => setSportsType('축구')}
           >
             축구
           </button>
         }
-        {sportsType === 'badminton' ?
+        {sportsType === '배드민턴' ?
           <button
             className="w-73 h-25 ml-13 text-12 text-white bg-blue-700 rounded-5"
           >
@@ -256,7 +256,7 @@ export default function MatchRegisterPage() {
           </button> :
           <button
             className="w-73 h-25 ml-13 text-12 text-blue-700 border-1 border-blue-700 rounded-5"
-            onClick={() => setSportsType('badminton')}
+            onClick={() => setSportsType('배드민턴')}
           >
             배드민턴
           </button>
