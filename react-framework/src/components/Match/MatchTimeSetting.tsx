@@ -3,21 +3,18 @@ import { useState, useEffect, useRef } from "react";
 import { useReducer, ComponentProps } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { Slider } from "@mui/material"
-import { User } from "@/stores/register/user"
+import { RootState } from "@/stores/store";
 
 import closeIcon from "@/assets/icons/exit.png";
 
-interface userState {
-    user: User
-}
 
 export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
     const [distance, setDistance] = useState('1')
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
     }
-    const favoriteTime = useSelector((state: userState) => {
-        return state.user.favoriteTime;
+    const favoriteTime = useSelector((state: RootState) => {
+        return state.userInfo.favoriteTime;
     });
 
     return (
