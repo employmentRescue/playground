@@ -25,7 +25,7 @@ import ProfilePage from './pages/menu/profile/ProfilePage';
 import RankPage from './pages/menu/rank/RankPage';
 import MatchListPage from './pages/menu/MatchListPage';
 import MyTeamPage from './pages/menu/myTeam/MyTeamPage';
-import TeamCreatePage from './pages/menu/teamCreate/TeamCreatePage';
+import TeamCreatePage from './pages/menu/teamCreate/MemberInvitePage';
 import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
 
 const container = document.getElementById('root') as HTMLElement;

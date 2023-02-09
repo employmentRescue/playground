@@ -8,7 +8,7 @@ interface Iprops {
 export default function SelectedProfile({ userId, imageSrc, nickname, isSelected }: Iprops) {
     return (
         <div>
-            {isSelected && <img src={imageSrc} />}
+            <img src={imageSrc} />
         </div>
     )
 }

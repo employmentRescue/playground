@@ -10,33 +10,46 @@ interface Iprops {
     imageSrc: string;
     nickname: string;
     isSelected: boolean;
+    isRecent: boolean;
+    onClick?: any;
 }
 
-export default function CheckBox({ userId, className, imageSrc, nickname, isSelected }: Iprops) {
+export default function CheckBox({ userId, className, imageSrc, nickname, isSelected, isRecent, onClick }: Iprops) {
     const dispatch = useDispatch();
-    const [checked, setChecked] = useState(isSelected);
-    const userList = useSelector((state: RootState) => {
+    const [selected, setSelected] = useState(isSelected)
+    const memberIds = useSelector((state: RootState) => {
         return state.myTeam.memberIds
     })
+    // const handleOnClick = () => {
+    //     console.log(isSelected)
+    //     dispatch(toggleIsSelected({ userId: userId, isSelected: !isSelected }))
+    // }
 
-    const handleOnClick = () => {
-        if (checked) {
-            // console.log(id)
-            dispatch(dropOutOfMyTeam(userId))
-        } else {
-            // console.log(id)
-            dispatch(inviteToMyTeam(userId))
+    // useEffect(() =>
+    //     console.log(userList)
+    //     , [userList]
+    // )
+    const handleSelect = () => {
+        for (const id of memberIds) {
+            if (userId === id) {
+                setSelected(true)
+            }
         }
-        setChecked(!checked)
     }
 
-    useEffect(() =>
-        console.log(userList)
-        , [userList]
-    )
+    useEffect(() => {
+        handleSelect()
+    }, [memberIds])
 
     return (
-        <div className={className + (checked ? " bg-blue-700 border-blue-700" : " bg-white")} onClick={handleOnClick}>
+        <div className={className + (selected ? " bg-blue-700 border-blue-700" : " bg-white")} onClick={() => {
+            if (selected) {
+                dispatch(dropOutOfMyTeam(userId))
+            } else {
+                dispatch(inviteToMyTeam(userId))
+            }
+            setSelected(!selected)
+        }}>
             <img src={checkMark} className="flex mx-2 mt-1 w-10 h-10 self-center " />
         </div>
     )

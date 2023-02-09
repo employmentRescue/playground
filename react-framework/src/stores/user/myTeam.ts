@@ -40,10 +40,7 @@ const myTeamSlice = createSlice({
             state.memberIds.push(action.payload)
         },
         dropOutOfMyTeam(state, action: DropOutOfMyTeamAction) {
-            const newmMemberIds = state.memberIds.filter((memberId) => {
-                return memberId !== action.payload
-            })
-            return { sportsType: state.sportsType, myTeamName: state.myTeamName, memberIds: newmMemberIds }
+            return { ...state, memberIds: state.memberIds.filter(memberId => memberId !== action.payload) }
         },
     }
 })
