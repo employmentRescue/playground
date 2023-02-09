@@ -1,11 +1,22 @@
 import timeIcon from "@/assets/icons/time.png"
 import placeIcon from "@/assets/icons/place.png"
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores/store";
+import useTeamQuery from "@/hooks/team/useTeamQuery";
+import { getImgUrl } from "@/utils/getImgUrl";
 
 export default function TeamMatchDetailPage() {
+
+  const teamId = useSelector((state: RootState) => {
+    return state.team.id;
+  });
+
+  const teamInfo = useTeamQuery(teamId);
+
   return (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-white">
-        <img className="w-100 h-100"></img>
+        <img className="w-100 h-100">{getImgUrl("../../assets/profile/team", String(teamId))}</img>
         <div className="text-20 mt-4">MUNKS</div>
       </div>
 

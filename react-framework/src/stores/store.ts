@@ -1,14 +1,16 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import { combineReducers, configureStore } from "@reduxjs/toolkit"
+import { persistReducer } from "redux-persist"
+import storage from "redux-persist/lib/storage"
 import matchSlice from "./match/match"
+import teamSlice from "./team/team"
 import liveSlice from "./live/live"
-import registerTabSlice from "./register/registerTab";
-import userInfoSlice from "./register/userInfo";
-import userIdSlice from "./user/userId";
+import registerTabSlice from "./register/registerTab"
+import userInfoSlice from "./register/userInfo"
+import userIdSlice from "./user/userId"
 
 const reducers = combineReducers({
     match: matchSlice,
+    team: teamSlice,
     live: liveSlice,
     registerTab: registerTabSlice,
     userInfo: userInfoSlice,
