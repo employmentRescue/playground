@@ -6,7 +6,7 @@ interface NicknameAction {
     payload: string
 }
 interface FavoriteTimeAction {
-    payload: number | number[]
+    payload: number[]
 }
 interface FavoriteSportsAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, isSelected: boolean }
@@ -14,10 +14,16 @@ interface FavoriteSportsAction {
 interface SportsLevelAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, level: Level }
 }
+interface myTeamNameAction {
+    payload: string
+}
+interface statusMessageAction {
+    payload: string
+}
 
-export interface User {
+interface UserInfo {
     nickname: string,
-    favoriteTime?: number | number[],
+    favoriteTime: number[],
     favoriteSports: {
         football: boolean,
         basketball: boolean,
@@ -28,9 +34,11 @@ export interface User {
         basketball?: Level,
         badminton?: Level,
     },
+    myTeamName: string,
+    statusMessage: string,
 }
 
-const initialState: User = {
+const initialState: UserInfo = {
     nickname: "",
     favoriteTime: [6, 18],
     favoriteSports: {
@@ -43,9 +51,11 @@ const initialState: User = {
         basketball: null,
         badminton: null,
     },
+    myTeamName: "팀 이름",
+    statusMessage: "상태 메시지",
 }
 
-const userSlice = createSlice({
+const userInfoSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
@@ -84,7 +94,13 @@ const userSlice = createSlice({
                     state.sportsLevel.badminton = action.payload.level
                     break;
             }
-        }
+        },
+        setMyTeamName(state, action: myTeamNameAction) {
+            state.myTeamName = action.payload
+        },
+        setStatusMessage(state, action: statusMessageAction) {
+            state.statusMessage = action.payload
+        },
     }
 })
 
@@ -92,7 +108,9 @@ export const {
     setNickname,
     setFavoriteTime,
     setFavoriteSports,
-    setSportsLevel
-} = userSlice.actions;
+    setSportsLevel,
+    setMyTeamName,
+    setStatusMessage,
+} = userInfoSlice.actions;
 
-export default userSlice.reducer;
+export default userInfoSlice.reducer;

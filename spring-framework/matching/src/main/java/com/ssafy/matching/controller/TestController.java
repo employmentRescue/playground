@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/test")
 public class TestController {
-    @GetMapping("")
+    @RequestMapping("/matching/test")
     public String test() throws Exception {
-        return "matchingServer -     testController 실행";
+        System.out.println("MMMMMMMMMMMMMMMMM");
+        return "matchingServer - testController 실행";
     }
 }

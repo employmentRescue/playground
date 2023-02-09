@@ -3,8 +3,8 @@ import { useReducer } from "react"
 import useGeolocation, { EnrichedGeolocationCoordinates } from "react-hook-geolocation"
 import RegisterModal from "@/components/LiveModal/RegisterModal"
 import JoinModal from "@/components/LiveModal/JoinModal"
-import basketBallMap from "@/assets/icons/basketball-map.png"
-import basketBallIcon from "@/assets/icons/basketball-original.png"
+import basketballMap from "@/assets/icons/basketball-map.png"
+import basketballIcon from "@/assets/icons/basketball-original.png"
 import footballMap from "@/assets/icons/football-map.png"
 import footballIcon from "@/assets/icons/football-original.png"
 import badmintonMap from "@/assets/icons/badminton-map.png"
@@ -16,7 +16,7 @@ import useLiveMatchListQuery from "@/hooks/liveMatch/useLiveMatchListQuery"
 import { liveMatch } from "@/models/liveMatch"
 import { UseQueryResult } from "react-query"
 
-type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'football' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
+type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'FOOTBALL' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
 
 interface State {
     isPressed: boolean;
@@ -40,17 +40,17 @@ function registReducer(state: State, action: Action) {
         case 'BASKETBALL':
             return {
                 ...state,
-                sportType: 'basketball'
+                sportType: '농구'
             }
-        case 'football':
+        case 'FOOTBALL':
             return {
                 ...state,
-                sportType: 'football'
+                sportType: '축구'
             }
         case 'BADMINTON':
             return {
                 ...state,
-                sportType: 'badminton'
+                sportType: '배드민턴'
             }
         case 'DEFAULT':
             return {
@@ -90,8 +90,8 @@ export default function HomePage() {
     // Regist Reducer
     const [state, dispatch] = useReducer(registReducer, initialState);
     const onPressed = () => dispatch({ type: 'ISPRESSED' });
-    const basketBall = () => dispatch({ type: 'BASKETBALL' });
-    const football = () => dispatch({ type: 'football' });
+    const basketball = () => dispatch({ type: 'BASKETBALL' });
+    const football = () => dispatch({ type: 'FOOTBALL' });
     const badminton = () => dispatch({ type: 'BADMINTON' });
     const defaultSportType = () => dispatch({ type: 'DEFAULT' });
     const joinMeeting = () => dispatch({ type: 'JOIN' });
@@ -179,13 +179,13 @@ export default function HomePage() {
             let newMarkers: naver.maps.Marker[] = []
             for (const e of liveMatchList.data) {
                 switch (e.sports) {
-                    case "basketball":
-                        newMarkers.push(setMapIcon(basketBallMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
+                    case '농구':
+                        newMarkers.push(setMapIcon(basketballMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
-                    case "football":
+                    case '축구':
                         newMarkers.push(setMapIcon(footballMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
-                    case "badminton":
+                    case '배드민턴':
                         newMarkers.push(setMapIcon(badmintonMap, new naver.maps.LatLng(e.place.lat, e.place.lng), naverMap, 60, 60, true));
                         break;
                 }
@@ -211,9 +211,9 @@ export default function HomePage() {
                     // user가 만든 실시간 모임이 아니거나 참여하지 않았으면
                     //joinMeeting();
                     // user가 만든 실시간 모임이 아니지만 이미 참여하였으면
-                    //quitMetting();
+                    quitMetting();
                     // user가 만든 실시간 모임이면
-                    modifyMeeting();
+                    //modifyMeeting();
                 });
             }
             setMarkers(newMarkers);
@@ -233,15 +233,15 @@ export default function HomePage() {
 
         let marker: naver.maps.Marker;
         switch (state.sportType) {
-            case 'basketball':
-                marker = setMapIcon(basketBallMap, location, naverMap, 60, 60, true)
+            case '농구':
+                marker = setMapIcon(basketballMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
-            case 'football':
+            case '축구':
                 marker = setMapIcon(footballMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
-            case 'badminton':
+            case '배드민턴':
                 marker = setMapIcon(badmintonMap, location, naverMap, 60, 60, true)
                 registerMeeting();
                 break;
@@ -255,7 +255,7 @@ export default function HomePage() {
     }, [state.sportType])
 
     return (
-        <div ref={mapElement} className="w-full h-[calc(100%-110px)] mt-55 relative">
+        <div ref={mapElement} className="w-full h-[calc(100%-110px)] relative">
             <div className="w-60 h-193 flex flex-col relative float-right mt-12 mr-9 z-10 ">{
                 state.isPressed === false ?
                     <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>등록</button>
@@ -263,8 +263,8 @@ export default function HomePage() {
                     <div>
                         <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>취소</button>
                         <div className="flex flex-col justify-between items-center w-60 h-157 mt-4 rounded-15 border-1 border-[#303eff80] bg-blue-300">
-                            <div className="w-40 h-40 flex justify-center items-center mt-7 rounded-50 border-3 border-yellow-600 bg-yellow-200" onClick={basketBall} >
-                                <img src={basketBallIcon} className="w-20 h-20"></img>
+                            <div className="w-40 h-40 flex justify-center items-center mt-7 rounded-50 border-3 border-yellow-600 bg-yellow-200" onClick={basketball} >
+                                <img src={basketballIcon} className="w-20 h-20"></img>
                             </div>
                             <div className="w-40 h-40 flex justify-center items-center rounded-50 border-3 border-[#9c8dd3] bg-blue-400" onClick={football}>
                                 <img src={footballIcon} className="w-20 h-20"></img>

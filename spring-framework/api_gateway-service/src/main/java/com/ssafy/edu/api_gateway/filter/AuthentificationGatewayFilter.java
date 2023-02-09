@@ -50,10 +50,15 @@ public class AuthentificationGatewayFilter implements WebFilter {
             "/oauth2/login/kakao",
             "/oauth2/login"
     );
+    private static List<String> opend_Endpoints2 = Arrays.asList(
+
+    );
 
     private static boolean isSecured(ServerWebExchange exchange){
         if (opend_Endpoints == null || opend_Endpoints.isEmpty()) return true;
+
         return opend_Endpoints.stream().noneMatch(uri -> exchange.getRequest().getURI().getPath().contains(uri));
+
     }
 
     Mono<Void> serverResponseCode(ServerWebExchange exchange ,HttpStatus status){
@@ -66,6 +71,11 @@ public class AuthentificationGatewayFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         System.out.println("api-gateway routes for : " + exchange.getRequest().getPath() );
+
+        if (exchange.getRequest().getHeaders().containsKey("x-forwarded-for-user-id")){
+            return serverResponseCode(exchange, HttpStatus.BAD_REQUEST);
+        }
+
 //
 //        if (isSecured(exchange)){
 //
@@ -161,7 +171,7 @@ public class AuthentificationGatewayFilter implements WebFilter {
 //                exchange
 //                        .getRequest()
 //                        .mutate()
-//                        .header("userID", String
+//                        .header("x-forwarded-for-user-id", String
 //                                                .valueOf(kakaoLoginAccessTokenCache
 //                                                        .getKakao_userID()));
 //            }

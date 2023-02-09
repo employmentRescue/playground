@@ -3,27 +3,26 @@ import { Slider } from "@mui/material"
 import ChoiceCompoleteButton from "@/components/userRegister/Buttons/ChoiceCompleteButton"
 import NicknameCheckButton from "@/components/userRegister/Buttons/NicknameCheckButton"
 import { useDispatch, useSelector } from "react-redux"
-import { setNickname, setFavoriteTime } from "@/stores/register/user"
-import { User } from "@/stores/register/user"
+import { setNickname, setFavoriteTime } from "@/stores/register/userInfo"
+import { RootState } from "@/stores/store";
 
-interface userState {
-    user: User
-}
 
 export default function UserInfoTab() {
     // const [favoriteTime, setFavoriteTime] = useState(initialTimeState);
     // const [nickname, setNickname] = useState("");
     const dispatch = useDispatch();
-    const favoriteTime = useSelector((state: userState) => {
-        return state.user.favoriteTime;
+    const favoriteTime = useSelector((state: RootState) => {
+        return state.userInfo.favoriteTime;
     });
-    const nickname = useSelector((state: userState) => {
-        return state.user.nickname;
+    const nickname = useSelector((state: RootState) => {
+        return state.userInfo.nickname;
     });
 
     const handleChange = (event: Event, value: number | number[]) => {
         event.preventDefault();
-        dispatch(setFavoriteTime(value))
+        const newValue = value as number | number[] as number[]
+        // console.log(value)
+        dispatch(setFavoriteTime(newValue))
     }
 
     const handleNickname = (event: React.BaseSyntheticEvent) => {
@@ -79,7 +78,8 @@ export default function UserInfoTab() {
                     <input
                         type="text"
                         value={nickname}
-                        className="border-b-2 mx-11 border-gray-600 w-160 h-26"
+                        className="border-b-2 mx-11 border-gray-600 w-160 h-26 outline-none text-center"
+                        placeholder="닉네임 입력"
                         onChange={handleNickname}
                         ref={nicknameInput}
                     />

@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { activeIndex } from "@/stores/register/registerTab";
-
-type IndexState = {
-    registerTab: { currentIndex: 0 | 1 | 2 }
-};
+import useKakaoLogin from "@/hooks/login/useKakaoLogin";
+import { useState } from "react";
+import { RootState } from "@/stores/store";
+import { useNavigate } from "react-router-dom";
 
 interface CompleteButtonProps {
     innerText: string
@@ -11,12 +11,22 @@ interface CompleteButtonProps {
 
 export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps) {
     const dispatch = useDispatch();
-    const currentIndex = useSelector((state: IndexState) => {
+    const [info, setInfo] = useState();
+
+    const currentIndex = useSelector((state: RootState) => {
         return state.registerTab.currentIndex
     })
-    const userInfo = useSelector((state: any) => {
-        return state.user
+    const userInfo = useSelector((state: RootState) => {
+        return state.userInfo
     })
+    let code = location.search.split('=')[1];
+    const kakaoLogin = useKakaoLogin(code);
+
+    const navigate = useNavigate();
+
+    const saveInfo = () => {
+        kakaoLogin.mutate(info)
+    }
 
     return (
         <button
@@ -24,15 +34,15 @@ export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps
                 console.log(userInfo)
                 if (innerText == "선택 완료") {
                     if (currentIndex == 2) {
-                        const CODE = location.search.split('=')[1];
-                        console.log(CODE)
-                        location.href = "/login/register/complete"
+                        saveInfo();
+                        console.log(info)
+                        navigate("/login/register/complete")
                     } else {
                         dispatch(activeIndex(currentIndex + 1))
                     }
                 }
                 else if (innerText == "운동하러 가기") {
-                    location.href = "/"
+                    navigate("/")
                 }
 
             }}
