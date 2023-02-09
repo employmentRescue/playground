@@ -20,9 +20,10 @@ import closeIcon from "@/assets/icons/exit.png"
 import searchIcon from "@/assets/icons/search-icon.png"
 import { sign } from "crypto";
 
-import useGatheringListQuery from "@/hooks/useGatheringListQuery";
-
-
+import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
+import { RootState } from "@/stores/store";
+import { matchList } from '@/models/matchList';
+import { useSelector } from "react-redux";
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
@@ -353,7 +354,7 @@ function MatchFilterBar() {
                 }}>
                 <img src={sportIcon.img} className="w-20 h-20 grow-0" />
             </div>
-            {state.isClicked === true && <MatchFilterType sportType={state.sportType} onChangeMode={(type) => {
+            {state.isClicked === true && <MatchFilterSport sportType={state.sportType} onChangeMode={(type) => {
                 switch (type) {
                     case "BASKETBALL":
                         basketball();
@@ -395,7 +396,7 @@ function MatchFilterBar() {
 }
 
 // 자동 매칭 필터바 - 종목
-function MatchFilterType({ sportType, onChangeMode }: { sportType: string, onChangeMode: (type: string) => void }) {
+function MatchFilterSport({ sportType, onChangeMode }: { sportType: string, onChangeMode: (type: string) => void }) {
     const basketballBorder = () => { return (sportType === 'BASKETBALL' ? "border-[#efad45]" : "border-[#fde9b4]") }
     const footBallBorder = () => { return (sportType === 'footBall' ? "border-[#9C8DD3]" : "border-[#d8caff]") }
     const badmintonBorder = () => { return (sportType === 'BADMINTON' ? "border-[#71D354]" : "border-[#c4ffb6]") }
@@ -430,6 +431,9 @@ function MatchFilterType({ sportType, onChangeMode }: { sportType: string, onCha
 
 // 자동 매칭 필터바 - 거리범위
 function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWindow: () => void, clicked: () => void }) {
+    const distance = useSelector((state: RootState) => {
+        return String(state.matchSort.distance);
+    })
     return (
         <div className="flex flex-row absolute top-15 left-67 w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
             onClick={(e) => {
@@ -437,7 +441,7 @@ function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWindow: ()
                 clicked();
                 shutOtherWindow();
             }}>
-            <span className="w-41 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">~20km</span>
+            <span className="w-41 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{'~' + distance + 'km'}</span>
             <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
         </div>
     )
@@ -490,9 +494,140 @@ function MatchContent() {
 // ================ 목록 관련 컴포넌트 =======================================================
 // 목록 필터바
 function ListFilterBar() {
+    // 종목 탭
+    const [state, dispatch] = useReducer(registerSportType, initialSportTypeState)
+    const isClicked = () => dispatch({ type: 'ISCLICKED' })
+    const basketball = () => { sportChange("BASKETBALL"); dispatch({ type: 'BASKETBALL' }); }
+    const footBall = () => { sportChange("footBall"); dispatch({ type: 'footBall' }); }
+    const badminton = () => { sportChange("BADMINTON"); dispatch({ type: 'BADMINTON' }); }
+
+    const [sportIcon, setSportIcon] = useState({ border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal })
+    const sportChange = (type: string) => {
+        switch (type) {
+            case "BASKETBALL":
+                setSportIcon({ border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal });
+                break;
+            case "footBall":
+                setSportIcon({ border: "border-[#9C8DD3] bg-[#d8caff]", img: footBallOriginal });
+                break;
+            case "BADMINTON":
+                setSportIcon({ border: "border-[#71D354] bg-[#c4ffb6]", img: badmintonOriginal });
+                break;
+        }
+    }
+    const shutOtherWindow = ()=> {
+        if (state.isClicked === true) {
+            isClicked();
+        }
+    }
+
+    // 거리 탭
+    const [distanceState, setDistanceState] = useState(false);
+    const distancePage = () => {
+        switch (distanceState) {
+            case true:
+                setDistanceState(false);
+                break;
+            case false:
+                setDistanceState(true);
+                break;
+        }
+
+    }
+
+    // 날짜 탭
+    const [dateState, setDateState] = useState(false);
+    const datePage = () => {
+        switch (dateState) {
+            case true:
+                setDateState(false);
+                break;
+            case false:
+                setDateState(true);
+                break;
+        }
+    }
+
+    // 시간 탭
+    const [timeState, setTimeState] = useState(false);
+    const timePage = () => {
+        switch (timeState) {
+            case true:
+                setTimeState(false);
+                console.log(timeState);
+                break;
+            case false:
+                setTimeState(true);
+                console.log(timeState);
+                break;
+        }
+    }
+
+    const [date, setDate] = useState('YYYY-MM-DD')
+    let dateDisplay = 'M-DD'
+    if (date[5] === '0') {
+        if (date[8] === '0') {
+            dateDisplay = date.slice(6,7) + "월 " + date.slice(9) + "일"           
+        }
+        else {
+            dateDisplay = date.slice(6,7) + "월 " + date.slice(8, 10) + "일"
+        }
+    }
+    else {
+        if (date[8] === '0') {
+            dateDisplay = date.slice(5,7) + "월 " + date.slice(9) + "일"
+        }
+        else {
+            dateDisplay = date.slice(5,7) + "월 " + date.slice(8, 10) + "일"
+        }
+    }
+
     return (
-        <div className="w-[360px] h-93 grow-0 m-0 pt-8 pl-16 border-b-1 border-solid border-[#D8CAFF] bg-[#f1f3ff]">
-            <img src={basketballOriginal} className="w-40 h-40 grow-0 mr-11" />
+        <div className="relative w-[360px] h-93 grow-0 m-0 pt-8 pl-16 border-b-1 border-solid border-[#D8CAFF] bg-[#f1f3ff]">
+            <div className={"w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] rounded-20 " + sportIcon.border}
+                onClick={(event) => {
+                    event.preventDefault();
+                    isClicked();
+                }}>
+                <img src={sportIcon.img} className="w-20 h-20 grow-0" />
+            </div>
+            {state.isClicked === true && <MatchFilterSport sportType={state.sportType} onChangeMode={(type) => {
+                switch (type) {
+                    case "BASKETBALL":
+                        basketball();
+                        break;
+                    case "footBall":
+                        footBall();
+                        break;
+                    case "BADMINTON":
+                        badminton();
+                        break;
+                }
+            }
+            } />}
+            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
+                distancePage();
+            }} />
+            {distanceState === true && <MatchDistanceSetting clicked={() => {
+                distancePage();
+            }} />}
+
+            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
+                datePage();
+            }} date={dateDisplay}/>
+            {dateState === true && <MatchDateSetting clicked={() => {
+                datePage();
+            }}
+            dateSetting={(dateClicked: string)=>setDate(dateClicked)} />}
+
+            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
+                timePage();
+            }} />
+            {timeState === true && <MatchTimeSetting clicked={() => {
+                timePage();
+            }} />}
+
+            <MatchFilterEtc shutOtherWindow={()=>shutOtherWindow()} />
         </div>
     )
 }
@@ -538,16 +673,40 @@ function ListItem({ data }: { data: gatheringType }) {
 
 // 목록 전체 내용
 function ListContent() {
-    const gatheringListQuery = useGatheringListQuery();
-    // useQuery가 알아서 업데이트되는지 확인해야함 
+    const dummyData : matchList = ({
+        startDate: "2023-02-15",
+        lat: 36.3663369,
+        lng: 127.2961423,
+        distance: 100,
+        minStartTime: "01:00:00",
+        maxStartTime: "23:00:00",
+        level: "중수",
+        minPlayTime: 1,
+        maxPlayTime: 23,
+        sex: "남성",
+        sports: "basketball",
+        gameType: "3대3",
+        sort: "distance",
+    })
+    const gatheringListQuery = useGatheringListQuery(dummyData);
+    console.log(gatheringListQuery)
 
     const listItems = () => {
         if (gatheringListQuery.isSuccess) {
-
-            const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => <ListItem key={i} data={eachData} />)
-            return (
-                <div>{gatheringList}</div>
-            )
+            console.log('success ' + gatheringListQuery)
+            if (gatheringListQuery.data) {
+                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => <ListItem key={i} data={eachData} />)
+                return (
+                    <div>{gatheringList}</div>
+                )
+            } 
+            else {
+                return (
+                    <div>
+                        해당 모임이 존재하기 않습니다.
+                    </div>
+                )
+            }
         }
         else {
             return (

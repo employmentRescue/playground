@@ -4,6 +4,7 @@ import { useReducer, ComponentProps } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { Slider } from "@mui/material"
 import { RootState } from "@/stores/store";
+import { setSortTimeRange } from "@/stores/match/matchSort"
 
 import closeIcon from "@/assets/icons/exit.png";
 
@@ -13,9 +14,36 @@ export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
     }
-    const favoriteTime = useSelector((state: RootState) => {
-        return state.userInfo.favoriteTime;
+
+
+    const dispatch = useDispatch()
+
+    const handleChange = (event: Event, value: number | number[]) => {
+        event.preventDefault();
+        const newValue = value as number | number[] as number[]
+        // console.log(value)
+        dispatch(setSortTimeRange(newValue))
+    }
+
+    const pageSortTime = useSelector((state: RootState) => {
+        if (state.matchSort.minStartTime === null) {
+            return null
+        }
+        else {
+            return [Number(state.matchSort.minStartTime), Number(state.matchSort.maxStartTime)];
+
+        }
     });
+    const userSortTime = useSelector((state: RootState) => {
+        return state.userInfo.favoriteTime
+    });
+    // const [timeStart, timeEnd] = useSelector((state: RootState) => {
+    //     if (pageSortTime === null) {
+    //         return 
+    //     }
+
+    //     return state.matchSort.timeRange;
+    // });
 
     return (
         <div className="absolute top-[-117px] left-0 w-[360px] h-[745px] m-0 p-0 z-20">
@@ -29,9 +57,9 @@ export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
                 <div className="flex-row h-1/9 justify-center mt-15 mx-18">
                     <Slider
                         // value={favoriteTime}
-                        // onChange={handleChange}
+                        onChange={handleChange}
                         valueLabelDisplay="auto"
-                        defaultValue={favoriteTime}
+                        value={pageSortTime == null ? userSortTime : pageSortTime}
                         // marks={marks}
                         min={0}
                         max={24}
@@ -39,6 +67,7 @@ export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
                         className="mt-12"
                     />
                     <div className="flex mb-12">
+                        <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
                         <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
                         <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
                         <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
