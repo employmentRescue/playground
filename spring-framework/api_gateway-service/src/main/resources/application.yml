@@ -7,6 +7,15 @@ spring:
 
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "https://openapi.map.naver.com"
+            allowedMethods:
+              - GET
+              - POST
+
       httpclient:
         ssl:
           useInsecureTrustManager: true # SSL Route(?) 허용
