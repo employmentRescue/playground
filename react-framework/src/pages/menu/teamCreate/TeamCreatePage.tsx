@@ -9,59 +9,74 @@ import profileSampleImg4 from "@/assets/profiles/my-profile-sample4.png"
 import profileSampleImg5 from "@/assets/profiles/my-profile-sample5.png"
 
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
+import { useSelector } from "react-redux"
+import { RootState } from "@/stores/store"
 
 interface Profile {
-    id: number;
+    userId: number;
     imageSrc: string;
     nickname: string;
+    isSelected: boolean;
 }
 
+const initialMemberIds: number[] = []
 const initialProfileList: Profile[] = []
 
-const recentProfileList: Profile[] = [
+const intiailRecentProfileList: Profile[] = [
     {
-        id: 1,
+        userId: 1,
         imageSrc: profileSampleImg2,
         nickname: "포르투갈 손흥민",
+        isSelected: false
     },
     {
-        id: 2,
+        userId: 2,
         imageSrc: profileSampleImg3,
         nickname: "크리스타이누 호날두",
+        isSelected: false
     },
     {
-        id: 3,
+        userId: 3,
         imageSrc: profileSampleImg4,
         nickname: "얼굴 천재",
+        isSelected: false
     },
     {
-        id: 4,
+        userId: 4,
         imageSrc: profileSampleImg5,
         nickname: "회사원",
+        isSelected: false
     },
 ]
 
-const searchedProfileList: Profile[] = [
+const initialSearchedProfileList: Profile[] = [
     {
-        id: 5,
+        userId: 5,
         imageSrc: profileSampleImg2,
         nickname: "친구1",
+        isSelected: false
     },
     {
-        id: 6,
+        userId: 6,
         imageSrc: profileSampleImg3,
         nickname: "친구2",
+        isSelected: false
     },
 ]
 
 
 export default function TeamCreatePage() {
     const [searchInput, setSearchInput] = useState("");
-    const [selectedProfileList, pushSelectedProfileList] = useState(initialProfileList)
+    const [recentProfileList, setRecentProfileList] = useState(intiailRecentProfileList)
+    const [searchedProfileList, setSearchedProfileList] = useState(initialSearchedProfileList)
+    const selectedMemberIds = useSelector((state: RootState) => {
+        return state.myTeam.memberIds
+    });
 
     const handleOnChange = (e: React.BaseSyntheticEvent) => {
         setSearchInput(e.target.value)
+        console.log(selectedMemberIds)
     }
 
     function searchTitle() {
@@ -72,10 +87,6 @@ export default function TeamCreatePage() {
         }
     }
 
-    function showSelected() {
-
-    }
-
     function searchProfileRendering() {
         let Result
 
@@ -83,13 +94,23 @@ export default function TeamCreatePage() {
             let index = 0
             Result = searchedProfileList.map((profile) => {
                 index++;
-                return <ProfileCard key={index} id={profile.id} className={"flex my-10 justify-between"} imageSrc={profile.imageSrc} imageSize="ml-24 w-52 h-52" nickname={profile.nickname} />
+                return (
+                    <ProfileCard
+                        key={profile.userId}
+                        userId={profile.userId}
+                        className={"flex my-10 justify-between"}
+                        imageSrc={profile.imageSrc}
+                        imageSize="ml-24 w-52 h-52"
+                        nickname={profile.nickname}
+                        isSelected={profile.isSelected}
+                    />
+                )
             })
         } else {
             let index = 0
             Result = recentProfileList.map((profile) => {
                 index++;
-                return <ProfileCard key={index} id={profile.id} className={"flex my-10 justify-between"} imageSrc={profile.imageSrc} imageSize="ml-24 w-52 h-52" nickname={profile.nickname} />
+                return <ProfileCard key={index} userId={profile.userId} className={"flex my-10 justify-between"} imageSrc={profile.imageSrc} imageSize="ml-24 w-52 h-52" nickname={profile.nickname} isSelected={profile.isSelected} />
             })
         }
         return Result
@@ -100,7 +121,6 @@ export default function TeamCreatePage() {
             <div className="flex justify-evenly mt-16">
                 <SportsSelectButtons />
             </div>
-            <div>선택한 사람들</div>
             <input type="text" className="h-40 bg-[#F2EFEF] mx-14 px-10 py-5 outline-none text-14 rounded-3" placeholder="닉네임, 이름 검색" onChange={handleOnChange} />
             <div className="mx-15 mt-13 text-14">{searchTitle()}</div>
             {searchProfileRendering()}

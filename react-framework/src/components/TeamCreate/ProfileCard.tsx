@@ -1,14 +1,16 @@
+import SelectedProfile from "./SelectedProfile";
 import CheckBox from "./CheckBox";
 
 interface ClassNameProps {
-    id: number;
+    userId: number;
     className: string;
     imageSrc: string;
     imageSize: string;
     nickname: string;
+    isSelected: boolean;
 }
 
-export default function ProfileCard({ id, className, imageSrc, imageSize, nickname }: ClassNameProps) {
+export default function ProfileCard({ userId, className, imageSrc, imageSize, nickname, isSelected }: ClassNameProps) {
     return (
         <div
             className={className}
@@ -17,9 +19,10 @@ export default function ProfileCard({ id, className, imageSrc, imageSize, nickna
                 <img src={imageSrc} className={imageSize + " rounded-26 self-center"} />
                 <div className="flex flex-col ml-15 my-15 h-35 justify-center ">
                     <h2 className="text-15 font-inter">{nickname}</h2>
+                    <SelectedProfile userId={userId} imageSrc={imageSrc} nickname={nickname} isSelected={isSelected} />
                 </div>
             </div>
-            <CheckBox className="flex ml-15 mr-24 w-19 h-19 border-2 rounded-20 self-center" id={id} imageSrc={imageSrc} nickname={nickname} />
+            <CheckBox className="flex ml-15 mr-24 w-19 h-19 border-2 rounded-20 self-center" userId={userId} imageSrc={imageSrc} nickname={nickname} isSelected={isSelected} />
         </div>
     )
 }

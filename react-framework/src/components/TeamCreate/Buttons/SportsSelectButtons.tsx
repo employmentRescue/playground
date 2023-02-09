@@ -2,10 +2,15 @@ import footballImg from "@/assets/icons/football-original.png"
 import basketballImg from "@/assets/icons/basketball-original.png"
 import badmintonImg from "@/assets/icons/badminton-original.png"
 
+import { setSportsType } from "@/stores/user/myTeam"
+import store from "@/stores/store"
+
 import { useState } from "react"
+import { useDispatch } from "react-redux"
 
 
 export default function SportsSelectButtons() {
+    const dispatch = useDispatch();
     const [selectedSports, setSelectedSports] = useState("")
 
     const handleOnClick = (sportsName: "축구" | "농구" | "배드민턴") => {
@@ -13,9 +18,11 @@ export default function SportsSelectButtons() {
             setSelectedSports("")
         } else {
             setSelectedSports(sportsName)
+            dispatch(setSportsType(sportsName))
+            console.log(store.getState().myTeam.sportsType)
         }
-
     }
+
     return (
         <div className="flex">
             <div className="flex flex-col">

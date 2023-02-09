@@ -35,7 +35,7 @@ interface UserInfo {
         basketball?: Level,
         badminton?: Level,
     },
-    myTeam: MyTeam,
+    myTeam: MyTeam[],
     statusMessage: string,
 }
 
@@ -52,10 +52,13 @@ const initialState: UserInfo = {
         basketball: null,
         badminton: null,
     },
-    myTeam: {
-        myTeamName: "팀 이름",
-        memberIds: []
-    },
+    myTeam: [
+        {
+            sportsType: "축구",
+            myTeamName: "팀 이름",
+            memberIds: []
+        },
+    ],
     statusMessage: "상태 메시지",
 }
 
@@ -99,8 +102,8 @@ const userInfoSlice = createSlice({
                     break;
             }
         },
-        setMyTeamName(state, action: myTeamAction) {
-            state.myTeam = action.payload
+        setMyTeam(state, action: myTeamAction) {
+            state.myTeam.push(action.payload)
         },
         setStatusMessage(state, action: statusMessageAction) {
             state.statusMessage = action.payload
@@ -113,7 +116,7 @@ export const {
     setFavoriteTime,
     setFavoriteSports,
     setSportsLevel,
-    setMyTeamName,
+    setMyTeam,
     setStatusMessage,
 } = userInfoSlice.actions;
 
