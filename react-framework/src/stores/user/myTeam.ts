@@ -40,18 +40,10 @@ const myTeamSlice = createSlice({
             state.memberIds.push(action.payload)
         },
         dropOutOfMyTeam(state, action: DropOutOfMyTeamAction) {
-<<<<<<< Updated upstream
             const newmMemberIds = state.memberIds.filter((memberId) => {
                 return memberId !== action.payload
             })
             return { sportsType: state.sportsType, myTeamName: state.myTeamName, memberIds: newmMemberIds }
-=======
-            // console.log(state.memberIds)
-            state.memberIds.filter((memberId) => {
-                console.log(action.payload)
-                return memberId !== action.payload
-            })
->>>>>>> Stashed changes
         },
     }
 })

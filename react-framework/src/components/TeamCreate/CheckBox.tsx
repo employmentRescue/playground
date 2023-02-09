@@ -21,23 +21,13 @@ export default function CheckBox({ userId, className, imageSrc, nickname, isSele
 
     const handleOnClick = () => {
         if (checked) {
-<<<<<<< Updated upstream
             // console.log(id)
             dispatch(dropOutOfMyTeam(userId))
         } else {
             // console.log(id)
             dispatch(inviteToMyTeam(userId))
-=======
-            setChecked(!checked)
-            dispatch(dropOutOfMyTeam(id))
-            console.log(userList)
-        } else {
-            setChecked(!checked)
-            dispatch(inviteToMyTeam(id))
-            console.log(userList)
->>>>>>> Stashed changes
         }
-
+        setChecked(!checked)
     }
 
     useEffect(() =>
