@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+//@ToString
 
 @SuppressWarnings("serial")
 @Entity
@@ -22,6 +22,7 @@ public class TeamMatchResult implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "팀 경기 결과 번호")
     private int teamMatchResultId;
+    @ApiModelProperty(value = "팀 번호", required = true)
     private int teamId;
 //    private int matchId;
     @ApiModelProperty(value = "경기 결과")
@@ -33,7 +34,7 @@ public class TeamMatchResult implements Serializable {
     private Team team;
 
     @ManyToOne
-    @JoinColumn(name = "matchId")
+    @JoinColumn(name = "matchId", insertable=false, updatable=false)
     @JsonIgnore
     private Match match;
 }
