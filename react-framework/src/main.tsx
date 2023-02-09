@@ -22,7 +22,7 @@ import MatchDetailPage from './pages/match/MatchDetailPage';
 import MatchRegisterPage from './pages/match/MatchRegisterPage';
 import MenuListPage from './pages/menu/MenuListPage';
 import ProfilePage from './pages/menu/profile/ProfilePage';
-import RankPage from './pages/menu/rank/RankPage';
+import RankPage from './pages/menu/RankPage';
 import MatchListPage from './pages/menu/MatchListPage';
 import MyTeamPage from './pages/menu/myTeam/MyTeamPage';
 import TeamCreatePage from './pages/menu/teamCreate/MemberInvitePage';

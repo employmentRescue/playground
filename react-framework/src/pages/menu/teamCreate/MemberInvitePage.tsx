@@ -111,6 +111,7 @@ export default function TeamCreatePage() {
             <input type="text" className="h-40 bg-[#F2EFEF] mt-15 mx-14 px-10 py-5 outline-none text-14 rounded-3" placeholder="닉네임, 이름 검색" onChange={handleOnChange} />
             <div className="mx-15 mt-13 text-14">{searchTitle()}</div>
             {searchProfileRendering()}
+            <button className="w-[300px] h-38 rounded-5 font-inter bg-blue-700 text-16 mb-32 text-white tracking-tight self-center fixed bottom-55">다음</button>
         </div>
     )
 }
