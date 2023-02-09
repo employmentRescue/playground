@@ -13,11 +13,11 @@ const initialState: matchList = {
     minStartTime: null,
     maxStartTime: null,
     level: "중수",
-    minPlayTime: 1,
-    maxPlayTime: 3,
+    minPlayTime: Number(dayjs(new Date()).format('H')),
+    maxPlayTime: Number(dayjs(new Date()).format('H')) + 2,
     sex: "남성",
-    sports: "basketball",
-    gameType: "5대5",
+    sports: "농구",
+    gameType: "3대3",
     sort: "distance"
 }
 

@@ -23,7 +23,8 @@ import { sign } from "crypto";
 import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
 import { RootState } from "@/stores/store";
 import { matchList } from '@/models/matchList';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSortSports } from "@/stores/match/matchSort"
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
@@ -125,7 +126,7 @@ type listItem = {
 
 }
 
-type sportAction = { type: 'ISCLICKED' | 'BASKETBALL' | 'footBall' | 'BADMINTON' }
+type sportAction = { type: 'ISCLICKED' | '농구' | '축구' | '배드민턴' }
 
 interface sportTypeState {
     isClicked: boolean;
@@ -134,7 +135,9 @@ interface sportTypeState {
 
 const initialSportTypeState: sportTypeState = {
     isClicked: false,
-    sportType: 'BASKETBALL',
+    sportType: useSelector((state: RootState) => {
+        return state.matchSort.sports;
+    })
 }
 
 function registerSportType(state: sportTypeState, action: sportAction) {
@@ -152,23 +155,23 @@ function registerSportType(state: sportTypeState, action: sportAction) {
                     isClicked: false
                 }
             }
-        case 'BASKETBALL':
+        case '농구':
             return {
                 ...state,
                 isClicked: false,
-                sportType: 'BASKETBALL'
+                sportType: '농구'
             }
-        case 'footBall':
+        case '축구':
             return {
                 ...state,
                 isClicked: false,
-                sportType: 'footBall'
+                sportType: '축구'
             }
-        case 'BADMINTON':
+        case '배드민턴':
             return {
                 ...state,
                 isClicked: false,
-                sportType: 'BADMINTON'
+                sportType: '배드민턴'
             }
     }
 }
@@ -259,9 +262,9 @@ function MatchFilterBar() {
     // 종목 탭
     const [state, dispatch] = useReducer(registerSportType, initialSportTypeState)
     const isClicked = () => dispatch({ type: 'ISCLICKED' })
-    const basketball = () => { sportChange("BASKETBALL"); dispatch({ type: 'BASKETBALL' }); }
-    const footBall = () => { sportChange("footBall"); dispatch({ type: 'footBall' }); }
-    const badminton = () => { sportChange("BADMINTON"); dispatch({ type: 'BADMINTON' }); }
+    const basketball = () => { sportChange("BASKETBALL"); dispatch({ type: '농구' }); }
+    const footBall = () => { sportChange("footBall"); dispatch({ type: '축구' }); }
+    const badminton = () => { sportChange("BADMINTON"); dispatch({ type: '배드민턴' }); }
 
     const [sportIcon, setSportIcon] = useState({ border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal })
     const sportChange = (type: string) => {
@@ -495,12 +498,14 @@ function MatchContent() {
 // 목록 필터바
 function ListFilterBar() {
     // 종목 탭
-    const [state, dispatch] = useReducer(registerSportType, initialSportTypeState)
+    const [sportState, dispatch] = useReducer(registerSportType, initialSportTypeState)
     const isClicked = () => dispatch({ type: 'ISCLICKED' })
-    const basketball = () => { sportChange("BASKETBALL"); dispatch({ type: 'BASKETBALL' }); }
-    const footBall = () => { sportChange("footBall"); dispatch({ type: 'footBall' }); }
-    const badminton = () => { sportChange("BADMINTON"); dispatch({ type: 'BADMINTON' }); }
-
+    const basketball = () => { sportChange("BASKETBALL"); dispatch({ type: '농구' }); }
+    const footBall = () => { sportChange("footBall"); dispatch({ type: '축구' }); }
+    const badminton = () => { sportChange("BADMINTON"); dispatch({ type: '배드민턴' }); }
+    
+    const dispatchSport = useDispatch()
+    
     const [sportIcon, setSportIcon] = useState({ border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal })
     const sportChange = (type: string) => {
         switch (type) {
@@ -516,7 +521,7 @@ function ListFilterBar() {
         }
     }
     const shutOtherWindow = ()=> {
-        if (state.isClicked === true) {
+        if (sportState.isClicked === true) {
             isClicked();
         }
     }
@@ -587,11 +592,12 @@ function ListFilterBar() {
             <div className={"w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] rounded-20 " + sportIcon.border}
                 onClick={(event) => {
                     event.preventDefault();
+                    dispatchSport(setSortSports(sportState.sportType))
                     isClicked();
                 }}>
                 <img src={sportIcon.img} className="w-20 h-20 grow-0" />
             </div>
-            {state.isClicked === true && <MatchFilterSport sportType={state.sportType} onChangeMode={(type) => {
+            {sportState.isClicked === true && <MatchFilterSport sportType={sportState.sportType} onChangeMode={(type) => {
                 switch (type) {
                     case "BASKETBALL":
                         basketball();
@@ -736,7 +742,7 @@ export default function MatchPage() {
 
     return (
         <div className="h-auto bg-[#f5f5f5] m-0 pt-12">
-            <div className="w-[360px] h-50 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
+            <div className="w-full h-50 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
                 <AutoMatchTab clickedTab={state.tabType} changeType={() => {
                     autoMatch();
                 }} />
