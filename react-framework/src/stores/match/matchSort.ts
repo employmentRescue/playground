@@ -3,43 +3,46 @@ import { createSlice} from "@reduxjs/toolkit";
 import { RootState } from "@/stores/store";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import { matchList } from '@/models/matchList';
 
-interface sortInfo {
-    sportType: string,
-    distance: number,
-    date: string,
-    timeRange: number[] | null,
-}
-
-const initialState: sortInfo = {
-    sportType: 'BASKETBALL',
-    distance: 1,
-    date: dayjs(new Date()).format('YYYY-MM-DD'),
-    timeRange: null,
+const initialState: matchList = {
+    startDate: dayjs(new Date()).format('YYYY-MM-DD'),
+    lat: 36.3515058,
+    lng: 127.3129497,
+    distance: 10,
+    minStartTime: null,
+    maxStartTime: null,
+    level: "중수",
+    minPlayTime: 1,
+    maxPlayTime: 3,
+    sex: "남성",
+    sports: "basketball",
+    gameType: "5대5",
+    sort: "distance"
 }
 
 const sortInfoSlice = createSlice({
     name: "sortInfo",
     initialState,
     reducers: {
-        setSortSportType(state, action) {
-            state.sportType = action.payload;
+        setSortSports(state, action) {
+            state.sports = action.payload;
         },
         setSortDistance(state, action) {
             state.distance = action.payload;
         },
         setSortDate(state, action) {
-            state.date = action.payload;
+            state.startDate = action.payload;
         },
         setSortTimeRange(state, action) {
-            state.timeRange = action.payload;
+            state.minStartTime,  state.maxStartTime = String(action.payload[0]), String(action.payload[1]);
         }
     }
 
 })
 
 export const {
-    setSortSportType,
+    setSortSports,
     setSortDistance,
     setSortDate,
     setSortTimeRange

@@ -1,6 +1,9 @@
 import useMouse from "@react-hook/mouse-position";
 import { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux"
 import { useReducer, ComponentProps } from "react";
+import { RootState } from "@/stores/store";
+import { setSortDistance } from "@/stores/match/matchSort"
 
 import closeIcon from "@/assets/icons/exit.png";
 import searchIcon from "@/assets/icons/search-icon.png";
@@ -10,6 +13,12 @@ export default function MatchDistanceSetting({ clicked }: { clicked: () => void 
     const [distance, setDistance] = useState('1')
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
+    }
+    const dispatch = useDispatch()
+    const handleChange = (event: Event) => {
+        event.preventDefault();
+        // console.log(value)
+        dispatch(setSortDistance(distance))
     }
 
     return (
@@ -29,13 +38,13 @@ export default function MatchDistanceSetting({ clicked }: { clicked: () => void 
                     <h1>지도</h1>
                 </div> 
                 <div className="absolute bottom-0 h-1/8 justify-center mb-15 mx-13">
-                    <form action=""><input type="range" min="0" max="22" className="w-full" placeholder={distance} defaultValue="1" onChange={valueChange} /></form>
+                    <input type="range" min="0" max="22" className="w-full" placeholder={distance} defaultValue="1" onChange={valueChange} />
                     <div className="flex mb-12">
                         <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
                         <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
                         <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
                     </div>
-                    <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]">설정 완료</div>
+                    <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff] " onClick={(e)=>{e.preventDefault(); dispatch(setSortDistance(distance)); }}>설정 완료</div>
                 </div>
             </div>
         </div>

@@ -26,7 +26,13 @@ export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
     }
 
     const pageSortTime = useSelector((state: RootState) => {
-        return state.matchSort.timeRange;
+        if (state.matchSort.minStartTime === null) {
+            return null
+        }
+        else {
+            return [Number(state.matchSort.minStartTime), Number(state.matchSort.maxStartTime)];
+
+        }
     });
     const userSortTime = useSelector((state: RootState) => {
         return state.userInfo.favoriteTime
@@ -53,7 +59,7 @@ export default function MatchTimeSetting({ clicked }: { clicked: () => void }) {
                         // value={favoriteTime}
                         onChange={handleChange}
                         valueLabelDisplay="auto"
-                        value={pageSortTime === null ? userSortTime : pageSortTime}
+                        value={pageSortTime == null ? userSortTime : pageSortTime}
                         // marks={marks}
                         min={0}
                         max={24}
