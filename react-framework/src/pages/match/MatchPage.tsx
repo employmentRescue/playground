@@ -277,7 +277,7 @@ function MatchFilterBar() {
                 break;
         }
     }
-    const shutOtherWindow = ()=> {
+    const shutOtherWindow = () => {
         if (state.isClicked === true) {
             isClicked();
         }
@@ -329,18 +329,18 @@ function MatchFilterBar() {
     let dateDisplay = 'M-DD'
     if (date[5] === '0') {
         if (date[8] === '0') {
-            dateDisplay = date.slice(6,7) + "월 " + date.slice(9) + "일"           
+            dateDisplay = date.slice(6, 7) + "월 " + date.slice(9) + "일"
         }
         else {
-            dateDisplay = date.slice(6,7) + "월 " + date.slice(8, 10) + "일"
+            dateDisplay = date.slice(6, 7) + "월 " + date.slice(8, 10) + "일"
         }
     }
     else {
         if (date[8] === '0') {
-            dateDisplay = date.slice(5,7) + "월 " + date.slice(9) + "일"
+            dateDisplay = date.slice(5, 7) + "월 " + date.slice(9) + "일"
         }
         else {
-            dateDisplay = date.slice(5,7) + "월 " + date.slice(8, 10) + "일"
+            dateDisplay = date.slice(5, 7) + "월 " + date.slice(8, 10) + "일"
         }
     }
 
@@ -368,29 +368,29 @@ function MatchFilterBar() {
                 }
             }
             } />}
-            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
+            <MatchFilterDistance shutOtherWindow={() => shutOtherWindow()} clicked={() => {
                 distancePage();
             }} />
             {distanceState === true && <MatchDistanceSetting clicked={() => {
                 distancePage();
             }} />}
 
-            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
+            <MatchFilterDate shutOtherWindow={() => shutOtherWindow()} clicked={() => {
                 datePage();
-            }} date={dateDisplay}/>
+            }} date={dateDisplay} />
             {dateState === true && <MatchDateSetting clicked={() => {
                 datePage();
             }}
-            dateSetting={(dateClicked: string)=>setDate(dateClicked)} />}
+                dateSetting={(dateClicked: string) => setDate(dateClicked)} />}
 
-            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
+            <MatchFilterTime shutOtherWindow={() => shutOtherWindow()} clicked={() => {
                 timePage();
             }} />
             {timeState === true && <MatchTimeSetting clicked={() => {
                 timePage();
             }} />}
 
-            <MatchFilterEtc shutOtherWindow={()=>shutOtherWindow()} />
+            <MatchFilterEtc shutOtherWindow={() => shutOtherWindow()} />
         </div>
     )
 }
@@ -449,7 +449,7 @@ function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWindow: ()
 
 
 // 자동 매칭 필터바 - 날짜
-function MatchFilterDate({ shutOtherWindow, clicked, date }: { shutOtherWindow: ()=> void, clicked: () => void, date: string }) {
+function MatchFilterDate({ shutOtherWindow, clicked, date }: { shutOtherWindow: () => void, clicked: () => void, date: string }) {
     return (
         <div className="flex flex-row absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
             <span className="w-45 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{date}</span>
@@ -460,9 +460,9 @@ function MatchFilterDate({ shutOtherWindow, clicked, date }: { shutOtherWindow: 
 }
 
 // 자동 매칭 필터바 - 시간
-function MatchFilterTime({ shutOtherWindow, clicked }: { shutOtherWindow: ()=>void, clicked: ()=>void }) {
+function MatchFilterTime({ shutOtherWindow, clicked }: { shutOtherWindow: () => void, clicked: () => void }) {
     return (
-        <div className="flex flex-row absolute top-15 left-[233px] w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); clicked(); shutOtherWindow(); }}>
+        <div className="flex flex-row absolute top-15 left-[233px] w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
             <span className="w-43 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">18 ~ 22</span>
             <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
 
@@ -471,9 +471,9 @@ function MatchFilterTime({ shutOtherWindow, clicked }: { shutOtherWindow: ()=>vo
 }
 
 // 자동 매칭 필터바 - 기타
-function MatchFilterEtc({ shutOtherWindow }: { shutOtherWindow: ()=>void }) {
+function MatchFilterEtc({ shutOtherWindow }: { shutOtherWindow: () => void }) {
     return (
-        <div className="absolute top-15 left-[318px] w-25 h-25 flex-grow-0 pt-3 pl-3 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); shutOtherWindow(); }}>
+        <div className="absolute top-15 left-[318px] w-25 h-25 flex-grow-0 pt-3 pl-3 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); shutOtherWindow(); }}>
             <img src={filterEtc} alt="" className="w-20 h-20 flex-grow-0" />
         </div>
     )

@@ -5,9 +5,11 @@ import matchSlice from "./match/match"
 import sortInfoSlice from "./match/matchSort"
 import teamSlice from "./team/team"
 import liveSlice from "./live/live"
-import registerTabSlice from "./register/registerTab"
-import userInfoSlice from "./register/userInfo"
-import userIdSlice from "./user/userId"
+import registerTabSlice from "./register/registerTab";
+import userInfoSlice from "./register/userInfo";
+import userIdSlice from "./user/userId";
+import myTeamSlice from "./user/myTeam";
+import createTeamSlice from "./user/createTeam";
 
 const reducers = combineReducers({
     match: matchSlice,
@@ -17,6 +19,8 @@ const reducers = combineReducers({
     registerTab: registerTabSlice,
     userInfo: userInfoSlice,
     userId: userIdSlice,
+    myTeam: myTeamSlice,
+    createTeam: createTeamSlice,
 })
 
 const persistConfig = {
