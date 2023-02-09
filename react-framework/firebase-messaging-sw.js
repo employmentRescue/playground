@@ -15,10 +15,12 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 // Optional:
-messaging.onBackgroundMessage((message) => {
+messaging.onBackgroundMessage( async (message) => {
   console.log("onBackgroundMessage", message);
 
-  new Notification("test", {
+  await new Notification("test", {
     body : "aaa"
   })
+
+  return true
 });
