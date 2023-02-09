@@ -27,6 +27,8 @@ import MatchListPage from './pages/menu/MatchListPage';
 import MyTeamPage from './pages/menu/MyTeamPage';
 import TeamCreatePage from './pages/menu/TeamCreatePage';
 import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
+import TeamMatchDetailPage from './pages/teamMatch/TeamMatchDeatilPage';
+import TeamMatchJoinPage from './pages/teamMatch/TeamMatchJoinPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -59,6 +61,14 @@ const router = createBrowserRouter([
       {
         path: 'team-match/register',
         element: <TeamMatchRegisterPage />
+      },
+      {
+        path: 'team-match/detail',
+        element: <TeamMatchDetailPage />
+      },
+      {
+        path: 'team-match/join',
+        element: <TeamMatchJoinPage />
       },
 
       // 전체 메뉴(프로필, 통게, 매칭, 팀, 도움말)
