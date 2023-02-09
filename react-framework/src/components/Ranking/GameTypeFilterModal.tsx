@@ -12,8 +12,8 @@ export default function GameTypeFilterModal({ setGameType, setFilterModal, sport
     setFilterModal('none');
   }
   return (
-    <div className="absolute w-full h-full bottom-0 bg-black/50 z-20">
-      <div className="absolute w-full bottom-55 bg-white z-30">
+    <div className="absolute w-full h-screen top-[-55px] bg-black/50 z-20">
+      <div className="fixed bottom-55 w-full bg-white z-30">
         <img className="absolute w-10 h-10 top-18 right-18" src={quitIcon} onClick={() => setFilterModal('none')}></img>
         <div className="w-full h-47 text-15 border-b-1 border-gray-600 flex justify-center items-center">게임 종류</div>
         {sportsType === '농구' &&
