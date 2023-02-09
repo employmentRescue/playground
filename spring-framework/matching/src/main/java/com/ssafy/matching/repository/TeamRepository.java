@@ -10,5 +10,6 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
     Team save(Team team); //팀 등록, 수정
     void deleteByTeamId(int teamId); //팀 삭제
 
+    long countAllBy();
     List<Team> getTop20BySportsAndGameTypeOrderByPointDesc(String sports, String gameType);
 }
