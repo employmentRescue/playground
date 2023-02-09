@@ -25,7 +25,7 @@ import ProfilePage from './pages/menu/profile/ProfilePage';
 import RankPage from './pages/menu/RankPage';
 import MatchListPage from './pages/menu/MatchListPage';
 import MyTeamPage from './pages/menu/myTeam/MyTeamPage';
-import TeamCreatePage from './pages/menu/teamCreate/MemberInvitePage';
+import TeamCreateDefaultPage from './pages/menu/teamCreate/TeamCreateDefaultPage';
 import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
 import TeamMatchDetailPage from './pages/teamMatch/TeamMatchDeatilPage';
 import TeamMatchJoinPage from './pages/teamMatch/TeamMatchJoinPage';
@@ -90,7 +90,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'menu/team/create',
-        element: <TeamCreatePage />,
+        element: <TeamCreateDefaultPage />,
       },
       {
         path: 'menu/team',

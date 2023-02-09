@@ -6,11 +6,13 @@ import profileSampleImg from "@/assets/profiles/my-profile-sample.png"
 import { useState, useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import store, { RootState } from "@/stores/store"
+import ButtonDesign from "./ButtonDesign"
+import TeamSettingPage from "./TeamSettingPage"
 
 
-export default function TeamCreatePage() {
+export default function TeamCreateDefaultPage() {
     const [searchInput, setSearchInput] = useState("");
-
+    const [currentPage, setCurrentPage] = useState(1);
     const ProfileList = useSelector((state: RootState) => {
         return state.createTeam
     })
@@ -26,6 +28,10 @@ export default function TeamCreatePage() {
     const handleOnChange = (e: React.BaseSyntheticEvent) => {
         setSearchInput(e.target.value)
         console.log(store.getState().createTeam)
+    }
+
+    function handleOnClickChangePage(num: number) {
+        setCurrentPage(currentPage + num)
     }
 
     function searchTitle() {
@@ -70,7 +76,7 @@ export default function TeamCreatePage() {
                     <ProfileCard
                         key={profile.userId}
                         userId={profile.userId}
-                        className={"flex my-10 justify-between"}
+                        className={"flex my-5 justify-between"}
                         imageSrc={profile.imageSrc}
                         imageSize="ml-24 w-52 h-52"
                         nickname={profile.nickname}
@@ -102,16 +108,30 @@ export default function TeamCreatePage() {
         return Result
     }
 
+    function MemberInvitePage() {
+        return (
+            <div>
+                <input type="text" className="h-40 bg-[#F2EFEF] mt-15 mx-14 px-10 py-5 outline-none text-14 rounded-3" placeholder="닉네임, 이름 검색" onChange={handleOnChange} />
+                <div className="mx-15 mt-13 mb-3 text-12">{searchTitle()}</div>
+                {searchProfileRendering()}
+                <ButtonDesign innerText="다음" className={"w-[300px] h-38 bg-blue-700 mb-32 text-white fixed bottom-55"} onClick={handleOnClickChangePage(1)} />
+            </div>
+        )
+    }
+
     return (
         <div className="flex flex-col h-[calc(100vh-110px)] justify-start bg-white">
             <div className="flex justify-evenly mt-16">
                 <SportsSelectButtons />
             </div>
             <div className="flex mx-16">{selectedProfileRendering()}</div>
+            {/* 여기 부터 아래 부분이 바뀌어야 함 */}
             <input type="text" className="h-40 bg-[#F2EFEF] mt-15 mx-14 px-10 py-5 outline-none text-14 rounded-3" placeholder="닉네임, 이름 검색" onChange={handleOnChange} />
-            <div className="mx-15 mt-13 text-14">{searchTitle()}</div>
+            <div className="mx-15 mt-13 mb-3 text-12">{searchTitle()}</div>
             {searchProfileRendering()}
             <button className="w-[300px] h-38 rounded-5 font-inter bg-blue-700 text-16 mb-32 text-white tracking-tight self-center fixed bottom-55">다음</button>
+            {/* {currentPage === 1 && MemberInvitePage()}
+            {currentPage === 2 && <TeamSettingPage />} */}
         </div>
     )
 }
