@@ -15,6 +15,10 @@ import QuitModal from "@/components/LiveModal/QuitModal"
 import useLiveMatchListQuery from "@/hooks/liveMatch/useLiveMatchListQuery"
 import { liveMatch } from "@/models/liveMatch"
 import { UseQueryResult } from "react-query"
+import { Swiper, SwiperSlide } from "swiper/react";
+import 'swiper/css';
+import "swiper/css/pagination";
+import MatchSlide from "@/components/Match/MatchSlide"
 
 type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'FOOTBALL' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
 
@@ -111,7 +115,7 @@ export default function HomePage() {
 
     // initial call
     const geolocation = useGeolocation();
-    const liveMatchList = useLiveMatchListQuery(geolocation.latitude, geolocation.longitude);
+  const liveMatchList = useLiveMatchListQuery(geolocation.latitude, geolocation.longitude);
     console.log(liveMatchList);
 
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
@@ -254,8 +258,49 @@ export default function HomePage() {
         }
     }, [state.sportType])
 
-    return (
-        <div ref={mapElement} className="w-full h-[calc(100%-110px)] relative">
+  return (
+    <div>
+      <Swiper
+          slidesPerView={1.1}
+          centeredSlides={true}
+          spaceBetween={10}
+          grabCursor={true}
+          pagination={{
+            clickable: true,
+          }}
+      >
+        <SwiperSlide>
+          <div className="w-full h-55 mt-8 mb-8 ml-[-10px]">
+            <MatchSlide
+              sports={'basketball'}
+              date={'2023-02-09'}
+              place={'고운뜰공원'}
+              time={'19:30'}
+              host={'이진성'}
+              people={5} /></div>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div className="w-full h-55 mt-8 mb-8 ml-[-10px]">
+            <MatchSlide
+              sports={'basketball'}
+              date={'2023-02-09'}
+              place={'고운뜰공원'}
+              time={'19:30'}
+              host={'이진성'}
+              people={5} /></div>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div className="w-full h-55 mt-8 mb-8 ml-[-10px]">
+            <MatchSlide
+              sports={'basketball'}
+              date={'2023-02-09'}
+              place={'고운뜰공원'}
+              time={'19:30'}
+              host={'이진성'}
+              people={5} /></div>
+        </SwiperSlide>
+      </Swiper>
+        <div ref={mapElement} className="w-full h-[calc(100vh-182px)] relative">
             <div className="w-60 h-193 flex flex-col relative float-right mt-12 mr-9 z-10 ">{
                 state.isPressed === false ?
                     <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>등록</button>
@@ -281,6 +326,7 @@ export default function HomePage() {
             {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} closeModal={() => { closeModal(); }} />}
             {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></JoinModal>}
             {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></QuitModal>}
-        </div>
+      </div>
+      </div>
     )
 }
