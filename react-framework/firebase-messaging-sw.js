@@ -18,9 +18,6 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage( async (message) => {
   console.log("onBackgroundMessage", message);
 
-  await new Notification("test", {
-    body : "aaa"
-  })
 
-  return true
+  // return true
 });
