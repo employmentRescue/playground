@@ -13,4 +13,6 @@ how can i see the process of jenkins building status on gitlab?
 ![pipeline-detail-4](./img/pipeline-detail-4.PNG)  
 --> 기대효과 : 팀원들이 gitlab으로만으로도 ci/cd 성공여부를 확인할 수 있음.  
 
+.
+.
 ..........
