@@ -13,14 +13,14 @@ import whiteArrow from "@/assets/icons/white-arrow.png";
 
 import basketballOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
-import footBallOriginal from "@/assets/icons/soccer-original.png"
+import footBallOriginal from "@/assets/icons/football-original.png"
 import filterEtc from "@/assets/icons/filter-etc.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
 import closeIcon from "@/assets/icons/exit.png"
 import searchIcon from "@/assets/icons/search-icon.png"
 import { sign } from "crypto";
 
-import useGatheringListQuery from "@/hooks/useGatheringListQuery";
+import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
 
 
 
