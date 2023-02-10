@@ -2,6 +2,7 @@ package com.ssafy.matching.service;
 
 import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.dto.GatheringMember;
+import com.ssafy.matching.dto.Match;
 import com.ssafy.matching.repository.GatheringRepository;
 import com.ssafy.matching.repository.GatheringMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +91,10 @@ public class GatheringServiceImpl implements GatheringService {
         }
 
         gatheringMemberRepository.deleteByGatheringIdAndMemberId(gatheringId, memberId);
+    }
+
+    @Override
+    public List<Gathering> searchGatheringsByKeyword(String keyword) {
+        return gatheringRepository.getGatheringsByTitleLike(keyword);
     }
 }

@@ -79,4 +79,6 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
             "AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
             "ORDER BY TIMESTAMP(g.start_date, g.start_time) DESC", nativeQuery = true)
     List<Gathering> getGatheringsTimeNotPast(long memberId);
+
+    List<Gathering> getGatheringsByTitleLike(String keyword);
 }
