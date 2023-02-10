@@ -7,12 +7,12 @@ spring:
 
   cloud:
     gateway:
-#     default-filters:
-#       - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+     default-filters:
+       - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "https://openapi.map.naver.com"
+            allowedOrigins: "https://openapi.map.naver.com", "http://localhost:3000"
             allow-credentials: true   #추가
             allowedHeaders:
               - x-requested-with
@@ -64,10 +64,43 @@ spring:
           filters:
             - RewritePath=/test/(?<path>.*),/$\{path}
 
+#        - id: chat-service-tester
+#          uri: https://i8b309.p.ssafy.io:10003
+#          predicates:
+#            - Path=/test/chat/**, /test/ws-stomp/**, /test/webjars/**
+#          filters:
+#            - RewritePath=/test/(?<path>.*),/$\{path}
+
         - id: notify-service
           uri: https://i8b309.p.ssafy.io:9004
           predicates:
             - Path=/notify/**
+
+
+
+
+
+
+
+
+
+
+        - id: local-chat-service
+          uri: wss://i8b309.p.ssafy.io:9110
+          predicates:
+            - Path=/websocket/**
+
+
+
+
+
+
+
+
+
+
+
+
 
         - id: react-framework
           uri: http://i8b309.p.ssafy.io:3000/
