@@ -22,12 +22,12 @@ export default function MatchDistanceSetting({ clicked }: { clicked: () => void 
     }
 
     return (
-        <div className="absolute top-[-117px] left-0 w-full h-[745px] m-0 p-0 z-20">
-            <div className="absolute top-0 h-1/4 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
-            <div className="absolute bottom-0 left-0 p-0 w-full h-3/4 flex-grow-0 bg-[#fff] z-20">
-                <div>
-                    <span className="inline-block w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">지역 선택</span>
-                    <img src={closeIcon} alt="" className="inline-block top-16 w-10 h-10 flex-grow-0 my-3 ml-[115px]"
+        <div className="flex flex-col absolute top-[-117px] left-0 place-content-around w-full h-[745px] m-0 p-0 z-20">
+            <div className="h-1/4 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
+            <div className="p-0 w-full h-3/4 flex-grow-0 bg-[#fff] z-20">
+                <div className="flex relative place-content-center">
+                    <span className="w-70 h-16 flex-grow-0 mt-13 ml-[145px] font-inter text-[15px] text-left text-[#000]">지역 선택</span>
+                    <img src={closeIcon} alt="" className="abolute right-10 w-10 h-10 flex-grow-0 my-3"
                         onClick={(e) => { e.preventDefault(); clicked(); }} />
                 </div>
                 <div className="flex flex-row">

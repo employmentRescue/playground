@@ -6,17 +6,17 @@ import dayjs from "dayjs";
 import { matchList } from '@/models/matchList';
 
 const initialState: matchList = {
-    startDate: dayjs(new Date()).format('YYYY-MM-DD'),
-    lat: 36.3515058,
-    lng: 127.3129497,
-    distance: 10,
-    minStartTime: null,
-    maxStartTime: null,
+    startDate: "2023-02-14", // dayjs(new Date()).format('YYYY-MM-DD'),
+    lat: 36.3561823752851,
+    lng: 127.37279449758137,
+    distance: 100,
+    minStartTime: "01:00:00",
+    maxStartTime: "23:00:00",
     level: "중수",
-    minPlayTime: 1,
-    maxPlayTime: 3,
+    minPlayTime: 1, // Number(dayjs(new Date()).format('H')),
+    maxPlayTime: 23, // Number(dayjs(new Date()).format('H')) + 2,
     sex: "남성",
-    sports: "basketball",
+    sports: "농구",
     gameType: "5대5",
     sort: "distance"
 }
