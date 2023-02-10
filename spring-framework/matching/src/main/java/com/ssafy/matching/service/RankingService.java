@@ -8,5 +8,5 @@ import java.util.List;
 public interface RankingService {
     List<TeamStats> viewRanking(String sports, String gameType);
 
-    List<List<Team>> viewMyTeamsRanking(int teamId);
+    List<List<TeamStats>> viewMyTeamsRanking(long memberId);
 }

@@ -39,14 +39,14 @@ public class RankingController {
         }
     }
 
-    @ApiOperation(value = "팀 랭킹 필터 검색", notes = "필터 조건(운동종류, 게임종류)에 맞는 랭킹을 검색해 반환한다", response = List.class)
-    @GetMapping("/{teamid}")
-    public ResponseEntity<?> view(@PathVariable("gatheringid") int teamId) {
+    @ApiOperation(value = "나의 팀 랭킹 검색", notes = "내 모든 팀의 랭킹을 검색해 반환한다", response = List.class)
+    @GetMapping("/{memberid}")
+    public ResponseEntity<?> view(@PathVariable("memberid") Long memberId) {
         try {
-            List<List<Team>> list = rankingService.viewMyTeamsRanking(teamId);
+            List<List<TeamStats>> list = rankingService.viewMyTeamsRanking(memberId);
             System.out.println(list);
             if (list != null && !list.isEmpty()) {
-                return new ResponseEntity<List<List<Team>>>(list, HttpStatus.OK);
+                return new ResponseEntity<List<List<TeamStats>>>(list, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
             }

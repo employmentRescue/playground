@@ -19,9 +19,32 @@ public class RankingServiceImpl implements RankingService {
 
     @Override
     public List<TeamStats> viewRanking(String sports, String gameType) {
+        List<Team> teamList = teamRepository.getTop20BySportsAndGameTypeOrderByPointDesc(sports, gameType);
+        List<TeamStats> resultList = getTeamStatsList(teamList);
+
+        return resultList;
+    }
+
+    @Override
+    public List<List<TeamStats>> viewMyTeamsRanking(long memberId) {
+        List<Team> teamList = teamRepository.getTeamsByMemberId(memberId); //1. 나의 팀 리스트 검색
+        System.out.println("teamList : " + teamList);
+
+        List<List<TeamStats>> result = new ArrayList<>();
+
+        //2. 나의 팀 기준 상위 3개, 하위 3개 팀 검색
+        for(Team team : teamList) {
+            List<Team> rankList = teamRepository.get7TeamsByTeamId(team.getTeamId());
+            List<TeamStats> teamStatsList = getTeamStatsList(rankList);
+            result.add(teamStatsList);
+        }
+
+        return result;
+    }
+
+    private List<TeamStats> getTeamStatsList(List<Team> teamList) {
         List<TeamStats> resultList = new ArrayList<>();
 
-        List<Team> teamList = teamRepository.getTop20BySportsAndGameTypeOrderByPointDesc(sports, gameType);
         for(int i = 0; i < teamList.size(); i++) {
             TeamStats teamStats = new TeamStats();
             teamStats.setTeamName(teamList.get(i).getName());
@@ -53,16 +76,6 @@ public class RankingServiceImpl implements RankingService {
         }
 
         return resultList;
-    }
-
-    @Override
-    public List<List<Team>> viewMyTeamsRanking(int teamId) {
-        //1. 나의 팀 리스트 검색
-
-
-        //2. 나의 팀 기준 상위 3개, 하위 3개 팀 검색
-
-        return null;
     }
 
     public String calculateTier(int point) {
