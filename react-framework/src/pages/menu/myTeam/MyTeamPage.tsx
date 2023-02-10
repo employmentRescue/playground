@@ -1,87 +1,122 @@
-import sportsIcon from "@/assets/icons/sports.png"
-import levelIcon from "@/assets/icons/level.png"
-import teamIcon from "@/assets/icons/team.png"
-import recordIcon from "@/assets/icons/record.png"
+import TeamImage1 from "@/assets/profiles/team-basketball.png"
+import TeamImage2 from "@/assets/profiles/team-basketball2.png"
+
+import SportsSelectButtons from "@/components/TeamCreate/Buttons/SportsSelectButtons";
+import TeamCard from "@/components/MyTeam/TeamCard";
+
+import { useState } from "react";
 
 
 export default function MyTeamPage() {
-  return (
-    <div className="w-full">
-      <div className="w-full h-173 flex flex-col justify-center items-center bg-[#fcfffb]">
-        <img className="w-100 h-100"></img>
-        <div className="text-20 mt-4">양천구 맨시티</div>
-      </div>
+    const initialSportsState = "축구"
+    const initialTeamList = [
+        {
+            teamId: 1,
+            teamName: "Football Team1",
+            teamImage: TeamImage1,
+            sportsType: "축구",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 1700, tier: "Bronze.2" }
+        },
+        {
+            teamId: 2,
+            teamName: "Football Team2",
+            teamImage: TeamImage2,
+            sportsType: "축구",
+            record: { total: 4, win: 1, draw: 1, lose: 2 },
+            rating: { points: 1500, tier: "Bronze.1" }
+        },
+        {
+            teamId: 3,
+            teamName: "Basketball Team1",
+            teamImage: TeamImage1,
+            sportsType: "농구",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 2500, tier: "Silver.2" }
+        },
+        {
+            teamId: 4,
+            teamName: "Basketball Team2",
+            teamImage: TeamImage2,
+            sportsType: "농구",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 1500, tier: "Gold.3" }
+        },
+        {
+            teamId: 5,
+            teamName: "Badminton Team",
+            teamImage: TeamImage1,
+            sportsType: "배드민턴",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 1500, tier: "Sliver.1" }
+        },
+        {
+            teamId: 6,
+            teamName: "Badminton Team",
+            teamImage: TeamImage2,
+            sportsType: "배드민턴",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 1500, tier: "Bronze.1" }
+        },
+        {
+            teamId: 7,
+            teamName: "Badminton Team",
+            teamImage: TeamImage1,
+            sportsType: "배드민턴",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 1500, tier: "Sliver.1" }
+        },
+        {
+            teamId: 8,
+            teamName: "Badminton Team",
+            teamImage: TeamImage2,
+            sportsType: "배드민턴",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 1500, tier: "Bronze.1" }
+        },
+        {
+            teamId: 9,
+            teamName: "Badminton Team",
+            teamImage: TeamImage1,
+            sportsType: "배드민턴",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 1500, tier: "Sliver.1" }
+        },
+        {
+            teamId: 10,
+            teamName: "Badminton Team",
+            teamImage: TeamImage2,
+            sportsType: "배드민턴",
+            record: { total: 3, win: 2, draw: 0, lose: 1 },
+            rating: { points: 1500, tier: "Bronze.1" }
+        },
+    ]
+    const [myTeamList, setMyTeamList] = useState(initialTeamList);
+    const [selectedSports, setSelectedSports] = useState<"축구" | "농구" | "배드민턴">(initialSportsState)
 
-      <div className="w-full h-[calc(100vh-290px)] bg-white mt-7 pt-30 pl-28 pr-28 flex flex-col justify-between overflow-auto pb-15">
-        <div>
-          <div className="flex justify-between items-center">
-            <div className="flex items-center">
-              <img className="w-20 h-20 mr-8" src={sportsIcon}></img>
-              <div className="text-15 font-bold">종목</div>
+    const getTeamListBySports = (selectedSports: "축구" | "농구" | "배드민턴") => {
+        return myTeamList.map((teamInfo) => {
+            return (
+                (teamInfo.sportsType === selectedSports) &&
+                <TeamCard
+                    key={teamInfo.teamId}
+                    teamId={teamInfo.teamId}
+                    teamImage={teamInfo.teamImage}
+                    teamName={teamInfo.teamName}
+                    win={teamInfo.record.win}
+                    lose={teamInfo.record.lose}
+                    tier={teamInfo.rating.tier}
+                />
+            )
+        })
+    }
+
+    return (
+        <div className="flex flex-col h-[calc(100vh-110px)] justify-start bg-white">
+            <div className="flex justify-evenly mt-16 mb-15">
+                <SportsSelectButtons selectedSports={selectedSports} setSelectedSports={setSelectedSports} />
             </div>
-            <div className="text-15">축구</div>
-          </div>
-          <div className="flex justify-between items-center mt-18">
-            <div className="flex items-center">
-              <img className="w-20 h-20 mr-8" src={recordIcon}></img>
-              <div className="text-15 font-bold" >전적</div>
-            </div>
-            <div className="text-15">1승 2패</div>
-          </div>
-          <div className="flex justify-between items-center mt-18">
-            <div className="flex items-center">
-              <img className="w-20 h-20 mr-8" src={levelIcon}></img>
-              <div className="text-15 font-bold">팀 등급</div>
-            </div>
-            <div className="text-15">GOLD 2</div>
-          </div>
-          <div className="flex justify-between items-center mt-18">
-            <div className="flex items-center">
-              <img className="w-20 h-20 mr-8" src={sportsIcon}></img>
-              <div className="text-15 font-bold">게임 종류</div>
-            </div>
-            <div className="text-15">5 vs 5</div>
-          </div>
-          <div className="flex flex-col mt-18">
-            <div className="flex items-center">
-              <img className="w-20 h-20 mr-8" src={teamIcon}></img>
-              <div className="text-15 font-bold">팀원</div>
-            </div>
-            <div className="flex mt-18 w-full flex-wrap">
-              <div className="flex flex-col justify-center items-center mr-13">
-                <img className="w-47 h-47 rounded-50"></img>
-                <div className="text-9">한반두</div>
-              </div>
-              <div className="flex flex-col justify-center items-center mr-13">
-                <img className="w-47 h-47 rounded-50"></img>
-                <div className="text-9">한반두</div>
-              </div>
-              <div className="flex flex-col justify-center items-center mr-13">
-                <img className="w-47 h-47 rounded-50"></img>
-                <div className="text-9">한반두</div>
-              </div>
-              <div className="flex flex-col justify-center items-center mr-13">
-                <img className="w-47 h-47 rounded-50"></img>
-                <div className="text-9">한반두</div>
-              </div>
-              <div className="flex flex-col justify-center items-center mr-13">
-                <img className="w-47 h-47 rounded-50"></img>
-                <div className="text-9">한반두</div>
-              </div>
-              <div className="flex flex-col justify-center items-center mr-13">
-                <img className="w-47 h-47 rounded-50"></img>
-                <div className="text-9">한반두</div>
-              </div>
-              <div className="flex flex-col justify-center items-center mr-13">
-                <img className="w-47 h-47 rounded-50"></img>
-                <div className="text-9">한반두</div>
-              </div>
-            </div>
-          </div>
+            <div>{getTeamListBySports(selectedSports)}</div>
         </div>
-      </div>
-
-
-    </div>
-  )
+    )
 }
