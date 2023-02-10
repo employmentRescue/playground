@@ -32,9 +32,9 @@ public class QMemberOftenEntity extends EntityPathBase<MemberOftenEntity> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
-    public final StringPath prefer_time = createString("prefer_time");
+    public final ListPath<activitiesEntity, QactivitiesEntity> prefer_activities = this.<activitiesEntity, QactivitiesEntity>createList("prefer_activities", activitiesEntity.class, QactivitiesEntity.class, PathInits.DIRECT2);
 
-    public final ListPath<activitiesEntity, QactivitiesEntity> preferActivities = this.<activitiesEntity, QactivitiesEntity>createList("preferActivities", activitiesEntity.class, QactivitiesEntity.class, PathInits.DIRECT2);
+    public final StringPath prefer_time = createString("prefer_time");
 
     public final StringPath status_message = createString("status_message");
 

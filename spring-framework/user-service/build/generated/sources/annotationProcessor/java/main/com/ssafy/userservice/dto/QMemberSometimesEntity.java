@@ -19,7 +19,15 @@ public class QMemberSometimesEntity extends EntityPathBase<MemberSometimesEntity
 
     public static final QMemberSometimesEntity memberSometimesEntity = new QMemberSometimesEntity("memberSometimesEntity");
 
+    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final StringPath name = createString("name");
 
