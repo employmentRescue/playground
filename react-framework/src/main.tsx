@@ -25,6 +25,7 @@ import ProfilePage from './pages/menu/profile/ProfilePage';
 import RankPage from './pages/menu/RankPage';
 import MatchListPage from './pages/menu/MatchListPage';
 import MyTeamPage from './pages/menu/myTeam/MyTeamPage';
+import MyTeamDetailPage from './pages/menu/myTeam/MyTeamDetailPage';
 import TeamCreateDefaultPage from './pages/menu/teamCreate/TeamCreateDefaultPage';
 import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
 import TeamMatchDetailPage from './pages/teamMatch/TeamMatchDeatilPage';
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
       {
         path: 'menu/team',
         element: <MyTeamPage />,
+      },
+      {
+        path: 'menu/team/:teamId',
+        element: <MyTeamDetailPage />,
       },
 
       // 채팅
