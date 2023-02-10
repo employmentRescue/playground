@@ -6,20 +6,17 @@ import profileSampleImg from "@/assets/profiles/my-profile-sample.png"
 import { useState, useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import store, { RootState } from "@/stores/store"
-import ButtonDesign from "./ButtonDesign"
+import ButtonDesign from "../../../components/TeamCreate/Buttons/ButtonDesign"
 import TeamSettingPage from "./TeamSettingPage"
 
-
 export default function TeamCreateDefaultPage() {
+    const initialSportsState: "축구" | "농구" | "배구" = "축구"
     const [searchInput, setSearchInput] = useState("");
+    const [selectedSports, setSelectedSports] = useState(initialSportsState)
     const [currentPage, setCurrentPage] = useState(1);
     const ProfileList = useSelector((state: RootState) => {
         return state.createTeam
     })
-
-    useEffect(() => {
-        console.log
-    }, [ProfileList])
 
     const selectedMemberIds = useSelector((state: RootState) => {
         return state.myTeam.memberIds
@@ -29,6 +26,7 @@ export default function TeamCreateDefaultPage() {
         setSearchInput(e.target.value)
         console.log(store.getState().createTeam)
     }
+
 
     function handleOnClickChangePage(num: number) {
         setCurrentPage(currentPage + num)
@@ -66,11 +64,6 @@ export default function TeamCreateDefaultPage() {
         } else {
             Result = ProfileList.map((profile) => {
                 index++;
-                // if (profile.isSelected) {
-                //     setSelectedMemberIds([...selectedMemberIds, profile.userId])
-                // } else {
-                //     setSelectedMemberIds(selectedMemberIds.filter((memberId) => memberId != profile.userId))
-                // }
                 return (
                     profile.isRecent &&
                     <ProfileCard
@@ -96,10 +89,10 @@ export default function TeamCreateDefaultPage() {
                     return (
                         <div key={profile.userId} className="flex flex-col w-52 mt-15 mx-7">
                             <div className="flex">
-                                <img src={profile.imageSrc} className="w-52 h-52 rounded-50" />
+                                <img src={profile.imageSrc} className="w-47 h-47 rounded-50" />
                                 <img src={cancleButtonImg} className="w-18 h-18 -ml-10" />
                             </div>
-                            <p className="text-10 font-inter text-center mt-3 px-5 tracking-tight">{profile.nickname}</p>
+                            <p className="text-10 font-inter text-center mt-3 px-2 tracking-tight truncate">{profile.nickname}</p>
                         </div>
                     )
                 }
@@ -110,28 +103,23 @@ export default function TeamCreateDefaultPage() {
 
     function MemberInvitePage() {
         return (
-            <div>
+            <>
                 <input type="text" className="h-40 bg-[#F2EFEF] mt-15 mx-14 px-10 py-5 outline-none text-14 rounded-3" placeholder="닉네임, 이름 검색" onChange={handleOnChange} />
                 <div className="mx-15 mt-13 mb-3 text-12">{searchTitle()}</div>
                 {searchProfileRendering()}
-                <ButtonDesign innerText="다음" className={"w-[300px] h-38 bg-blue-700 mb-32 text-white fixed bottom-55"} onClick={handleOnClickChangePage(1)} />
-            </div>
+                <ButtonDesign innerText="다음" className={"w-[300px] h-38 bg-blue-700 mb-32 text-white fixed bottom-55 border-blue-700"} onClick={() => handleOnClickChangePage(1)} />
+            </>
         )
     }
 
     return (
         <div className="flex flex-col h-[calc(100vh-110px)] justify-start bg-white">
             <div className="flex justify-evenly mt-16">
-                <SportsSelectButtons />
+                <SportsSelectButtons selectedSports={selectedSports} setSelectedSports={setSelectedSports} />
             </div>
             <div className="flex mx-16">{selectedProfileRendering()}</div>
-            {/* 여기 부터 아래 부분이 바뀌어야 함 */}
-            <input type="text" className="h-40 bg-[#F2EFEF] mt-15 mx-14 px-10 py-5 outline-none text-14 rounded-3" placeholder="닉네임, 이름 검색" onChange={handleOnChange} />
-            <div className="mx-15 mt-13 mb-3 text-12">{searchTitle()}</div>
-            {searchProfileRendering()}
-            <button className="w-[300px] h-38 rounded-5 font-inter bg-blue-700 text-16 mb-32 text-white tracking-tight self-center fixed bottom-55">다음</button>
-            {/* {currentPage === 1 && MemberInvitePage()}
-            {currentPage === 2 && <TeamSettingPage />} */}
+            {(currentPage === 1) && MemberInvitePage()}
+            {(currentPage === 2) && <TeamSettingPage onClickChangePage={handleOnClickChangePage} selectedSports={selectedSports} setSelectedSports={setSelectedSports} />}
         </div>
     )
 }

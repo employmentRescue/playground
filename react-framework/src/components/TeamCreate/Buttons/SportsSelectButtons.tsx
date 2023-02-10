@@ -8,10 +8,17 @@ import store from "@/stores/store"
 import { useState } from "react"
 import { useDispatch } from "react-redux"
 
+interface Iprops {
+    selectedSports: "축구" | "농구" | "배드민턴";
+    setSelectedSports: any;
+}
 
-export default function SportsSelectButtons() {
+export default function SportsSelectButtons({ selectedSports, setSelectedSports }: Iprops) {
     const dispatch = useDispatch();
-    const [selectedSports, setSelectedSports] = useState("")
+    const personnel = {
+        "축구": {}
+    }
+    personnel.축구
 
     const handleOnClick = (sportsName: "축구" | "농구" | "배드민턴") => {
         if (selectedSports == sportsName) {

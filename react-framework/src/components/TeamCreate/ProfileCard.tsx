@@ -1,4 +1,3 @@
-import SelectedProfile from "./SelectedProfile";
 import CheckBox from "./CheckBox";
 
 interface ClassNameProps {
