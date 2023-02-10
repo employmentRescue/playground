@@ -12,7 +12,7 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
 
     //필터 조건 + 시간순 정렬
     @Query(value = "SELECT * " +
-            "FROM Gathering g, Place p " +
+            "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
@@ -27,7 +27,7 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
 
     //필터 조건 + 남은 인원 수 정렬
     @Query(value = "SELECT * " +
-            "FROM Gathering g, Place p " +
+            "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
@@ -44,7 +44,7 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
 
     //필터 조건 + 거리순 정렬
     @Query(value = "SELECT * " +
-            "FROM Gathering g, Place p " +
+            "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
