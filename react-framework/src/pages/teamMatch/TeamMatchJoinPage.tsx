@@ -1,7 +1,17 @@
 import timeIcon from "@/assets/icons/time.png"
 import placeIcon from "@/assets/icons/place.png"
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setTabName } from "@/stores/tab/tabName";
 
 export default function TeamMatchJoinPage() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTabName('팀 매칭 상세'))
+  }, [])
+
   return (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-white">

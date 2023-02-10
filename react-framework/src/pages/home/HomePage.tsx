@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useReducer } from "react"
-import useGeolocation, { EnrichedGeolocationCoordinates } from "react-hook-geolocation"
+import useGeolocation from "react-hook-geolocation"
 import RegisterModal from "@/components/LiveModal/RegisterModal"
 import JoinModal from "@/components/LiveModal/JoinModal"
 import basketballMap from "@/assets/icons/basketball-map.png"
@@ -14,16 +14,16 @@ import ModifyModal from "@/components/LiveModal/ModifyModal"
 import QuitModal from "@/components/LiveModal/QuitModal"
 import useLiveMatchListQuery from "@/hooks/liveMatch/useLiveMatchListQuery"
 import { liveMatch } from "@/models/liveMatch"
-import { UseQueryResult } from "react-query"
 import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';
 import "swiper/css/pagination";
 import MatchSlide from "@/components/Match/MatchSlide"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
 import usePromisedMatchListQuery from "@/hooks/match/usePromisedMatchListQuery"
 import { match } from "@/models/match"
-import moment from "moment"
+import { setTabName } from "@/stores/tab/tabName"
+
 
 type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'FOOTBALL' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
 
@@ -125,6 +125,7 @@ export default function HomePage() {
         return state.userId;
     });
     const promisedMatchList = usePromisedMatchListQuery(userId);
+    const dispatchTab = useDispatch();
     console.log(promisedMatchList);
     console.log(liveMatchList);
 
@@ -156,6 +157,8 @@ export default function HomePage() {
         const map = new naver.maps.Map(mapElement.current, mapOptions);
 
         setNaverMap(map);
+
+        dispatchTab(setTabName('playGround'))
     }, []);
 
     useEffect(() => {

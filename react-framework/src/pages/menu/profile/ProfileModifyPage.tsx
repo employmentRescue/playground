@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
 import { setFavoriteSports, setFavoriteTime, setNickname, setStatusMessage } from "@/stores/register/userInfo"
@@ -16,6 +16,7 @@ import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
 
 import { Slider } from "@mui/material"
+import { setTabName } from "@/stores/tab/tabName"
 
 
 export default function ProfileModifyPage() {
@@ -75,6 +76,10 @@ export default function ProfileModifyPage() {
         event.preventDefault();
         dispatch(setStatusMessage(event.target.value))
     }
+
+    useEffect(() => {
+        dispatch(setTabName('프로필 수정'))
+    }, [])
 
     return (
         <div>

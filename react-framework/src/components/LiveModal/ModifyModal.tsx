@@ -1,9 +1,6 @@
 import React, { useState, useRef, ReactElement } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import JoinButton from './Buttons/JoinButton'
 import exit from '@/assets/icons/exit.png'
 import placeIcon from '@/assets/icons/place.png'
-import { addLiveMatch } from '@/stores/live/live';
 import { liveMatch } from '@/models/liveMatch';
 import ModifyButton from './Buttons/ModifyButton';
 import useLiveMatchModify from '@/hooks/liveMatch/useLiveMatchModify';

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import useGeolocation from 'react-hook-geolocation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/stores/store';
 import useMatchDetailQuery from '@/hooks/match/useMatchDetailQuery';
 import currentPos from '@/assets/icons/current-position.png';
@@ -23,6 +23,7 @@ import ModifyButton from '@/components/Match/Buttons/ModifyButton';
 import useMatchJoin from '@/hooks/match/useMatchJoin';
 import useMatchQuit from '@/hooks/match/useMatchQuit';
 import { getImgUrl } from '@/utils/getImgUrl';
+import { setTabName } from '@/stores/tab/tabName';
 
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
@@ -85,6 +86,12 @@ export default function MatchDetailPage() {
       animation: isBounce ? naver.maps.Animation.BOUNCE : undefined,
     });
   }
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTabName('상세 정보'))
+  }, [])
 
   // 네이버 지도 생성
   useEffect(() => {
