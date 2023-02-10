@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
 import { setFavoriteSports, setFavoriteTime, setNickname, setStatusMessage } from "@/stores/register/userInfo"
@@ -16,6 +16,7 @@ import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
 
 import { Slider } from "@mui/material"
+import { setTabName } from "@/stores/tab/tabName"
 
 
 export default function ProfileModifyPage() {
@@ -76,6 +77,10 @@ export default function ProfileModifyPage() {
         dispatch(setStatusMessage(event.target.value))
     }
 
+    useEffect(() => {
+        dispatch(setTabName('프로필 수정'))
+    }, [])
+
     return (
         <div>
 
@@ -85,13 +90,13 @@ export default function ProfileModifyPage() {
                     <img src={myProfileSampleImage} className="w-100 h-100 self-center -mt-50" />
                     <img src={profileModifyImage} className="w-25 h-25 self-center ml-70 -mt-25" onClick={console.log} />
                     <div className="flex justify-center">
-                        <input onChange={getNicknameInput} className="w-[170px] ml-15 mt-12 text-18 text-inter opacity-50 text-center font-extrabold self-center border-b-2 border-[#DBDBDB] outline-none" ref={inputTeamNameRef} placeholder={nickname} />
-                        <img src={modifyImage} className="w-15 h-15 mb-10 self-end" onClick={() => inputTeamNameRef.current.focus()} />
+                        <input onChange={getNicknameInput} className="w-[170px] mt-12 px-25 text-18 text-inter opacity-50 text-center font-extrabold self-center border-b-2 border-[#DBDBDB] outline-none" ref={inputTeamNameRef} placeholder={nickname} />
+                        <img src={modifyImage} className="w-15 h-15 -ml-15 mb-10 self-end" onClick={() => inputTeamNameRef.current.focus()} />
                     </div>
                     <p className="mt-4 text-16 text-[#969696] text-inter text-center">카카오톡 닉네임(본명){/* userInfo.nickname */}</p>
                     <div className="flex mt-16 mb-41 self-center ">
-                        <input onChange={getStatusMessageInput} className="w-[170px] ml-15 mt-12 text-14 text-inter opacity-50 text-center font-extrabold self-center border-b-2 border-[#DBDBDB] outline-none" ref={inputStatusMessageRef} placeholder="상태 메시지 입력" />
-                        <img src={modifyImage} className="w-15 h-15 mb-10 self-end" onClick={() => inputStatusMessageRef.current.focus()} />
+                        <input onChange={getStatusMessageInput} className="w-[170px] mt-12 px-25 pb-2 text-14 text-inter opacity-50 text-center font-extrabold self-center border-b-2 border-[#DBDBDB] outline-none" ref={inputStatusMessageRef} placeholder="상태 메시지 입력" />
+                        <img src={modifyImage} className="w-15 h-15 -ml-15 mb-10 self-end" onClick={() => inputStatusMessageRef.current.focus()} />
                     </div>
                 </div>
             </div>

@@ -13,5 +13,6 @@ export interface match {
   sex: string,
   people: number,
   hostId: number,
+  host?: any,
   memberGatheringList?: number[],
 }

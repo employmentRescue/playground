@@ -3,7 +3,9 @@ import footballImg from "@/assets/icons/football-bg-colored.png"
 import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { setTabName } from "@/stores/tab/tabName"
 
 interface MatchInfo {
     sportsType: "football" | "basketball" | "badminton"
@@ -12,6 +14,7 @@ interface MatchInfo {
     matchPersonnel: string;     // 3 on 3, 5 on 5 같은 매칭 인원
     matchType: "개인" | "팀";
     isOldMatch: boolean;
+    linkToDetailPage: string;     // "/match/detail"
 }
 
 const initialMatchInfo: MatchInfo[] = [
@@ -22,6 +25,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "3 on 3",
         matchType: "개인",
         isOldMatch: false,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "football",
@@ -30,6 +34,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "5 on 5",
         matchType: "개인",
         isOldMatch: false,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "basketball",
@@ -38,6 +43,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "3 on 3",
         matchType: "개인",
         isOldMatch: true,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "badminton",
@@ -46,6 +52,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "1 on 1",
         matchType: "팀",
         isOldMatch: true,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "badminton",
@@ -54,6 +61,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "3 on 3",
         matchType: "팀",
         isOldMatch: true,
+        linkToDetailPage: "/match/detail"
     },
     {
         sportsType: "badminton",
@@ -62,6 +70,7 @@ const initialMatchInfo: MatchInfo[] = [
         matchPersonnel: "3 on 3",
         matchType: "팀",
         isOldMatch: false,
+        linkToDetailPage: "/match/detail"
     },
 
 ]
@@ -70,6 +79,12 @@ initialMatchInfo.sort((a: MatchInfo, b: MatchInfo) => a.isOldMatch === b.isOldMa
 export default function MatchListPage() {
 
     const [matchInfo, setMatchInfo] = useState(initialMatchInfo);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setTabName('매칭 목록'))
+    }, [])
 
     const individualMatchCardRendering = () => {
         let index = 0
@@ -103,6 +118,7 @@ export default function MatchListPage() {
                         matchType={match.matchType}
                         isOldMatch={match.isOldMatch}
                         buttonColor={buttonColor}
+                        linkToDetailPage={match.linkToDetailPage}
                     />
                 )
             )
@@ -142,6 +158,7 @@ export default function MatchListPage() {
                         matchType={match.matchType}
                         isOldMatch={match.isOldMatch}
                         buttonColor={buttonColor}
+                        linkToDetailPage={match.linkToDetailPage}
                     />
                 )
             )

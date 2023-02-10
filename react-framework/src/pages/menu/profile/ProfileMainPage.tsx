@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
 import myProfileSampleImage from "@/assets/profiles/my-profile-sample.png"
 import titleFavoriteSports from "@/assets/profiles/title-favorite-sports.png"
@@ -7,6 +7,8 @@ import titleFavoriteTime from "@/assets/profiles/title-favorite-time.png"
 import footballImage from "@/assets/profiles/auto-match-football.png"
 import basketballImage from "@/assets/profiles/auto-match-basketball.png"
 import badmintonImage from "@/assets/profiles/auto-match-badminton.png"
+import { useEffect } from "react"
+import { setTabName } from "@/stores/tab/tabName"
 
 
 export default function ProfileMainPage() {
@@ -23,7 +25,11 @@ export default function ProfileMainPage() {
         return state.userInfo.favoriteTime;
     })
 
-    console.log(userInfo.favoriteSports)
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setTabName('프로필'))
+    }, [])
 
     return (
         <div>

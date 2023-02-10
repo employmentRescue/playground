@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import useGeolocation from 'react-hook-geolocation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/stores/store';
 import { place } from '@/models/place';
 import currentPos from '@/assets/icons/current-position.png';
@@ -18,6 +18,7 @@ import sexIcon from '@/assets/icons/sex.png';
 import useMatchRegister from '@/hooks/match/useMatchRegister';
 import RegisterButton from '@/components/Match/Buttons/RegisterButton';
 import { useNavigate } from 'react-router';
+import { setTabName } from '@/stores/tab/tabName';
 
 export default function MatchRegisterPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
@@ -102,6 +103,12 @@ export default function MatchRegisterPage() {
       animation: isBounce ? naver.maps.Animation.BOUNCE : undefined,
     });
   }
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTabName('새로운 모임'))
+  }, [])
 
   // 네이버 지도 생성
   useEffect(() => {

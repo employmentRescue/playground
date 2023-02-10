@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import useGeolocation from 'react-hook-geolocation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/stores/store';
 import useMatchDetailQuery from '@/hooks/match/useMatchDetailQuery';
 import currentPos from '@/assets/icons/current-position.png';
@@ -22,6 +22,8 @@ import DeleteButton from '@/components/Match/Buttons/ModifyButton';
 import ModifyButton from '@/components/Match/Buttons/ModifyButton';
 import useMatchJoin from '@/hooks/match/useMatchJoin';
 import useMatchQuit from '@/hooks/match/useMatchQuit';
+import { getImgUrl } from '@/utils/getImgUrl';
+import { setTabName } from '@/stores/tab/tabName';
 
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
@@ -50,16 +52,16 @@ export default function MatchDetailPage() {
   const join = () => {
     console.log('join');
     joinMatch.mutate({
-      gatheringId: 1,
-      memberId: 111,
+      gatheringId: matchId,
+      memberId: userId,
     })
   };
 
   const quit = () => {
     console.log('quit');
     quitMatch.mutate({
-      gatheringId: 1,
-      memberId: 111,
+      gatheringId: matchId,
+      memberId: userId,
     })
   };
 
@@ -85,9 +87,11 @@ export default function MatchDetailPage() {
     });
   }
 
-  function getImgUrl(name: string) {
-    return new URL(`../../assets/profiles/${name}.png`, import.meta.url).href;
-  }
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTabName('상세 정보'))
+  }, [])
 
   // 네이버 지도 생성
   useEffect(() => {
@@ -255,7 +259,7 @@ export default function MatchDetailPage() {
                 >
                   <img
                     className="w-40 h-40"
-                    src={getImgUrl(e.member.memberId)}
+                    src={getImgUrl('profiles/user', e.member.memberId)}
                   ></img>
                   <div className="text-10 mt-4">{e.member.nickname}</div>
                 </div>
