@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';
 import "swiper/css/pagination";
@@ -9,6 +9,8 @@ import SportsTypeFilterModal from "@/components/Ranking/SportsTypeFilterModal";
 import GameTypeFilterModal from "@/components/Ranking/GameTypeFilterModal";
 import useTeamRankingListQuery from "@/hooks/rank/useTeamRankingListQuery";
 import { teamRanking } from "@/models/teamRanking";
+import { setTabName } from "@/stores/tab/tabName";
+import { useDispatch } from "react-redux";
 
 export default function RankPage() {
   const [tabIndex, setTabIndex] = useState<number>(1);
@@ -18,6 +20,11 @@ export default function RankPage() {
   const [filterModal, setFilterModal] = useState<string>('none');
 
   const teamList = useTeamRankingListQuery(gameType, sportsType, filterModal);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTabName('팀 랭킹'))
+  }, [])
 
   return (
     <div>
@@ -31,10 +38,10 @@ export default function RankPage() {
         <div className="w-100 h-25 flex justify-center items-center bg-blue-700 rounded-5 mr-10 text-12 text-white" onClick={() => setFilterModal('sportsType')}>{sportsType} {gameType} </div>
       </div>
       {tabIndex == 1 && teamRankIndex == 0 &&
-        <div className="w-full h-167 mt-49 flex">
+        <div className="w-[calc(100%-5px)] h-167 mt-49 flex mr-5 ml-5">
           {teamList.isSuccess &&
             teamList.data.map((item: teamRanking, index: number) => index <= 2 && (
-              <div className="w-full h-full" onClick={() => setTeamRankIndex(index)} key={index}>
+              <div className="w-full h-full mr-5" onClick={() => setTeamRankIndex(index + 1)} key={index}>
                 <TopRank
                   teamRanking={item}
                   rank={index + 1}

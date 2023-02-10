@@ -1,9 +1,11 @@
 import timeIcon from "@/assets/icons/time.png"
 import placeIcon from "@/assets/icons/place.png"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import useTeamQuery from "@/hooks/team/useTeamQuery";
 import { getImgUrl } from "@/utils/getImgUrl";
+import { useEffect } from "react";
+import { setTabName } from "@/stores/tab/tabName";
 
 export default function TeamMatchDetailPage() {
 
@@ -12,6 +14,12 @@ export default function TeamMatchDetailPage() {
   });
 
   const { data } = useTeamQuery(teamId);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTabName('팀 매칭 상세'))
+  }, [])
 
   return (
     <div className="w-full">

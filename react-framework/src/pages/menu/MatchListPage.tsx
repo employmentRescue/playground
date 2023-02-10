@@ -3,7 +3,9 @@ import footballImg from "@/assets/icons/football-bg-colored.png"
 import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { setTabName } from "@/stores/tab/tabName"
 
 interface MatchInfo {
     sportsType: "football" | "basketball" | "badminton"
@@ -77,6 +79,12 @@ initialMatchInfo.sort((a: MatchInfo, b: MatchInfo) => a.isOldMatch === b.isOldMa
 export default function MatchListPage() {
 
     const [matchInfo, setMatchInfo] = useState(initialMatchInfo);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setTabName('매칭 목록'))
+    }, [])
 
     const individualMatchCardRendering = () => {
         let index = 0

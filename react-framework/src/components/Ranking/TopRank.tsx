@@ -7,7 +7,7 @@ interface Iprops {
 
 export default function TopRank(props: Iprops) {
   return (
-    <div className="w-1/3 flex flex-col justify-center items-center ml-5 mr-5 bg-white border-t-4 border-blue-700 rounded-5">
+    <div className="w-full flex flex-col justify-center items-center bg-white border-t-4 border-blue-700 rounded-5">
       <div className="w-full h-30"><div className="text-17 text-[#16b4f7] font-bold mt-6 ml-6">{props.rank}</div></div>
       <img className="w-70 h-70"></img>
       <div className="w-full h-67 flex flex-col justify-center items-center">
