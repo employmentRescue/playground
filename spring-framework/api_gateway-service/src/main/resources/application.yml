@@ -7,14 +7,26 @@ spring:
 
   cloud:
     gateway:
+#     default-filters:
+#       - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
       globalcors:
         corsConfigurations:
           '[/**]':
-            allowedOrigins:
-              - "https://openapi.map.naver.com"
+            allowedOrigins: "https://openapi.map.naver.com"
+            allow-credentials: true   #추가
+            allowedHeaders:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
             allowedMethods:
-              - GET
               - POST
+              - GET
+              - PUT
+              - OPTIONS
+              - DELETE
 
       httpclient:
         ssl:
@@ -32,7 +44,7 @@ spring:
 #          filters:
 #            - RewritePath=/oauth/(?<path>.*),/$\{path}
 
-        
+
         - id: user-service
           uri: https://i8b309.p.ssafy.io:9002
           predicates:
@@ -43,13 +55,19 @@ spring:
         - id: matching-service
           uri: https://i8b309.p.ssafy.io:9003
           predicates:
-            - Path=/matching/**
+            - Path=/match/**, /matching/**, /gathering/**, /live/**, /ranking/**, /team/**
+
+        - id: matching-service-tester
+          uri: https://i8b309.p.ssafy.io:10003
+          predicates:
+            - Path=/test/match/**, /test/matching/**, /test/gathering/**, /test/live/**, /test/ranking/**, /test/team/**
+          filters:
+            - RewritePath=/test/(?<path>.*),/$\{path}
 
         - id: notify-service
           uri: https://i8b309.p.ssafy.io:9004
           predicates:
             - Path=/notify/**
-
 
         - id: react-framework
           uri: http://i8b309.p.ssafy.io:3000/
