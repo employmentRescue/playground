@@ -68,29 +68,4 @@ services:
     ports:
       - "3000:80"
 
-  mysql-server:
-    image: mysql
-    restart: always
-    # container_name: mysql-servver # 컨테이너 이름 설정
-    ports:
-      - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
-    environment: # -e 옵션
-      - MYSQL_USER=ssafy
-      - MYSQL_PASSWORD=ssafy
-      - MYSQL_DATABASE=playground # default 생성 DB Schema
-
-      - MYSQL_ROOT_PASSWORD=root
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ./mysql-init-files/:/docker-entrypoint-initdb.d/
-      - ./mysql/data:/var/lib/mysql
-    expose:
-      - '3306'
-
-  redis:
-    image: redis
-    ports: 
-      - "6380:6379"
   
