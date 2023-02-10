@@ -4,7 +4,9 @@ import TeamImage2 from "@/assets/profiles/team-basketball2.png"
 import SportsSelectButtons from "@/components/TeamCreate/Buttons/SportsSelectButtons";
 import TeamCard from "@/components/MyTeam/TeamCard";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setTabName } from "@/stores/tab/tabName";
 
 
 export default function MyTeamPage() {
@@ -110,6 +112,12 @@ export default function MyTeamPage() {
             )
         })
     }
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setTabName('나의 팀'))
+    }, [])
 
     return (
         <div className="flex flex-col h-[calc(100vh-110px)] justify-start bg-white">
