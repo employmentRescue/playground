@@ -1,276 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="b343b698-aa2c-4d0b-af66-a9946ba4d981" name="Changes" comment="docker 테스트용" />
+    <list default="true" id="75d387c3-df32-4ee0-be1d-dde138931196" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/spring-framework/api_gateway-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/spring-framework/api_gateway-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spring-framework/api_gateway-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/spring-framework/api_gateway-service/src/main/resources/application.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExternalProjectsData">
-    <projectState path="$PROJECT_DIR$">
-      <ProjectState />
-    </projectState>
-  </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="oauth_service" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="oauth_service" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="oauth_service" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-            </expand>
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Class" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitSEFilterConfiguration">
-    <file-type-list>
-      <filtered-out-file-type name="LOCAL_BRANCH" />
-      <filtered-out-file-type name="REMOTE_BRANCH" />
-      <filtered-out-file-type name="TAG" />
-      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
-    </file-type-list>
-  </component>
-  <component name="ProjectId" id="2L5YnbORFPTaZJgrtnJvOh9GCb1" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="2LXILk9nDr8Up1cgfTsUxAQ2dOK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="RequestMappingsPanelOrder0" value="0" />
-    <property name="RequestMappingsPanelOrder1" value="1" />
-    <property name="RequestMappingsPanelWidth0" value="75" />
-    <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../fcm-service/fcm-service" />
-  </component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\SSAFY\IdeaProjects\oauth_service\src\main\java\com\ssafy\oauth_service\config" />
-      <recent name="C:\Users\SSAFY\IdeaProjects\oauth_service\src\main\resources" />
-      <recent name="C:\Users\SSAFY\IdeaProjects\oauth_service\src\main\java\com\ssafy\oauth_service\dto" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\SSAFY\IdeaProjects\oauth_service\src\main\resources" />
-      <recent name="C:\Users\SSAFY\IdeaProjects\oauth_service\src\main\java\com\ssafy\oauth_service\dto" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.ssafy.oauth_service.dto" />
-    </key>
-  </component>
-  <component name="RunManager" selected="Spring Boot.OauthServiceApplication">
-    <configuration name="OauthServiceApplicationTests.access_tokenCheck" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.ssafy.oauth_service.OauthServiceApplicationTests.access_tokenCheck&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="OauthServiceApplicationTests.contextLoads" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.ssafy.oauth_service.OauthServiceApplicationTests.contextLoads&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="OauthServiceApplicationTests.refresh_token_getAgain" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;com.ssafy.oauth_service.OauthServiceApplicationTests.refresh_token_getAgain&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="oauth_service [bootJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="bootJar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="oauth_service [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="jar" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="OauthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-      <module name="oauth_service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ssafy.oauth_service.OauthServiceApplication" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.OauthServiceApplicationTests.refresh_token_getAgain" />
-        <item itemvalue="Gradle.oauth_service [bootJar]" />
-        <item itemvalue="Gradle.oauth_service [jar]" />
-        <item itemvalue="Gradle.OauthServiceApplicationTests.access_tokenCheck" />
-        <item itemvalue="Gradle.OauthServiceApplicationTests.contextLoads" />
-      </list>
-    </recent_temporary>
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/spring-framework/api_gateway-service" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b343b698-aa2c-4d0b-af66-a9946ba4d981" name="Changes" comment="" />
-      <created>1675162580188</created>
+      <changelist id="75d387c3-df32-4ee0-be1d-dde138931196" name="Changes" comment="" />
+      <created>1676010946420</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1675162580188</updated>
-      <workItem from="1675162581512" duration="13780000" />
-      <workItem from="1675179062591" duration="469000" />
-      <workItem from="1675180069016" duration="2123000" />
-      <workItem from="1675207646266" duration="640000" />
-      <workItem from="1675222471467" duration="189000" />
-      <workItem from="1675226673849" duration="492000" />
-      <workItem from="1675251983245" duration="7123000" />
-      <workItem from="1675295625934" duration="8819000" />
-      <workItem from="1675314494850" duration="4939000" />
-      <workItem from="1675339282730" duration="5150000" />
-      <workItem from="1675357255969" duration="45000" />
-      <workItem from="1675386764494" duration="11368000" />
-      <workItem from="1675422174015" duration="991000" />
-      <workItem from="1675436463806" duration="122000" />
-      <workItem from="1675437467825" duration="21000" />
-      <workItem from="1675507892523" duration="797000" />
-      <workItem from="1675556589731" duration="5933000" />
-      <workItem from="1675640770663" duration="5831000" />
+      <updated>1676010946420</updated>
+      <workItem from="1676010947767" duration="19000" />
     </task>
-    <task id="LOCAL-00001" summary="docker 테스트용">
-      <created>1675436548462</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1675436548462</updated>
-    </task>
-    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="docker 테스트용" />
-    <option name="LAST_COMMIT_MESSAGE" value="docker 테스트용" />
   </component>
 </project>
