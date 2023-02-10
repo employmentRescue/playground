@@ -21,6 +21,9 @@ import "swiper/css/pagination";
 import MatchSlide from "@/components/Match/MatchSlide"
 import { useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
+import usePromisedMatchListQuery from "@/hooks/match/usePromisedMatchListQuery"
+import { match } from "@/models/match"
+import moment from "moment"
 
 type Action = { type: 'ISPRESSED' | 'BASKETBALL' | 'FOOTBALL' | 'BADMINTON' | 'JOIN' | 'QUIT' | 'REGISTER' | 'MODIFY' | 'NONE' | 'DEFAULT' };
 
@@ -121,6 +124,8 @@ export default function HomePage() {
     const userId = useSelector((state: RootState) => {
         return state.userId;
     });
+    const promisedMatchList = usePromisedMatchListQuery(userId);
+    console.log(promisedMatchList);
     console.log(liveMatchList);
 
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
@@ -279,46 +284,31 @@ export default function HomePage() {
 
     return (
         <div>
-            <Swiper
-                slidesPerView={1.1}
-                centeredSlides={true}
-                spaceBetween={10}
-                grabCursor={true}
-                pagination={{
-                    clickable: true,
-                }}
-            >
-                <SwiperSlide>
-                    <div className="w-full h-55 mt-8 mb-8 ml-[-10px]">
-                        <MatchSlide
-                            sports={'basketball'}
-                            date={'2023-02-09'}
-                            place={'고운뜰공원'}
-                            time={'19:30'}
-                            host={'이진성'}
-                            people={5} /></div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className="w-full h-55 mt-8 mb-8 ml-[-10px]">
-                        <MatchSlide
-                            sports={'basketball'}
-                            date={'2023-02-09'}
-                            place={'고운뜰공원'}
-                            time={'19:30'}
-                            host={'이진성'}
-                            people={5} /></div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className="w-full h-55 mt-8 mb-8 ml-[-10px]">
-                        <MatchSlide
-                            sports={'basketball'}
-                            date={'2023-02-09'}
-                            place={'고운뜰공원'}
-                            time={'19:30'}
-                            host={'이진성'}
-                            people={5} /></div>
-                </SwiperSlide>
-            </Swiper>
+            {promisedMatchList.isSuccess ?
+                <Swiper
+                    slidesPerView={1.1}
+                    centeredSlides={true}
+                    spaceBetween={10}
+                    grabCursor={true}
+                    pagination={{
+                        clickable: true,
+                    }}
+                >{promisedMatchList.data.map((item: match, index: number) =>
+                (
+                    <SwiperSlide key={index}>
+                        <div className="w-full h-55 mt-8 mb-8 ml-[-10px]">
+                            <MatchSlide
+                                sports={item.sports}
+                                date={item.startDate}
+                                place={item.place.address}
+                                time={item.startTime.slice(0, 5)}
+                                host={item.host.name}
+                                people={item.people - 1} /></div>
+                    </SwiperSlide>
+                )
+                )}
+                </Swiper> : null
+            }
             <div ref={mapElement} className="w-full h-[calc(100vh-182px)] relative">
                 <div className="w-60 h-193 flex flex-col relative float-right mt-12 mr-9 z-10 ">{
                     state.isPressed === false ?

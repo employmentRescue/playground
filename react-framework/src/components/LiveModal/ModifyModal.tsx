@@ -69,6 +69,7 @@ export default function ModifyModal(props: Iprops) {
 
     const modify = () => {
         liveMatchModify.mutate({
+            liveId: props.liveMatch.liveId,
             currentPeopleNum: currentPeopleNum,
             totalPeopleNum: totalPeopleNum,
             detail: detail,
