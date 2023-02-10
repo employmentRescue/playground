@@ -115,8 +115,6 @@ spring:
 #            - RewritePath=/pages/(?<path>.*),/$\{path}
 
 
-
-
   data:
     redis:
       host: redis
