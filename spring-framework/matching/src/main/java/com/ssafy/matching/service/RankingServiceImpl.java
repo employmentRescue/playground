@@ -65,7 +65,6 @@ public class RankingServiceImpl implements RankingService {
         return mapList;
     }
 
-    //TODO 포인트 업그레이드 해야함
     @Override
     public void updatePoint(TeamMatchResult teamMatchResultMe, TeamMatchResult teamMatchResultOp) {
         Team teamMe = teamRepository.getByTeamId(teamMatchResultMe.getTeamId());
