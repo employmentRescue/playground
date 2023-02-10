@@ -4,6 +4,8 @@ import defaultProfile from "@/assets/profiles/default-profile.png"
 import emoticonButton from "@/assets/icons/chatting-emoticon.png"
 import sendButton from "@/assets/icons/send-message-button.png"
 import { useState, useRef, useEffect } from "react"
+import { useDispatch } from "react-redux";
+import { setTabName } from "@/stores/tab/tabName";
 
 type TextList = {
     isMine: boolean,
@@ -120,6 +122,12 @@ export default function ChattingRoomPage() {
         setActivateSend("opacity-40")
         inputRef.current.focus()
     }
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setTabName('슬램덩크'))
+    }, [])
 
     useEffect(() => {
         window.scrollTo(0, scrollRef.current.scrollHeight)

@@ -149,9 +149,9 @@ export default function HomePage() {
         const { naver } = window;
         if (!mapElement.current || !naver) return;
         // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
-        const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
+        const locationPos = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
         const mapOptions: naver.maps.MapOptions = {
-            center: location,
+            center: locationPos,
             zoom: 14,
         };
         const map = new naver.maps.Map(mapElement.current, mapOptions);
@@ -159,6 +159,9 @@ export default function HomePage() {
         setNaverMap(map);
 
         dispatchTab(setTabName('playGround'))
+        // history.pushState(null, "", location.href);
+        // window.addEventListener("popstate", () => history.pushState(null, "", location.href));
+
     }, []);
 
     useEffect(() => {
