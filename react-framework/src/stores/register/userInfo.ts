@@ -52,13 +52,7 @@ const initialState: UserInfo = {
         basketball: null,
         badminton: null,
     },
-    myTeam: [
-        {
-            sportsType: "축구",
-            myTeamName: "팀 이름",
-            memberIds: []
-        },
-    ],
+    myTeam: [],
     statusMessage: "상태 메시지",
 }
 

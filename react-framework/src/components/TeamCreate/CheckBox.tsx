@@ -39,6 +39,7 @@ export default function CheckBox({ userId, className, imageSrc, nickname, isSele
 
     useEffect(() => {
         handleSelect()
+        console.log(memberIds)
     }, [memberIds])
 
     return (
