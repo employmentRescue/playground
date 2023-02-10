@@ -18,19 +18,19 @@ export default function GameTypeFilterModal({ setGameType, setFilterModal, sport
         <div className="w-full h-47 text-15 border-b-1 border-gray-600 flex justify-center items-center">게임 종류</div>
         {sportsType === '농구' &&
           <div>
-            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('3 vs 3')}>3 vs 3</div>
-            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('5 vs 5')}>5 vs 5</div>
+            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('3vs3')}>3 vs 3</div>
+            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('5vs5')}>5 vs 5</div>
           </div>}
         {sportsType === '축구' &&
           <div>
-            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('5 vs 5')}>5 vs 5</div>
-            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('6 vs 6')}>6 vs 6</div>
-            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('11 vs 11')}>11 vs 11</div>
+            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('5vs5')}>5 vs 5</div>
+            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('6vs6')}>6 vs 6</div>
+            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('11vs11')}>11 vs 11</div>
           </div>}
         {sportsType === '배드민턴' &&
           <div>
-            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('1 vs 1')}>1 vs 1</div>
-            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('2 vs 2')}>2 vs 2</div>
+            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('1vs1')}>1 vs 1</div>
+            <div className="w-full h-47 text-15 border-b-1 pl-17 border-gray-600 flex items-center" onClick={() => handleSportsTypeClick('2vs2')}>2 vs 2</div>
           </div>}
       </div>
     </div>
