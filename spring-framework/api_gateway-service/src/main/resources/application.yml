@@ -7,12 +7,14 @@ spring:
 
   cloud:
     gateway:
-     default-filters:
+      default-filters:
        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
       globalcors:
-        corsConfigurations:
+        cors-configurations:
           '[/**]':
-            allowedOrigins: "https://openapi.map.naver.com", "http://localhost"
+            allowedOrigins:
+              - "https://openapi.map.naver.com"
+              - "http://localhost:3000"
             allow-credentials: true   #추가
             allowedHeaders:
               - x-requested-with
@@ -21,12 +23,14 @@ spring:
               - credential
               - X-AUTH-TOKEN
               - X-CSRF-TOKEN
+
             allowedMethods:
               - POST
               - GET
               - PUT
               - OPTIONS
               - DELETE
+
 
       httpclient:
         ssl:
@@ -107,7 +111,7 @@ spring:
           order: 1
           predicates:
             - Path=/**
-#          filters:
+  #          filters:
 #            - RewritePath=/pages/(?<path>.*),/$\{path}
 
 
