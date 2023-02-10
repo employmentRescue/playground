@@ -105,11 +105,14 @@ function registerTabType(state: TabState, action: TabAction) {
 
 // 내용 - 자동매칭인지 목록인지
 function Content({ clickedTab }: { clickedTab: string }) {
+    const [ filterData, setFilterData ] = useState(useSelector((state: RootState) => {
+        return state.matchSort;
+    }))
 
     if (clickedTab === 'AUTOMATCH') {
         return (
             <div>
-                <MatchFilterBar />
+                {/* <MatchFilterBar filterData={filterData}/> */}
                 <MatchContent />
             </div>
         )
@@ -117,7 +120,7 @@ function Content({ clickedTab }: { clickedTab: string }) {
     else {
         return (
             <div>
-                <MatchFilterBar />
+                {/* <MatchFilterBar filterData={filterData}/> */}
                 <ListContent />
             </div>
         )

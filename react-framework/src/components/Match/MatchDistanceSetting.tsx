@@ -11,12 +11,10 @@ import whiteArrow from "@/assets/icons/white-arrow.png";
 
 
 // 자동 매칭 필터바 - 거리범위
-export function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWindow: () => void, clicked: () => void }) {
-    const distance = useSelector((state: RootState) => {
-        return String(state.matchSort.distance);
-    })
+export function MatchFilterDistance({ shutOtherWindow, clicked, distance }: { shutOtherWindow: () => void, clicked: () => void, distance: number }) {
+    
     return (
-        <div className="flex flex-row w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
+        <div className="flex flex-row w-70 h-25 flex-grow-0 mt-7 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
             onClick={(e) => {
                 e.preventDefault();
                 clicked();
@@ -29,16 +27,10 @@ export function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWin
 }
 
 // 자동 매칭 필터 - 거리범위 지정
-export function MatchDistanceSetting({ clicked }: { clicked: () => void }) {
-    const [distance, setDistance] = useState('1')
+export function MatchDistanceSetting({ clicked, distance, setFilterData }: { clicked: () => void, distance: number, setFilterData: (attr:string, value:any) => void }) {
+    const [temDistance, setDistance] = useState(String(distance))
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
-    }
-    const dispatch = useDispatch()
-    const handleChange = (event: Event) => {
-        event.preventDefault();
-        // console.log(value)
-        dispatch(setSortDistance(distance))
     }
 
     return (
@@ -58,13 +50,14 @@ export function MatchDistanceSetting({ clicked }: { clicked: () => void }) {
                     <h1>지도</h1>
                 </div> 
                 <div className="absolute bottom-0 h-1/8 justify-center mb-15 mx-13">
-                    <input type="range" min="0" max="22" className="w-full" placeholder={distance} defaultValue="1" onChange={valueChange} />
+                    <input type="range" min="0" max="22" className="w-full" placeholder={temDistance} defaultValue={temDistance} onChange={valueChange} />
                     <div className="flex mb-12">
                         <span className="w-26 h-15 flex-grow-0 mt-3 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
-                        <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{distance}</div>
+                        <div className="w-23 h-16 flex-grow-0 mt-3 ml-[258px] p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{temDistance}</div>
                         <span className="w-26 h-15 flex-grow-0 mt-3 ml-2 font-inter text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
                     </div>
-                    <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff] " onClick={(e)=>{e.preventDefault(); dispatch(setSortDistance(distance)); }}>설정 완료</div>
+                    <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff] " onClick={(e)=>{e.preventDefault(); setFilterData("distance", String(temDistance))}}>설정 완료</div>
+                    <button className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff] " onClick={(e)=>{e.preventDefault(); clicked(); setFilterData("distance", Number(temDistance))}}>설정 완료</button>
                 </div>
             </div>
         </div>
