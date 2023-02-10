@@ -287,7 +287,7 @@ export default function HomePage() {
 
     return (
         <div>
-            {promisedMatchList.isSuccess ?
+            {promisedMatchList.isSuccess && promisedMatchList.data ?
                 <Swiper
                     slidesPerView={1.1}
                     centeredSlides={true}
