@@ -45,17 +45,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Map<String, Object> getTimeNotPastJoinListByMemberId(long memberId) {
-        Map<String, Object> map = new HashMap<>();
-
+    public List<Gathering> getTimeNotPastJoinListByMemberId(long memberId) {
         //운동모임 리스트(날짜 안지남)
-        List<Gathering> timeNotPastGatheringList = gatheringRepository.getGatheringsTimeNotPast(memberId);
-        map.put("timeNotPastGatheringList", timeNotPastGatheringList);
-
-        //팀 경기 리스트(날짜 안지남)
-        List<Match> timeNotPastMatchList = matchRepository.getMatchesTimeNotPast(memberId);
-        map.put("timeNotPastMatchList", timeNotPastMatchList);
-
-        return map;
+        return gatheringRepository.getGatheringsTimeNotPast(memberId);
     }
 }

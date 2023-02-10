@@ -1,5 +1,6 @@
 package com.ssafy.matching.controller;
 
+import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.service.MemberService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -36,15 +38,15 @@ public class MemberController {
 
     }
 
-    @ApiOperation(value = "유저가 신청한 운동 모임과 팀 경기 전체 리스트(시간 안지난 것만)", notes = "유저가 신청한 운동 모임과 팀 경기 전체 리스트를 반환한다")
+    @ApiOperation(value = "유저가 신청한 운동 모임 리스트(시간 안지난 것만)", notes = "유저가 신청한 운동 모임 전체를 반환한다")
     @GetMapping("/join/part/{memberid}")
     public ResponseEntity<?> partList(@PathVariable("memberid") Long memberId) {
         try {
-            Map<String, Object> map = memberService.getTimeNotPastJoinListByMemberId(memberId);
+            List<Gathering> list = memberService.getTimeNotPastJoinListByMemberId(memberId);
 
-            if (map != null && !map.isEmpty()) {
-                System.out.println(map);
-                return new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+            if (list != null && !list.isEmpty()) {
+                System.out.println(list);
+                return new ResponseEntity<List<Gathering>>(list, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
             }
