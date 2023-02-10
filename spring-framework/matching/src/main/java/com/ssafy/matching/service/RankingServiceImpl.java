@@ -1,15 +1,19 @@
 package com.ssafy.matching.service;
 
+import com.ssafy.matching.dto.Match;
 import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMatchResult;
 import com.ssafy.matching.dto.TeamStats;
+import com.ssafy.matching.repository.MatchRepository;
 import com.ssafy.matching.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -17,65 +21,93 @@ public class RankingServiceImpl implements RankingService {
     @Autowired
     TeamRepository teamRepository;
 
+    @Autowired
+    MatchRepository matchRepository;
+
     @Override
     public List<TeamStats> viewRanking(String sports, String gameType) {
         List<Team> teamList = teamRepository.getTop20BySportsAndGameTypeOrderByPointDesc(sports, gameType);
-        List<TeamStats> resultList = getTeamStatsList(teamList);
+        List<TeamStats> teamStatsList = new ArrayList<>();
 
-        return resultList;
+        for(int i = 0; i < teamList.size(); i++) {
+            TeamStats teamStats = getTeamStats(teamList.get(i));
+            teamStatsList.add(teamStats);
+        }
+
+        return teamStatsList;
     }
 
     @Override
-    public List<List<TeamStats>> viewMyTeamsRanking(long memberId) {
-        List<Team> teamList = teamRepository.getTeamsByMemberId(memberId); //1. 나의 팀 리스트 검색
-        System.out.println("teamList : " + teamList);
+    public List<Map<String, Object>> viewMyTeamsRanking(long memberId) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
 
-        List<List<TeamStats>> result = new ArrayList<>();
+        List<Team> teamList = teamRepository.getTeamsByMemberId(memberId); //1. 나의 팀 리스트 검색
 
         //2. 나의 팀 기준 상위 3개, 하위 3개 팀 검색
         for(Team team : teamList) {
+            Map<String, Object> map = new HashMap<>();
+
+            TeamStats myTeamStat = getTeamStats(team);
+            map.put("myTeamStat", myTeamStat);
+
             List<Team> rankList = teamRepository.get7TeamsByTeamId(team.getTeamId());
-            List<TeamStats> teamStatsList = getTeamStatsList(rankList);
-            result.add(teamStatsList);
-        }
+            List<TeamStats> teamStatsList = new ArrayList<>();
 
-        return result;
-    }
-
-    private List<TeamStats> getTeamStatsList(List<Team> teamList) {
-        List<TeamStats> resultList = new ArrayList<>();
-
-        for(int i = 0; i < teamList.size(); i++) {
-            TeamStats teamStats = new TeamStats();
-            teamStats.setTeamName(teamList.get(i).getName());
-
-            List<TeamMatchResult> teamMatchResultList = teamList.get(i).getTeamMatchResultList();
-
-            int win = 0, draw = 0, lose = 0;
-            for(TeamMatchResult teamMatchResult : teamMatchResultList) {
-                String teamResult = teamMatchResult.getResult();
-
-                switch (teamResult) {
-                    case "승" : win++; break;
-                    case "무" : draw++; break;
-                    case "패" : lose++; break;
-                }
+            for(int i = 0; i < rankList.size(); i++) {
+                TeamStats teamStats = getTeamStats(rankList.get(i));
+                teamStatsList.add(teamStats);
             }
 
-            teamStats.setMatchTimes(teamMatchResultList.size());
-            teamStats.setWin(win);
-            teamStats.setDraw(draw);
-            teamStats.setLose(lose);
+            map.put("teamStatsList", teamStatsList);
 
-            int point = teamList.get(i).getPoint();
-
-            teamStats.setPoint(point);
-            teamStats.setTier(calculateTier(point));
-
-            resultList.add(teamStats);
+            mapList.add(map);
         }
 
-        return resultList;
+        return mapList;
+    }
+
+    //TODO 포인트 업그레이드 해야함
+    @Override
+    public void updatePoint(TeamMatchResult teamMatchResult, int matchId) {
+        Match match = matchRepository.getByMatchId(matchId);
+
+        int myTeamId = teamMatchResult.getTeamId();
+        Team myTeam = teamRepository.getByTeamId(myTeamId);
+
+        //1. 예상 승률 구하기
+        int Pop = 0;
+        int Pme = myTeam.getPoint();
+        double W = 1 / (Math.pow(10, (Pop - Pme) / 400) + 1);
+    }
+
+    private TeamStats getTeamStats(Team team) {
+        TeamStats teamStats = new TeamStats();
+        teamStats.setTeamName(team.getName());
+
+        List<TeamMatchResult> teamMatchResultList = team.getTeamMatchResultList();
+
+        int win = 0, draw = 0, lose = 0;
+        for(TeamMatchResult teamMatchResult : teamMatchResultList) {
+            String teamResult = teamMatchResult.getResult();
+
+            switch (teamResult) {
+                case "승" : win++; break;
+                case "무" : draw++; break;
+                case "패" : lose++; break;
+            }
+        }
+
+        teamStats.setMatchTimes(teamMatchResultList.size());
+        teamStats.setWin(win);
+        teamStats.setDraw(draw);
+        teamStats.setLose(lose);
+
+        int point = team.getPoint();
+
+        teamStats.setPoint(point);
+        teamStats.setTier(calculateTier(point));
+
+        return  teamStats;
     }
 
     public String calculateTier(int point) {

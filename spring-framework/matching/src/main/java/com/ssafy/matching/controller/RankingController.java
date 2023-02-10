@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -43,10 +44,10 @@ public class RankingController {
     @GetMapping("/{memberid}")
     public ResponseEntity<?> view(@PathVariable("memberid") Long memberId) {
         try {
-            List<List<TeamStats>> list = rankingService.viewMyTeamsRanking(memberId);
+            List<Map<String, Object>> list = rankingService.viewMyTeamsRanking(memberId);
             System.out.println(list);
             if (list != null && !list.isEmpty()) {
-                return new ResponseEntity<List<List<TeamStats>>>(list, HttpStatus.OK);
+                return new ResponseEntity<List<Map<String, Object>>>(list, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
             }
