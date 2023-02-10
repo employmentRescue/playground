@@ -1,14 +1,8 @@
-FROM node:18.12.1-alpine
+FROM nginx:alpine
 
-WORKDIR /app 
+# 외부에서 하는 작업
+# npm i
+# npm run build
 
-COPY package*.json ./ 
-
-# RUN npm update
-RUN npm update
-RUN npm install  
-
-# VOLUME ["/home/pi/dock/npm-1"]
-expose 8080
-
-#RUN npm start
+COPY dist/ /usr/share/nginx/html/
+COPY nginx-conf/default.conf /etc/nginx/conf.d/default.conf

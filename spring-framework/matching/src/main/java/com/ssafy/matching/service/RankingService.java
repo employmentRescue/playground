@@ -1,6 +1,5 @@
 package com.ssafy.matching.service;
 
-import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMatchResult;
 import com.ssafy.matching.dto.TeamStats;
 
@@ -12,5 +11,5 @@ public interface RankingService {
 
     List<Map<String, Object>> viewMyTeamsRanking(long memberId);
 
-    void updatePoint(TeamMatchResult teamMatchResult, int matchId);
+    void updatePoint(TeamMatchResult teamMatchResultMe, TeamMatchResult teamMatchResultOp);
 }

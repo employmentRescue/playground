@@ -4,28 +4,23 @@ import footballImg from "@/assets/icons/football-original.png"
 import basketballImg from "@/assets/icons/basketball-original.png"
 import badmintonImg from "@/assets/icons/badminton-original.png"
 import { useDispatch, useSelector } from "react-redux"
-import { setFavoriteSports } from "@/stores/register/user"
-import { User } from "@/stores/register/user"
-
-interface userState {
-    user: User
-}
+import { setFavoriteSports } from "@/stores/register/userInfo"
+import { RootState } from "@/stores/store"
 
 export default function FavoriteSportsTab() {
     const dispatch = useDispatch();
 
-    const isFavoritefootball = useSelector((state: userState) => {
-        return state.user.favoriteSports.football;
+    const isFavoritefootball = useSelector((state: RootState) => {
+        return state.userInfo.favoriteSports.football;
     });
-    const isFavoriteBasketball = useSelector((state: userState) => {
-        return state.user.favoriteSports.basketball;
+    const isFavoriteBasketball = useSelector((state: RootState) => {
+        return state.userInfo.favoriteSports.basketball;
     });
-    const isFavoriteBadminton = useSelector((state: userState) => {
-        return state.user.favoriteSports.badminton;
+    const isFavoriteBadminton = useSelector((state: RootState) => {
+        return state.userInfo.favoriteSports.badminton;
     });
-
-    const storeState = useSelector((state: any) => {
-        return state.user.favoriteSports;
+    const storeState = useSelector((state: RootState) => {
+        return state.userInfo.favoriteSports;
     });
 
 

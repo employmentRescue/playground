@@ -3,6 +3,7 @@ package com.ssafy.matching.controller;
 import com.ssafy.matching.dto.Match;
 import com.ssafy.matching.dto.TeamMatchResult;
 import com.ssafy.matching.service.MatchService;
+import com.ssafy.matching.service.RankingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -46,13 +47,21 @@ public class MatchController {
         return new ResponseEntity<Match>(matchService.updateMatch(match), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "팀 경기 결과를 등록하기", notes = "팀 경기 결과를 등록한다.")
-    @PutMapping("/record/{matchid}")
-    public ResponseEntity<TeamMatchResult> record(@PathVariable("matchid") int matchId, @RequestBody @ApiParam(value = "팀 경기 정보", required = true) TeamMatchResult teamMatchResult) throws Exception {
-        return new ResponseEntity<TeamMatchResult>(matchService.registerTeamMatchResult(teamMatchResult, matchId), HttpStatus.OK);
+    @ApiOperation(value = "경기 삭제하기(구현중)", notes = "경기Id에 해당하는 경기를 삭제한다.")
+    @DeleteMapping("/{matchid}")
+    public void delete(@PathVariable("matchid") int matchId) throws Exception {
+        matchService.deleteMatch(matchId);
     }
 
-    @ApiOperation(value = "팀 경기 결과를 수정하기", notes = "팀 경기 결과를 수정한다.")
+    //TODO 팀 경기 결과 등록시 메시지 출력과 포인트 업데이트
+    @ApiOperation(value = "팀 경기 결과를 등록하기(기능 추가중)", notes = "팀 경기 결과를 등록한다.")
+    @PutMapping("/record/{matchid}")
+    public ResponseEntity<?> record(@PathVariable("matchid") int matchId, @RequestBody @ApiParam(value = "팀 경기 정보", required = true) TeamMatchResult teamMatchResult) throws Exception {
+        String result = matchService.registerTeamMatchResult(teamMatchResult, matchId);
+        return new ResponseEntity<String>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "팀 경기 결과를 수정하기(기능 추가중)", notes = "팀 경기 결과를 수정한다.")
     @PutMapping("/rewrite/{matchid}")
     public ResponseEntity<TeamMatchResult> rewrite(@PathVariable("matchid") int matchId, @RequestBody @ApiParam(value = "팀 경기 정보", required = true) TeamMatchResult teamMatchResult) throws Exception {
         return new ResponseEntity<TeamMatchResult>(matchService.updateTeamMatchResult(teamMatchResult, matchId), HttpStatus.OK);

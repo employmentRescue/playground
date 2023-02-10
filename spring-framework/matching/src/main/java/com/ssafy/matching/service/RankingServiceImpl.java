@@ -1,6 +1,5 @@
 package com.ssafy.matching.service;
 
-import com.ssafy.matching.dto.Match;
 import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMatchResult;
 import com.ssafy.matching.dto.TeamStats;
@@ -68,16 +67,52 @@ public class RankingServiceImpl implements RankingService {
 
     //TODO 포인트 업그레이드 해야함
     @Override
-    public void updatePoint(TeamMatchResult teamMatchResult, int matchId) {
-        Match match = matchRepository.getByMatchId(matchId);
-
-        int myTeamId = teamMatchResult.getTeamId();
-        Team myTeam = teamRepository.getByTeamId(myTeamId);
+    public void updatePoint(TeamMatchResult teamMatchResultMe, TeamMatchResult teamMatchResultOp) {
+        Team teamMe = teamRepository.getByTeamId(teamMatchResultMe.getTeamId());
+        Team teamOp = teamRepository.getByTeamId(teamMatchResultOp.getTeamId());
 
         //1. 예상 승률 구하기
-        int Pop = 0;
-        int Pme = myTeam.getPoint();
-        double W = 1 / (Math.pow(10, (Pop - Pme) / 400) + 1);
+        int Pme = teamMe.getPoint();
+        int Pop = teamOp.getPoint();
+
+        System.out.println("전 Pme: " + Pme);
+        System.out.println("전 Pop: " + Pop);
+
+        double Wme = 1 / (Math.pow(10, (Pop - Pme) / 400) + 1); //내 팀의 예상 승률
+        double Wop = 1 / (Math.pow(10, (Pme - Pop) / 400) + 1); //상대 팀의 예상 승률
+
+        //2. 점수 계산하기
+        int K = 30; //가중치
+        double W = 0; //경기 결과
+
+        //경기 결과 별 W
+        String resultMe = teamMatchResultMe.getResult();
+        String resultOp = teamMatchResultOp.getResult();
+
+        W = getW(W, resultMe);
+        Pme += (int)(K * W - Wme);
+
+        W = getW(W, resultOp);
+        Pop += (int)(K * W - Wop);
+
+        System.out.println("후 Pme: " + Pme);
+        System.out.println("후 Pop: " + Pop);
+
+        //3. 팀 객체에서 점수 정보 갱신하기
+        teamMe.setPoint(Pme);
+        teamOp.setPoint(Pop);
+
+        teamRepository.save(teamMe);
+        teamRepository.save(teamOp);
+    }
+
+    private double getW(double w, String resultMe) {
+        switch (resultMe) {
+            case "승" : w = 1; break;
+            case "무" : w = 0.5; break;
+            case "패" : w = 0; break;
+        }
+        return w;
     }
 
     private TeamStats getTeamStats(Team team) {

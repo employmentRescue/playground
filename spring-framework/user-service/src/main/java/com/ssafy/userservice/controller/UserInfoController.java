@@ -35,6 +35,12 @@ public class UserInfoController {
     final private static QMemberOftenEntity qMemberOften = new QMemberOftenEntity("MEM_OFTEN");
     final private static QMemberSometimesEntity qMemberSometimes = new QMemberSometimesEntity("MEM_SOME");
 
+    @RequestMapping("/hello")
+    @ResponseBody
+    String hello(){
+        System.out.println("hello");
+        return "hello - user service";
+    }
 
     @GetMapping("/check/nickname/{nickname}")
     ResponseEntity checkNickname(@PathVariable String nickname){
