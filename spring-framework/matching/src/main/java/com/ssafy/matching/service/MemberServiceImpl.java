@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class MemberServiceImpl implements MemberService {
     @Autowired
     GatheringRepository gatheringRepository;
 
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     MatchRepository matchRepository;
 
     @Override
-    public Map<String, Object> getJoinListByMemberId(long memberId) {
+    public Map<String, Object> getWholeJoinListByMemberId(long memberId) {
         Map<String, Object> map = new HashMap<>();
 
         //운동모임 리스트(날짜 지남)
@@ -42,5 +42,11 @@ public class UserServiceImpl implements UserService {
         map.put("timeNotPastMatchList", timeNotPastMatchList);
 
         return map;
+    }
+
+    @Override
+    public List<Gathering> getTimeNotPastJoinListByMemberId(long memberId) {
+        //운동모임 리스트(날짜 안지남)
+        return gatheringRepository.getGatheringsTimeNotPast(memberId);
     }
 }

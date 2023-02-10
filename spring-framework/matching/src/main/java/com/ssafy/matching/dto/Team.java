@@ -26,15 +26,17 @@ public class Team implements Serializable {
     private int teamId;
     @ApiModelProperty(value = "팀 이름", required = true)
     private String name;
-    @ApiModelProperty(value = "팀장의 memberId")
-    private long managerId;
+    @ApiModelProperty(value = "운동 종류", required = true)
+    private String sports;
     @ApiModelProperty(value = "팀의 게임 종류", required = true)
     private String gameType;
+    @ApiModelProperty(value = "운동 레벨", required = true)
+    private String level;
     @ApiModelProperty(value = "팀의 프로필 이미지")
     private String teamProfileImgUrl;
+    @ApiModelProperty(value = "팀의 랭킹 포인트")
+    private int point;
     
-    //TODO 필요하면 팀장 객체 연결하기
-
     @ApiModelProperty(value = "팀의 멤버 리스트", required = true)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "teamId")

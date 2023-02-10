@@ -11,10 +11,12 @@ public interface MatchService {
 
     Match registerMatch(Match match);
     Match updateMatch(Match match);
+    void deleteMatch(int matchId);
 
-    TeamMatchResult registerTeamMatchResult(TeamMatchResult teamMatchResult, int matchId);
+    String registerTeamMatchResult(TeamMatchResult teamMatchResult, int matchId);
     TeamMatchResult updateTeamMatchResult(TeamMatchResult teamMatchResult, int matchId);
 
     TeamMatchResult joinMatch(TeamMatchResult teamMatchResult, int matchId);
     void leaveMatch(int matchId, int teamId);
+
 }

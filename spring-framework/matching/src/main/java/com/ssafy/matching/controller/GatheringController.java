@@ -25,7 +25,7 @@ public class GatheringController {
     private GatheringService gatheringService;
 
     @ApiOperation(value = "운동 모임 전체 리스트", notes = "운동 모임 전체를 반환한다", response = List.class)
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<?> list() {
         try {
             System.out.println("Gatheringcontroller list() 실행");
@@ -43,10 +43,10 @@ public class GatheringController {
     }
 
     @ApiOperation(value = "운동 모임 필터 검색", notes = "필터 조건(날짜(startDate), 지역(lat, lng), 반경(distance), 최소 시작시간(minStartTime), 최대 시작시간(maxStartTime), 수준(level), 최소 게임시간(minPlayTime), 최대 게임시간(maxPlayTime), 성별(sex), 운동종류(sports), 게임종류(gameType), 정렬조건(sort - time, people, distance))에 맞는 운동 모임을 검색해 반환한다", response = List.class)
-    @PostMapping
-    public ResponseEntity<?> listByFilter(@RequestBody Map<String, Object> map) {
+    @GetMapping
+    public ResponseEntity<?> listByFilter(String startDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String level, int minPlayTime, int maxPlayTime, String sex, String sports, String gameType, String sort) {
         try {
-            List<Gathering> list = gatheringService.findGatheringsByFilter(map);
+            List<Gathering> list = gatheringService.findGatheringsByFilter(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType, sort);
             if (list != null && !list.isEmpty()) {
                 System.out.println(list);
                 return new ResponseEntity<List<Gathering>>(list, HttpStatus.OK);

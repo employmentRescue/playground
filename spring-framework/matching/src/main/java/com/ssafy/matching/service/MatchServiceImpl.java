@@ -1,9 +1,7 @@
 package com.ssafy.matching.service;
 
 import com.ssafy.matching.dto.Match;
-import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMatchResult;
-import com.ssafy.matching.dto.TeamMember;
 import com.ssafy.matching.repository.MatchRepository;
 import com.ssafy.matching.repository.TeamMatchResultRepository;
 import com.ssafy.matching.repository.TeamRepository;
@@ -24,6 +22,8 @@ public class MatchServiceImpl implements MatchService {
 
     @Autowired
     TeamRepository teamRepository;
+
+    private  RankingService rankingService;
 
     @Override
     public Match viewMatchById(int matchId) {
@@ -66,10 +66,50 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public TeamMatchResult registerTeamMatchResult(TeamMatchResult teamMatchResult, int matchId) {
+    //TODO ERROR : Column 'match_id' cannot be null
+    public void deleteMatch(int matchId) {
+        matchRepository.deleteByMatchId(matchId);
+    }
+
+    @Override
+    public String registerTeamMatchResult(TeamMatchResult teamMatchResult, int matchId) {
         Match match = matchRepository.getByMatchId(matchId);
         teamMatchResult.setMatch(match);
-        return teamMatchResultRepository.save(teamMatchResult);
+
+        //TODO 수정해야함 - 사이즈로 구별안된다... -> match is_done 칼럼으로 구별하기
+        int size = match.getTeamMatchResultList().size();
+        //isDone 가져와서 비교하기
+        boolean isDone = match.isDone();
+
+        if(!isDone) { //경기 결과 등록한 팀 아직 없음
+            teamMatchResultRepository.save(teamMatchResult);
+        }else { //등록한 다른 팀 있음
+            TeamMatchResult teamMatchResultOp = match.getTeamMatchResultList().get(0);
+            String resultMe = teamMatchResult.getResult();
+            String resultOp = teamMatchResultOp.getResult();
+            
+            //잘못 입력하는 경우
+            if (resultMe.equals("승")) {
+                if (resultOp.equals("승") || resultOp.equals("패")) {
+                    return "fail";
+                }
+            } else if (resultMe.equals("패")) {
+                if (resultOp.equals("패")) {
+                    return "fail";
+                } else if (resultMe.equals("무")) {
+                    if (resultOp.equals("승") || resultOp.equals("패")) {
+                        return "fail";
+                    }
+                }
+            }
+
+            teamMatchResultRepository.save(teamMatchResult);
+            
+            //TODO 포인트 산정하기
+            rankingService.updatePoint(teamMatchResult, teamMatchResultOp);
+        }
+
+        return "success";
     }
 
     @Override
