@@ -9,9 +9,6 @@ services:
     ports:
       # - "80:80"
       - "443:443"
-    depends_on:
-    # - mysql-server
-    - redis
 
 
   oauth2-service:
@@ -21,9 +18,6 @@ services:
     container_name: playground-oauth2-service
     ports:
       - "9001:8080"
-    depends_on:
-    - mysql-server
-    - redis
 
   user-service:
     # build: 
@@ -33,8 +27,6 @@ services:
     ports:
       - "9002:8080"
     depends_on:
-    - mysql-server
-    - redis
 
   matching-service:
     # build: 
@@ -43,9 +35,6 @@ services:
     container_name: matching-service
     ports:
       - "9003:8080"
-    depends_on:
-    - mysql-server
-    - redis
 
   notify-service:
     # build: 
