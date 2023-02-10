@@ -2,10 +2,11 @@ import placeIcon from '@/assets/icons/place.png'
 import exitIcon from '@/assets/icons/exit.png'
 import timeIcon from '@/assets/icons/time.png'
 import peopleIcon from '@/assets/icons/people.png'
-import profileIcon from '@/assets/profiles/111.png'
 import JoinButton from './Buttons/JoinButton';
 import { liveMatch } from '@/models/liveMatch'
 import useLiveMatchJoin from '@/hooks/liveMatch/useLiveMatchJoin'
+import moment from 'moment'
+import { getImgUrl } from '@/utils/getImgUrl'
 
 interface Iprops {
     liveMatch: liveMatch;
@@ -19,6 +20,8 @@ export default function JoinModal(props: Iprops) {
     }
 
     const { mutate } = useLiveMatchJoin();
+
+    const remainTime = (29 - Math.floor(moment.duration(moment().diff(moment(props.liveMatch.registTime))).asMinutes())) + ':' + (60 - Math.floor(moment.duration(moment().diff(moment(props.liveMatch.registTime))).asSeconds() % 60))
 
     return (
         <div className="w-[322px] h-[341px] z-10 absolute left-1/2 ml-[-161px] bottom-14 rounded-15 bg-white flex flex-col items-center justify-center">
@@ -39,7 +42,7 @@ export default function JoinModal(props: Iprops) {
                     <img src={timeIcon} className="w-20 h-20"></img>
                     <div className='text-15 ml-6'>남은시간</div>
                 </div>
-                <div className='text-15'>{props.liveMatch.registTime}</div>
+                <div className='text-15'>{remainTime}</div>
             </div>
             <div className="w-[284px] h-20 mt-16 flex justify-between">
                 <div className='flex'>
@@ -51,7 +54,7 @@ export default function JoinModal(props: Iprops) {
             <div className='w-[284px] h-1 mt-10 bg-gray-600'></div>
             <div className='w-[284px] h-100 mt-16 mb-16 flex justify-between'>
                 <div className='w-63 h-100 ml-20 flex flex-col justify-center'>
-                    <img className='w-63 h-63' src={profileIcon}></img>
+                    <img className='w-63 h-63' src={getImgUrl('profiles/user', props.liveMatch.hostId)}></img>
                     <div className='mt-3 text-11 text-center'>{props.liveMatch.hostNickName}</div>
                 </div>
                 <div className='w-160 h-100 rounded-10 bg-gray-500 flex justify-center items-center'>
@@ -64,7 +67,7 @@ export default function JoinModal(props: Iprops) {
                 mutate({
                     liveId: props.liveMatch.liveId,
                     memberId: 111,
-                }), join();
+                }), join(); location.reload();
             }}>참여하기</JoinButton>
         </div >
     )

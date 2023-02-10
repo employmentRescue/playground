@@ -22,7 +22,7 @@ export default function QuitConfirmModal(props: Iprops) {
                         mutate({
                             liveId: props.liveMatch.liveId,
                             memberId: 111,
-                        }); props.closeModal();
+                        }); props.closeModal(); location.reload();
                     }}>취소</div>
                 </div>
             </div>
