@@ -1,14 +1,29 @@
 import { useState, useEffect, useRef } from "react";
 import { useReducer, ComponentProps } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Calender from "react-calendar";
 import dayjs from "dayjs";
 import 'react-calendar/dist/Calendar.css'
 
-import closeIcon from "@/assets/icons/exit.png";
+import { RootState } from "@/stores/store";
 
+import closeIcon from "@/assets/icons/exit.png";
+import whiteArrow from "@/assets/icons/white-arrow.png";
+
+
+// 자동 매칭 필터바 - 날짜
+export function MatchFilterDate({ shutOtherWindow, clicked, date }: { shutOtherWindow: ()=> void, clicked: () => void, date: string }) {
+    return (
+        <div className="flex flex-row  w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
+            <span className="w-45 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{date}</span>
+            <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
+
+        </div>
+    )
+}
 
 // 자동 매칭 필터 - 날짜 지정
-export default function MatchDateSetting({ clicked, dateSetting }: { clicked: () => void , dateSetting: (date: string) => void}) {
+export function MatchDateSetting({ clicked, dateSetting }: { clicked: () => void , dateSetting: (date: string) => void}) {
 
     const [value, onChange] = useState(new Date())
     dateSetting(dayjs(value).format('YYYY-MM-DD'))

@@ -3,6 +3,8 @@ import { useReducer, ComponentProps } from "react";
 import 'react-calendar/dist/Calendar.css'
 
 import { MatchFilterBar } from "@/components/Match/MatchFilterBar"
+// 요건 나중에 팀매치로 옮겨야함
+import { AutoMatchTab, ListTab } from "@/components/TeamMatch/TeamMatchTab"
 
 import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
 import { RootState } from "@/stores/store";
@@ -72,6 +74,68 @@ interface gatheringType {
     completed: boolean
 }
 
+// ============ 상단 탭 관련 ====================================================
+// 종목 탭
+type TabAction = { type: 'AUTOMATCH' | 'LIST' };
+
+interface TabState {
+    tabType: string;
+}
+
+const initialTabState: TabState = {
+    tabType: 'AUTOMATCH',
+}
+
+function registerTabType(state: TabState, action: TabAction) {
+    switch (action.type) {
+        case 'AUTOMATCH':
+            return {
+                ...state,
+                tabType: 'AUTOMATCH'
+            }
+        case 'LIST':
+            return {
+                ...state,
+                tabType: 'LIST'
+            }
+    }
+}
+
+// ========================= 상단 탭 ===================================================
+
+// 내용 - 자동매칭인지 목록인지
+function Content({ clickedTab }: { clickedTab: string }) {
+
+    if (clickedTab === 'AUTOMATCH') {
+        return (
+            <div>
+                <MatchFilterBar />
+                <MatchContent />
+            </div>
+        )
+    }
+    else {
+        return (
+            <div>
+                <MatchFilterBar />
+                <ListContent />
+            </div>
+        )
+    }
+}
+
+// 자동 매칭 내용
+function MatchContent() {
+    return (
+        <div className="relative w-[360px] h-[575px] m-0 pt-8 pl-6 bg-[#fff]">
+            <img src={matchButton} alt="" className="absolute top-[133px] left-[80px] w-[200px] h-[200px] " />
+            <div className="absolute w-[124px] h-45 flex-grow-0 top-[360px] left-[118px] pt-11 pl-22 rounded-30 bg-[#303eff]">
+                <span className="w-70 h-24 flex-grow-0 font-inter text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
+            </div>
+        </div>
+    )
+}
+
 // 목록 각 컴포넌트
 function ListItem({ data }: { data: gatheringType }) {
     console.log(data);
@@ -111,10 +175,8 @@ function ListItem({ data }: { data: gatheringType }) {
     )
 }
 
-
-// 매치 페이지 출력
-export default function MatchPage() {
-
+// 목록 전체 내용
+function ListContent() {
     const filterData = useSelector((state: RootState) => {
         return state.matchSort;
     })
@@ -152,13 +214,34 @@ export default function MatchPage() {
         
     },[gatheringListQuery.isSuccess])
 
+    return (
+        <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
+            {listItems()}
+        </div>
+    )
+}
+
+// 상세 목록
+
+// 매치 페이지 출력
+export default function MatchPage() {
+
+    const [state, dispatch] = useReducer(registerTabType, initialTabState);
+
+    const autoMatch = () => dispatch({ type: 'AUTOMATCH' });
+    const list = () => dispatch({ type: 'LIST' });
 
     return (
         <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
-            <MatchFilterBar />
-            <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
-                {listItems()}
+            <div className="w-full h-50 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
+                <AutoMatchTab clickedTab={state.tabType} changeType={() => {
+                    autoMatch();
+                }} />
+                <ListTab clickedTab={state.tabType} changeType={() => {
+                    list();
+                }} />
             </div>
+            <Content clickedTab={state.tabType} />
         </div>
     )
 }
