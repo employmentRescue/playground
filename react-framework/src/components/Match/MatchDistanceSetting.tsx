@@ -7,9 +7,29 @@ import { setSortDistance } from "@/stores/match/matchSort"
 
 import closeIcon from "@/assets/icons/exit.png";
 import searchIcon from "@/assets/icons/search-icon.png";
+import whiteArrow from "@/assets/icons/white-arrow.png";
+
+
+// 자동 매칭 필터바 - 거리범위
+export function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWindow: () => void, clicked: () => void }) {
+    const distance = useSelector((state: RootState) => {
+        return String(state.matchSort.distance);
+    })
+    return (
+        <div className="flex flex-row w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
+            onClick={(e) => {
+                e.preventDefault();
+                clicked();
+                shutOtherWindow();
+            }}>
+            <span className="w-41 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{'~' + distance + 'km'}</span>
+            <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
+        </div>
+    )
+}
 
 // 자동 매칭 필터 - 거리범위 지정
-export default function MatchDistanceSetting({ clicked }: { clicked: () => void }) {
+export function MatchDistanceSetting({ clicked }: { clicked: () => void }) {
     const [distance, setDistance] = useState('1')
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
