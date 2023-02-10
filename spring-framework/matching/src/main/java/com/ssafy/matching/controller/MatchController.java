@@ -28,7 +28,7 @@ public class MatchController {
     }
 
     @ApiOperation(value = "팀 경기 팀 이름으로 검색", notes = "팀이름에 해당하는 팀 경기를 확인한다.")
-    @GetMapping("search/{teamname}")
+    @GetMapping("/search/{teamname}")
     public ResponseEntity<List<Match>> search(@PathVariable("teamname") String teamName) throws Exception {
         return new ResponseEntity<List<Match>>(matchService.searchMatchByTeamName(teamName), HttpStatus.OK);
     }
