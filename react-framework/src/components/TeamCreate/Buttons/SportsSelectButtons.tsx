@@ -2,11 +2,11 @@ import footballImg from "@/assets/icons/football-original.png"
 import basketballImg from "@/assets/icons/basketball-original.png"
 import badmintonImg from "@/assets/icons/badminton-original.png"
 
-import { setSportsType } from "@/stores/user/myTeam"
 import store from "@/stores/store"
 
 import { useState } from "react"
 import { useDispatch } from "react-redux"
+import { setSportsType } from "@/stores/user/myTeam"
 
 interface Iprops {
     selectedSports: "축구" | "농구" | "배드민턴";

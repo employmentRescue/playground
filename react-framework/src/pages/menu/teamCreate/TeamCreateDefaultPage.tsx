@@ -4,13 +4,17 @@ import cancleButtonImg from "@/assets/icons/profile-x-button.png"
 import profileSampleImg from "@/assets/profiles/my-profile-sample.png"
 
 import { useState, useEffect, useRef } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import store, { RootState } from "@/stores/store"
+
 import ButtonDesign from "../../../components/TeamCreate/Buttons/ButtonDesign"
+import { dropOutOfMyTeam } from "@/stores/user/myTeam"
 import TeamSettingPage from "./TeamSettingPage"
 
 export default function TeamCreateDefaultPage() {
+    const dispatch = useDispatch();
     const initialSportsState: "축구" | "농구" | "배구" = "축구"
+
     const [searchInput, setSearchInput] = useState("");
     const [selectedSports, setSelectedSports] = useState(initialSportsState)
     const [currentPage, setCurrentPage] = useState(1);
@@ -52,7 +56,7 @@ export default function TeamCreateDefaultPage() {
                     <ProfileCard
                         key={profile.userId}
                         userId={profile.userId}
-                        className={"flex my-10 justify-between"}
+                        className={"flex my-5 justify-between"}
                         imageSrc={profile.imageSrc}
                         imageSize="ml-24 w-52 h-52"
                         nickname={profile.nickname}
@@ -88,8 +92,8 @@ export default function TeamCreateDefaultPage() {
                 if (memberId === profile.userId) {
                     return (
                         <div key={profile.userId} className="flex flex-col w-52 mt-15 mx-7">
-                            <div className="flex">
-                                <img src={profile.imageSrc} className="w-47 h-47 rounded-50" />
+                            <div className="flex" onClick={() => dispatch(dropOutOfMyTeam(profile.userId))}>
+                                <img src={profile.imageSrc} className="w-47 h-47 rounded-25" />
                                 <img src={cancleButtonImg} className="w-18 h-18 -ml-10" />
                             </div>
                             <p className="text-10 font-inter text-center mt-3 px-2 tracking-tight truncate">{profile.nickname}</p>
