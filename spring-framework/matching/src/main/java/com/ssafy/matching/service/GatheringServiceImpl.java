@@ -95,6 +95,6 @@ public class GatheringServiceImpl implements GatheringService {
 
     @Override
     public List<Gathering> searchGatheringsByKeyword(String keyword) {
-        return gatheringRepository.getGatheringsByTitleLike(keyword);
+        return gatheringRepository.getGatheringsByTitleContaining(keyword);
     }
 }
