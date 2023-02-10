@@ -81,13 +81,14 @@ export default function ModifyModal(props: Iprops) {
             registTime: props.liveMatch.registTime,
             sports: props.liveMatch.sports,
         });
-        props.closeModal();
+        location.reload();
     }
 
     const deleteMeeting = () => {
         liveMatchDelete.mutate(
             props.liveMatch.liveId
         )
+        location.reload();
     }
 
     return (

@@ -67,7 +67,7 @@ export default function JoinModal(props: Iprops) {
                 mutate({
                     liveId: props.liveMatch.liveId,
                     memberId: 111,
-                }), join();
+                }), join(); location.reload();
             }}>참여하기</JoinButton>
         </div >
     )
