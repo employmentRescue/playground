@@ -123,7 +123,6 @@ type listItem = {
     member: string,
     title: string,
     date: string,
-
 }
 
 type sportAction = { type: 'ISCLICKED' | '농구' | '축구' | '배드민턴' }
@@ -135,9 +134,7 @@ interface sportTypeState {
 
 const initialSportTypeState: sportTypeState = {
     isClicked: false,
-    sportType: useSelector((state: RootState) => {
-        return state.matchSort.sports;
-    })
+    sportType: '농구'
 }
 
 function registerSportType(state: sportTypeState, action: sportAction) {
@@ -400,12 +397,12 @@ function MatchFilterBar() {
 
 // 자동 매칭 필터바 - 종목
 function MatchFilterSport({ sportType, onChangeMode }: { sportType: string, onChangeMode: (type: string) => void }) {
-    const basketballBorder = () => { return (sportType === 'BASKETBALL' ? "border-[#efad45]" : "border-[#fde9b4]") }
-    const footBallBorder = () => { return (sportType === 'footBall' ? "border-[#9C8DD3]" : "border-[#d8caff]") }
-    const badmintonBorder = () => { return (sportType === 'BADMINTON' ? "border-[#71D354]" : "border-[#c4ffb6]") }
+    const basketballBorder = () => { return (sportType === '농구' ? "border-[#efad45]" : "border-[#fde9b4]") }
+    const footBallBorder = () => { return (sportType === '축구' ? "border-[#9C8DD3]" : "border-[#d8caff]") }
+    const badmintonBorder = () => { return (sportType === '배드민턴' ? "border-[#71D354]" : "border-[#c4ffb6]") }
 
     return (
-        <div className="absolute top-61 left-6 w-60 h-[157px] m-0 pt-7 px-10 rounded-15 border-solid border-1 border-[#303EFF]/50 bg-[#f1f3ff] z-10">
+        <div className="flex-col absolute top-50 left-[-11px] w-60 h-[157px] m-0 pt-7 px-10 rounded-15 border-solid border-1 border-[#303EFF]/50 bg-[#f1f3ff] z-10">
             <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8  rounded-20 bg-[#fde9b4] border-solid border-[2.5px] " + basketballBorder()}
                 onClick={(event) => {
                     event.preventDefault();
@@ -438,7 +435,7 @@ function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWindow: ()
         return String(state.matchSort.distance);
     })
     return (
-        <div className="flex flex-row absolute top-15 left-67 w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
+        <div className="flex flex-row w-70 h-25 flex-grow-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
             onClick={(e) => {
                 e.preventDefault();
                 clicked();
@@ -454,7 +451,7 @@ function MatchFilterDistance({ shutOtherWindow, clicked }: { shutOtherWindow: ()
 // 자동 매칭 필터바 - 날짜
 function MatchFilterDate({ shutOtherWindow, clicked, date }: { shutOtherWindow: ()=> void, clicked: () => void, date: string }) {
     return (
-        <div className="flex flex-row absolute top-15 left-[148px] w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
+        <div className="flex flex-row  w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
             <span className="w-45 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{date}</span>
             <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
 
@@ -465,7 +462,7 @@ function MatchFilterDate({ shutOtherWindow, clicked, date }: { shutOtherWindow: 
 // 자동 매칭 필터바 - 시간
 function MatchFilterTime({ shutOtherWindow, clicked }: { shutOtherWindow: ()=>void, clicked: ()=>void }) {
     return (
-        <div className="flex flex-row absolute top-15 left-[233px] w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); clicked(); shutOtherWindow(); }}>
+        <div className="flex flex-row w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); clicked(); shutOtherWindow(); }}>
             <span className="w-43 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">18 ~ 22</span>
             <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
 
@@ -476,7 +473,7 @@ function MatchFilterTime({ shutOtherWindow, clicked }: { shutOtherWindow: ()=>vo
 // 자동 매칭 필터바 - 기타
 function MatchFilterEtc({ shutOtherWindow }: { shutOtherWindow: ()=>void }) {
     return (
-        <div className="absolute top-15 left-[318px] w-25 h-25 flex-grow-0 pt-3 pl-3 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); shutOtherWindow(); }}>
+        <div className=" w-25 h-25 flex-grow-0 pt-3 pl-3 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); shutOtherWindow(); }}>
             <img src={filterEtc} alt="" className="w-20 h-20 flex-grow-0" />
         </div>
     )
@@ -499,6 +496,9 @@ function MatchContent() {
 function ListFilterBar() {
     // 종목 탭
     const [sportState, dispatch] = useReducer(registerSportType, initialSportTypeState)
+    // (useSelector((state: RootState) => {
+    //     return state.matchSort.sports;
+    // }))
     const isClicked = () => dispatch({ type: 'ISCLICKED' })
     const basketball = () => { sportChange("BASKETBALL"); dispatch({ type: '농구' }); }
     const footBall = () => { sportChange("footBall"); dispatch({ type: '축구' }); }
@@ -588,29 +588,33 @@ function ListFilterBar() {
     }
 
     return (
-        <div className="relative w-[360px] h-93 grow-0 m-0 pt-8 pl-16 border-b-1 border-solid border-[#D8CAFF] bg-[#f1f3ff]">
-            <div className={"w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] rounded-20 " + sportIcon.border}
-                onClick={(event) => {
-                    event.preventDefault();
-                    dispatchSport(setSortSports(sportState.sportType))
-                    isClicked();
-                }}>
-                <img src={sportIcon.img} className="w-20 h-20 grow-0" />
-            </div>
-            {sportState.isClicked === true && <MatchFilterSport sportType={sportState.sportType} onChangeMode={(type) => {
-                switch (type) {
-                    case "BASKETBALL":
-                        basketball();
-                        break;
-                    case "footBall":
-                        footBall();
-                        break;
-                    case "BADMINTON":
-                        badminton();
-                        break;
+        <div className="flex flex-row relative place-content-around w-full h-93 grow-0 m-0 pt-8 pl-16 border-b-1 border-solid border-[#D8CAFF] bg-[#f1f3ff]">
+            <div className="relative w-40 h-40 p-0 m-0">
+                <div className={"w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] rounded-20 " + sportIcon.border}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        isClicked();
+                    }}>
+                    <img src={sportIcon.img} className="w-20 h-20 grow-0" />
+                </div>
+                {sportState.isClicked === true && <MatchFilterSport sportType={sportState.sportType} onChangeMode={(type) => {
+                    switch (type) {
+                        case "BASKETBALL":
+                            dispatchSport(setSortSports(sportState.sportType))
+                            basketball();
+                            break;
+                        case "footBall":
+                            dispatchSport(setSortSports(sportState.sportType))
+                            footBall();
+                            break;
+                        case "BADMINTON":
+                            dispatchSport(setSortSports(sportState.sportType))
+                            badminton();
+                            break;
+                    }
                 }
-            }
-            } />}
+                } />}
+            </div>
             <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
                 distancePage();
             }} />
@@ -679,23 +683,12 @@ function ListItem({ data }: { data: gatheringType }) {
 
 // 목록 전체 내용
 function ListContent() {
-    const dummyData : matchList = ({
-        startDate: "2023-02-15",
-        lat: 36.3663369,
-        lng: 127.2961423,
-        distance: 100,
-        minStartTime: "01:00:00",
-        maxStartTime: "23:00:00",
-        level: "중수",
-        minPlayTime: 1,
-        maxPlayTime: 23,
-        sex: "남성",
-        sports: "basketball",
-        gameType: "3대3",
-        sort: "distance",
+    const filterData = useSelector((state: RootState) => {
+        return state.matchSort;
     })
-    const gatheringListQuery = useGatheringListQuery(dummyData);
+    const gatheringListQuery = useGatheringListQuery(filterData);
     console.log(gatheringListQuery)
+    console.log(filterData)
 
     const listItems = () => {
         if (gatheringListQuery.isSuccess) {
@@ -723,8 +716,12 @@ function ListContent() {
         }
     }
 
+    useEffect(()=>{
+        
+    },[gatheringListQuery.isSuccess])
+
     return (
-        <div className="flex flex-col w-360px h-full m-0 pt-10 bg=[#f5f5f5]">
+        <div className="flex flex-col w-full h-full m-0 pt-10 bg=[#f5f5f5]">
             {gatheringListQuery.isSuccess && listItems()}
         </div>
     )
@@ -741,7 +738,7 @@ export default function MatchPage() {
     const list = () => dispatch({ type: 'LIST' });
 
     return (
-        <div className="h-auto bg-[#f5f5f5] m-0 pt-12">
+        <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
             <div className="w-full h-50 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
                 <AutoMatchTab clickedTab={state.tabType} changeType={() => {
                     autoMatch();

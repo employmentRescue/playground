@@ -26,7 +26,7 @@ const fetcher = (matchList: matchList) => axios.get(URL + GATHERING_LIST,
 
 
 const useGatheringListQuery = (matchList: matchList) => {
-    return useQuery(GATHERING_LIST, () => fetcher(matchList), { staleTime: 30 * 1000, cacheTime: 60 * 5 * 1000, refetchInterval: 30 * 1000, refetchOnWindowFocus: false });
+    return useQuery(GATHERING_LIST, () => fetcher(matchList), { staleTime: 0, cacheTime: 60 * 5 * 1000, refetchInterval: 30 * 1000, refetchOnWindowFocus: false });
 }
 
 export default useGatheringListQuery;
