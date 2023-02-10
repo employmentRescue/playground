@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 export default function RankPage() {
   const [tabIndex, setTabIndex] = useState<number>(1);
   const [teamRankIndex, setTeamRankIndex] = useState<number>(0);
+  const [teamInfo, setTeamInfo] = useState<teamRanking | null>(null);
   const [sportsType, setSportsType] = useState<string>('농구');
   const [gameType, setGameType] = useState<string>('3vs3');
   const [filterModal, setFilterModal] = useState<string>('none');
@@ -41,7 +42,7 @@ export default function RankPage() {
         <div className="w-[calc(100%-5px)] h-167 mt-49 flex mr-5 ml-5">
           {teamList.isSuccess &&
             teamList.data.map((item: teamRanking, index: number) => index <= 2 && (
-              <div className="w-full h-full mr-5" onClick={() => setTeamRankIndex(index + 1)} key={index}>
+              <div className="w-full h-full mr-5" onClick={() => { setTeamRankIndex(index + 1); setTeamInfo(item); }} key={index}>
                 <TopRank
                   teamRanking={item}
                   rank={index + 1}
@@ -49,8 +50,8 @@ export default function RankPage() {
               </div>
             ))}
         </div>
-      } {tabIndex == 1 && teamRankIndex != 0 &&
-        <MyTeamInfo />
+      } {tabIndex == 1 && teamRankIndex != 0 && teamInfo &&
+        <MyTeamInfo rank={teamRankIndex} teamRanking={teamInfo} />
       }{tabIndex == 2 &&
         <Swiper
           slidesPerView={1.1}
@@ -61,15 +62,14 @@ export default function RankPage() {
             clickable: true,
           }}
         >
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
-          <SwiperSlide><div className="w-full h-167 ml-[-10px]"><MyTeamInfo /></div></SwiperSlide>
+          {teamList.isSuccess && teamList.data && teamInfo &&
+            teamList.data.map((item: teamRanking, index: number) => (
+              <SwiperSlide>
+                <div className="w-full h-167 ml-[-10px]">
+                  <MyTeamInfo rank={teamRankIndex} teamRanking={item} />
+                </div>
+              </SwiperSlide>
+            ))}
         </Swiper>
 
       }
@@ -82,13 +82,15 @@ export default function RankPage() {
           <div className="w-47 text-center">패</div>
           <div className="w-57 text-center">Rating</div>
         </div>
-        {teamList.isSuccess &&
+        {teamList.isSuccess && teamList.data &&
           teamList.data.map((item: teamRanking, index: number) => (
-            <RankInfo
-              teamRanking={item}
-              rank={index + 1}
-              key={index}
-            />
+            <div onClick={() => { setTeamRankIndex(index + 1); setTeamInfo(item); }}>
+              <RankInfo
+                teamRanking={item}
+                rank={index + 1}
+                key={index}
+              />
+            </div>
           ))}
       </div>
       {filterModal === 'sportsType' && <SportsTypeFilterModal setSportsType={setSportsType} setFilterModal={setFilterModal}></SportsTypeFilterModal>}
