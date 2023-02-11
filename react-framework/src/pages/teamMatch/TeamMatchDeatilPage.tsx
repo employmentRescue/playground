@@ -13,7 +13,7 @@ export default function TeamMatchDetailPage() {
     return state.team.id;
   });
 
-  const { data } = useTeamQuery(teamId);
+  const team = useTeamQuery(teamId);
 
   const dispatch = useDispatch();
 
@@ -21,11 +21,19 @@ export default function TeamMatchDetailPage() {
     dispatch(setTabName('팀 매칭 상세'))
   }, [])
 
-  return (
+  const joinChattingRoom = () => {
+
+  }
+
+  const quit = () => {
+
+  }
+
+  return team.isSuccess && team.data && (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-white">
         <img className="w-100 h-100">{getImgUrl("../../assets/profile/team", String(teamId))}</img>
-        <div className="text-20 mt-4">{data.name}</div>
+        <div className="text-20 mt-4">{team.data.name}</div>
       </div>
 
       <div className="w-full  h-[calc(100vh-290px)] bg-white mt-7 pt-30 pl-24 pr-24 flex flex-col justify-between">
@@ -35,14 +43,14 @@ export default function TeamMatchDetailPage() {
               <img className="w-20 h-20 mr-8" src={timeIcon}></img>
               <div className="text-14">선호 시간대</div>
             </div>
-            <div className="text-13">{ }</div>
+            <div className="text-13">{team.data.minStartTime} ~ {team.data.maxStartTime}</div>
           </div>
           <div className="flex justify-between items-center mt-14">
             <div className="flex items-center">
               <img className="w-20 h-20 mr-8" src={placeIcon}></img>
               <div className="text-14">선호 장소</div>
             </div>
-            <div className="text-13">양천구 목동동로 111 양천공원</div>
+            <div className="text-13">{team.data.preferredPlace.address}</div>
           </div>
           <div className="w-full h-1 bg-gray-600 mt-24 mb-24 "></div>
           <div className="w-full flex justify-between items-center">
@@ -60,8 +68,6 @@ export default function TeamMatchDetailPage() {
           <button className="w-1/3 h-34 rounded-5 bg-red-600 text-15 text-white">매칭 취소</button>
         </div>
       </div>
-
-
     </div>
   )
 }
