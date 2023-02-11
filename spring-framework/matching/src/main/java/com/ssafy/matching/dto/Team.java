@@ -24,6 +24,8 @@ public class Team implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "팀 번호")
     private int teamId;
+    @ApiModelProperty(value = "팀장의 아이디", required = true)
+    private int hostId;
     @ApiModelProperty(value = "팀 이름", required = true)
     private String name;
     @ApiModelProperty(value = "운동 종류", required = true)
@@ -32,10 +34,13 @@ public class Team implements Serializable {
     private String gameType;
     @ApiModelProperty(value = "운동 레벨", required = true)
     private String level;
-    @ApiModelProperty(value = "팀의 프로필 이미지")
-    private String teamProfileImgUrl;
     @ApiModelProperty(value = "팀의 랭킹 포인트")
     private int point;
+
+    @OneToOne
+    @JoinColumn(name = "hostId", insertable=false, updatable=false)
+    @ApiModelProperty(value = "팀장 정보")
+    private Member host;
     
     @ApiModelProperty(value = "팀의 멤버 리스트", required = true)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
