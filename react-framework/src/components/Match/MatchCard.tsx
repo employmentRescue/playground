@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 interface Iprops {
     imgSrc: string;
-    sportsType: "football" | "basketball" | "badminton"
+    sportsType: "축구" | "농구" | "배드민턴"
     matchTitle: string;
     place: string;
-    matchPersonnel: string;     // 3 on 3, 5 on 5 같은 매칭 인원
+    matchPersonnel?: string;     // 3 on 3, 5 on 5 같은 매칭 인원
     matchType: "개인" | "팀";
     isOldMatch: boolean;        // 약속 시간을 넘어간 매칭은 전부 흐릿하게 표시됨
     buttonColor: string;
@@ -27,7 +27,7 @@ export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, m
                 <div className="flex flex-col w-auto font-inter tracking-tight">
                     <p className="text-15 mt-13 font-bold">{matchTitle}</p>
                     <p className="text-10 mt-4 text-[#969696]">{place}</p>
-                    <p className="text-10 mt-0 text-[#969696]">{matchPersonnel}</p>
+                    {matchPersonnel && <p className="text-10 mt-0 text-[#969696]">{matchPersonnel}</p>}
                 </div>
             </div>
             <button className={"flex w-60 px-22 " + buttonColor} onClick={() => navigate(linkToDetailPage)} disabled={isOldMatch}>
