@@ -133,10 +133,10 @@ export default function MatchPage() {
 
     const setFilterData = (attr: attrType, value: any) => {
         switch (attr) {
-            case "startDate": setStartDate(value); break;
+            case "startDate": setStartDate(value); console.log(value); break;
             case "location": setLocation(value); break;
             case "distance": setDistance(value); break;
-            case "startTime": setStartTime(value); console.log('hi'); break;
+            case "startTime": setStartTime(value); break;
             case "level": setLevel(value); break;
             case "playTime": setPlayTime(value); break;
             case "sex": setSex(value); break;
@@ -145,7 +145,6 @@ export default function MatchPage() {
             case "sort": setSort(value); break;
         }
     }
-    
     const filterData = {
         startDate: startDate,
         lat: location[0],
@@ -161,39 +160,23 @@ export default function MatchPage() {
         gameType: gameType,
         sort: sort,
     }
-
     const gatheringListQuery = useGatheringListQuery(filterData);
-    console.log(gatheringListQuery)
-    console.log(filterData)
-    console.log(typeof(filterData))
+    // console.log(gatheringListQuery)
+    // console.log(filterData)
+    // console.log(typeof(filterData))
 
-    
     const listItems = () => {
         if (gatheringListQuery.isSuccess) {
             console.log('success ' + gatheringListQuery)
             if (gatheringListQuery.data) {
                 const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => <ListItem key={i} data={eachData}/>)
-                return (
-                    <div>{gatheringList}</div>
-                )
+                return ( <div>{gatheringList}</div> )
             } 
-            else {
-                return (
-                    <div>
-                        해당 모임이 존재하지 않습니다.
-                    </div>
-                )
-            }
+            else { return ( <div>해당 모임이 존재하지 않습니다.</div> ) }
         }
-        else {
-            return (
-                <div>
-                    로딩중
-                </div>
-            )
+        else { return ( <div>로딩중</div> )
         }
     }
-
     useEffect(()=>{
         
     },[gatheringListQuery.isSuccess])

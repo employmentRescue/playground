@@ -7,7 +7,7 @@ import { MatchSportSetting, MatchFilterSport } from "@/components/Match/MatchSpo
 import { MatchDistanceSetting, MatchFilterDistance } from "@/components/Match/MatchDistanceSetting"
 import { MatchDateSetting, MatchFilterDate } from "@/components/Match/MatchDateSetting"
 import { MatchTimeSetting, MatchFilterTime } from "@/components/Match/MatchTimeSetting"
-import { MatchFilterEtc } from "@/components/Match/MatchEtcSetting"
+import { MatchEtcSetting, MatchFilterEtc } from "@/components/Match/MatchEtcSetting"
 
 import basketballOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
@@ -81,8 +81,6 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
     const footBall = () => { sportChange("footBall"); setSportType({ type: '축구' }); }
     const badminton = () => { sportChange("BADMINTON"); setSportType({ type: '배드민턴' }); }
     
-    const dispatchSportSlice = useDispatch()
-    
     const [sportIcon, setSportIcon] = useState({ border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal })
     const sportChange = (type: string) => {
         switch (type) {
@@ -105,7 +103,6 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
             isClicked();
         }
     }
-
     // 거리 탭
     const [distanceState, setDistanceState] = useState(false);
     const distancePage = () => {
@@ -118,9 +115,7 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
                 setDistanceState(true);
                 break;
         }
-
     }
-
     // 날짜 탭
     const [dateState, setDateState] = useState(false);
     const datePage = () => {
@@ -134,43 +129,51 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
                 break;
         }
     }
-
     // 시간 탭
     const [timeState, setTimeState] = useState(false);
     const timePage = () => {
         switch (timeState) {
             case true:
                 setTimeState(false);
-                console.log(timeState);
                 break;
             case false:
                 setTimeState(true);
-                console.log(timeState);
                 break;
         }
     }
-
-    
+    // 시간 탭
+    const [etcState, setEtcState] = useState(false);
+    const etcPage = () => {
+        switch (etcState) {
+            case true:
+                setEtcState(false);
+                break;
+            case false:
+                setEtcState(true);
+                break;
+        }
+    }
     const dateDisplay = () => {
         if (startDate[5] === '0') {
-            if (startDate[8] === '0') {
+            if (startDate[8] === '0') { 
                 return startDate.slice(6,7) + "월 " + startDate.slice(9) + "일"           
+            } else { 
+                return startDate.slice(6,7) + "월 " + startDate.slice(8, 10) + "일" 
             }
-            else {
-                return startDate.slice(6,7) + "월 " + startDate.slice(8, 10) + "일"
-            }
-        }
-        else {
+        } else {
             if (startDate[8] === '0') {
                 return startDate.slice(5,7) + "월 " + startDate.slice(9) + "일"
-            }
-            else {
+            } else {
                 return startDate.slice(5,7) + "월 " + startDate.slice(8, 10) + "일"
             }
         }
-    
     }
-
+    const setEtcData = (level: string, playTime: number[], sex: string, gameType: string)=>{
+        setFilterData("level", level);
+        setFilterData("playTime", playTime);
+        setFilterData("sex", sex);
+        setFilterData("gameType", gameType);
+    }
     return (
         <div className="flex flex-row relative place-content-around w-full h-53 grow-0 m-0 px-10 bg-[#f1f3ff]">
             <div className="relative w-40 h-40 p-0 m-0">
@@ -190,13 +193,14 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
                 }
                 } />}
             </div>
-            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={() => {distancePage();}} distance={distance}/>
-            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={() => {datePage();}} date={dateDisplay()} />
-            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={() => {timePage();}} />
-            <MatchFilterEtc shutOtherWindow={()=>shutOtherWindow()} />
+            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{distancePage();}} distance={distance}/>
+            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{datePage();}} date={dateDisplay()} />
+            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{timePage();}} startTime={startTime}/>
+            <MatchFilterEtc shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{etcPage();}} />
             {distanceState === true && <MatchDistanceSetting clicked={() => {distancePage();}} distance={distance} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
-            {dateState === true && <MatchDateSetting startDate={startDate} clicked={() => {datePage();}} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
-            {timeState === true && <MatchTimeSetting clicked={() => {timePage();}} />}
+            {dateState === true && <MatchDateSetting clicked={() => {datePage();}} startDate={startDate} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+            {timeState === true && <MatchTimeSetting clicked={() => {timePage();}} startTime={startTime} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+            {etcState === true && <MatchEtcSetting clicked={() => {etcPage();}} level={level} playTime={playTime} sex={sex} gameType={gameType} setEtcData={(level: string, playTime: number[], sex: string, gameType: string)=>{setEtcData(level, playTime, sex, gameType)}}/>}
         </div>
     )
 }
