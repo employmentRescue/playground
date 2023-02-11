@@ -119,6 +119,7 @@ public class RankingServiceImpl implements RankingService {
 
     public TeamStats getTeamStats(Team team) {
         TeamStats teamStats = new TeamStats();
+        teamStats.setTeamId(team.getTeamId());
         teamStats.setTeamName(team.getName());
 
         List<TeamMatchResult> teamMatchResultList = team.getTeamMatchResultList();

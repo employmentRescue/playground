@@ -16,5 +16,5 @@ public interface TeamService {
     void joinTeam(TeamMember teamMember, int teamId);
     void leaveTeam(int teamId, long memberId);
 
-    List<Team> viewTeamsByMemberId(long memberId);
+    List<Map<String, Object>> viewTeamsByMemberId(long memberId);
 }

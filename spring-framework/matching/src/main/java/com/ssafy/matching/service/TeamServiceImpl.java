@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,8 +79,22 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<Team> viewTeamsByMemberId(long memberId) {
-        return teamRepository.getTeamsByMemberId(memberId);
+    public List<Map<String, Object>> viewTeamsByMemberId(long memberId) {
+        List<Map<String, Object>> mapList = new ArrayList<>();
+
+        List<Team> teamList = teamRepository.getTeamsByMemberId(memberId);
+        for (Team team : teamList) {
+            Map<String, Object> map = new HashMap<>();
+
+            TeamStats teamStats = rankingService.getTeamStats(team);
+
+            map.put("team", team);
+            map.put("teamStats", teamStats);
+
+            mapList.add(map);
+        }
+
+        return mapList;
     }
 
 }
