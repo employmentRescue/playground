@@ -30,6 +30,7 @@ import TeamCreateDefaultPage from './pages/menu/teamCreate/TeamCreateDefaultPage
 import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
 import TeamMatchDetailPage from './pages/teamMatch/TeamMatchDeatilPage';
 import TeamMatchJoinPage from './pages/teamMatch/TeamMatchJoinPage';
+import TeamMatchPage from './pages/teamMatch/TeamMatchPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       },
 
       // 팀 매칭 페이지
+      {
+        path: 'team-match',
+        element: <TeamMatchPage />
+      },
       {
         path: 'team-match/register',
         element: <TeamMatchRegisterPage />
