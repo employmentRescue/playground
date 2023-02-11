@@ -2,6 +2,7 @@ package com.ssafy.matching.controller;
 
 import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.dto.GatheringMember;
+import com.ssafy.matching.dto.Match;
 import com.ssafy.matching.service.GatheringService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,6 +57,12 @@ public class GatheringController {
         } catch (Exception e) {
             return exceptionHandling(e);
         }
+    }
+
+    @ApiOperation(value = "운동 모임 제목으로 키워드 검색", notes = "키워드에 해당하는 운동 모임을들 확인한다.")
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<List<Gathering>> search(@PathVariable("keyword") String keyword) throws Exception {
+        return new ResponseEntity<List<Gathering>>(gatheringService.searchGatheringsByKeyword(keyword), HttpStatus.OK);
     }
 
     @ApiOperation(value = "운동 모임 상세 보기", notes = "모임 id에 해당하는 운동 모임을 반환한다", response = Gathering.class)

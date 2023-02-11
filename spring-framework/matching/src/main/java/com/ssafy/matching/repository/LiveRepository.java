@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LiveRepository extends JpaRepository<Live, Integer> {
     @Query(value = "SELECT * " +
-            "FROM Live l, Place p " +
+            "FROM live l, place p " +
             "WHERE l.place_id = p.place_id " +
             "AND " +
             "ST_Distance_Sphere(POINT(?2, ?1), POINT(p.lng, p.lat)) <= 3000 ", nativeQuery = true)
