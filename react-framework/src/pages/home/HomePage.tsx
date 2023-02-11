@@ -158,7 +158,7 @@ export default function HomePage() {
         const map = new naver.maps.Map(mapElement.current, mapOptions);
 
         setNaverMap(map);
-
+        console.log(naverMap)
         dispatchTab(setTabName('playGround'))
         // history.pushState(null, "", location.href);
         // window.addEventListener("popstate", () => history.pushState(null, "", location.href));
@@ -170,8 +170,9 @@ export default function HomePage() {
             return;
 
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
-        console.log(location)
-        naverMap.setCenter(location);
+
+        if (!curPos)
+            naverMap.setCenter(location);
 
         // 기존 현재 위치 마커 제거
         if (curPos) {
@@ -185,6 +186,9 @@ export default function HomePage() {
 
     // 마커
     useEffect(() => {
+        console.log("marker")
+        console.log(naverMap)
+        console.log(liveMatchList)
         if (naverMap === null || liveMatchList === null)
             return;
 
@@ -195,8 +199,9 @@ export default function HomePage() {
             }
         }
 
+
         // 실시간 운동 모임 마커 생성
-        if (liveMatchList.isSuccess) { // liveMatch리스트를 받아왔으면
+        if (liveMatchList.data) { // liveMatch리스트를 받아왔으면
             let newMarkers: naver.maps.Marker[] = []
             for (const e of liveMatchList.data) {
                 switch (e.sports) {
