@@ -1,5 +1,5 @@
 import backButton from "@/assets/icons/back-button.png"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NotificationCard, { NotificationCardType } from "./NotificationCard";
 import notitifactionDefaultImage from "@/assets/icons/notification-default.png"
 import notitifactionTeamMatchImage from "@/assets/icons/notification-team-match.png"
@@ -39,6 +39,19 @@ const initialCards: NotificationCardType[] = [
 export default function NotificationModal({ onClickShowModal }: Iprops) {
 
     const [cards, setCards] = useState(initialCards);
+
+    useEffect(() => {
+        document.body.style.cssText = `
+          position: fixed; 
+          top: -${window.scrollY}px;
+          overflow-y: scroll;
+          width: 100%;`;
+        return () => {
+            const scrollY = document.body.style.top;
+            document.body.style.cssText = '';
+            window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+        };
+    }, []);
 
     const notificationCardsRendering = () => {
         let index = 0

@@ -69,6 +69,13 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
 
     useEffect(() => {
         setTeamLevel("입문")
+        if (selectedSports === "축구") {
+            setSportsPersonnel("3 on 3")
+        } else if (selectedSports === "농구") {
+            setSportsPersonnel("3 on 3")
+        } else (
+            setSportsPersonnel("1 on 1")
+        )
     }, [selectedSports])
 
     return (
@@ -97,7 +104,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
 
             </div>
 
-            <div className="flex mt-25 self-center">
+            <div className="flex mt-35 self-center">
                 <img src={titleFavoriteSports} className="w-20 h-20 my-5" />
                 <h2 className="m-5 text-15 font-inter font-extrabold">게임 종류를 선택하세요.</h2>
             </div>
