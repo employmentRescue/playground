@@ -9,9 +9,6 @@ services:
     ports:
       # - "80:80"
       - "443:443"
-    depends_on:
-    # - mysql-server
-    - redis
 
 
   oauth2-service:
@@ -21,9 +18,6 @@ services:
     container_name: playground-oauth2-service
     ports:
       - "9001:8080"
-    depends_on:
-    - mysql-server
-    - redis
 
   user-service:
     # build: 
@@ -32,9 +26,6 @@ services:
     container_name: user-service
     ports:
       - "9002:8080"
-    depends_on:
-    - mysql-server
-    - redis
 
   matching-service:
     # build: 
@@ -43,9 +34,6 @@ services:
     container_name: matching-service
     ports:
       - "9003:8080"
-    depends_on:
-    - mysql-server
-    - redis
 
   notify-service:
     # build: 
@@ -60,36 +48,12 @@ services:
 
 
 
-  # react-framework:
-  #   build: 
-  #     context: ./react-framework
-  #   expose: 3000
-  #   ports:
-  #     - "3000:3000" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
-
-  mysql-server:
-    image: mysql
-    restart: always
-    # container_name: mysql-servver # 컨테이너 이름 설정
+  react-framework:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: react-framework
+    container_name: react-framework
     ports:
-      - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)  <- 컨테이너 내부는 무조건 3306
-    environment: # -e 옵션
-      - MYSQL_USER=ssafy
-      - MYSQL_PASSWORD=ssafy
-      - MYSQL_DATABASE=playground # default 생성 DB Schema
+      - "3000:80"
 
-      - MYSQL_ROOT_PASSWORD=root
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ./mysql-init-files/:/docker-entrypoint-initdb.d/
-      - ./mysql/data:/var/lib/mysql
-    expose:
-      - '3306'
-
-  redis:
-    image: redis
-    ports: 
-      - "6380:6379"
   

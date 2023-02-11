@@ -2,9 +2,19 @@ import sportsIcon from "@/assets/icons/sports.png"
 import levelIcon from "@/assets/icons/level.png"
 import teamIcon from "@/assets/icons/team.png"
 import recordIcon from "@/assets/icons/record.png"
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setTabName } from "@/stores/tab/tabName";
 
 
 export default function MyTeamDetailPage() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setTabName('나의 팀 상세'))
+  }, [])
+
   return (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-[#fcfffb]">

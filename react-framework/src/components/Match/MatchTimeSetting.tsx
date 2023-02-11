@@ -13,7 +13,7 @@ import whiteArrow from "@/assets/icons/white-arrow.png";
 // 자동 매칭 필터바 - 시간
 export function MatchFilterTime({ shutOtherWindow, clicked }: { shutOtherWindow: ()=>void, clicked: ()=>void }) {
     return (
-        <div className="flex flex-row w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); clicked(); shutOtherWindow(); }}>
+        <div className="flex flex-row w-74 h-25 flex-grow-0 mt-7 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); clicked(); shutOtherWindow(); }}>
             <span className="w-43 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">18 ~ 22</span>
             <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
 

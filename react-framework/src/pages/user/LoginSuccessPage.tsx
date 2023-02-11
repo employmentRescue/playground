@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginSuccessPage() {
@@ -50,7 +50,11 @@ export default function LoginSuccessPage() {
         // ...
     });
 
-
+    // foreground message handling
+    onMessage(messaging, (payload) => {
+        console.log('Message received. ', payload);
+        // ...
+      });
 
     return (
         <div>
