@@ -1,5 +1,6 @@
 package com.ssafy.matching.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -30,7 +31,8 @@ public class TeamMatchResult implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "teamId", insertable=false, updatable=false)
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonBackReference
     private Team team;
 
     @ManyToOne
