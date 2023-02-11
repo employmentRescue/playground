@@ -28,6 +28,9 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const userId = useSelector((state: RootState) => {
+        return state.userId
+    })
     const [teamNameInput, setTeamNameInput] = useState<string>("");
     const [teamLevel, setTeamLevel] = useState<MyTeam["teamLevel"]>("입문");
     const [sportsPersonnel, setSportsPersonnel] = useState<MyTeam["personnel"]>("11 on 11");
@@ -39,7 +42,14 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
     const teamRegister = () => {
         if (selectedSports && teamNameInput && teamLevel && sportsPersonnel && memberIds) {
             console.log("팀 등록 진행");
-            // 여기부터 mutate 써보자!!!!!!!!!!!!!!!!!
+            mutate({
+                hostId: userId,
+                gameType: sportsPersonnel,
+                name: teamNameInput,
+                level: teamLevel,
+                sports: selectedSports,
+                teamMemberList: memberIds,
+            })
         }
     }
 
@@ -60,6 +70,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
             record: { total: 0, win: 0, draw: 0, lose: 0 },
             rank: { point: 1500, tier: "sliver3" }
         }))
+        teamRegister
         console.log(store.getState().userInfo.myTeam)
         navigate("/menu/team")
     }

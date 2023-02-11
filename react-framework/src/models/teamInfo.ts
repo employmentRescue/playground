@@ -1,11 +1,12 @@
 export interface teamInfo {
     teamId?: number;
+    hostId: number;
     name: string;
     description?: string;
     gameType: string;
     level: string;
     sports: string;
-    teamMemberList: object[];
+    teamMemberList: number[];
     point?: number;
-    teamProfileImgUrl: string;
+    teamProfileImgUrl?: string;
 }

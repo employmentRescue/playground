@@ -4,17 +4,19 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 
 const fetcher = (teamInfo: teamInfo) => axios.post(SERVER_URL + '/team/register',
-  {
-    gameType: teamInfo.gameType,
-    level: teamInfo.level,
-    name: teamInfo.name,
-    sports: teamInfo.sports,
-    teamMemberList: [{ memberId: teamInfo.teamMemberList }]
-  }
+    {
+        gameType: teamInfo.gameType,
+        level: teamInfo.level,
+        name: teamInfo.name,
+        sports: teamInfo.sports,
+        teamMemberList: teamInfo.teamMemberList.map((memberId) => {
+            return { memberId: memberId }
+        })
+    }
 );
 
 const useTeamRegister = () => {
-  return useMutation(fetcher);
+    return useMutation(fetcher);
 };
 
 export default useTeamRegister;    
