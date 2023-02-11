@@ -21,6 +21,7 @@ type listItem = {
     date: string,
 }
 
+type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | "playTime" | "sex" | "sports" | "gameType" | "sort" 
 type sportAction = { type: 'ISCLICKED' | '농구' | '축구' | '배드민턴' }
 
 interface sportTypeState {
@@ -69,9 +70,7 @@ function registerSportType(state: sportTypeState, action: sportAction) {
     }
 }
 
-
-
-export function MatchFilterBar({setFilterData, startDate, location, distance, startTime, level, playTime, sex, sports, gameType, sort}: {setFilterData: (attr:string, value:any) => void, startDate : string, location: number[], distance:number, startTime:(string | null)[], level:string, playTime:number[], sex:string, sports:string, gameType:string, sort:string}) {
+export function MatchFilterBar({setFilterData, startDate, location, distance, startTime, level, playTime, sex, sports, gameType, sort}: {setFilterData: (attr:attrType, value:any) => void, startDate : string, location: number[], distance:number, startTime:(string | null)[], level:string, playTime:number[], sex:string, sports:string, gameType:string, sort:string}) {
     // 종목 탭
     const [sportState, setSportType] = useReducer(registerSportType, initialSportTypeState)
     // (useSelector((state: RootState) => {
@@ -151,23 +150,25 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
         }
     }
 
-    const [date, setDate] = useState('YYYY-MM-DD')
-    let dateDisplay = 'M-DD'
-    if (date[5] === '0') {
-        if (date[8] === '0') {
-            dateDisplay = date.slice(6,7) + "월 " + date.slice(9) + "일"           
+    
+    const dateDisplay = () => {
+        if (startDate[5] === '0') {
+            if (startDate[8] === '0') {
+                return startDate.slice(6,7) + "월 " + startDate.slice(9) + "일"           
+            }
+            else {
+                return startDate.slice(6,7) + "월 " + startDate.slice(8, 10) + "일"
+            }
         }
         else {
-            dateDisplay = date.slice(6,7) + "월 " + date.slice(8, 10) + "일"
+            if (startDate[8] === '0') {
+                return startDate.slice(5,7) + "월 " + startDate.slice(9) + "일"
+            }
+            else {
+                return startDate.slice(5,7) + "월 " + startDate.slice(8, 10) + "일"
+            }
         }
-    }
-    else {
-        if (date[8] === '0') {
-            dateDisplay = date.slice(5,7) + "월 " + date.slice(9) + "일"
-        }
-        else {
-            dateDisplay = date.slice(5,7) + "월 " + date.slice(8, 10) + "일"
-        }
+    
     }
 
     return (
@@ -189,29 +190,13 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
                 }
                 } />}
             </div>
-            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
-                distancePage();
-            }} distance={distance}/>
-            {distanceState === true && <MatchDistanceSetting clicked={() => {
-                distancePage();
-            }} distance={distance} setFilterData={(attr: string, value: any)=>{console.log("hi"); setFilterData(attr,value)}}/>}
-
-            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
-                datePage();
-            }} date={dateDisplay}/>
-            {dateState === true && <MatchDateSetting clicked={() => {
-                datePage();
-            }}
-            dateSetting={(dateClicked: string)=>setDate(dateClicked)} />}
-
-            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
-                timePage();
-            }} />
-            {timeState === true && <MatchTimeSetting clicked={() => {
-                timePage();
-            }} />}
-
+            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={() => {distancePage();}} distance={distance}/>
+            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={() => {datePage();}} date={dateDisplay()} />
+            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={() => {timePage();}} />
             <MatchFilterEtc shutOtherWindow={()=>shutOtherWindow()} />
+            {distanceState === true && <MatchDistanceSetting clicked={() => {distancePage();}} distance={distance} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+            {dateState === true && <MatchDateSetting startDate={startDate} clicked={() => {datePage();}} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+            {timeState === true && <MatchTimeSetting clicked={() => {timePage();}} />}
         </div>
     )
 }
