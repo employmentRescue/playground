@@ -37,7 +37,7 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
             "AND (g.play_time BETWEEN ?8 AND ?9) " +
             "AND g.sex like %?10% AND g.sports = ?11 AND g.game_type LIKE %?12% " +
             "AND g.is_completed = 0 AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
-            "ORDER BY g.people - (SELECT COUNT(*) FROM gathering g, gathering_Member m " +
+            "ORDER BY g.people - (SELECT COUNT(*) FROM gathering g, gathering_member m " +
             "where g.gathering_id = m.gathering_id " +
             ") ASC", nativeQuery = true)
     List<Gathering> findGatheringsByFilterRemainPeopleASC(String startDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String level, int minPlayTime, int maxPlayTime, String sex, String sports, String gameType);
