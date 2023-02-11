@@ -81,7 +81,10 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
     return (
         <div className="flex flex-col self-center">
             <div className="mt-65" />
-            <img src={teamProfileCreateImg} className="w-100 h-100 self-center" />
+            <label htmlFor="uploadImg" className="self-center">
+                <img src={teamProfileCreateImg} className="w-100 h-100 self-center" />
+            </label>
+            <input type="file" id="uploadImg" className="w-0 h-0 overflow-hidden" />
             <div className="flex self-center">
                 <input onChange={getNicknameInput} className="w-[170px] mt-12 px-25 text-18 text-inter opacity-50 text-center font-extrabold self-center border-b-2 border-[#DBDBDB] outline-none" placeholder="팀 이름" ref={teamNameInputRef} />
                 <img src={modifyImage} className="w-15 h-15 -ml-15 mb-10 self-end" onClick={() => teamNameInputRef.current.focus()} />
