@@ -8,7 +8,10 @@ const fetcher = (variables: { liveId?: number, memberId?: number }) => axios.pos
 const useLiveMatchJoin = () => {
     const queryClient = useQueryClient();
     return useMutation(fetcher, {
-        onSuccess: () => queryClient.invalidateQueries(LIVE_MATCH_LIST, { refetchInactive: true }),
+        onSuccess: () => {
+            queryClient.invalidateQueries(LIVE_MATCH_LIST, { refetchInactive: true });
+            location.reload();
+        },
     });
 };
 

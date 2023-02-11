@@ -5,103 +5,25 @@ import SportsSelectButtons from "@/components/TeamCreate/Buttons/SportsSelectBut
 import TeamCard from "@/components/MyTeam/TeamCard";
 
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setTabName } from "@/stores/tab/tabName";
-
+import { RootState } from "@/stores/store";
+import useTeamQuery from "@/hooks/team/useTeamQuery";
 
 export default function MyTeamPage() {
-    const initialSportsState = "축구"
-    const initialTeamList = [
-        {
-            teamId: 1,
-            teamName: "Football Team1",
-            teamImage: TeamImage1,
-            sportsType: "축구",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 1700, tier: "Bronze.2" }
-        },
-        {
-            teamId: 2,
-            teamName: "Football Team2",
-            teamImage: TeamImage2,
-            sportsType: "축구",
-            record: { total: 4, win: 1, draw: 1, lose: 2 },
-            rating: { points: 1500, tier: "Bronze.1" }
-        },
-        {
-            teamId: 3,
-            teamName: "Basketball Team1",
-            teamImage: TeamImage1,
-            sportsType: "농구",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 2500, tier: "Silver.2" }
-        },
-        {
-            teamId: 4,
-            teamName: "Basketball Team2",
-            teamImage: TeamImage2,
-            sportsType: "농구",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 1500, tier: "Gold.3" }
-        },
-        {
-            teamId: 5,
-            teamName: "Badminton Team",
-            teamImage: TeamImage1,
-            sportsType: "배드민턴",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 1500, tier: "Sliver.1" }
-        },
-        {
-            teamId: 6,
-            teamName: "Badminton Team",
-            teamImage: TeamImage2,
-            sportsType: "배드민턴",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 1500, tier: "Bronze.1" }
-        },
-        {
-            teamId: 7,
-            teamName: "Badminton Team",
-            teamImage: TeamImage1,
-            sportsType: "배드민턴",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 1500, tier: "Sliver.1" }
-        },
-        {
-            teamId: 8,
-            teamName: "Badminton Team",
-            teamImage: TeamImage2,
-            sportsType: "배드민턴",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 1500, tier: "Bronze.1" }
-        },
-        {
-            teamId: 9,
-            teamName: "Badminton Team",
-            teamImage: TeamImage1,
-            sportsType: "배드민턴",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 1500, tier: "Sliver.1" }
-        },
-        {
-            teamId: 10,
-            teamName: "Badminton Team",
-            teamImage: TeamImage2,
-            sportsType: "배드민턴",
-            record: { total: 3, win: 2, draw: 0, lose: 1 },
-            rating: { points: 1500, tier: "Bronze.1" }
-        },
-    ]
-    const [myTeamList, setMyTeamList] = useState(initialTeamList);
-    const [selectedSports, setSelectedSports] = useState<"축구" | "농구" | "배드민턴">(initialSportsState)
+    const userId = useSelector((state: RootState) => {
+        return state.userId;
+    });
+
+    const { data } = useTeamQuery(userId);
+    const [selectedSports, setSelectedSports] = useState<"축구" | "농구" | "배드민턴">("축구")
 
     const getTeamListBySports = (selectedSports: "축구" | "농구" | "배드민턴") => {
-        return myTeamList.map((teamInfo) => {
+        return data && data.map((teamInfo: any, index: number) => {
             return (
                 (teamInfo.sportsType === selectedSports) &&
                 <TeamCard
-                    key={teamInfo.teamId}
+                    key={index}
                     teamId={teamInfo.teamId}
                     teamImage={teamInfo.teamImage}
                     teamName={teamInfo.teamName}

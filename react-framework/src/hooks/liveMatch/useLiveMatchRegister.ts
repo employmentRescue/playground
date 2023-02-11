@@ -9,7 +9,10 @@ const fetcher = (liveMatch: liveMatch) => axios.post(SERVER_URL + '/live/registe
 const useLiveMatchRegister = () => {
     const queryClient = useQueryClient();
     return useMutation(fetcher, {
-        onSuccess: () => queryClient.invalidateQueries(LIVE_MATCH_LIST, { refetchInactive: true }),
+        onSuccess: () => {
+            queryClient.invalidateQueries(LIVE_MATCH_LIST, { refetchInactive: true });
+            location.reload();
+        },
     });
 };
 

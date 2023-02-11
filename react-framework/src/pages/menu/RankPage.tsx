@@ -22,6 +22,7 @@ export default function RankPage() {
   const [filterModal, setFilterModal] = useState<string>('none');
 
   const teamList = useTeamRankingListQuery(gameType, sportsType, filterModal);
+  console.log(teamList);
   const dispatch = useDispatch();
 
   useEffect(() => {

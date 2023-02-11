@@ -9,7 +9,10 @@ const fetcher = (liveMatch: liveMatch) => axios.put(SERVER_URL + '/live', { live
 const useLiveMatchModify = () => {
     const queryClient = useQueryClient();
     return useMutation(fetcher, {
-        onSuccess: () => queryClient.invalidateQueries(LIVE_MATCH_LIST, { refetchInactive: true }),
+        onSuccess: () => {
+            queryClient.invalidateQueries(LIVE_MATCH_LIST, { refetchInactive: true });
+            location.reload();
+        },
     });
 };
 
