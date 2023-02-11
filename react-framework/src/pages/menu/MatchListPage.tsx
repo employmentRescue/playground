@@ -5,83 +5,13 @@ import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
 
 import useGetMyMatch from "@/hooks/user/useGetMyMatchList";
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setTabName } from "@/stores/tab/tabName"
 import { RootState } from "@/stores/store";
 
-interface MatchInfo {
-    sportsType: "축구" | "농구" | "배드민턴"
-    matchTitle: string;
-    place: string;
-    matchPersonnel: string;     // 3 on 3, 5 on 5 같은 매칭 인원
-    matchType: "개인" | "팀";
-    isOldMatch: boolean;
-    linkToDetailPage: string;     // "/match/detail"
-}
-
-const initialMatchInfo: MatchInfo[] = [
-    {
-        sportsType: "축구",
-        matchTitle: "농구 3대3 하실 분~",
-        place: "서울특별시 양천구 목동동로 111 양천공원",
-        matchPersonnel: "3 on 3",
-        matchType: "개인",
-        isOldMatch: false,
-        linkToDetailPage: "/match/detail"
-    },
-    {
-        sportsType: "축구",
-        matchTitle: "월드컵 풋살장 5대5",
-        place: "대전광역시 유성구 월드컵대로 32",
-        matchPersonnel: "5 on 5",
-        matchType: "개인",
-        isOldMatch: false,
-        linkToDetailPage: "/match/detail"
-    },
-    {
-        sportsType: "농구",
-        matchTitle: "오목공원 농구팟",
-        place: "서울특별시 양천구 목동동로 111 양천공원",
-        matchPersonnel: "3 on 3",
-        matchType: "개인",
-        isOldMatch: true,
-        linkToDetailPage: "/match/detail"
-    },
-    {
-        sportsType: "배드민턴",
-        matchTitle: "플레이그라운드 팀과의 매치",
-        place: "서울특별시 양천구 목동동로 111 양천공원",
-        matchPersonnel: "1 on 1",
-        matchType: "팀",
-        isOldMatch: true,
-        linkToDetailPage: "/match/detail"
-    },
-    {
-        sportsType: "배드민턴",
-        matchTitle: "오늘도배드민턴 팀과의 매치",
-        place: "서울특별시 양천구 목동동로 111 양천공원",
-        matchPersonnel: "3 on 3",
-        matchType: "팀",
-        isOldMatch: true,
-        linkToDetailPage: "/match/detail"
-    },
-    {
-        sportsType: "배드민턴",
-        matchTitle: "오늘도배드민턴 팀과의 매치",
-        place: "서울특별시 양천구 목동동로 111 양천공원",
-        matchPersonnel: "3 on 3",
-        matchType: "팀",
-        isOldMatch: false,
-        linkToDetailPage: "/match/detail"
-    },
-
-]
-initialMatchInfo.sort((a: MatchInfo, b: MatchInfo) => a.isOldMatch === b.isOldMatch ? 0 : a.isOldMatch ? 1 : -1)
-
 export default function MatchListPage() {
 
-    const [matchInfo, setMatchInfo] = useState(initialMatchInfo);
     const myUserId = useSelector((state: RootState) => {
         return state.userId
     })
