@@ -9,6 +9,10 @@ how can i see the process of jenkins building status on gitlab?
 + status를 누르면 상세 빌드를 볼 수 있음.
 ![pipeline-detail-1](./img/pipeline-detail-1.PNG)  
 ![pipeline-detail-2](./img/pipeline-detail-2.PNG)  
+![pipeline-detail-3](./img/pipeline-detail-3.PNG)  
+![pipeline-detail-4](./img/pipeline-detail-4.PNG)  
 --> 기대효과 : 팀원들이 gitlab으로만으로도 ci/cd 성공여부를 확인할 수 있음.  
 
+.
+.
 ..........
