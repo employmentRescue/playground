@@ -65,7 +65,6 @@ public class RankingServiceImpl implements RankingService {
         return mapList;
     }
 
-    //TODO 포인트 업그레이드 해야함
     @Override
     public void updatePoint(TeamMatchResult teamMatchResultMe, TeamMatchResult teamMatchResultOp) {
         Team teamMe = teamRepository.getByTeamId(teamMatchResultMe.getTeamId());
@@ -78,8 +77,11 @@ public class RankingServiceImpl implements RankingService {
         System.out.println("전 Pme: " + Pme);
         System.out.println("전 Pop: " + Pop);
 
-        double Wme = 1 / (Math.pow(10, (Pop - Pme) / 400) + 1); //내 팀의 예상 승률
-        double Wop = 1 / (Math.pow(10, (Pme - Pop) / 400) + 1); //상대 팀의 예상 승률
+        double Wme = 1.0 / (Math.pow(10, ((Pop - Pme) / 400)) + 1); //내 팀의 예상 승률
+        double Wop = 1.0 / (Math.pow(10, ((Pme - Pop) / 400)) + 1); //상대 팀의 예상 승률
+
+        System.out.println("Wme: " + Wme);
+        System.out.println("Wop: " + Wop);
 
         //2. 점수 계산하기
         int K = 30; //가중치
@@ -90,10 +92,10 @@ public class RankingServiceImpl implements RankingService {
         String resultOp = teamMatchResultOp.getResult();
 
         W = getW(W, resultMe);
-        Pme += (int)(K * W - Wme);
+        Pme += (int)(K * (W - Wme));
 
         W = getW(W, resultOp);
-        Pop += (int)(K * W - Wop);
+        Pop += (int)(K * (W - Wop));
 
         System.out.println("후 Pme: " + Pme);
         System.out.println("후 Pop: " + Pop);

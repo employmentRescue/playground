@@ -2,6 +2,7 @@ package com.ssafy.matching.service;
 
 import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.dto.GatheringMember;
+import com.ssafy.matching.dto.Match;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +20,5 @@ public interface GatheringService {
     void joinGathering(GatheringMember memberGathering);
     void leaveGathering(int gatheringId, long memberId);
 
+    List<Gathering> searchGatheringsByKeyword(String keyword);
 }
