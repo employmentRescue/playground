@@ -3,12 +3,15 @@ import modifyImage from "@/assets/profiles/modify.png"
 import titleFavoriteSports from "@/assets/profiles/title-favorite-sports.png"
 
 import ButtonDesign from "../../../components/TeamCreate/Buttons/ButtonDesign";
-import { setSportsType, setMyTeamName, setMyTeamLevel, setPersonnel, MyTeam } from "@/stores/user/myTeam"
+import { MyTeam } from "@/stores/user/myTeam"
 import { setMyTeam } from "@/stores/register/userInfo";
+import useTeamRegister from "@/hooks/rank/useTeamRegister";
+import { teamInfo } from "@/models/teamInfo";
 
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import store, { RootState } from "@/stores/store";
+import { useNavigate } from "react-router-dom";
 
 interface Iprops {
     onClickChangePage: (num: number) => void;
@@ -23,12 +26,23 @@ const badmintonPersonnel: MyTeam["personnel"][] = ["1 on 1", "3 on 3"];
 
 export default function TeamSettingPage({ onClickChangePage, selectedSports }: Iprops) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [teamNameInput, setTeamNameInput] = useState<string>("");
     const [teamLevel, setTeamLevel] = useState<MyTeam["teamLevel"]>("입문");
     const [sportsPersonnel, setSportsPersonnel] = useState<MyTeam["personnel"]>("11 on 11");
     const memberIds = useSelector((state: RootState) => {
         return state.myTeam.memberIds
     })
+
+    const { mutate } = useTeamRegister();
+    const teamRegister = () => {
+        if (selectedSports && teamNameInput && teamLevel && sportsPersonnel && memberIds) {
+            console.log("팀 등록 진행");
+            // 여기부터 mutate 써보자!!!!!!!!!!!!!!!!!
+        }
+    }
+
 
     const teamNameInputRef: any = useRef();
 
@@ -47,6 +61,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
             rank: { point: 1500, tier: "sliver3" }
         }))
         console.log(store.getState().userInfo.myTeam)
+        navigate("/menu/team")
     }
 
 
