@@ -2,7 +2,7 @@ import { teamRanking } from "@/models/teamRanking"
 import { getImgUrl } from "@/utils/getImgUrl"
 
 interface Iprops {
-  rank: number,
+  rank: number
   teamRanking: teamRanking
 }
 

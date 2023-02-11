@@ -18,6 +18,7 @@ export default function RankPage() {
   const [teamInfo, setTeamInfo] = useState<teamRanking | null>(null);
   const [sportsType, setSportsType] = useState<string>('농구');
   const [gameType, setGameType] = useState<string>('3vs3');
+  const [sortType, setSortType] = useState<string>('Rating');
   const [filterModal, setFilterModal] = useState<string>('none');
 
   const teamList = useTeamRankingListQuery(gameType, sportsType, filterModal);
@@ -65,7 +66,7 @@ export default function RankPage() {
           {teamList.isSuccess && teamList.data && teamInfo &&
             teamList.data.map((item: teamRanking, index: number) => (
               <SwiperSlide>
-                <div className="w-full h-167 ml-[-10px]">
+                <div className="w-full h-167 ml-[-10px]" key={index}>
                   <MyTeamInfo rank={teamRankIndex} teamRanking={item} />
                 </div>
               </SwiperSlide>
@@ -76,19 +77,20 @@ export default function RankPage() {
       <div className="w-full mt-10 border-t-2 border-blue-700">
         <div className="w-full h-30 flex justify-center items-center mb-2 bg-white text-12">
           <div className="w-[calc(100%-245px)] pl-10">순위</div>
-          <div className="w-47 text-center">경기</div>
-          <div className="w-47 text-center">승</div>
-          <div className="w-47 text-center">무</div>
-          <div className="w-47 text-center">패</div>
-          <div className="w-57 text-center">Rating</div>
+          {sortType === '경기' ? <div className="w-47 h-full flex items-center justify-center text-12 bg-gray-600">경기</div> : <div className="w-47 h-full flex items-center justify-center text-12" onClick={() => setSortType('경기')}>경기</div>}
+          {sortType === '승' ? <div className="w-47 h-full flex items-center justify-center text-12 bg-gray-600 ">승</div> : <div className="w-47 h-full flex items-center justify-center text-12" onClick={() => setSortType('승')}>승</div>}
+          {sortType === '무' ? <div className="w-47 h-full flex items-center justify-center text-12 bg-gray-600">무</div> : <div className="w-47 h-full flex items-center justify-center text-12" onClick={() => setSortType('무')}>무</div>}
+          {sortType === '패' ? <div className="w-47 h-full flex items-center justify-center text-12 bg-gray-600">패</div> : <div className="w-47 h-full flex items-center justify-center text-12" onClick={() => setSortType('패')}>패</div>}
+          {sortType === 'Rating' ? <div className="w-57 h-full flex items-center justify-center text-12 bg-gray-600">Rating</div> : <div className="w-57 h-full flex items-center justify-center text-12" onClick={() => setSortType('Rating')}>Rating</div>}
         </div>
         {teamList.isSuccess && teamList.data &&
           teamList.data.map((item: teamRanking, index: number) => (
-            <div onClick={() => { setTeamRankIndex(index + 1); setTeamInfo(item); }}>
+            <div onClick={() => { setTeamRankIndex(index + 1); setTeamInfo(item); }} key={index}>
               <RankInfo
                 teamRanking={item}
                 rank={index + 1}
-                key={index}
+                isClicked={index + 1 === teamRankIndex}
+                sortType={sortType}
               />
             </div>
           ))}
