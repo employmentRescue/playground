@@ -16,7 +16,7 @@ export default function Footer() {
                 <img className="w-17 h-17 mt-3" src={search}></img>
                 <div className="text-8 text-gray-700 mt-3">매칭</div>
             </div>
-            <div className="w-70 h-30 flex flex-col justify-center items-center" onClick={() => { navigate("/") }}>
+            <div className="w-70 h-30 flex flex-col justify-center items-center" onClick={() => { navigate("/team-match") }}>
                 <img className="w-20 h-20" src={teamMatch}></img>
                 <div className="text-8 text-gray-700 mt-3">팀매칭</div>
             </div>
