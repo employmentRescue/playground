@@ -7,7 +7,6 @@ import currentPos from '@/assets/icons/current-position.png';
 import basketballMap from '@/assets/icons/basketball-map.png';
 import footballMap from '@/assets/icons/football-map.png';
 import badmintonMap from '@/assets/icons/badminton-map.png';
-import writeIcon from "@/assets/icons/write.png"
 import searchIcon from "@/assets/icons/search.png"
 import placeIcon from '@/assets/icons/place.png';
 import calendarIcon from '@/assets/icons/calendar.png';
@@ -30,6 +29,7 @@ export default function TeamMatchRegisterPage() {
   const [place, setPlace] = useState<place | null>(null);
   const [detailPlace, setDetailPlace] = useState<string>('');
   const [preferDist, setPreferDist] = useState<number>(0);
+  const [circle, setCircle] = useState<naver.maps.Circle | null>(null);
   const [preferTime, setPreferTime] = useState<number[]>([0, 24]);
 
 
@@ -53,12 +53,12 @@ export default function TeamMatchRegisterPage() {
       label: '0km',
     },
     {
-      value: 15,
-      label: '15km',
+      value: 5,
+      label: '5km',
     },
     {
-      value: 30,
-      label: '30km',
+      value: 10,
+      label: '10km',
     },
   ];
 
@@ -102,6 +102,7 @@ export default function TeamMatchRegisterPage() {
           teamId: teamId
         }]
       })
+      movePage('/team-match')
     } else {
       console.log("matchDate 없어!")
     }
@@ -114,7 +115,8 @@ export default function TeamMatchRegisterPage() {
     map: naver.maps.Map,
     sizeX: number,
     sizeY: number,
-    isBounce: boolean
+    isBounce: boolean,
+    clickable: boolean
   ) {
     return new naver.maps.Marker({
       position: location,
@@ -127,6 +129,7 @@ export default function TeamMatchRegisterPage() {
         anchor: new naver.maps.Point(sizeX / 2, sizeY),
       },
       animation: isBounce ? naver.maps.Animation.BOUNCE : undefined,
+      clickable: clickable
     });
   }
 
@@ -171,7 +174,7 @@ export default function TeamMatchRegisterPage() {
     }
 
     // 현재 위치 맵에 표시
-    setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
+    setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false, false));
   }, [geolocation]);
 
   useEffect(() => {
@@ -218,13 +221,13 @@ export default function TeamMatchRegisterPage() {
       else {
         switch (teamInfo.data.sports) {
           case '농구':
-            setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+            setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
             break;
           case '축구':
-            setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+            setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
             break;
           case '배드민턴':
-            setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+            setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
             break;
         }
       }
@@ -247,6 +250,20 @@ export default function TeamMatchRegisterPage() {
     });
 
   }, [marker, teamInfo.isSuccess])
+
+  useEffect(() => {
+    if (!naverMap || !marker) return;
+    if (circle)
+      circle.setMap(null);
+
+    setCircle(new naver.maps.Circle({
+      map: naverMap,
+      center: marker.getPosition(),
+      radius: preferDist * 1000,
+      fillColor: 'red',
+      fillOpacity: 0.5
+    }))
+  }, [preferDist])
 
   return (
     <div className="bg-white h-screen pl-24 pr-24">
@@ -293,7 +310,7 @@ export default function TeamMatchRegisterPage() {
           valueLabelDisplay="auto"
           marks={distMarks}
           min={0}
-          max={30}
+          max={10}
           sx={{
             color: 'blue',
             '& .MuiSlider-thumb': {

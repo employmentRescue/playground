@@ -18,8 +18,6 @@ import levelIcon from '@/assets/icons/level.png';
 import sexIcon from '@/assets/icons/sex.png';
 import JoinButton from '@/components/Match/Buttons/JoinButton';
 import QuitButton from '@/components/Match/Buttons/QuitButton';
-import DeleteButton from '@/components/Match/Buttons/ModifyButton';
-import ModifyButton from '@/components/Match/Buttons/ModifyButton';
 import useMatchJoin from '@/hooks/match/useMatchJoin';
 import useMatchQuit from '@/hooks/match/useMatchQuit';
 import { getImgUrl } from '@/utils/getImgUrl';
@@ -45,7 +43,8 @@ export default function MatchDetailPage() {
     return state.userId;
   });
 
-  const match = useMatchDetailQuery(1);
+
+  const match = useMatchDetailQuery(matchId);
   const joinMatch = useMatchJoin();
   const quitMatch = useMatchQuit();
 
@@ -142,7 +141,6 @@ export default function MatchDetailPage() {
         break;
     }
 
-    console.log(userId);
     let isUserExisted = false;
     for (const member of match.data.memberGatheringList) {
       if (member.memberId === userId || member.memberId === 111) {
@@ -175,7 +173,7 @@ export default function MatchDetailPage() {
     setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
   }, [geolocation, match.isSuccess]);
 
-  return match.isSuccess ? (
+  return match.isSuccess && match.data ? (
     <div className="bg-white h-full">
       <div className="w-full h-screen flex flex-col items-center overflow-auto">
         <div
