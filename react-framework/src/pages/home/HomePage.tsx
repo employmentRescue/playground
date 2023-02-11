@@ -126,8 +126,9 @@ export default function HomePage() {
     });
     const promisedMatchList = usePromisedMatchListQuery(userId);
     const dispatchTab = useDispatch();
-    console.log(promisedMatchList);
-    console.log(liveMatchList);
+    console.log("userId", userId)
+    console.log("promisedMatchList", promisedMatchList);
+    console.log("liveMatchList", liveMatchList);
 
     function setMapIcon(icon: string, location: naver.maps.LatLng, map: naver.maps.Map, sizeX: number, sizeY: number, isBounce: boolean) {
         return new naver.maps.Marker({

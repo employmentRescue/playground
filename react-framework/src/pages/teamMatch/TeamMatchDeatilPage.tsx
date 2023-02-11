@@ -2,10 +2,10 @@ import timeIcon from "@/assets/icons/time.png"
 import placeIcon from "@/assets/icons/place.png"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import useTeamQuery from "@/hooks/team/useTeamQuery";
 import { getImgUrl } from "@/utils/getImgUrl";
 import { useEffect } from "react";
 import { setTabName } from "@/stores/tab/tabName";
+import useTeamMatchQuery from "@/hooks/teamMatch/useTeamMatchQuery";
 
 export default function TeamMatchDetailPage() {
 
@@ -13,8 +13,9 @@ export default function TeamMatchDetailPage() {
     return state.team.id;
   });
 
-  const team = useTeamQuery(teamId);
+  const team = useTeamMatchQuery(teamId);
 
+  console.log(team)
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -32,18 +33,18 @@ export default function TeamMatchDetailPage() {
   return team.isSuccess && team.data && (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-white">
-        <img className="w-100 h-100">{getImgUrl("../../assets/profile/team", String(teamId))}</img>
+        <img className="w-100 h-100" src={getImgUrl('profiles/team', String(teamId))}></img>
         <div className="text-20 mt-4">{team.data.name}</div>
       </div>
 
-      <div className="w-full  h-[calc(100vh-290px)] bg-white mt-7 pt-30 pl-24 pr-24 flex flex-col justify-between">
+      <div className="w-full h-[calc(100vh-290px)] bg-white mt-7 pt-30 pl-24 pr-24 flex flex-col justify-between">
         <div>
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <img className="w-20 h-20 mr-8" src={timeIcon}></img>
               <div className="text-14">선호 시간대</div>
             </div>
-            <div className="text-13">{team.data.minStartTime} ~ {team.data.maxStartTime}</div>
+            <div className="text-13">{team.data.minStartTime.slice(0, 5)} ~ {team.data.maxStartTime.slice(0, 5)}</div>
           </div>
           <div className="flex justify-between items-center mt-14">
             <div className="flex items-center">
@@ -64,8 +65,8 @@ export default function TeamMatchDetailPage() {
           <div className="mt-15 text-12 text-gray-700">상대가 매칭 결과를 입력하기 전입니다.</div>
         </div>
         <div className="flex mb-15">
-          <button className="w-2/3 h-34 rounded-5 bg-blue-700 mr-6 text-15 text-white">채팅방으로 이동</button>
-          <button className="w-1/3 h-34 rounded-5 bg-red-600 text-15 text-white">매칭 취소</button>
+          <button className="w-2/3 h-34 rounded-5 bg-blue-700 mr-6 text-15 text-white" onClick={joinChattingRoom}>채팅방으로 이동</button>
+          <button className="w-1/3 h-34 rounded-5 bg-red-600 text-15 text-white" onClick={quit}>매칭 취소</button>
         </div>
       </div>
     </div>

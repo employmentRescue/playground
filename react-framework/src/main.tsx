@@ -29,7 +29,7 @@ import MyTeamDetailPage from './pages/menu/myTeam/MyTeamDetailPage';
 import TeamCreateDefaultPage from './pages/menu/teamCreate/TeamCreateDefaultPage';
 import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
 import TeamMatchDetailPage from './pages/teamMatch/TeamMatchDeatilPage';
-import TeamMatchJoinPage from './pages/teamMatch/TeamMatchJoinPage';
+import TeamMatchGamePage from './pages/teamMatch/TeamMatchGamePage';
 import TeamMatchPage from './pages/teamMatch/TeamMatchPage';
 
 const container = document.getElementById('root') as HTMLElement;
@@ -74,7 +74,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'team-match/join',
-        element: <TeamMatchJoinPage />
+        element: <TeamMatchGamePage />
       },
 
       // 전체 메뉴(프로필, 통게, 매칭, 팀, 도움말)
