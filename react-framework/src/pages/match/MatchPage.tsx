@@ -1,19 +1,18 @@
 import { useState, useEffect, useRef } from "react";
-import { useReducer, ComponentProps } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import 'react-calendar/dist/Calendar.css'
 
 import { MatchFilterBar } from "@/components/Match/MatchFilterBar"
 
 import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
 import { RootState } from "@/stores/store";
-import { useDispatch, useSelector } from "react-redux";
-
+import { setSortDate, setSortLocation, setSortDistance, setSortStartTime, setSortlevel, setSortPlayTime, setSortSex, setSortSports, setSortGameType, setSortSort, } from "@/stores/match/matchSort";
 
 import basketballOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import footBallOriginal from "@/assets/icons/football-original.png"
-import matchButton from "@/assets/icons/personal-match-button.png"
 import { matchList } from "@/models/matchList";
+
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
@@ -131,21 +130,7 @@ export default function MatchPage() {
     const [ gameType, setGameType ] = useState(useSelector((state: RootState) => {return state.matchSort.gameType;}))
     const [ sort, setSort ] = useState(useSelector((state: RootState) => {return state.matchSort.sort;}))
 
-    const setFilterData = (attr: attrType, value: any) => {
-        switch (attr) {
-            case "startDate": setStartDate(value); console.log(value); break;
-            case "location": setLocation(value); break;
-            case "distance": setDistance(value); break;
-            case "startTime": setStartTime(value); break;
-            case "level": setLevel(value); break;
-            case "playTime": setPlayTime(value); break;
-            case "sex": setSex(value); break;
-            case "sports": setSports(value); break;
-            case "gameType": setGameType(value); break;
-            case "sort": setSort(value); break;
-        }
-    }
-    const filterData = {
+    const filterData: matchList = {
         startDate: startDate,
         lat: location[0],
         lng: location[1],
@@ -164,12 +149,27 @@ export default function MatchPage() {
     // console.log(gatheringListQuery)
     // console.log(filterData)
     // console.log(typeof(filterData))
+    const filterDataDispatch = useDispatch()
 
+    const setFilterData = (attr: attrType, value: any) => {
+        switch (attr) {
+            case "startDate": setStartDate(value); filterDataDispatch(setSortDate(value)); break;
+            case "location": setLocation(value); filterDataDispatch(setSortLocation(value)); break;
+            case "distance": setDistance(value); filterDataDispatch(setSortDistance(value)); break;
+            case "startTime": setStartTime(value); filterDataDispatch(setSortStartTime(value)); break;
+            case "level": setLevel(value); filterDataDispatch(setSortlevel(value)); break;
+            case "playTime": setPlayTime(value); filterDataDispatch(setSortPlayTime(value)); break;
+            case "sex": setSex(value); filterDataDispatch(setSortSex(value)); break;
+            case "sports": setSports(value); filterDataDispatch(setSortSports(value)); break;
+            case "gameType": setGameType(value); filterDataDispatch(setSortGameType(value)); break;
+            case "sort": setSort(value); filterDataDispatch(setSortSort(value)); break;
+        }
+    }
     const listItems = () => {
         if (gatheringListQuery.isSuccess) {
             console.log('success ' + gatheringListQuery)
             if (gatheringListQuery.data) {
-                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => <ListItem key={i} data={eachData}/>)
+                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=><ListItem key={i} data={eachData}/>)
                 return ( <div>{gatheringList}</div> )
             } 
             else { return ( <div>해당 모임이 존재하지 않습니다.</div> ) }
