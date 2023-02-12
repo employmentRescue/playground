@@ -28,7 +28,7 @@ public class MatchController {
     }
 
     @ApiOperation(value = "팀 경기 팀 이름으로 검색", notes = "팀이름에 해당하는 팀 경기를 확인한다.")
-    @GetMapping("search/{teamname}")
+    @GetMapping("/search/{teamname}")
     public ResponseEntity<List<Match>> search(@PathVariable("teamname") String teamName) throws Exception {
         return new ResponseEntity<List<Match>>(matchService.searchMatchByTeamName(teamName), HttpStatus.OK);
     }
@@ -53,8 +53,7 @@ public class MatchController {
         matchService.deleteMatch(matchId);
     }
 
-    //TODO 팀 경기 결과 등록시 메시지 출력과 포인트 업데이트
-    @ApiOperation(value = "팀 경기 결과를 등록하기(기능 추가중)", notes = "팀 경기 결과를 등록한다.")
+    @ApiOperation(value = "팀 경기 결과를 등록하기", notes = "팀 경기 결과를 등록한다.")
     @PutMapping("/record/{matchid}")
     public ResponseEntity<?> record(@PathVariable("matchid") int matchId, @RequestBody @ApiParam(value = "팀 경기 정보", required = true) TeamMatchResult teamMatchResult) throws Exception {
         String result = matchService.registerTeamMatchResult(teamMatchResult, matchId);

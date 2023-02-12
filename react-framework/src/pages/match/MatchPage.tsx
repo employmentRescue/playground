@@ -13,10 +13,10 @@ import basketballOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import footBallOriginal from "@/assets/icons/football-original.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
+import { matchList } from "@/models/matchList";
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
-
 
 interface gatheringType {
     gatheringId: number, // 1
@@ -72,6 +72,8 @@ interface gatheringType {
     completed: boolean
 }
 
+type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | "playTime" | "sex" | "sports" | "gameType" | "sort" 
+
 // 목록 각 컴포넌트
 function ListItem({ data }: { data: gatheringType }) {
     console.log(data);
@@ -115,50 +117,76 @@ function ListItem({ data }: { data: gatheringType }) {
 // 매치 페이지 출력
 export default function MatchPage() {
 
-    const filterData = useSelector((state: RootState) => {
-        return state.matchSort;
-    })
+    // const filterData = useSelector((state: RootState) => {
+    //     return state.matchSort;
+    // })
+    const [ startDate, setStartDate ] = useState(useSelector((state: RootState) => {return state.matchSort.startDate;}))
+    const [ location, setLocation ] = useState(useSelector((state: RootState) => {return [state.matchSort.lat, state.matchSort.lng];}))
+    const [ distance, setDistance ] = useState(useSelector((state: RootState) => {return state.matchSort.distance;}))
+    const [ startTime, setStartTime ] = useState(useSelector((state: RootState) => {return [state.matchSort.minStartTime, state.matchSort.maxStartTime];}))
+    const [ level, setLevel ] = useState(useSelector((state: RootState) => {return state.matchSort.level;}))
+    const [ playTime, setPlayTime ] = useState(useSelector((state: RootState) => {return [state.matchSort.minPlayTime, state.matchSort.maxPlayTime];}))
+    const [ sex, setSex ] = useState(useSelector((state: RootState) => {return state.matchSort.sex;}))
+    const [ sports, setSports ] = useState(useSelector((state: RootState) => {return state.matchSort.sports;}))
+    const [ gameType, setGameType ] = useState(useSelector((state: RootState) => {return state.matchSort.gameType;}))
+    const [ sort, setSort ] = useState(useSelector((state: RootState) => {return state.matchSort.sort;}))
+
+    const setFilterData = (attr: attrType, value: any) => {
+        switch (attr) {
+            case "startDate": setStartDate(value); console.log(value); break;
+            case "location": setLocation(value); break;
+            case "distance": setDistance(value); break;
+            case "startTime": setStartTime(value); break;
+            case "level": setLevel(value); break;
+            case "playTime": setPlayTime(value); break;
+            case "sex": setSex(value); break;
+            case "sports": setSports(value); break;
+            case "gameType": setGameType(value); break;
+            case "sort": setSort(value); break;
+        }
+    }
+    const filterData = {
+        startDate: startDate,
+        lat: location[0],
+        lng: location[1],
+        distance: distance,
+        minStartTime: startTime[0],
+        maxStartTime: startTime[1],
+        level: level,
+        minPlayTime: playTime[0],
+        maxPlayTime: playTime[1],
+        sex: sex,
+        sports: sports,
+        gameType: gameType,
+        sort: sort,
+    }
     const gatheringListQuery = useGatheringListQuery(filterData);
-    console.log(gatheringListQuery)
-    console.log(filterData)
+    // console.log(gatheringListQuery)
+    // console.log(filterData)
+    // console.log(typeof(filterData))
 
     const listItems = () => {
         if (gatheringListQuery.isSuccess) {
             console.log('success ' + gatheringListQuery)
             if (gatheringListQuery.data) {
-                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => <ListItem key={i} data={eachData} />)
-                return (
-                    <div>{gatheringList}</div>
-                )
+                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => <ListItem key={i} data={eachData}/>)
+                return ( <div>{gatheringList}</div> )
             } 
-            else {
-                return (
-                    <div>
-                        해당 모임이 존재하지 않습니다.
-                    </div>
-                )
-            }
+            else { return ( <div>해당 모임이 존재하지 않습니다.</div> ) }
         }
-        else {
-            return (
-                <div>
-                    로딩중
-                </div>
-            )
+        else { return ( <div>로딩중</div> )
         }
     }
-
     useEffect(()=>{
         
     },[gatheringListQuery.isSuccess])
 
-
     return (
         <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
-            <MatchFilterBar />
+            <MatchFilterBar setFilterData={(attr: attrType, value: any) => setFilterData(attr, value)} startDate={startDate} location={location} distance={distance} startTime={startTime} level={level} playTime={playTime} sex={sex} sports={sports} gameType={gameType} sort={sort} />
             <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
                 {listItems()}
             </div>
         </div>
     )
-}
+}       

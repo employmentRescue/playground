@@ -1,4 +1,5 @@
 export interface teamRanking {
+  teamId: number,
   teamName: string,
   matchTimes: number,
   win: number,

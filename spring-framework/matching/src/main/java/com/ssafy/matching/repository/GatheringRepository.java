@@ -12,7 +12,7 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
 
     //필터 조건 + 시간순 정렬
     @Query(value = "SELECT * " +
-            "FROM Gathering g, Place p " +
+            "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
@@ -27,7 +27,7 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
 
     //필터 조건 + 남은 인원 수 정렬
     @Query(value = "SELECT * " +
-            "FROM Gathering g, Place p " +
+            "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
@@ -37,14 +37,14 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
             "AND (g.play_time BETWEEN ?8 AND ?9) " +
             "AND g.sex like %?10% AND g.sports = ?11 AND g.game_type LIKE %?12% " +
             "AND g.is_completed = 0 AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
-            "ORDER BY g.people - (SELECT COUNT(*) FROM Gathering g, Gathering_Member m " +
+            "ORDER BY g.people - (SELECT COUNT(*) FROM gathering g, gathering_member m " +
             "where g.gathering_id = m.gathering_id " +
             ") ASC", nativeQuery = true)
     List<Gathering> findGatheringsByFilterRemainPeopleASC(String startDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String level, int minPlayTime, int maxPlayTime, String sex, String sports, String gameType);
 
     //필터 조건 + 거리순 정렬
     @Query(value = "SELECT * " +
-            "FROM Gathering g, Place p " +
+            "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
@@ -79,4 +79,6 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
             "AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
             "ORDER BY TIMESTAMP(g.start_date, g.start_time) DESC", nativeQuery = true)
     List<Gathering> getGatheringsTimeNotPast(long memberId);
+
+    List<Gathering> getGatheringsByTitleContaining(String keyword);
 }

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
 
 import ProfileCard from "@/components/Profile/ProfileCard"
@@ -8,12 +8,20 @@ import matchListImage from "@/assets/menu/match-list.png"
 import teamRankingImage from "@/assets/menu/team-ranking.png"
 import teamCreateImage from "@/assets/menu/team-create.png"
 import myTeamImage from "@/assets/menu/my-team.png"
+import { useEffect } from "react"
+import { setTabName } from "@/stores/tab/tabName"
 
 
 export default function MenuListPage() {
     const nickname = useSelector((state: RootState) => {
         return state.userInfo.nickname
     });
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setTabName('playGround'))
+    }, [])
 
     return (
         <div className="flex flex-col bg-white h-[calc(100%-110px)]">

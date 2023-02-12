@@ -3,8 +3,11 @@ package com.ssafy.matching.service;
 import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMember;
 
+import java.util.List;
+import java.util.Map;
+
 public interface TeamService {
-    Team viewTeamByTeamId(int teamId);
+    Map<String, Object> viewTeamByTeamId(int teamId);
 
     Team registerTeam(Team team);
     Team updateTeam(Team team);
@@ -12,4 +15,6 @@ public interface TeamService {
 
     void joinTeam(TeamMember teamMember, int teamId);
     void leaveTeam(int teamId, long memberId);
+
+    List<Map<String, Object>> viewTeamsByMemberId(long memberId);
 }

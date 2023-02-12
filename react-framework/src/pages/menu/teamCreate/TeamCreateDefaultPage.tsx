@@ -10,6 +10,7 @@ import store, { RootState } from "@/stores/store"
 import ButtonDesign from "../../../components/TeamCreate/Buttons/ButtonDesign"
 import { dropOutOfMyTeam } from "@/stores/user/myTeam"
 import TeamSettingPage from "./TeamSettingPage"
+import { setTabName } from "@/stores/tab/tabName"
 
 export default function TeamCreateDefaultPage() {
     const dispatch = useDispatch();
@@ -115,6 +116,10 @@ export default function TeamCreateDefaultPage() {
             </>
         )
     }
+
+    useEffect(() => {
+        dispatch(setTabName('팀 생성'))
+    }, [])
 
     return (
         <div className="flex flex-col h-[calc(100vh-110px)] justify-start bg-white">

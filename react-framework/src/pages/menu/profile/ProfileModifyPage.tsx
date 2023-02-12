@@ -1,11 +1,13 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
 import { setFavoriteSports, setFavoriteTime, setNickname, setStatusMessage } from "@/stores/register/userInfo"
+import useGeolocation from "react-hook-geolocation"
 import LevelCard from "@/components/userRegister/LevelCard"
 import ImageCard from "@/components/userRegister/ImageCard"
 
 import myProfileSampleImage from "@/assets/profiles/my-profile-sample.png"
+import currentPos from '@/assets/icons/current-position.png';
 import modifyImage from "@/assets/profiles/modify.png"
 import profileModifyImage from "@/assets/profiles/profile-modify.png"
 import titleFavoriteSports from "@/assets/profiles/title-favorite-sports.png"
@@ -14,16 +16,47 @@ import titleFavoriteTime from "@/assets/profiles/title-favorite-time.png"
 import footballImg from "@/assets/icons/football-bg-colored.png"
 import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
+import searchIcon from "@/assets/icons/search.png"
 
 import { Slider } from "@mui/material"
 import { setTabName } from "@/stores/tab/tabName"
+import { place } from "@/models/place"
 
 
 export default function ProfileModifyPage() {
     const dispatch = useDispatch();
 
+    const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
+    const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
+    const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
+    const [date, setDate] = useState<Date | null>(null);
+    const [place, setPlace] = useState<place | null>(null);
+    const [detailPlace, setDetailPlace] = useState<string>('');
+    const [preferDist, setPreferDist] = useState<number>(0);
+
+    const distMarks = [
+        {
+            value: 0,
+            label: '0km',
+        },
+        {
+            value: 15,
+            label: '15km',
+        },
+        {
+            value: 30,
+            label: '30km',
+        },
+    ];
+    // naver map
+    const mapElement: any | null = useRef(undefined);
+
+    // initial call
+    const geolocation = useGeolocation();
+
     const inputTeamNameRef: any = useRef();
     const inputStatusMessageRef: any = useRef();
+
 
     const isFavoritefootball = useSelector((state: RootState) => {
         return state.userInfo.favoriteSports.football;
@@ -65,6 +98,10 @@ export default function ProfileModifyPage() {
         dispatch(setFavoriteTime(newValue))
     }
 
+    const handlePreferDistChange = (event: Event, newValue: number | number[]) => {
+        setPreferDist(newValue as number);
+    };
+
     const getNicknameInput = (event: React.BaseSyntheticEvent) => {
         // console.log(e.target.value)
         event.preventDefault();
@@ -77,9 +114,72 @@ export default function ProfileModifyPage() {
         dispatch(setStatusMessage(event.target.value))
     }
 
+    function setMapIcon(
+        icon: string,
+        location: naver.maps.LatLng,
+        map: naver.maps.Map,
+        sizeX: number,
+        sizeY: number,
+        isBounce: boolean
+    ) {
+        return new naver.maps.Marker({
+            position: location,
+            map,
+            icon: {
+                url: icon,
+                size: new naver.maps.Size(sizeX, sizeY),
+                scaledSize: new naver.maps.Size(sizeX, sizeY),
+                origin: new naver.maps.Point(0, 0),
+                anchor: new naver.maps.Point(sizeX / 2, sizeY),
+            },
+            animation: isBounce ? naver.maps.Animation.BOUNCE : undefined,
+        });
+    }
+
+
     useEffect(() => {
         dispatch(setTabName('프로필 수정'))
     }, [])
+
+
+    // 네이버 지도 생성
+    useEffect(() => {
+        const { naver } = window;
+        if (!mapElement.current || !naver) return;
+
+        // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
+        const location = new naver.maps.LatLng(
+            geolocation.latitude,
+            geolocation.longitude
+        );
+        const mapOptions: naver.maps.MapOptions = {
+            center: location,
+            zoom: 13,
+        };
+        const map = new naver.maps.Map(mapElement.current, mapOptions);
+        setNaverMap(map);
+    }, []);
+
+    useEffect(() => {
+        if (naverMap === null) return;
+
+        const location = new naver.maps.LatLng(
+            geolocation.latitude,
+            geolocation.longitude
+        );
+
+        if (!curPos)
+            naverMap.setCenter(location);
+
+        // 기존 현재 위치 마커 제거
+        if (curPos) {
+            curPos.setMap(null);
+        }
+
+        // 현재 위치 맵에 표시
+        setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
+    }, [geolocation]);
+
 
     return (
         <div>
@@ -102,8 +202,8 @@ export default function ProfileModifyPage() {
             </div>
 
 
-            <div className="flex flex-col mt-8 w-full h-auto bg-white justify-start">
-                <div className="flex ml-30 my-20 text-18 font-inter font-extrabold">
+            <div className="flex flex-col mt-8 pl-24 pr-24 w-full h-auto bg-white justify-start">
+                <div className="flex my-20 text-18 font-inter font-extrabold">
                     <img src={titleFavoriteSports} className="w-20 h-20 mr-8 mt-2" />
                     <p>선호 운동</p>
                 </div>
@@ -144,7 +244,7 @@ export default function ProfileModifyPage() {
                 </div>
 
 
-                <div className="flex ml-30 my-20 text-18 font-inter font-extrabold">
+                <div className="flex my-20 text-18 font-inter font-extrabold">
                     <img src={titleFavoriteSports} className="w-20 h-20 mr-8 mt-2" />
                     <p>운동 레벨</p>
                 </div>
@@ -179,22 +279,59 @@ export default function ProfileModifyPage() {
                 </div>
 
 
-                <div className="flex ml-30 mt-20 mb-8 text-18 font-inter font-extrabold">
-                    <img src={titleFavoritePlace} className="w-20 h-20 mr-8 mt-2" />
-                    <div className="flex flex-col">
-                        <p>선호 지역</p>
-                        <p className="-ml-15 mt-8 mb-8 text-14 font-normal">서울특별시 양천구 목동동로 111 양천공원{/* userInfo.favoritePlace */}</p>
-                    </div>
+                {/* 경택님이 만든 지도 그대로 가져옴 */}
+                <div className="flex mt-24">
+                    <img className="w-20 h-20 self-center" src={titleFavoritePlace}></img>
+                    <div className="ml-7 text-18 font-semibold">선호 지역</div>
+                </div>
+                <div className="flex items-center mt-12">
+                    <img className="w-20 h-20" src={searchIcon}></img>
+                    <input
+                        className="w-full h-30 bg-gray-600 text-gray-700 ml-6 pl-15 rounded-5 text-12"
+                        placeholder="검색하고 싶은 지역을 입력해주세요."
+                    ></input>
+                </div>
+                <div ref={mapElement} className="w-full h-[364px] mt-12"></div>
+                <div className='w-full text-end text-13 mt-5 font-semibold text-blue-700'>운동 모임 장소를 지도에서 클릭해주세요.</div>
+                <div className='text-13 mt-10'>주소 : {place?.address}</div>
+                <div className='flex mt-10 items-center'>
+                    <div className='text-13 w-80'>상세 주소: </div>
+                    <input
+                        className="w-full h-30 bg-gray-600 text-gray-700 ml-6 pl-15 rounded-5 text-12"
+                        placeholder="선호 지역을 입력해 주세요. 예) 고운뜰공원"
+                        onChange={(e) => setDetailPlace(e.target.value)}
+                    ></input>
+                </div>
+                <div className="w-[calc(100%-30px)] ml-auto mr-auto">
+                    <Slider
+                        value={preferDist}
+                        onChange={handlePreferDistChange}
+                        valueLabelDisplay="auto"
+                        marks={distMarks}
+                        min={0}
+                        max={30}
+                        sx={{
+                            color: 'blue',
+                            '& .MuiSlider-thumb': {
+                                width: '15px',
+                                height: '15px',
+                                color: 'white',
+                                borderWidth: '1px',
+                                borderColor: 'blue',
+                            },
+                        }}
+                    />
                 </div>
 
 
-                <div className="flex ml-30 mt-20 mb-8 text-18 font-inter font-extrabold">
+
+                <div className="flex mt-20 mb-8 text-18 font-inter font-extrabold">
                     <img src={titleFavoriteTime} className="w-20 h-20 mr-8 mt-2" />
                     <div className="flex flex-col">
                         <p>선호 시간대</p>
                     </div>
                 </div>
-                <div className="w-[260px] self-center mb-10">
+                <div className="w-[calc(100%-30px)] self-center mb-10">
                     <Slider
                         value={favoriteTime}
                         onChange={handleChange}
@@ -204,6 +341,16 @@ export default function ProfileModifyPage() {
                         max={24}
                         getAriaValueText={valueText}
                         className="mt-5"
+                        sx={{
+                            color: 'blue',
+                            '& .MuiSlider-thumb': {
+                                width: '15px',
+                                height: '15px',
+                                color: 'white',
+                                borderWidth: '1px',
+                                borderColor: 'blue',
+                            },
+                        }}
                     />
                 </div>
 

@@ -25,10 +25,12 @@ import ProfilePage from './pages/menu/profile/ProfilePage';
 import RankPage from './pages/menu/RankPage';
 import MatchListPage from './pages/menu/MatchListPage';
 import MyTeamPage from './pages/menu/myTeam/MyTeamPage';
+import MyTeamDetailPage from './pages/menu/myTeam/MyTeamDetailPage';
 import TeamCreateDefaultPage from './pages/menu/teamCreate/TeamCreateDefaultPage';
 import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
 import TeamMatchDetailPage from './pages/teamMatch/TeamMatchDeatilPage';
-import TeamMatchJoinPage from './pages/teamMatch/TeamMatchJoinPage';
+import TeamMatchGamePage from './pages/teamMatch/TeamMatchGamePage';
+import TeamMatchPage from './pages/teamMatch/TeamMatchPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -59,6 +61,10 @@ const router = createBrowserRouter([
 
       // 팀 매칭 페이지
       {
+        path: 'team-match',
+        element: <TeamMatchPage />
+      },
+      {
         path: 'team-match/register',
         element: <TeamMatchRegisterPage />
       },
@@ -68,7 +74,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'team-match/join',
-        element: <TeamMatchJoinPage />
+        element: <TeamMatchGamePage />
       },
 
       // 전체 메뉴(프로필, 통게, 매칭, 팀, 도움말)
@@ -95,6 +101,10 @@ const router = createBrowserRouter([
       {
         path: 'menu/team',
         element: <MyTeamPage />,
+      },
+      {
+        path: 'menu/team/:teamId',
+        element: <MyTeamDetailPage />,
       },
 
       // 채팅

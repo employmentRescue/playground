@@ -23,7 +23,8 @@ public class MatchServiceImpl implements MatchService {
     @Autowired
     TeamRepository teamRepository;
 
-    private  RankingService rankingService;
+    @Autowired
+    RankingService rankingService;
 
     @Override
     public Match viewMatchById(int matchId) {
@@ -76,13 +77,13 @@ public class MatchServiceImpl implements MatchService {
         Match match = matchRepository.getByMatchId(matchId);
         teamMatchResult.setMatch(match);
 
-        //TODO 수정해야함 - 사이즈로 구별안된다... -> match is_done 칼럼으로 구별하기
-        int size = match.getTeamMatchResultList().size();
-        //isDone 가져와서 비교하기
         boolean isDone = match.isDone();
 
         if(!isDone) { //경기 결과 등록한 팀 아직 없음
             teamMatchResultRepository.save(teamMatchResult);
+
+            match.setDone(true); //한 팀이 입력 했다고 변경하기
+            matchRepository.save(match);
         }else { //등록한 다른 팀 있음
             TeamMatchResult teamMatchResultOp = match.getTeamMatchResultList().get(0);
             String resultMe = teamMatchResult.getResult();
@@ -90,8 +91,12 @@ public class MatchServiceImpl implements MatchService {
             
             //잘못 입력하는 경우
             if (resultMe.equals("승")) {
-                if (resultOp.equals("승") || resultOp.equals("패")) {
+                if (resultOp.equals("승")) {
                     return "fail";
+                } else if (resultMe.equals("무")) {
+                    if (resultOp.equals("승") || resultOp.equals("패")) {
+                        return "fail";
+                    }
                 }
             } else if (resultMe.equals("패")) {
                 if (resultOp.equals("패")) {
@@ -104,9 +109,7 @@ public class MatchServiceImpl implements MatchService {
             }
 
             teamMatchResultRepository.save(teamMatchResult);
-            
-            //TODO 포인트 산정하기
-            rankingService.updatePoint(teamMatchResult, teamMatchResultOp);
+            rankingService.updatePoint(teamMatchResult, teamMatchResultOp); //포인트 산정하기
         }
 
         return "success";

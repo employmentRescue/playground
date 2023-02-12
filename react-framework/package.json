@@ -40,7 +40,8 @@
     "redux-persist": "^6.0.0",
     "reselect": "^4.1.7",
     "sort-by": "^0.0.2",
-    "swiper": "^9.0.3"
+    "swiper": "^9.0.3",
+    "use-long-press": "^2.0.3"
   },
   "devDependencies": {
     "@types/navermaps": "^3.6.1",

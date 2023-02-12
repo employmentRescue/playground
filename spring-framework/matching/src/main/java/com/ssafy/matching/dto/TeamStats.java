@@ -12,6 +12,8 @@ import lombok.*;
 
 @ApiModel(value = "TeamStats : 팀 통계 정보", description = "팀 통계의 상세 정보를 나타낸다.")
 public class TeamStats {
+    @ApiModelProperty(value = "팀 번호")
+    private int teamId;
     @ApiModelProperty(value = "팀 이름")
     private String teamName;
     @ApiModelProperty(value = "경기 횟수")

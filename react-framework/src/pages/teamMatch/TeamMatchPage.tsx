@@ -105,11 +105,14 @@ function registerTabType(state: TabState, action: TabAction) {
 
 // 내용 - 자동매칭인지 목록인지
 function Content({ clickedTab }: { clickedTab: string }) {
+    const [filterData, setFilterData] = useState(useSelector((state: RootState) => {
+        return state.matchSort;
+    }))
 
     if (clickedTab === 'AUTOMATCH') {
         return (
             <div>
-                <MatchFilterBar />
+                {/* <MatchFilterBar filterData={filterData}/> */}
                 <MatchContent />
             </div>
         )
@@ -117,7 +120,7 @@ function Content({ clickedTab }: { clickedTab: string }) {
     else {
         return (
             <div>
-                <MatchFilterBar />
+                {/* <MatchFilterBar filterData={filterData}/> */}
                 <ListContent />
             </div>
         )
@@ -192,7 +195,7 @@ function ListContent() {
                 return (
                     <div>{gatheringList}</div>
                 )
-            } 
+            }
             else {
                 return (
                     <div>
@@ -210,9 +213,9 @@ function ListContent() {
         }
     }
 
-    useEffect(()=>{
-        
-    },[gatheringListQuery.isSuccess])
+    useEffect(() => {
+
+    }, [gatheringListQuery.isSuccess])
 
     return (
         <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
@@ -224,7 +227,7 @@ function ListContent() {
 // 상세 목록
 
 // 매치 페이지 출력
-export default function MatchPage() {
+export default function TeamMatchPage() {
 
     const [state, dispatch] = useReducer(registerTabType, initialTabState);
 

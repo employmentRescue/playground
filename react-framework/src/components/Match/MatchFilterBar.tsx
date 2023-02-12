@@ -3,14 +3,16 @@ import { useReducer, ComponentProps } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSortSports } from "@/stores/match/matchSort"
 
+import { MatchSportSetting, MatchFilterSport } from "@/components/Match/MatchSportSetting"
+import { MatchDistanceSetting, MatchFilterDistance } from "@/components/Match/MatchDistanceSetting"
 import { MatchDateSetting, MatchFilterDate } from "@/components/Match/MatchDateSetting"
 import { MatchTimeSetting, MatchFilterTime } from "@/components/Match/MatchTimeSetting"
-import { MatchDistanceSetting, MatchFilterDistance } from "@/components/Match/MatchDistanceSetting"
-import { MatchFilterEtc } from "@/components/Match/MatchEtcSetting"
+import { MatchEtcSetting, MatchFilterEtc } from "@/components/Match/MatchEtcSetting"
 
 import basketballOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import footBallOriginal from "@/assets/icons/football-original.png"
+import { matchList } from "@/models/matchList";
 
 type listItem = {
     sportType: string,
@@ -19,6 +21,7 @@ type listItem = {
     date: string,
 }
 
+type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | "playTime" | "sex" | "sports" | "gameType" | "sort" 
 type sportAction = { type: 'ISCLICKED' | '농구' | '축구' | '배드민턴' }
 
 interface sportTypeState {
@@ -67,64 +70,31 @@ function registerSportType(state: sportTypeState, action: sportAction) {
     }
 }
 
-// 자동 매칭 필터바 - 종목
-function MatchFilterSport({ sportType, onChangeMode }: { sportType: string, onChangeMode: (type: string) => void }) {
-    const basketballBorder = () => { return (sportType === '농구' ? "border-[#efad45]" : "border-[#fde9b4]") }
-    const footBallBorder = () => { return (sportType === '축구' ? "border-[#9C8DD3]" : "border-[#d8caff]") }
-    const badmintonBorder = () => { return (sportType === '배드민턴' ? "border-[#71D354]" : "border-[#c4ffb6]") }
-
-    return (
-        <div className="flex-col absolute top-50 left-[-11px] w-60 h-[157px] m-0 pt-7 px-10 rounded-15 border-solid border-1 border-[#303EFF]/50 bg-[#f1f3ff] z-10">
-            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8  rounded-20 bg-[#fde9b4] border-solid border-[2.5px] " + basketballBorder()}
-                onClick={(event) => {
-                    event.preventDefault();
-                    onChangeMode("BASKETBALL");
-
-                }}>
-                <img src={basketballOriginal} className="w-20 h-20 grow-0" />
-            </div>
-            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#d8caff] border-solid border-[2.5px] " + footBallBorder()}
-                onClick={(event) => {
-                    event.preventDefault();
-                    onChangeMode("footBall");
-                }}>
-                <img src={footBallOriginal} className="w-20 h-20 grow-0" />
-            </div>
-            <div className={"w-40 h-40 grow-0 mr-11 mb-10 pt-8 pl-8 rounded-20 bg-[#c4ffb6] border-solid border-[2.5px] " + badmintonBorder()}
-                onClick={(event) => {
-                    event.preventDefault();
-                    onChangeMode("BADMINTON");
-                }}>
-                <img src={badmintonOriginal} className="w-20 h-20 grow-0" />
-            </div>
-        </div>
-    )
-}
-
-export function MatchFilterBar() {
+export function MatchFilterBar({setFilterData, startDate, location, distance, startTime, level, playTime, sex, sports, gameType, sort}: {setFilterData: (attr:attrType, value:any) => void, startDate : string, location: number[], distance:number, startTime:(string | null)[], level:string, playTime:number[], sex:string, sports:string, gameType:string, sort:string}) {
     // 종목 탭
-    const [sportState, dispatch] = useReducer(registerSportType, initialSportTypeState)
+    const [sportState, setSportType] = useReducer(registerSportType, initialSportTypeState)
     // (useSelector((state: RootState) => {
     //     return state.matchSort.sports;
     // }))
-    const isClicked = () => dispatch({ type: 'ISCLICKED' })
-    const basketball = () => { sportChange("BASKETBALL"); dispatch({ type: '농구' }); }
-    const footBall = () => { sportChange("footBall"); dispatch({ type: '축구' }); }
-    const badminton = () => { sportChange("BADMINTON"); dispatch({ type: '배드민턴' }); }
-    
-    const dispatchSport = useDispatch()
+    const isClicked = () => setSportType({ type: 'ISCLICKED' })
+    const basketball = () => { sportChange("BASKETBALL"); setSportType({ type: '농구' }); }
+    const footBall = () => { sportChange("footBall"); setSportType({ type: '축구' }); }
+    const badminton = () => { sportChange("BADMINTON"); setSportType({ type: '배드민턴' }); }
     
     const [sportIcon, setSportIcon] = useState({ border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal })
     const sportChange = (type: string) => {
         switch (type) {
             case "BASKETBALL":
+                setFilterData("sports", "농구")
                 setSportIcon({ border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal });
                 break;
             case "footBall":
                 setSportIcon({ border: "border-[#9C8DD3] bg-[#d8caff]", img: footBallOriginal });
+                setFilterData("sports", "축구")
                 break;
             case "BADMINTON":
                 setSportIcon({ border: "border-[#71D354] bg-[#c4ffb6]", img: badmintonOriginal });
+                setFilterData("sports", "배드민턴")
                 break;
         }
     }
@@ -133,10 +103,10 @@ export function MatchFilterBar() {
             isClicked();
         }
     }
-
     // 거리 탭
     const [distanceState, setDistanceState] = useState(false);
     const distancePage = () => {
+        console.log('datePage')
         switch (distanceState) {
             case true:
                 setDistanceState(false);
@@ -145,12 +115,11 @@ export function MatchFilterBar() {
                 setDistanceState(true);
                 break;
         }
-
     }
-
     // 날짜 탭
     const [dateState, setDateState] = useState(false);
     const datePage = () => {
+
         switch (dateState) {
             case true:
                 setDateState(false);
@@ -160,92 +129,78 @@ export function MatchFilterBar() {
                 break;
         }
     }
-
     // 시간 탭
     const [timeState, setTimeState] = useState(false);
     const timePage = () => {
         switch (timeState) {
             case true:
                 setTimeState(false);
-                console.log(timeState);
                 break;
             case false:
                 setTimeState(true);
-                console.log(timeState);
                 break;
         }
     }
-
-    const [date, setDate] = useState('YYYY-MM-DD')
-    let dateDisplay = 'M-DD'
-    if (date[5] === '0') {
-        if (date[8] === '0') {
-            dateDisplay = date.slice(6,7) + "월 " + date.slice(9) + "일"           
-        }
-        else {
-            dateDisplay = date.slice(6,7) + "월 " + date.slice(8, 10) + "일"
-        }
-    }
-    else {
-        if (date[8] === '0') {
-            dateDisplay = date.slice(5,7) + "월 " + date.slice(9) + "일"
-        }
-        else {
-            dateDisplay = date.slice(5,7) + "월 " + date.slice(8, 10) + "일"
+    // 시간 탭
+    const [etcState, setEtcState] = useState(false);
+    const etcPage = () => {
+        switch (etcState) {
+            case true:
+                setEtcState(false);
+                break;
+            case false:
+                setEtcState(true);
+                break;
         }
     }
-
+    const dateDisplay = () => {
+        if (startDate[5] === '0') {
+            if (startDate[8] === '0') { 
+                return startDate.slice(6,7) + "월 " + startDate.slice(9) + "일"           
+            } else { 
+                return startDate.slice(6,7) + "월 " + startDate.slice(8, 10) + "일" 
+            }
+        } else {
+            if (startDate[8] === '0') {
+                return startDate.slice(5,7) + "월 " + startDate.slice(9) + "일"
+            } else {
+                return startDate.slice(5,7) + "월 " + startDate.slice(8, 10) + "일"
+            }
+        }
+    }
+    const setEtcData = (level: string, playTime: number[], sex: string, gameType: string)=>{
+        setFilterData("level", level);
+        setFilterData("playTime", playTime);
+        setFilterData("sex", sex);
+        setFilterData("gameType", gameType);
+    }
     return (
-        <div className="flex flex-row relative place-content-around w-full h-93 grow-0 m-0 pt-8 pl-16 bg-[#f1f3ff]">
+        <div className="flex flex-row relative place-content-around w-full h-53 grow-0 m-0 px-10 bg-[#f1f3ff]">
             <div className="relative w-40 h-40 p-0 m-0">
-                <div className={"w-40 h-40 grow-0 mr-11 pt-8 pl-8 border-solid border-[2.5px] rounded-20 " + sportIcon.border}
-                    onClick={(event) => {
-                        event.preventDefault();
-                        isClicked();
-                    }}>
-                    <img src={sportIcon.img} className="w-20 h-20 grow-0" />
-                </div>
-                {sportState.isClicked === true && <MatchFilterSport sportType={sportState.sportType} onChangeMode={(type) => {
+                <MatchFilterSport sportIcon={sportIcon} isClicked={()=>isClicked()}/>
+                {sportState.isClicked === true && <MatchSportSetting sportType={sportState.sportType} onChangeMode={(type) => {
                     switch (type) {
                         case "BASKETBALL":
-                            dispatchSport(setSortSports(sportState.sportType))
                             basketball();
                             break;
                         case "footBall":
-                            dispatchSport(setSortSports(sportState.sportType))
                             footBall();
                             break;
                         case "BADMINTON":
-                            dispatchSport(setSortSports(sportState.sportType))
                             badminton();
                             break;
                     }
                 }
                 } />}
             </div>
-            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
-                distancePage();
-            }} />
-            {distanceState === true && <MatchDistanceSetting clicked={() => {
-                distancePage();
-            }} />}
-
-            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
-                datePage();
-            }} date={dateDisplay}/>
-            {dateState === true && <MatchDateSetting clicked={() => {
-                datePage();
-            }}
-            dateSetting={(dateClicked: string)=>setDate(dateClicked)} />}
-
-            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={() => {
-                timePage();
-            }} />
-            {timeState === true && <MatchTimeSetting clicked={() => {
-                timePage();
-            }} />}
-
-            <MatchFilterEtc shutOtherWindow={()=>shutOtherWindow()} />
+            <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{distancePage();}} distance={distance}/>
+            <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{datePage();}} date={dateDisplay()} />
+            <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{timePage();}} startTime={startTime}/>
+            <MatchFilterEtc shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{etcPage();}} />
+            {distanceState === true && <MatchDistanceSetting clicked={() => {distancePage();}} distance={distance} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+            {dateState === true && <MatchDateSetting clicked={() => {datePage();}} startDate={startDate} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+            {timeState === true && <MatchTimeSetting clicked={() => {timePage();}} startTime={startTime} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+            {etcState === true && <MatchEtcSetting clicked={() => {etcPage();}} level={level} playTime={playTime} sex={sex} gameType={gameType} setEtcData={(level: string, playTime: number[], sex: string, gameType: string)=>{setEtcData(level, playTime, sex, gameType)}}/>}
         </div>
     )
 }

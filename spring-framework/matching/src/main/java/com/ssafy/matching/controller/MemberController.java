@@ -1,7 +1,9 @@
 package com.ssafy.matching.controller;
 
 import com.ssafy.matching.dto.Gathering;
+import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.service.MemberService;
+import com.ssafy.matching.service.TeamService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,14 @@ import java.util.Map;
 @AllArgsConstructor
 @RequestMapping("/mypage")
 public class MemberController {
+    private TeamService teamService;
     private MemberService memberService;
+
+    @ApiOperation(value = "나의 팀 보기", notes = "멤버 id에 해당하는 팀 리스트를 반환한다", response = Team.class)
+    @GetMapping("/team/{memberid}")
+    public ResponseEntity<?> viewMyTeams(@PathVariable("memberid") Long memberId) throws Exception {
+        return new ResponseEntity<List<Map<String, Object>>>(teamService.viewTeamsByMemberId(memberId), HttpStatus.OK);
+    }
 
     @ApiOperation(value = "유저가 신청한 운동 모임과 팀 경기 전체 리스트(시간 지난 것, 안지난 것 모두)", notes = "유저가 신청한 운동 모임과 팀 경기 전체 리스트를 반환한다")
     @GetMapping("/join/whole/{memberid}")
