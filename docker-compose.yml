@@ -58,5 +58,5 @@ services:
 
 networks:
   default:
-    driver: playground-network
+    name: a-name-i-prefer-over-projectname_default
 
