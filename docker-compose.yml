@@ -9,6 +9,8 @@ services:
     ports:
       # - "80:80"
       - "443:443"
+    networks:
+      - playground-broadcast-network
 
 
   oauth2-service:
@@ -18,6 +20,8 @@ services:
     container_name: playground-oauth2-service
     ports:
       - "9001:8080"
+    networks:
+      - playground-broadcast-network
 
   user-service:
     # build: 
@@ -26,6 +30,8 @@ services:
     container_name: user-service
     ports:
       - "9002:8080"
+    networks:
+      - playground-broadcast-network
 
   matching-service:
     # build: 
@@ -34,6 +40,8 @@ services:
     container_name: matching-service
     ports:
       - "9003:8080"
+    networks:
+      - playground-broadcast-network
 
   notify-service:
     # build: 
@@ -42,6 +50,8 @@ services:
     container_name: notify-service
     ports:
       - "9004:8080"
+    networks:
+      - playground-broadcast-network
     # depends_on:
     # - matching-service
     # - user-service
@@ -55,8 +65,10 @@ services:
     container_name: react-framework
     ports:
       - "3000:80"
+    networks:
+      - playground-broadcast-network
 
 networks:
-  default:
-    name: a-name-i-prefer-over-projectname_default
+  playground-broadcast-network:
+    driver: bridge
 
