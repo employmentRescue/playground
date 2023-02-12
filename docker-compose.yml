@@ -58,6 +58,5 @@ services:
 
 networks:
   default:
-    name: playground-network
-    external: true
+    driver: playground-network
 
