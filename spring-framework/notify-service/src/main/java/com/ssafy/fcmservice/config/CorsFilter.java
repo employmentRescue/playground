@@ -30,7 +30,7 @@ public class CorsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        System.out.println(new String(req.getInputStream().readAllBytes()));
+//        System.out.println(new String(req.getInputStream().readAllBytes()));
 //        response.setHeader("Access-Control-Allow-Origin", "*");
 
 //

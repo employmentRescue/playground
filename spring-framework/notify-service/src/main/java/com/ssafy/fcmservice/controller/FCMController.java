@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/notify")
@@ -38,7 +39,8 @@ public class FCMController {
         if (title != null) title = title.substring(0, Math.min(1000, title.length()));
         String body = (String) json.get("body");
         if (body != null) body = body.substring(0, Math.min(1000,body.length()));
-        List<String> tokenList = objectMapper.convertValue(json.get("token-list"), Set.class).stream().toList();
+        List<String> tokenList = objectMapper.convertValue(json.get("token-list"), List.class).stream().distinct().toList();
+        System.out.println(tokenList);
 
 
         try
@@ -83,7 +85,8 @@ public class FCMController {
             );
         }
         catch (Throwable e){
-            return new ResponseEntity<Void>(HttpStatus.METHOD_FAILURE);
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 }

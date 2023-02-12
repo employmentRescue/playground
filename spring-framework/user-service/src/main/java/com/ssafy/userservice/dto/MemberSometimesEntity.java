@@ -15,7 +15,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity @Table(name = "MEMBER_SOMTIMES")
+@Entity @Table(name = "MEMBER_SOMTEIMES")
 public class MemberSometimesEntity extends BaseTimeEntity {
     @Id @JsonIgnore
     @Column(name = "MEMBER_ID")
