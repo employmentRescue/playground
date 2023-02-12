@@ -2,9 +2,14 @@
 @import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
 
 @tailwind base;
-.spoka  { font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif'; }
-.nanumgothic  {
+
+.spoka {
+  font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';
+}
+
+.nanumgothic {
   font-family: "Nanum Gothic", sans-serif;
 }
+
 @tailwind components;
 @tailwind utilities;

@@ -159,7 +159,7 @@ export default function MatchListPage() {
     return (
         <div className="flex flex-col h-auto w-full">
             <div className="w-full h-auto bg-white mb-5">
-                <h1 className="pl-20 py-15 text-start text-18 font-inter font-bold">개인 매칭</h1>
+                <h1 className="pl-20 py-15 text-start text-18  font-bold">개인 매칭</h1>
             </div>
             <div>{MatchCardRendering("최근개인")}</div>
             <div>{MatchCardRendering("지난개인")}</div>
@@ -167,7 +167,7 @@ export default function MatchListPage() {
             <div className="pt-12" />
 
             <div className="w-full h-auto bg-white mb-5">
-                <h1 className="pl-20 py-15 text-start text-18 font-inter font-bold">팀 매칭</h1>
+                <h1 className="pl-20 py-15 text-start text-18  font-bold">팀 매칭</h1>
             </div>
             <div>{MatchCardRendering("최근팀")}</div>
             <div>{MatchCardRendering("지난팀")}</div>

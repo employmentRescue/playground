@@ -24,7 +24,7 @@ export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, m
                 <div className="flex flex-col justify-center">
                     <img src={imgSrc} className="w-40 h-40 ml-23 mr-20" />
                 </div>
-                <div className="flex flex-col w-auto font-inter tracking-tight">
+                <div className="flex flex-col w-auto  tracking-tight">
                     <p className="text-15 mt-13 font-bold">{matchTitle}</p>
                     <p className="text-10 mt-4 text-[#969696]">{place}</p>
                     {matchPersonnel && <p className="text-10 mt-0 text-[#969696]">{matchPersonnel}</p>}

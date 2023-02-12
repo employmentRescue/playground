@@ -42,17 +42,17 @@ export default function ProfileMainPage() {
                 </div>
             </div>
             <div className="flex flex-col mt-8 w-full h-auto bg-white justify-start">
-                <div className="flex ml-30 my-20 text-18 font-inter font-extrabold">
+                <div className="flex ml-30 my-20 text-18  font-extrabold">
                     <img src={titleFavoriteSports} className="w-20 h-20 mr-8 mt-2" />
                     <p>선호 운동 및 레벨</p>
                 </div>
-                <div className="flex justify-start px-15 pb-10 text-14 text-center font-inter">
+                <div className="flex justify-start px-15 pb-10 text-14 text-center ">
                     {userInfo.favoriteSports.football && <div className="flex-col"><img src={footballImage} className="w-40 mx-35 mt-5" />{userInfo.sportsLevel.football}</div>}
                     {userInfo.favoriteSports.basketball && <div className="flex-col"><img src={basketballImage} className="w-40 mx-35 mt-5" />{userInfo.sportsLevel.basketball}</div>}
                     {userInfo.favoriteSports.badminton && <div className="flex-col"><img src={badmintonImage} className="w-40 mx-35 mt-5" />{userInfo.sportsLevel.badminton}</div>}
                 </div>
 
-                <div className="flex ml-30 mt-20 mb-8 text-18 font-inter font-extrabold">
+                <div className="flex ml-30 mt-20 mb-8 text-18  font-extrabold">
                     <img src={titleFavoritePlace} className="w-20 h-20 mr-8 mt-2" />
                     <div className="flex flex-col">
                         <p>선호 지역</p>
@@ -61,7 +61,7 @@ export default function ProfileMainPage() {
                 </div>
 
 
-                <div className="flex ml-30 mt-20 mb-8 text-18 font-inter font-extrabold">
+                <div className="flex ml-30 mt-20 mb-8 text-18  font-extrabold">
                     <img src={titleFavoriteTime} className="w-20 h-20 mr-8 mt-2" />
                     <div className="flex flex-col">
                         <p>선호 시간대</p>
