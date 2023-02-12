@@ -2,7 +2,6 @@ package com.ssafy.matching.controller;
 
 import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.dto.GatheringMember;
-import com.ssafy.matching.dto.Match;
 import com.ssafy.matching.service.GatheringService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -24,6 +22,11 @@ public class GatheringController {
     private static final String FAIL = "fail";
 
     private GatheringService gatheringService;
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
 
     @ApiOperation(value = "운동 모임 전체 리스트", notes = "운동 모임 전체를 반환한다", response = List.class)
     @GetMapping("/list")
