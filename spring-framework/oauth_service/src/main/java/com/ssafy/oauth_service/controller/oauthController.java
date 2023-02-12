@@ -67,7 +67,7 @@ public class oauthController {
 
         URL requestURL = new URL(request.getRequestURL().toString());
         String port = requestURL.getPort() == -1 ? "" : ":" + requestURL.getPort();
-        return "https://i8b309.p.ssafy.io/oauth2/login" + requestURL.getHost() + port;
+        return requestURL.getProtocol() + "://" + requestURL.getHost() + port;
 
     }
 
@@ -122,7 +122,7 @@ public class oauthController {
         return "redirect:" + "https://kauth.kakao.com/oauth/authorize?" +
                 "response_type=code&client_id=79c6d214ca859ea2806d6bd426ffb1fe" +
                 "&redirect_uri=" +
-                getURLBase(req) + "/oauth2/login"; // 내 서버로 redirect 해서 kakao access_token, kakao refresh_token 받음
+                "https://i8b309.p.ssafy.io/oauth2/login"; // 내 서버로 redirect 해서 kakao access_token, kakao refresh_token 받음
         // <- 나중에 naver도 합치면 @RequestMapping("/login/{provider}")로 하면 될듯.
     }
 
