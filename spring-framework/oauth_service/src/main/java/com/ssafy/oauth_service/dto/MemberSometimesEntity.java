@@ -1,21 +1,27 @@
-package com.ssafy.oauth_service.dto;
+package com.ssafy.userservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Entity
+@JsonIgnoreProperties(value = {"createdDate", "modifiedDate"}, ignoreUnknown = true)
+
 @Getter @Setter
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "MEMBER_SOMTIMES")
-public class MemberSometimesEntity {
-    @Id @Column(name = "MEMBER_ID")
+@Entity @Table(name = "MEMBER_SOMTIMES")
+public class MemberSometimesEntity extends BaseTimeEntity {
+    @Id @JsonIgnore
+    @Column(name = "MEMBER_ID")
     long id;
+    @Column(unique = true)
     String nickname;
     String name;
 }
+
