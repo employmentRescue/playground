@@ -67,7 +67,7 @@ public class oauthController {
 
         URL requestURL = new URL(request.getRequestURL().toString());
         String port = requestURL.getPort() == -1 ? "" : ":" + requestURL.getPort();
-        return requestURL.getProtocol() + "://" + requestURL.getHost() + port;
+        return "https://i8b309.p.ssafy.io/oauth2/login" + requestURL.getHost() + port;
 
     }
 
