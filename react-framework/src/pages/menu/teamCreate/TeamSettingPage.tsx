@@ -69,12 +69,22 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
 
     useEffect(() => {
         setTeamLevel("입문")
+        if (selectedSports === "축구") {
+            setSportsPersonnel("3 on 3")
+        } else if (selectedSports === "농구") {
+            setSportsPersonnel("3 on 3")
+        } else (
+            setSportsPersonnel("1 on 1")
+        )
     }, [selectedSports])
 
     return (
         <div className="flex flex-col self-center">
             <div className="mt-65" />
-            <img src={teamProfileCreateImg} className="w-100 h-100 self-center" />
+            <label htmlFor="uploadImg" className="self-center">
+                <img src={teamProfileCreateImg} className="w-100 h-100 self-center" />
+            </label>
+            <input type="file" id="uploadImg" className="w-0 h-0 overflow-hidden" />
             <div className="flex self-center">
                 <input onChange={getNicknameInput} className="w-[170px] mt-12 px-25 text-18 text-inter opacity-50 text-center font-extrabold self-center border-b-2 border-[#DBDBDB] outline-none" placeholder="팀 이름" ref={teamNameInputRef} />
                 <img src={modifyImage} className="w-15 h-15 -ml-15 mb-10 self-end" onClick={() => teamNameInputRef.current.focus()} />
@@ -97,7 +107,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
 
             </div>
 
-            <div className="flex mt-25 self-center">
+            <div className="flex mt-35 self-center">
                 <img src={titleFavoriteSports} className="w-20 h-20 my-5" />
                 <h2 className="m-5 text-15 font-inter font-extrabold">게임 종류를 선택하세요.</h2>
             </div>
