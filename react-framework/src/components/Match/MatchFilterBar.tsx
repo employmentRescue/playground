@@ -168,6 +168,7 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
             }
         }
     }
+    // 기타 정렬 데이터 처리용
     const setEtcData = (level: string, playTime: number[], sex: string, gameType: string)=>{
         setFilterData("level", level);
         setFilterData("playTime", playTime);

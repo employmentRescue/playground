@@ -25,27 +25,51 @@ const sortInfoSlice = createSlice({
     name: "sortInfo",
     initialState,
     reducers: {
-        setSortSports(state, action) {
-            state.sports = action.payload;
+        setSortDate(state, action) {
+            state.startDate = action.payload;
+        },
+        setSortLocation(state, action) {
+            state.lat, state.lng = action.payload;
         },
         setSortDistance(state, action) {
             state.distance = action.payload;
         },
-        setSortDate(state, action) {
-            state.startDate = action.payload;
+        setSortStartTime(state, action) {
+            state.minStartTime, state.maxStartTime = action.payload;
         },
-        setSortTimeRange(state, action) {
-            state.minStartTime,  state.maxStartTime = String(action.payload[0]), String(action.payload[1]);
-        }
+        setSortlevel(state, action) {
+            state.level = action.payload;
+        },
+        setSortPlayTime(state, action) {
+            state.minPlayTime,  state.maxPlayTime = action.payload;
+        },
+        setSortSex(state, action) {
+            state.sex = action.payload;
+        },
+        setSortSports(state, action) {
+            state.sports = action.payload;
+        },
+        setSortGameType(state, action) {
+            state.gameType = action.payload;
+        },
+        setSortSort(state, action) {
+            state.sort = action.payload;
+        },
     }
 
 })
 
 export const {
-    setSortSports,
-    setSortDistance,
     setSortDate,
-    setSortTimeRange
+    setSortLocation,
+    setSortDistance,
+    setSortStartTime,
+    setSortlevel,
+    setSortPlayTime,
+    setSortSex,
+    setSortSports,
+    setSortGameType,
+    setSortSort,
 } = sortInfoSlice.actions;
 
 export default sortInfoSlice.reducer

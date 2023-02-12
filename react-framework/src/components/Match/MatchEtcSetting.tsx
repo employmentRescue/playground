@@ -11,8 +11,10 @@ type Iprops = {
     clicked: ()=>void,
     setEtcData: (level: string, playTime: number[], sex: string, gameType: string)=>void,
 }
+type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | "playTime" | "sex" | "sports" | "gameType" | "sort";
 
-type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | "playTime" | "sex" | "sports" | "gameType" | "sort" 
+const levelList = ["입문", "초수", "중수", "고수"]
+const gameTypeList = ["3 on 3", "5 on 5", "종류무관"]
 
 // 자동 매칭 필터바 - 기타
 export function MatchFilterEtc({ shutOtherWindow, clicked }: { shutOtherWindow:()=>void, clicked:()=>void }) {
@@ -25,7 +27,8 @@ export function MatchFilterEtc({ shutOtherWindow, clicked }: { shutOtherWindow:(
 
 export function MatchEtcSetting({ level, playTime, sex, gameType, clicked, setEtcData }: Iprops) {
     
-    
+    const levelTab = levelList.map((eachData: string, i: number)=><EtcTypeButton key={i} width={50} text={eachData} selected={level}/>)
+    const gameTypeTab = gameTypeList.map((eachData: string, i: number)=><EtcTypeButton key={i} width={74} text={eachData} selected={gameType}/>)
     return (
         <div className="flex flex-col absolute top-[-117px] left-0 w-full h-screen m-0 p-0 z-20">
             <div className="h-1/2 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
@@ -36,30 +39,33 @@ export function MatchEtcSetting({ level, playTime, sex, gameType, clicked, setEt
                         onClick={(e) => { e.preventDefault(); clicked(); }} />
                 </div>
                 <div className="relative place-content-center w-full h-1/6 px-17 border-b-1 border-solid-[#dbdbdb]">
-                    <span className="grid place-content-center w-70 h-2/1 flex-grow-0 font-inter text-[15px] text-left text-[#000]">수준</span>
+                    <span className="w-70 h-2/1 flex-grow-0 p-5 font-inter font-semibold text-[15px] text-left text-[#000]">수준</span>
                     <div className="flex w-full">
-                        <div className="grid place-content-center h-25 m-5 rounded-[5px] border-1 border-solid border-[#303eff] w-50 ">
-                            <span className="font-inter text-[12px] font-[500] text-[#303eff]">입문</span>
-                        </div>
-                        <EtcTypeButton width={50} text={"입문"} selected={true}/>
+                        {levelTab}
                     </div>
                 </div>
                 <div className="relative place-content-center w-full h-1/6 px-17 border-b-1 border-solid-[#dbdbdb]">
-                    <span className="grid place-content-center w-70 h-2/1 flex-grow-0 font-inter text-[15px] text-left text-[#000]">게임 시간</span>
-                    <div className="flex w-full">
-
+                    <span className="w-70 h-2/1 flex-grow-0 p-5 font-inter font-semibold text-[15px] text-left text-[#000]">게임 시간</span>
+                    <div className="flex w-full items-center">
+                        <EtcTypeButton width={50} text={String(playTime[0])} selected={""}/>
+                        <span className="content-center w-30 h-16 font-inter text-[13px] text-[#868585]">시간</span>
+                        <span className="content-center w-30 h-16 font-inter text-[13px] text-[#868585]">~</span>
+                        <EtcTypeButton width={50} text={String(playTime[1])} selected={""}/>
+                        <span className="content-center w-30 h-16 font-inter text-[13px] text-[#868585]">시간</span>
                     </div>
                 </div>
                 <div className="relative place-content-center w-full h-1/6 px-17 border-b-1 border-solid-[#dbdbdb]">
-                    <span className="grid place-content-center w-70 h-2/1 flex-grow-0 font-inter text-[15px] text-left text-[#000]">성별</span>
+                    <span className="w-70 h-2/1 flex-grow-0 p-5 font-inter font-semibold text-[15px] text-left text-[#000]">성별</span>
                     <div className="flex w-full">
-
+                        <EtcTypeButton width={50} text={"남자"} selected={sex}/>
+                        <EtcTypeButton width={50} text={"여자"} selected={sex}/>
+                        <EtcTypeButton width={74} text={"성별무관"} selected={sex}/>
                     </div>
                 </div>
                 <div className="relative place-content-center w-full h-1/6 px-17 border-b-1 border-solid-[#dbdbdb]">
-                    <span className="grid place-content-center w-70 h-2/1 flex-grow-0 font-inter text-[15px] text-left text-[#000]">게임 종류</span>
+                    <span className="w-70 h-2/1 flex-grow-0 p-5 font-inter font-semibold text-[15px] text-left text-[#000]">게임 종류</span>
                     <div className="flex w-full">
-
+                        {gameTypeTab}
                     </div>
                 </div>
                 <div className="h-1/6 justify-center mb-15 mx-13 pt-10">
