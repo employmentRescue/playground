@@ -70,5 +70,6 @@ services:
 
 networks:
   playground-broadcast-network:
+    name: playground-broadcast-network
     driver: bridge
 
