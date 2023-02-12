@@ -9,7 +9,7 @@ export interface NotificationCardType {
 
 export default function NotificationCard({ imgSrc, title, content, isLatest, elapsedTime, noticeCount }: NotificationCardType) {
     return (
-        <div className={"flex font-inter tracking-tight text-10 justify-between " + (isLatest && "bg-[#f1f3ff]")}>
+        <div className={"flex  tracking-tight text-10 justify-between " + (isLatest && "bg-[#f1f3ff]")}>
             <div className="flex">
                 <img src={imgSrc} className="w-12 h-12 ml-12 mr-7 my-18" />
                 <div className="flex flex-col text-13 tracking-tight my-15">

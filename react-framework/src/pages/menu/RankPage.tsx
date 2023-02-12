@@ -10,7 +10,9 @@ import GameTypeFilterModal from "@/components/Ranking/GameTypeFilterModal";
 import useTeamRankingListQuery from "@/hooks/rank/useTeamRankingListQuery";
 import { teamRanking } from "@/models/teamRanking";
 import { setTabName } from "@/stores/tab/tabName";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import useMyTeamRankingListQuery from "@/hooks/rank/useTeamRankingMyListQuery";
+import { RootState } from "@/stores/store";
 
 export default function RankPage() {
   const [tabIndex, setTabIndex] = useState<number>(1);
@@ -22,6 +24,10 @@ export default function RankPage() {
   const [filterModal, setFilterModal] = useState<string>('none');
 
   const teamList = useTeamRankingListQuery(gameType, sportsType, filterModal);
+  const userId = useSelector((state: RootState) => {
+    return state.userId;
+  });
+  const myTeamList = useMyTeamRankingListQuery(userId);
   console.log(teamList);
   const dispatch = useDispatch();
 
@@ -64,8 +70,8 @@ export default function RankPage() {
             clickable: true,
           }}
         >
-          {teamList.isSuccess && teamList.data && teamInfo &&
-            teamList.data.map((item: teamRanking, index: number) => (
+          {myTeamList.data &&
+            myTeamList.data.map((item: teamRanking, index: number) => (
               <SwiperSlide>
                 <div className="w-full h-167 ml-[-10px]" key={index}>
                   <MyTeamInfo rank={teamRankIndex} teamRanking={item} />

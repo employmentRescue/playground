@@ -78,7 +78,7 @@ export default function NotificationModal({ onClickShowModal }: Iprops) {
                     <div className="pl-15 pr-10 py-20" onClick={onClickShowModal}>
                         <img src={backButton} className="w-15 h-15" />
                     </div>
-                    <h1 className="mt-15 text-16 font-inter font-bold ">알림</h1>
+                    <h1 className="mt-15 text-16  font-bold ">알림</h1>
                 </div>
                 <div>{notificationCardsRendering()}</div>
             </div>

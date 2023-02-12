@@ -7,6 +7,7 @@ import { useState } from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "@/stores/store"
 import back from "@/assets/icons/back-button.png"
+import { getImgUrl } from "@/utils/getImgUrl"
 
 export default function Header() {
     const [showModal, setShowModal] = useState(false);
@@ -25,7 +26,7 @@ export default function Header() {
             <div className="w-full h-7 bg-blue-600"></div>
             <div className="w-full h-48 flex justify-between items-center">
                 {tabName === 'playGround' ?
-                    <div className="text-15 ml-14">PlayGround</div> :
+                    <img className="w-120 h-20 ml-14" src={getImgUrl('icons', 'logo')}></img> :
                     <div className="flex ml-14 items-center">
                         <img className="w-13 h-13" src={back} onClick={() => history.back()}></img>
                         <div className="ml-6 text-15">{tabName}</div>

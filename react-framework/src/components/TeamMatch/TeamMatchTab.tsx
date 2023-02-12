@@ -14,7 +14,7 @@ export function AutoMatchTab({ clickedTab, changeType }: propsTab) {
                 event.preventDefault();
                 changeType();
             }}>
-                <span className="w-71 h-24 font-normal font-inter text-[17px] leading-normal text-left text-[#000]" >
+                <span className="w-71 h-24 font-normal  text-[17px] leading-normal text-left text-[#000]" >
                     자동 매칭
                 </span>
             </div>
@@ -26,7 +26,7 @@ export function AutoMatchTab({ clickedTab, changeType }: propsTab) {
                 event.preventDefault();
                 changeType();
             }}>
-                <span className="w-71 h-24 font-normal font-inter text-[17px] leading-normal text-left text-[#303eff]">
+                <span className="w-71 h-24 font-normal  text-[17px] leading-normal text-left text-[#303eff]">
                     자동 매칭
                 </span>
             </div>
@@ -42,7 +42,7 @@ export function ListTab({ clickedTab, changeType }: propsTab) {
                 event.preventDefault();
                 changeType();
             }}>
-                <span className="w-71 h-24 font-normal font-inter text-[17px] leading-normal text-left text-[#000]">
+                <span className="w-71 h-24 font-normal  text-[17px] leading-normal text-left text-[#000]">
                     목록
                 </span>
             </div>
@@ -54,7 +54,7 @@ export function ListTab({ clickedTab, changeType }: propsTab) {
                 event.preventDefault();
                 changeType();
             }}>
-                <span className="w-71 h-24 font-normal font-inter text-[17px] leading-normal text-left text-[#303eff]">
+                <span className="w-71 h-24 font-normal  text-[17px] leading-normal text-left text-[#303eff]">
                     목록
                 </span>
             </div>

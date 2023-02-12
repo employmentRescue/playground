@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/team")
@@ -22,7 +25,7 @@ public class TeamController {
     @GetMapping("/{teamid}")
     public ResponseEntity<?> view(@PathVariable("teamid") int teamId) throws Exception {
         System.out.println("TeamController view() 실행");
-        return new ResponseEntity<Team>(teamService.viewTeamByTeamId(teamId), HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(teamService.viewTeamByTeamId(teamId), HttpStatus.OK);
     }
     
     @ApiOperation(value = "팀 등록하기", notes = "새로 팀을 등록한다.")

@@ -28,7 +28,7 @@ export default function MyTeamInfo(props: Iprops) {
           <div className="w-90 text-17 font-bold text-[#a3adb5]">Total Wins</div><div className="w-63 text-right text-17 font-bold text-blue-700">{props.teamRanking.win}승</div>
         </div>
         <div className="flex justify-between">
-          <div className="w-90 text-17 font-bold text-[#a3adb5]">Win Rate</div><div className="w-63 text-right text-17 font-bold text-blue-700">45.8%</div>
+          <div className="w-90 text-17 font-bold text-[#a3adb5]">Win Rate</div><div className="w-63 text-right text-17 font-bold text-blue-700">{((props.teamRanking.win / (props.teamRanking.win + props.teamRanking.lose)) * 100).toFixed(1)} </div>
         </div>
       </div>
     </div>

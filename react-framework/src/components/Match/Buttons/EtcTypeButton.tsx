@@ -6,15 +6,15 @@ type Iprops = {
     selected: string,
 }
 
-export default function EtcTypeButton ({width, text, selected}:Iprops) {
-    const bgColor = ()=>{
+export default function EtcTypeButton({ width, text, selected }: Iprops) {
+    const bgColor = () => {
         if (selected === text) {
             return " bg-[#303eff]"
         } else {
             return ""
         }
     }
-    const textColor = ()=>{
+    const textColor = () => {
         if (selected === text) {
             return "[#fff]"
         } else {

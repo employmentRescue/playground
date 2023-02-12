@@ -27,7 +27,7 @@ export default function FavoriteSportsTab() {
     return (
         <div className="flex flex-col h-[calc(100vh-149px)] justify-between">
             <div className="flex flex-col mt-37 self-center">
-                <h1 className="font-inter text-20 font-bold text-center mb-20 tracking-tight">관심 운동을 선택해주세요
+                <h1 className=" text-20 font-bold text-center mb-20 tracking-tight">관심 운동을 선택해주세요
                     <br />
                     <span className="text-15 text-[#969696]">(복수 선택)</span>
                 </h1>
@@ -41,7 +41,7 @@ export default function FavoriteSportsTab() {
                             imageSrc={footballImg}
                             imageSize={"w-42 h-42"}
                         />
-                        <p className="text-center font-inter text-11 mt-6">축구</p>
+                        <p className="text-center  text-11 mt-6">축구</p>
                     </div>
                     <div className="flex-col">
                         <ImageCard
@@ -52,7 +52,7 @@ export default function FavoriteSportsTab() {
                             imageSrc={basketballImg}
                             imageSize={"w-42 h-42"}
                         />
-                        <p className="text-center font-inter text-11 mt-6">농구</p>
+                        <p className="text-center  text-11 mt-6">농구</p>
                     </div>
                     <div className="flex-col">
                         <ImageCard
@@ -63,7 +63,7 @@ export default function FavoriteSportsTab() {
                             imageSrc={badmintonImg}
                             imageSize={"w-42 h-42"}
                         />
-                        <p className="text-center font-inter text-11 mt-6">배드민턴</p>
+                        <p className="text-center  text-11 mt-6">배드민턴</p>
                     </div>
                 </div>
             </div>
