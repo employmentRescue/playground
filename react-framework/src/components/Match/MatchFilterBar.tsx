@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useReducer, ComponentProps } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSortSports } from "@/stores/match/matchSort"
 
 import { MatchSportSetting, MatchFilterSport } from "@/components/Match/MatchSportSetting"
 import { MatchDistanceSetting, MatchFilterDistance } from "@/components/Match/MatchDistanceSetting"
@@ -13,13 +12,6 @@ import basketballOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import footBallOriginal from "@/assets/icons/football-original.png"
 import { matchList } from "@/models/matchList";
-
-type listItem = {
-    sportType: string,
-    member: string,
-    title: string,
-    date: string,
-}
 
 type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | "playTime" | "sex" | "sports" | "gameType" | "sort" 
 type sportAction = { type: 'ISCLICKED' | '농구' | '축구' | '배드민턴' }
@@ -153,6 +145,7 @@ export function MatchFilterBar({setFilterData, startDate, location, distance, st
                 break;
         }
     }
+    // 날짜 탭 포맷팅
     const dateDisplay = () => {
         if (startDate[5] === '0') {
             if (startDate[8] === '0') { 
