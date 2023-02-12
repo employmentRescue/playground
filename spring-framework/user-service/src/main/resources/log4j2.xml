@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <RollingFile name="file" fileName="/filePath/logs.log" filePattern="/filePath/WAS.%i.%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10000" fileIndex="min" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="testProject.com" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="testProject.framework" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="org.mybatis" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="testMapper" level="debug" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="file" />
+        </Logger>
+
+
+        <Logger name="org.springframework" level="warn" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="org.apache" level="warn" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="file" />
+        </Logger>
+
+
+        <!-- SQL 로그 출력 -->
+        <Logger name="jdbc.sqlonly" level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="file" />
+        </Logger>
+        <Logger name="jdbc.resultsettable" level="DEBUG" additivity="false">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="file" />
+        </Logger>
+
+    </Loggers>
+
+</Configuration>
