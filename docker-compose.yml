@@ -58,5 +58,6 @@ services:
 
 networks:
   default:
-    playground-network
+    name: playground-network
+    external: true
 
