@@ -73,7 +73,7 @@ export default function UserInfoTab() {
         // calc안의 100vh-146은 탭이 끝나는 지점부터의 높이를 의미
         <div className="flex flex-col h-[calc(100vh-149px)] justify-between">
             <div className="flex flex-col mt-37 self-center">
-                <h2 className="font-inter text-20 font-bold text-center tracking-tight">닉네임을 설정해주세요</h2>
+                <h2 className=" text-20 font-bold text-center tracking-tight">닉네임을 설정해주세요</h2>
                 <div className="flex justify-center mt-35">
                     <input
                         type="text"
@@ -102,7 +102,7 @@ export default function UserInfoTab() {
                 </div>
 
                 <div className="flex mt-37 self-center justify-center">
-                    <h2 className="text-20 font-inter font-bold tracking-tight">선호시간을 입력해주세요<span className="text-gray-600">(선택)</span></h2>
+                    <h2 className="text-20  font-bold tracking-tight">선호시간을 입력해주세요<span className="text-gray-600">(선택)</span></h2>
                 </div>
                 <div className="w-[260px] self-center">
                     <Slider

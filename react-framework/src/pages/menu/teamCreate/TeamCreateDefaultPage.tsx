@@ -97,7 +97,7 @@ export default function TeamCreateDefaultPage() {
                                 <img src={profile.imageSrc} className="w-47 h-47 rounded-25" />
                                 <img src={cancleButtonImg} className="w-18 h-18 -ml-10" />
                             </div>
-                            <p className="text-10 font-inter text-center mt-3 px-2 tracking-tight truncate">{profile.nickname}</p>
+                            <p className="text-10  text-center mt-3 px-2 tracking-tight truncate">{profile.nickname}</p>
                         </div>
                     )
                 }

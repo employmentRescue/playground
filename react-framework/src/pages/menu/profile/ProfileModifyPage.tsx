@@ -203,7 +203,7 @@ export default function ProfileModifyPage() {
 
 
             <div className="flex flex-col mt-8 pl-24 pr-24 w-full h-auto bg-white justify-start">
-                <div className="flex my-20 text-18 font-inter font-extrabold">
+                <div className="flex my-20 text-18  font-extrabold">
                     <img src={titleFavoriteSports} className="w-20 h-20 mr-8 mt-2" />
                     <p>선호 운동</p>
                 </div>
@@ -217,7 +217,7 @@ export default function ProfileModifyPage() {
                             imageSrc={footballImg}
                             imageSize={"w-42 h-42"}
                         />
-                        <p className="text-center font-inter text-11 mt-6">축구</p>
+                        <p className="text-center  text-11 mt-6">축구</p>
                     </div>
                     <div className="flex-col">
                         <ImageCard
@@ -228,7 +228,7 @@ export default function ProfileModifyPage() {
                             imageSrc={basketballImg}
                             imageSize={"w-42 h-42"}
                         />
-                        <p className="text-center font-inter text-11 mt-6">농구</p>
+                        <p className="text-center  text-11 mt-6">농구</p>
                     </div>
                     <div className="flex-col">
                         <ImageCard
@@ -239,12 +239,12 @@ export default function ProfileModifyPage() {
                             imageSrc={badmintonImg}
                             imageSize={"w-42 h-42"}
                         />
-                        <p className="text-center font-inter text-11 mt-6">배드민턴</p>
+                        <p className="text-center  text-11 mt-6">배드민턴</p>
                     </div>
                 </div>
 
 
-                <div className="flex my-20 text-18 font-inter font-extrabold">
+                <div className="flex my-20 text-18  font-extrabold">
                     <img src={titleFavoriteSports} className="w-20 h-20 mr-8 mt-2" />
                     <p>운동 레벨</p>
                 </div>
@@ -325,7 +325,7 @@ export default function ProfileModifyPage() {
 
 
 
-                <div className="flex mt-20 mb-8 text-18 font-inter font-extrabold">
+                <div className="flex mt-20 mb-8 text-18  font-extrabold">
                     <img src={titleFavoriteTime} className="w-20 h-20 mr-8 mt-2" />
                     <div className="flex flex-col">
                         <p>선호 시간대</p>

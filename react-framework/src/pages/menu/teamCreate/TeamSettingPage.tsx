@@ -93,7 +93,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
             <div className="flex flex-col">
                 <div className="flex mt-35 self-center">
                     <img src={titleFavoriteSports} className="w-20 h-20 my-5" />
-                    <h2 className="m-5 text-15 font-inter font-extrabold">팀 실력을 선택하세요.</h2>
+                    <h2 className="m-5 text-15  font-extrabold">팀 실력을 선택하세요.</h2>
                 </div>
                 <div className="flex justify-around">
                     <ButtonDesign innerText="입문" onClick={() => { setTeamLevel("입문") }} className={"w-63 h-25 mt-10 mx-6 " + (teamLevel === "입문" ? "text-white bg-blue-700 text-14" : "text-blue-700 bg-white text-14")} />
@@ -109,7 +109,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
 
             <div className="flex mt-35 self-center">
                 <img src={titleFavoriteSports} className="w-20 h-20 my-5" />
-                <h2 className="m-5 text-15 font-inter font-extrabold">게임 종류를 선택하세요.</h2>
+                <h2 className="m-5 text-15  font-extrabold">게임 종류를 선택하세요.</h2>
             </div>
             <div className="flex justify-around mx-20">
                 {personnelRendering()}

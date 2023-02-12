@@ -20,7 +20,7 @@ export default function LoginRegistPage() {
 
         return (
             <div onClick={() => tabClickHandler(tabNum)} className="mt-40 mb-30">
-                <p className={"font-inter text-center text-12 mb-3 " + (currentIndex === tabNum ? "font-semibold" : "")} >{tabName}</p>
+                <p className={" text-center text-12 mb-3 " + (currentIndex === tabNum ? "font-semibold" : "")} >{tabName}</p>
                 <div className={"w-92 h-3 mx-6 border-black " + (currentIndex === tabNum ? "bg-blue-700 " : "bg-[#bbc0ff]")}>
                 </div>
             </div>

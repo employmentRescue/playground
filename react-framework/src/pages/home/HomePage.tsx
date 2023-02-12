@@ -114,6 +114,7 @@ export default function HomePage() {
     const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
     const [markers, setMarkers] = useState<naver.maps.Marker[] | null>([]);
     const [liveMatch, setLiveMatch] = useState<liveMatch | null>(null);
+    const [markerPos, setMarkerPos] = useState<any | null>(null);
 
     // naver map
     const mapElement: any | null = useRef(undefined);
@@ -150,7 +151,7 @@ export default function HomePage() {
         const { naver } = window;
         if (!mapElement.current || !naver) return;
         // 지도에 표시할 위치의 위도와 경도 좌표를 파라미터로 넣어줍니다.
-        const locationPos = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
+        const locationPos = new naver.maps.LatLng(36.3562036, 127.3566635);
         const mapOptions: naver.maps.MapOptions = {
             center: locationPos,
             zoom: 14,
@@ -158,7 +159,6 @@ export default function HomePage() {
         const map = new naver.maps.Map(mapElement.current, mapOptions);
 
         setNaverMap(map);
-
         dispatchTab(setTabName('playGround'))
         // history.pushState(null, "", location.href);
         // window.addEventListener("popstate", () => history.pushState(null, "", location.href));
@@ -170,8 +170,9 @@ export default function HomePage() {
             return;
 
         const location = new naver.maps.LatLng(geolocation.latitude, geolocation.longitude);
-        console.log(location)
-        naverMap.setCenter(location);
+
+        if (!curPos)
+            naverMap.setCenter(location);
 
         // 기존 현재 위치 마커 제거
         if (curPos) {
@@ -196,7 +197,7 @@ export default function HomePage() {
         }
 
         // 실시간 운동 모임 마커 생성
-        if (liveMatchList.isSuccess) { // liveMatch리스트를 받아왔으면
+        if (liveMatchList.data) { // liveMatch리스트를 받아왔으면
             let newMarkers: naver.maps.Marker[] = []
             for (const e of liveMatchList.data) {
                 switch (e.sports) {
@@ -252,11 +253,9 @@ export default function HomePage() {
                 });
             }
             setMarkers(newMarkers);
-            console.log(newMarkers);
-            console.log(state.modalType);
         }
 
-    }, [liveMatchList.isSuccess]);
+    }, [liveMatchList.isSuccess, naverMap]);
 
     // 실시간 운동 모임 등록
     useEffect(() => {
@@ -270,17 +269,26 @@ export default function HomePage() {
         switch (state.sportType) {
             case '농구':
                 marker = setMapIcon(basketballMap, location, naverMap, 60, 60, true)
+                setMarkerPos(location);
                 registerMeeting();
                 break;
             case '축구':
                 marker = setMapIcon(footballMap, location, naverMap, 60, 60, true)
+                setMarkerPos(location);
                 registerMeeting();
                 break;
             case '배드민턴':
                 marker = setMapIcon(badmintonMap, location, naverMap, 60, 60, true)
+                setMarkerPos(location);
                 registerMeeting();
                 break;
         }
+
+        naver.maps.Event.addListener(naverMap, 'click', function (e) {
+            console.log(e.coord)
+            setMarkerPos(e.coord);
+            marker.setPosition(e.coord);
+        });
 
         return () => {
             if (marker) {
@@ -338,7 +346,7 @@ export default function HomePage() {
                 }
                 </div>
 
-                {state.modalType === 'register' && <RegisterModal type={state.sportType} place={{ address: "", lat: geolocation.latitude, lng: geolocation.longitude }} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
+                {state.modalType === 'register' && <RegisterModal type={state.sportType} place={{ address: "", lat: markerPos._lat, lng: markerPos._lng }} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
                 {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} closeModal={() => { closeModal(); }} />}
                 {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></JoinModal>}
                 {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></QuitModal>}
