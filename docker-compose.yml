@@ -56,4 +56,7 @@ services:
     ports:
       - "3000:80"
 
-  
+networks:
+  default:
+    playground-network
+
