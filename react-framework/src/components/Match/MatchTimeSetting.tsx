@@ -24,6 +24,7 @@ const numberToTime = (num: number) => {
 export function MatchFilterTime({ shutOtherWindow, clicked, startTime }: { shutOtherWindow: () => void, clicked: () => void, startTime: (string | null)[] }) {
     const minStartTime = startTime[0] && startTime[0].slice(0, 2)
     const maxStartTime = startTime[1] && startTime[1].slice(0, 2)
+    console.log(maxStartTime)
     return (
         <div className="flex flex-row w-74 h-25 flex-grow-0 mt-7 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
             <span className="w-43 h-15 flex-grow mt-5 p-0  text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{minStartTime + " ~ " + maxStartTime}</span>
@@ -42,6 +43,10 @@ export function MatchTimeSetting({ clicked, startTime, setFilterData }: Iprops) 
         const newValue = value as number[];
         setTemStartTime(newValue)
     }
+    function valueText(value: number, index:number) {
+        console.log(`${value}:00:00`)
+        return `${value}:00:00`
+    }
     return (
         <div className="flex flex-col absolute top-[-117px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">
             <div className="h-3/4 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
@@ -58,7 +63,8 @@ export function MatchTimeSetting({ clicked, startTime, setFilterData }: Iprops) 
                         // marks={marks}
                         min={0}
                         max={24}
-                        // getAriaValueText={valueText}
+                        getAriaValueText={valueText}
+                        disableSwap
                         className="mt-12"
                     />
                     <div className="flex mb-12 w-full place-content-between">

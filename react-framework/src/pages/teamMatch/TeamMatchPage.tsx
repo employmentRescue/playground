@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useReducer, ComponentProps } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import 'react-calendar/dist/Calendar.css'
 
-import { MatchFilterBar } from "@/components/Match/MatchFilterBar"
 // 요건 나중에 팀매치로 옮겨야함
 import { AutoMatchTab, ListTab } from "@/components/TeamMatch/TeamMatchTab"
 
@@ -228,7 +228,6 @@ function ListContent() {
 
 // 매치 페이지 출력
 export default function TeamMatchPage() {
-
     const [state, dispatch] = useReducer(registerTabType, initialTabState);
 
     const autoMatch = () => dispatch({ type: 'AUTOMATCH' });
@@ -236,15 +235,35 @@ export default function TeamMatchPage() {
 
     return (
         <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
-            <div className="w-full h-50 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
-                <AutoMatchTab clickedTab={state.tabType} changeType={() => {
-                    autoMatch();
-                }} />
-                <ListTab clickedTab={state.tabType} changeType={() => {
-                    list();
-                }} />
+            <div className="h-1/5 w-full m-0 p-0">
+                <div className="h-100 w-[90%]"></div>
+            {/* <Swiper
+                slidesPerView={1.1}
+                centeredSlides={true}
+                spaceBetween={0}
+                grabCursor={true}
+                pagination={{
+                    clickable: true,
+                }}
+                onActiveIndexChange={(e) => { setMyTeamIndex(e.activeIndex); console.log(e.activeIndex) }}
+                >
+                {myTeamList.data && myTeamInfo.data &&
+                    myTeamList.data.map((item: team, index: number) => (
+                    <SwiperSlide key={index}>
+                        <div className="w-full h-167 ml-[-10px]">
+                        <MyTeamInfo rank={myTeamInfo.data.myTeamRank} teamRanking={item} />
+                        </div>
+                    </SwiperSlide>
+                    ))}
+                </Swiper> */}
             </div>
-            <Content clickedTab={state.tabType} />
+            <div className="h-4/5 w-full m-0 p-0">
+                <div className="w-full h-55 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
+                    <AutoMatchTab clickedTab={state.tabType} changeType={()=>{autoMatch();}} />
+                    <ListTab clickedTab={state.tabType} changeType={()=>{list();}} />
+                </div>
+                <Content clickedTab={state.tabType} />
+            </div>
         </div>
     )
 }
