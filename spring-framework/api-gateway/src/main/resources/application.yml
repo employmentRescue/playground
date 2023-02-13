@@ -51,7 +51,7 @@ spring:
         - id: react-framework2
           uri: https://i8b309.p.ssafy.io:90011
           predicates:
-            - Path=/oauth2/regist,/oauth2/success
+            - Path=/oauth2/login,/oauth2/regist,/oauth2/success
 
 
         - id: user-service
