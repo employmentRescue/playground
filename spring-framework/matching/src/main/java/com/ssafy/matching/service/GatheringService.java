@@ -2,10 +2,8 @@ package com.ssafy.matching.service;
 
 import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.dto.GatheringMember;
-import com.ssafy.matching.dto.Match;
 
 import java.util.List;
-import java.util.Map;
 
 public interface GatheringService {
     List<Gathering> findAll();
