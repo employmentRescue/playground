@@ -30,4 +30,6 @@ public interface TeamRepository extends JpaRepository<Team, Integer> {
             "ORDER BY point DESC LIMIT 3 ) b " +
             ") c ORDER BY point DESC", nativeQuery = true)
     List<Team> get7TeamsByTeamId(int teamId); //내 팀 앞뒤 상위3개 팀과 하위 3개 팀 검색
+
+    List<Team> findAll();
 }
