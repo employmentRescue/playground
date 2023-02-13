@@ -1,6 +1,7 @@
 package com.ssafy.userservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.ssafy.userservice.dto.*;
@@ -65,6 +66,35 @@ public class UserInfoController {
 
     }
 
+
+
+    @Transactional
+    @PostMapping("/search/id")
+    ResponseEntity searchUserInfoByNickname(@RequestBody Set<String> nicknames){
+        System.out.println(nicknames);
+        List<Object> searchResult = new LinkedList<>();
+
+        for (Tuple t : queryFactory.select(qMemberSometimes.id, qMemberSometimes.nickname)
+                .from(qMemberSometimes)
+                .where(qMemberSometimes.nickname.in(nicknames))
+                .fetch()){
+            Map<String, Object> member = new HashMap<>();
+            member.put("id", t.get(0, Long.class));
+            member.put("nickname", t.get(1, String.class));
+
+            searchResult.add(member);
+        }
+
+        try {
+        }
+        catch (Throwable e){
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity(searchResult, HttpStatus.OK);
+    }
+
+
     @Transactional
     @PostMapping("/search")
     ResponseEntity searchUserInfo(@RequestHeader("x-forwarded-for-user-id") long userID , @RequestBody Set<String> req){
@@ -91,6 +121,7 @@ public class UserInfoController {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        searchResult.put("user-id",userID);
         return new ResponseEntity(searchResult, HttpStatus.OK);
     }
 
