@@ -3,15 +3,13 @@ import modifyImage from "@/assets/profiles/modify.png"
 import titleFavoriteSports from "@/assets/profiles/title-favorite-sports.png"
 
 import ButtonDesign from "../../../components/TeamCreate/Buttons/ButtonDesign";
-import { MyTeam } from "@/stores/user/myTeam"
+import { setSportsType, setMyTeamName, setMyTeamLevel, setPersonnel, MyTeam } from "@/stores/user/myTeam"
 import { setMyTeam } from "@/stores/register/userInfo";
-import useTeamRegister from "@/hooks/rank/useTeamRegister";
-import { teamInfo } from "@/models/teamInfo";
 
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import store, { RootState } from "@/stores/store";
-import { useNavigate } from "react-router-dom";
+import useTeamRegister from "@/hooks/team/useTeamRegister";
 
 interface Iprops {
     onClickChangePage: (num: number) => void;
@@ -19,62 +17,49 @@ interface Iprops {
     setSelectedSports: any;
 }
 
-const footballPersonnel: MyTeam["personnel"][] = ["3 on 3", "5 on 5", "11 on 11"];
-const basketballPersonnel: MyTeam["personnel"][] = ["3 on 3", "5 on 5"];
-const badmintonPersonnel: MyTeam["personnel"][] = ["1 on 1", "3 on 3"];
+const footballPersonnel: MyTeam["personnel"][] = ["5vs5", "6vs6", "11vs11"];
+const basketballPersonnel: MyTeam["personnel"][] = ["3vs3", "5vs5"];
+const badmintonPersonnel: MyTeam["personnel"][] = ["1vs1", "3vs3"];
 
 
 export default function TeamSettingPage({ onClickChangePage, selectedSports }: Iprops) {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const userId = useSelector((state: RootState) => {
-        return state.userId
-    })
     const [teamNameInput, setTeamNameInput] = useState<string>("");
     const [teamLevel, setTeamLevel] = useState<MyTeam["teamLevel"]>("입문");
-    const [sportsPersonnel, setSportsPersonnel] = useState<MyTeam["personnel"]>("11 on 11");
+    const [sportsPersonnel, setSportsPersonnel] = useState<MyTeam["personnel"]>("11vs11");
+    const [teamMemberList, setTeamMemberList] = useState<any | null>(null);
     const memberIds = useSelector((state: RootState) => {
         return state.myTeam.memberIds
     })
-
-    const { mutate } = useTeamRegister();
-    const teamRegister = () => {
-        if (selectedSports && teamNameInput && teamLevel && sportsPersonnel && memberIds) {
-            console.log("팀 등록 진행");
-            mutate({
-                hostId: userId,
-                gameType: sportsPersonnel,
-                name: teamNameInput,
-                level: teamLevel,
-                sports: selectedSports,
-                teamMemberList: memberIds,
-            })
-        }
-    }
-
+    const userId = useSelector((state: RootState) => {
+        return state.userId;
+    });
 
     const teamNameInputRef: any = useRef();
+
+    const { mutate } = useTeamRegister();
 
     const getNicknameInput = (event: React.BaseSyntheticEvent) => {
         setTeamNameInput(event.target.value)
     }
 
     const handleOnClickCreateTeam = () => {
-        dispatch(setMyTeam({
-            sportsType: selectedSports,
-            myTeamName: teamNameInput,
-            teamLevel: teamLevel,
-            personnel: sportsPersonnel,
-            memberIds: memberIds,
-            record: { total: 0, win: 0, draw: 0, lose: 0 },
-            rank: { point: 1500, tier: "sliver3" }
-        }))
-        teamRegister
-        console.log(store.getState().userInfo.myTeam)
-        navigate("/menu/team")
+        mutate({
+            gameType: sportsPersonnel,
+            level: teamLevel,
+            name: teamNameInput,
+            sports: selectedSports,
+            teamMemberList: teamMemberList,
+        })
     }
 
+    useEffect(() => {
+        let teamMemberList = [];
+        for (const m of memberIds) {
+            teamMemberList.push({ memberId: m });
+        }
+        teamMemberList.push({ memberId: userId });
+        setTeamMemberList(teamMemberList);
+    }, [memberIds])
 
     function personnelRendering() {
         switch (selectedSports) {
@@ -96,11 +81,11 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
     useEffect(() => {
         setTeamLevel("입문")
         if (selectedSports === "축구") {
-            setSportsPersonnel("3 on 3")
+            setSportsPersonnel("5vs5")
         } else if (selectedSports === "농구") {
-            setSportsPersonnel("3 on 3")
+            setSportsPersonnel("3vs3")
         } else (
-            setSportsPersonnel("1 on 1")
+            setSportsPersonnel("1vs1")
         )
     }, [selectedSports])
 

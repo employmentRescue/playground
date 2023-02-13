@@ -2,10 +2,6 @@ import SportsSelectButtons from "@/components/TeamCreate/Buttons/SportsSelectBut
 import ProfileCard from "@/components/TeamCreate/ProfileCard"
 import cancleButtonImg from "@/assets/icons/profile-x-button.png"
 import profileSampleImg from "@/assets/profiles/my-profile-sample.png"
-import profileSampleImg2 from "@/assets/profiles/my-profile-sample2.png"
-import profileSampleImg3 from "@/assets/profiles/my-profile-sample3.png"
-import profileSampleImg4 from "@/assets/profiles/my-profile-sample4.png"
-import profileSampleImg5 from "@/assets/profiles/my-profile-sample5.png"
 
 import { useState, useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -16,63 +12,26 @@ import { dropOutOfMyTeam } from "@/stores/user/myTeam"
 import TeamSettingPage from "./TeamSettingPage"
 import { setTabName } from "@/stores/tab/tabName"
 
-interface SampleUser {
-    userId: number;
-    imageSrc: string;
-    nickname: string;
-    isRecent: boolean;
-}
-
 export default function TeamCreateDefaultPage() {
     const dispatch = useDispatch();
-    const initialPeopleList: SampleUser[] = [
-        {
-            userId: 1,
-            imageSrc: profileSampleImg2,
-            nickname: "포르투갈 손흥민",
-            isRecent: true
-        },
-        {
-            userId: 2,
-            imageSrc: profileSampleImg3,
-            nickname: "한반두",
-            isRecent: true
-        },
-        {
-            userId: 3,
-            imageSrc: profileSampleImg4,
-            nickname: "얼굴 천재",
-            isRecent: true
-        },
-        {
-            userId: 4,
-            imageSrc: profileSampleImg5,
-            nickname: "회사원",
-            isRecent: true
-        },
-        {
-            userId: 5,
-            imageSrc: profileSampleImg2,
-            nickname: "친구1",
-            isRecent: false
-        },
-        {
-            userId: 6,
-            imageSrc: profileSampleImg3,
-            nickname: "친구2",
-            isRecent: false
-        },
-    ]
-    const initialSportsState: "축구" | "농구" | "배구" = "축구"
+    const initialSportsState: "축구" | "농구" | "배드민턴" = "축구"
 
     const [searchInput, setSearchInput] = useState("");
     const [selectedSports, setSelectedSports] = useState(initialSportsState)
     const [currentPage, setCurrentPage] = useState(1);
-    const [selectedMemberList, setSelectedMemberList] = useState<SampleUser[]>([])
+    const ProfileList = useSelector((state: RootState) => {
+        return state.createTeam
+    })
+
+    const selectedMemberIds = useSelector((state: RootState) => {
+        return state.myTeam.memberIds
+    })
 
     const handleOnChange = (e: React.BaseSyntheticEvent) => {
         setSearchInput(e.target.value)
+        console.log(store.getState().createTeam)
     }
+
 
     function handleOnClickChangePage(num: number) {
         setCurrentPage(currentPage + num)
@@ -80,46 +39,69 @@ export default function TeamCreateDefaultPage() {
 
     function searchTitle() {
         if (searchInput) {
-            return "친구"
+            return "검색"
         } else {
             return "최근 매칭"
         }
     }
 
     function searchProfileRendering() {
+        let Result
         let index = 0
-        return initialPeopleList.map((profile) => {
-            index++;
-            const toggleCheckBox = () => {
 
-            }
-            return (
-                (searchInput ? !profile.isRecent : profile.isRecent) &&
-                <ProfileCard
-                    key={profile.userId}
-                    userId={profile.userId}
-                    className={"flex my-5 justify-between"}
-                    imageSrc={profile.imageSrc}
-                    imageSize="ml-24 w-52 h-52"
-                    nickname={profile.nickname}
-                    toggleCheckBox={toggleCheckBox}
-                    isRecent={profile.isRecent}
-                />
-            )
-        })
+        if (searchInput) {
+            Result = ProfileList.map((profile) => {
+                index++;
+                return (
+                    !profile.isRecent &&
+                    <ProfileCard
+                        key={profile.userId}
+                        userId={profile.userId}
+                        className={"flex my-5 justify-between"}
+                        imageSrc={profile.imageSrc}
+                        imageSize="ml-24 w-52 h-52"
+                        nickname={profile.nickname}
+                        isSelected={profile.isSelected}
+                        isRecent={profile.isRecent}
+                    />
+                )
+            })
+        } else {
+            Result = ProfileList.map((profile) => {
+                index++;
+                return (
+                    profile.isRecent &&
+                    <ProfileCard
+                        key={profile.userId}
+                        userId={profile.userId}
+                        className={"flex my-5 justify-between"}
+                        imageSrc={profile.imageSrc}
+                        imageSize="ml-24 w-52 h-52"
+                        nickname={profile.nickname}
+                        isSelected={profile.isSelected}
+                        isRecent={profile.isRecent}
+                    />
+                )
+            })
+        }
+        return Result
     }
 
     function selectedProfileRendering() {
-        const Result = initialPeopleList.map((profile) => {
-            return (
-                <div key={profile.userId} className="flex flex-col w-52 mt-15 mx-7">
-                    <div className="flex" onClick={() => dispatch(dropOutOfMyTeam(profile.userId))}>
-                        <img src={profile.imageSrc} className="w-47 h-47 rounded-25" />
-                        <img src={cancleButtonImg} className="w-18 h-18 -ml-10" />
-                    </div>
-                    <p className="text-10  text-center mt-3 px-2 tracking-tight truncate">{profile.nickname}</p>
-                </div>
-            )
+        const Result = ProfileList.map((profile) => {
+            for (const memberId of selectedMemberIds) {
+                if (memberId === profile.userId) {
+                    return (
+                        <div key={profile.userId} className="flex flex-col w-52 mt-15 mx-7">
+                            <div className="flex" onClick={() => dispatch(dropOutOfMyTeam(profile.userId))}>
+                                <img src={profile.imageSrc} className="w-47 h-47 rounded-25" />
+                                <img src={cancleButtonImg} className="w-18 h-18 -ml-10" />
+                            </div>
+                            <p className="text-10  text-center mt-3 px-2 tracking-tight truncate">{profile.nickname}</p>
+                        </div>
+                    )
+                }
+            }
         })
         return Result
     }
