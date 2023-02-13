@@ -17,13 +17,12 @@ interface Iprops {
     setSelectedSports: any;
 }
 
-const footballPersonnel: MyTeam["personnel"][] = ["3vs3", "5vs5", "11vs11"];
+const footballPersonnel: MyTeam["personnel"][] = ["5vs5", "6vs6", "11vs11"];
 const basketballPersonnel: MyTeam["personnel"][] = ["3vs3", "5vs5"];
 const badmintonPersonnel: MyTeam["personnel"][] = ["1vs1", "3vs3"];
 
 
 export default function TeamSettingPage({ onClickChangePage, selectedSports }: Iprops) {
-    const dispatch = useDispatch();
     const [teamNameInput, setTeamNameInput] = useState<string>("");
     const [teamLevel, setTeamLevel] = useState<MyTeam["teamLevel"]>("입문");
     const [sportsPersonnel, setSportsPersonnel] = useState<MyTeam["personnel"]>("11vs11");
@@ -31,6 +30,9 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
     const memberIds = useSelector((state: RootState) => {
         return state.myTeam.memberIds
     })
+    const userId = useSelector((state: RootState) => {
+      return state.userId;
+  });
 
     const teamNameInputRef: any = useRef();
 
@@ -48,14 +50,14 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
             sports: selectedSports,
             teamMemberList: teamMemberList,
         })
-        console.log(store.getState().userInfo.myTeam)
     }
 
     useEffect(() => {
         let teamMemberList = [];
         for (const m of memberIds) {
             teamMemberList.push({ memberId: m });
-        }
+      }
+      teamMemberList.push({ memberId: userId });
         setTeamMemberList(teamMemberList);
     }, [memberIds])
 
@@ -79,7 +81,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
     useEffect(() => {
         setTeamLevel("입문")
         if (selectedSports === "축구") {
-            setSportsPersonnel("3vs3")
+            setSportsPersonnel("5vs5")
         } else if (selectedSports === "농구") {
             setSportsPersonnel("3vs3")
         } else (

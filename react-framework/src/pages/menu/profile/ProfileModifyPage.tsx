@@ -16,6 +16,9 @@ import titleFavoriteTime from "@/assets/profiles/title-favorite-time.png"
 import footballImg from "@/assets/icons/football-bg-colored.png"
 import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
+import basketballMap from '@/assets/icons/basketball-map.png';
+import footballMap from '@/assets/icons/football-map.png';
+import badmintonMap from '@/assets/icons/badminton-map.png';
 import searchIcon from "@/assets/icons/search.png"
 
 import { Slider } from "@mui/material"
@@ -28,7 +31,8 @@ export default function ProfileModifyPage() {
 
     const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
     const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
-    const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
+  const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
+  const [sportsType, setSportsType] = useState<string | null>(null);
     const [date, setDate] = useState<Date | null>(null);
     const [place, setPlace] = useState<place | null>(null);
     const [detailPlace, setDetailPlace] = useState<string>('');
@@ -180,7 +184,81 @@ export default function ProfileModifyPage() {
         setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false));
     }, [geolocation]);
 
-
+    useEffect(() => {
+      if (naverMap === null) return;
+  
+      if (marker) {
+        switch (sportsType) {
+          case '농구':
+            marker.setIcon({
+              url: basketballMap,
+              size: new naver.maps.Size(60, 60),
+              scaledSize: new naver.maps.Size(60, 60),
+              origin: new naver.maps.Point(0, 0),
+              anchor: new naver.maps.Point(30, 60)
+            });
+            break;
+          case '축구':
+            marker.setIcon({
+              url: footballMap,
+              size: new naver.maps.Size(60, 60),
+              scaledSize: new naver.maps.Size(60, 60),
+              origin: new naver.maps.Point(0, 0),
+              anchor: new naver.maps.Point(30, 60)
+            });
+            break;
+          case '배드민턴':
+            marker.setIcon({
+              url: badmintonMap,
+              size: new naver.maps.Size(60, 60),
+              scaledSize: new naver.maps.Size(60, 60),
+              origin: new naver.maps.Point(0, 0),
+              anchor: new naver.maps.Point(30, 60)
+            });
+            break;
+        }
+      }
+  
+      naver.maps.Event.addListener(naverMap, 'click', function (e) {
+        const latlng = e.coord;
+  
+        if (marker) {
+          marker.setPosition(latlng);
+        }
+        else {
+          switch (sportsType) {
+            case '농구':
+              setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+              break;
+            case '축구':
+              setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+              break;
+            case '배드민턴':
+              setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+              break;
+          }
+        }
+  
+        naver.maps.Service.reverseGeocode({
+          coords: new naver.maps.LatLng(latlng._lat, latlng._lng),
+        }, function (status, response) {
+          if (status !== naver.maps.Service.Status.OK) {
+            console.log("wrong!");
+          }
+  
+          const result = response.v2; // 검색 결과의 컨테이너
+          const address = result.address.jibunAddress; // 검색 결과로 만든 주소
+          console.log(result);
+          setPlace({
+            address: address,
+            lat: latlng._lat,
+            lng: latlng._lng,
+          })
+        })
+      });
+  
+    }, [marker, sportsType])
+  
     return (
         <div>
 

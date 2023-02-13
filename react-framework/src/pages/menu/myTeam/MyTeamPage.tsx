@@ -8,28 +8,28 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setTabName } from "@/stores/tab/tabName";
 import { RootState } from "@/stores/store";
-import useTeamQuery from "@/hooks/team/useTeamQuery";
+import useTeamListQuery from "@/hooks/team/useTeamListQuery";
 
 export default function MyTeamPage() {
     const userId = useSelector((state: RootState) => {
         return state.userId;
     });
 
-    const { data } = useTeamQuery(userId);
+    const { data } = useTeamListQuery(userId);
+  console.log(data);
     const [selectedSports, setSelectedSports] = useState<"축구" | "농구" | "배드민턴">("축구")
 
     const getTeamListBySports = (selectedSports: "축구" | "농구" | "배드민턴") => {
         return data && data.map((teamInfo: any, index: number) => {
             return (
-                (teamInfo.sportsType === selectedSports) &&
+                (teamInfo.team.sports === selectedSports) &&
                 <TeamCard
                     key={index}
-                    teamId={teamInfo.teamId}
-                    teamImage={teamInfo.teamImage}
-                    teamName={teamInfo.teamName}
-                    win={teamInfo.record.win}
-                    lose={teamInfo.record.lose}
-                    tier={teamInfo.rating.tier}
+                    teamId={teamInfo.team.teamId}
+                    teamName={teamInfo.team.name}
+                    win={teamInfo.teamStats.win}
+                    lose={teamInfo.teamStats.lose}
+                    tier={teamInfo.teamStats.tier}
                 />
             )
         })

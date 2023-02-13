@@ -36,10 +36,7 @@ export default function RankPage() {
   });
   const myTeamList = useTeamListQuery(userId);
   const myTeamInfo = useTeamRankingMyListQuery(myTeamId, sortType, tabIndex, myTeamList);
-  console.log(myTeamList.data);
-  if (myTeamInfo.data)
-    console.log(myTeamInfo.data.rankingMap);
-  console.log(typeof myTeamList.data)
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -76,7 +73,7 @@ export default function RankPage() {
             ))}
         </div>
       } {tabIndex == 1 && teamRankIndex != 0 && teamInfo &&
-        <MyTeamInfo rank={teamRankIndex} teamRanking={teamInfo} />
+        <MyTeamInfo rank={teamRankIndex} teamRanking={teamInfo} isMyTeam={false} />
       }{tabIndex == 2 &&
         <Swiper
           slidesPerView={1.1}
@@ -92,7 +89,7 @@ export default function RankPage() {
             myTeamList.data.map((item: team, index: number) => (
               <SwiperSlide key={index}>
                 <div className="w-full h-167 ml-[-10px]">
-                  <MyTeamInfo rank={myTeamInfo.data.myTeamRank} teamRanking={item} />
+                  <MyTeamInfo rank={myTeamInfo.data.myTeamRank} teamRanking={item} isMyTeam={true} />
                 </div>
               </SwiperSlide>
             ))}
