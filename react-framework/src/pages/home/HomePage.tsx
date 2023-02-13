@@ -327,11 +327,24 @@ export default function HomePage() {
             <div ref={mapElement} className="w-full h-[calc(100vh-182px)] relative">
                 <div className="w-60 h-193 flex flex-col relative float-right mt-12 mr-9 z-10 ">{
                     state.isPressed === false ?
-                        <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>등록</button>
+                        <div>
+                            <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>등록</button>
+                            <div className="invisible opacity-0 duration-500 ease-out flex flex-col justify-between items-center w-60 h-157 mt-4 rounded-15 border-1 border-[#303eff80] bg-blue-300">
+                                <div className="w-40 h-40 flex justify-center items-center mt-7 rounded-50 border-3 border-yellow-600 bg-yellow-200" onClick={basketball} >
+                                    <img src={basketballIcon} className="w-20 h-20"></img>
+                                </div>
+                                <div className="w-40 h-40 flex justify-center items-center rounded-50 border-3 border-[#9c8dd3] bg-blue-400" onClick={football}>
+                                    <img src={footballIcon} className="w-20 h-20"></img>
+                                </div>
+                                <div className="w-40 h-40 flex justify-center items-center mb-7 rounded-50 border-3 border-[#71d354] bg-green-400" onClick={badminton}>
+                                    <img src={badmintonIcon} className="w-20 h-20"></img>
+                                </div>
+                            </div>
+                        </div>
                         :
                         <div>
-                            <button className="w-60 h-32 rounded-20 border-2 border-blue-800 bg-blue-700 text-white" onClick={onPressed}>취소</button>
-                            <div className="flex flex-col justify-between items-center w-60 h-157 mt-4 rounded-15 border-1 border-[#303eff80] bg-blue-300">
+                            <button className="w-60 h-32 rounded-20 border-2 border-red-700 bg-red-600 text-white" onClick={onPressed}>취소</button>
+                            <div className="visible opacity-100 duration-500 ease-out flex flex-col justify-between items-center w-60 h-157 mt-4 rounded-15 border-1 border-[#303eff80] bg-blue-300">
                                 <div className="w-40 h-40 flex justify-center items-center mt-7 rounded-50 border-3 border-yellow-600 bg-yellow-200" onClick={basketball} >
                                     <img src={basketballIcon} className="w-20 h-20"></img>
                                 </div>
@@ -346,10 +359,10 @@ export default function HomePage() {
                 }
                 </div>
 
-                {state.modalType === 'register' && <RegisterModal type={state.sportType} place={{ address: "", lat: markerPos._lat, lng: markerPos._lng }} closeModal={() => { closeModal(); defaultSportType(); }}></RegisterModal>}
-                {state.modalType === 'modify' && liveMatch && <ModifyModal liveMatch={liveMatch} closeModal={() => { closeModal(); }} />}
-                {state.modalType === 'join' && liveMatch && <JoinModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></JoinModal>}
-                {state.modalType === 'quit' && liveMatch && <QuitModal liveMatch={liveMatch} closeModal={() => { closeModal(); }}></QuitModal>}
+                <RegisterModal type={state.sportType} place={{ address: "", lat: markerPos?._lat, lng: markerPos?._lng }} closeModal={() => { closeModal(); defaultSportType(); }} isOpen={state.modalType === 'register'}></RegisterModal>
+                {liveMatch && <ModifyModal liveMatch={liveMatch} closeModal={() => { closeModal(); }} isOpen={state.modalType === 'modify'} />}
+                {liveMatch && <JoinModal liveMatch={liveMatch} closeModal={() => { closeModal(); }} isOpen={state.modalType === 'join'} />}
+                {liveMatch && <QuitModal liveMatch={liveMatch} closeModal={() => { closeModal(); }} isOpen={state.modalType === 'quit'} />}
             </div>
         </div>
     )

@@ -10,6 +10,7 @@ const arr: number[] = [... new Array(15)].map((_, i) => i + 1);
 interface Iprops {
     type: string;
     place: place;
+    isOpen: boolean;
     closeModal: () => void;
 }
 
@@ -68,8 +69,9 @@ export default function RegisterModal(props: Iprops) {
     }
 
     return (
-        <div className="w-[322px] h-[265px] z-10 absolute left-1/2 ml-[-161px] bottom-14 rounded-15 bg-white flex flex-col items-center justify-center">
-            <div className="w-[322px] flex h-18 mt-14">
+        <div className={`${props.isOpen ? "visible -translate-y-[274px] duration-300 ease-out" : "invisible translate-y-[274px] duration-1000 ease-out"} 
+        w-[322px] h-[265px] z-10 absolute left-1/2 ml-[-161px] bottom-[-260px] rounded-15 bg-white flex flex-col items-center justify-center`}>
+            <div className="w-[322px] flex h-18 mt-14 ">
                 <div className="ml-110 text-15">실시간 운동 등록</div>
                 <img className="w-10 h-10 ml-auto mr-24 mt-5" src={exit} onClick={props.closeModal}></img>
             </div>
