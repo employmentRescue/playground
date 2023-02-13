@@ -14,7 +14,7 @@ import { setTabName } from "@/stores/tab/tabName"
 
 export default function TeamCreateDefaultPage() {
     const dispatch = useDispatch();
-    const initialSportsState: "축구" | "농구" | "배구" = "축구"
+    const initialSportsState: "축구" | "농구" | "배드민턴" = "축구"
 
     const [searchInput, setSearchInput] = useState("");
     const [selectedSports, setSelectedSports] = useState(initialSportsState)
@@ -39,7 +39,7 @@ export default function TeamCreateDefaultPage() {
 
     function searchTitle() {
         if (searchInput) {
-            return "친구"
+            return "검색"
         } else {
             return "최근 매칭"
         }

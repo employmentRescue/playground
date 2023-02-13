@@ -1,18 +1,16 @@
 
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux"
 import { ComponentProps } from "react";
-import { RootState } from "@/stores/store";
-import { setSortDistance } from "@/stores/match/matchSort"
 
 import closeIcon from "@/assets/icons/exit.png";
 import searchIcon from "@/assets/icons/search-icon.png";
 import whiteArrow from "@/assets/icons/white-arrow.png";
 
-type Iprops = {
-    clicked: () => void,
-    distance: number,
-    setFilterData: (attr: attrType, value: any) => void
+type Iprops = { 
+    clicked: () => void, 
+    location: number[],
+    distance: number, 
+    setFilterData: (attr:attrType, value:any) => void 
 }
 type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | "playTime" | "sex" | "sports" | "gameType" | "sort"
 
@@ -34,7 +32,7 @@ export function MatchFilterDistance({ shutOtherWindow, clicked, distance }: { sh
 }
 
 // 자동 매칭 필터 - 거리범위 지정
-export function MatchDistanceSetting({ clicked, distance, setFilterData }: Iprops) {
+export function MatchDistanceSetting({ clicked, location, distance, setFilterData }: Iprops) {
     const [temDistance, setDistance] = useState(String(distance))
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
@@ -50,7 +48,7 @@ export function MatchDistanceSetting({ clicked, distance, setFilterData }: Iprop
                 </div>
                 <div className="flex flex-row justify-center">
                     <img src={searchIcon} alt="" className="inline-block w-20 h-20 flex-grow-0 mt-15 mr-6 mb-15 ml-18" />
-                    <form action=""><input type="text" defaultValue="검색하고 싶은 지역을 입력하세요." className="w-[280px] h-25 flex-grow-0 mt-13 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb]  text-[12px] font-[500] text-left text-[#a7a7a7]" /></form>
+                    <input type="text" placeholder="검색하고 싶은 지역을 입력하세요." className="w-5/6 h-25 flex-grow-0 mt-13 mr-28 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]" />
                 </div>
                 <div className="w-full h-2/3 bg-[#d99d9d]">
                     <h1>지도</h1>
@@ -64,8 +62,8 @@ export function MatchDistanceSetting({ clicked, distance, setFilterData }: Iprop
                             <span className="w-26 h-15 flex-grow-0 mt-3 ml-2  text-[12px] font-[500] text-left text-[#bbc0ff]">km</span>
                         </div>
                     </div>
-                    <div className="h-1/2 justify-center mb-15 mx-13 pt-10">
-                        <div className="grid place-content-center h-34 mt-4 w-full text-center bg-[#303eff] rounded-[5px]  font-[15px] text-[#fff] " onClick={(e) => { e.preventDefault(); clicked(); setFilterData("distance", Number(temDistance)) }}>설정 완료</div>
+                    <div className="h-1/2 flex justify-center mb-15 mx-13 pt-10">
+                        <div className="grid place-content-center h-34 mt-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff] " onClick={(e)=>{e.preventDefault(); clicked(); setFilterData("distance", Number(temDistance))}}>설정 완료</div>
                     </div>
                 </div>
             </div>
