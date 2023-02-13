@@ -8,13 +8,13 @@ spring:
   cloud:
     gateway:
       default-filters:
-       - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials Access-Control-Request-Method Access-Control-Request-Headers
+       - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
       globalcors:
         cors-configurations:
           '[/**]':
             allowedOrigins:
               - "https://openapi.map.naver.com"
-              - "https://localhost:3000"
+              - "http://localhost:3000"
             allow-credentials: true   #추가
             allowedHeaders:
               - x-requested-with
@@ -41,8 +41,14 @@ spring:
           #   - classpath:cert1.pem
 
       routes:
+        - id: react-framework2
+          uri: https://i8b309.p.ssafy.io:3000
+          predicates:
+            - Path=/oauth2/regist,/oauth2/success
+
         - id: oauth2-service
           uri: https://i8b309.p.ssafy.io:9001
+          order: 1
           predicates:
             - Path=/oauth2/**
 #          filters:
@@ -59,12 +65,12 @@ spring:
         - id: matching-service
           uri: https://i8b309.p.ssafy.io:9003
           predicates:
-            - Path=/match/**, /mypage/**, /gathering/**, /live/**, /ranking/**, /team/**
+            - Path=/match/**, /matching/**, /gathering/**, /live/**, /ranking/**, /team/**
 
         - id: matching-service-tester
           uri: https://i8b309.p.ssafy.io:10003
           predicates:
-            - Path=/test/match/**, /test/mypage/**, /test/gathering/**, /test/live/**, /test/ranking/**, /test/team/**
+            - Path=/test/match/**, /test/matching/**, /test/gathering/**, /test/live/**, /test/ranking/**, /test/team/**
           filters:
             - RewritePath=/test/(?<path>.*),/$\{path}
 
@@ -108,7 +114,7 @@ spring:
 
         - id: react-framework
           uri: http://i8b309.p.ssafy.io:3000/
-          order: 1
+          order: 2
           predicates:
             - Path=/**
   #          filters:
@@ -132,4 +138,3 @@ oauth2:
 #    register-with-eureka: true # 유레카 클라이언트 활성화
 #    service-url:
 #      defaultZone: http://localhost:8761/eureka # 유레카 클라이언트로 등록
-

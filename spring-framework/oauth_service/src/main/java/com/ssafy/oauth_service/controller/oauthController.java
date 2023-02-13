@@ -44,7 +44,6 @@ public class oauthController {
     @Autowired
     ServletContext servletContext;
 
-    String ReactFramework_baseUrl = "https://localhost:3000";
 
     @Value("${oauth2.client.registration.client-id.kakao}")
     String kakao_cliendID;
@@ -61,6 +60,9 @@ public class oauthController {
 
     @Autowired
     KakaoLoginRefreshTokenCacheRepository kakaoLoginRefreshTokenCacheRepository;
+
+    final String api_gateway_url = "https://i8b309.p.ssafy.io";
+//    final String api_gateway_url = "https://localhost:8080";
 
 
     public String getURLBase(HttpServletRequest request) throws MalformedURLException {
@@ -122,7 +124,7 @@ public class oauthController {
         return "redirect:" + "https://kauth.kakao.com/oauth/authorize?" +
                 "response_type=code&client_id=79c6d214ca859ea2806d6bd426ffb1fe" +
                 "&redirect_uri=" +
-                "https://i8b309.p.ssafy.io/oauth2/login"; // 내 서버로 redirect 해서 kakao access_token, kakao refresh_token 받음
+                api_gateway_url + "/oauth2/login"; // 내 서버로 redirect 해서 kakao access_token, kakao refresh_token 받음
         // <- 나중에 naver도 합치면 @RequestMapping("/login/{provider}")로 하면 될듯.
     }
 
@@ -137,7 +139,7 @@ public class oauthController {
     {
         System.out.println("login : " + map);
         System.out.println(getURLBase(req));
-        if (map.isEmpty() || !map.containsKey("code")) return "redirect:" + getURLBase(req) + "/login/fail";
+        if (map.isEmpty() || !map.containsKey("code")) return "redirect:" + api_gateway_url +  "/login/fail";
 
         String code = (String) map.get("code");
 
@@ -145,16 +147,9 @@ public class oauthController {
         URL url = new URL("https://kauth.kakao.com/oauth/token"+ "?" +
                                 "grant_type=authorization_code&" +
                                 "client_id=" + kakao_cliendID + "&" +
-                                "redirect_uri=" + URLEncoder.encode(getURLBase(req) + "/oauth2/login", StandardCharsets.UTF_8) + "&" +
+                                "redirect_uri=" + URLEncoder.encode(api_gateway_url + "/oauth2/login", StandardCharsets.UTF_8) + "&" +
                                 "code=" + code //(String) map.get("code")
                         );
-
-
-        System.out.println("KAKAO REDIRECT : " + "https://kauth.kakao.com/oauth/token"+ "?" +
-                "grant_type=authorization_code&" +
-                "client_id=" + kakao_cliendID + "&" +
-                "redirect_uri=" + URLEncoder.encode(getURLBase(req) + "/oauth2/login", StandardCharsets.UTF_8) + "&" +
-                "code=" + code);
 
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("POST");
@@ -163,8 +158,7 @@ public class oauthController {
         InputStream responseStream = httpConn.getInputStream();
 //        System.out.println(new String(responseStream.readAllBytes()));
         KakaoTokenByCodeDTO codeResult = objectMapper.readValue(responseStream, KakaoTokenByCodeDTO.class);
-//
-        System.out.println(codeResult);
+
 
 
         // access_token으로 사용자 정보 받기
@@ -214,7 +208,7 @@ public class oauthController {
 //                    .build()
 //                    .toUriString();
 
-            return "redirect:" + ReactFramework_baseUrl + "/login/success?"
+            return "redirect:" + api_gateway_url + "/login/success?"
                     + "access_token=" + accessToken
                     + "&refresh_token=" + refreshToken;
         }
@@ -230,15 +224,11 @@ public class oauthController {
             oAuthRegisterCacheRepository.save(registerCache);
             System.out.println(registerCache);
 
-//            System.out.println(getURLBase(req));
-//            return "redirect:" + UriComponentsBuilder
-//                    .fromHttpUrl(getURLBase(req) + "/login/regist")
-//                    .queryParam("code",registerCache.getToken())
-//                    .build().toUriString();
-            return "redirect:" + ReactFramework_baseUrl + "/login/regist?code=" + registerCache.getToken();
+
+            return "redirect:" + api_gateway_url + "/login/regist?code=" + registerCache.getToken();
         }
 
-
+//return "redirect:https://www.naver.com";
     }
 
     @Transactional

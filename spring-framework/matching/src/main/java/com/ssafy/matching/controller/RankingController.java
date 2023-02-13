@@ -43,10 +43,10 @@ public class RankingController {
     @GetMapping("/{teamid}")
     public ResponseEntity<?> view(@PathVariable("teamid") int teamId, String sort) {
         try {
-            Map<Integer, Object> list = rankingService.viewMyTeamsRanking(teamId, sort);
+            Map<String, Object> list = rankingService.viewMyTeamsRanking(teamId, sort);
             System.out.println(list);
             if (list != null && !list.isEmpty()) {
-                return new ResponseEntity<Map<Integer, Object>>(list, HttpStatus.OK);
+                return new ResponseEntity<Map<String, Object>>(list, HttpStatus.OK);
             } else {
                 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
             }

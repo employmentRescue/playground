@@ -36,14 +36,16 @@ public class RankingServiceImpl implements RankingService {
             case "승" : teamStatsList.sort(Comparator.comparing(TeamStats::getWin).reversed()); break;
             case "무" : teamStatsList.sort(Comparator.comparing(TeamStats::getDraw).reversed()); break;
             case "패" : teamStatsList.sort(Comparator.comparing(TeamStats::getLose).reversed()); break;
-            case "rating" : teamStatsList.sort(Comparator.comparing(TeamStats::getPoint).reversed()); break;
+            case "Rating" : teamStatsList.sort(Comparator.comparing(TeamStats::getPoint).reversed()); break;
         }
 
         return teamStatsList;
     }
 
     @Override
-    public Map<Integer, Object> viewMyTeamsRanking(int teamId, String sort) {
+    public Map<String, Object> viewMyTeamsRanking(int teamId, String sort) {
+        Map<String, Object> resultMap = new HashMap<>();
+
         Team myTeam = teamRepository.getByTeamId(teamId); //1. 나의 팀 검색
 
         //2. 나의 팀 기준 상위 3개, 하위 3개 팀 검색
@@ -55,8 +57,6 @@ public class RankingServiceImpl implements RankingService {
             TeamStats teamStats = getTeamStats(teamList.get(i));
             teamStatsList.add(teamStats);
         }
-
-        Map<Integer, Object> resultMap = new HashMap<>();
 
         //정렬 조건
         switch (sort) {
@@ -76,7 +76,7 @@ public class RankingServiceImpl implements RankingService {
                 teamStatsList.sort(Comparator.comparing(TeamStats::getLose).reversed());
                 resultMap = getResultMap(teamStatsList, myTeamStat);
                 break;
-            case "rating":
+            case "Rating":
                 teamStatsList.sort(Comparator.comparing(TeamStats::getPoint).reversed());
                 resultMap = getResultMap(teamStatsList, myTeamStat);
                 break;
@@ -85,8 +85,9 @@ public class RankingServiceImpl implements RankingService {
         return resultMap;
     }
 
-    private Map<Integer, Object> getResultMap(List<TeamStats> teamStatsList, TeamStats myTeamStat) {
-        Map<Integer, Object> resultMap = new HashMap<>();
+    private Map<String, Object> getResultMap(List<TeamStats> teamStatsList, TeamStats myTeamStat) {
+        Map<String, Object> resultMap = new HashMap<>();
+        Map<Integer, Object> rankingMap = new HashMap<>();
 
 //        int idx = teamStatsList.indexOf(myTeamStat);
 //        System.out.println("인덱스: "+idx); // -1 리턴됨
@@ -100,11 +101,24 @@ public class RankingServiceImpl implements RankingService {
         }
         System.out.println("인덱스: "+idx);
 
-        for(int i = idx - 3; i <= idx + 3; i++) {
-            if(0 <= i && i < teamStatsList.size()) {
-                resultMap.put(i + 1, teamStatsList.get(i));
+        if(idx < 5) {
+            for(int i = 0; i < 10; i++) {
+                rankingMap.put(i + 1, teamStatsList.get(i));
+            }
+        } else if(5 <= idx && idx < teamStatsList.size() - 5) {
+            for(int i = idx - 5; i <= idx + 5; i++) {
+                rankingMap.put(i + 1, teamStatsList.get(i));
+            }
+        } else {
+            for(int i = teamStatsList.size() - 10; i < teamStatsList.size(); i++) {
+                rankingMap.put(i + 1, teamStatsList.get(i));
             }
         }
+
+
+
+        resultMap.put("myTeamRank", idx + 1);
+        resultMap.put("rankingMap", rankingMap);
 
         return resultMap;
     }

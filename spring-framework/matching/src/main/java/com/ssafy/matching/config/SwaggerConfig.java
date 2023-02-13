@@ -12,14 +12,13 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableWebMvc
 //@EnableSwagger2
 public class SwaggerConfig {
-	//http://localhost:10003/swagger-ui/index.html
 	//https://localhost:10003/swagger-ui/index.html
+	//https://i8b309.p.ssafy.io:10003/swagger-ui/index.html
 
 	private ApiInfo info() {
 		return new ApiInfoBuilder().title("Playground Matching Server API").build();
@@ -27,6 +26,7 @@ public class SwaggerConfig {
 
 	@Bean
 	public Docket swaggerApi() {
+//		Server serverLocal = new Server("ec2", "https://i8b309.p.ssafy.io", "for 2c2 server", Collections.emptyList(), Collections.emptyList());
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(info())
 				.select()
