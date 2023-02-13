@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional
@@ -24,7 +21,7 @@ public class RankingServiceImpl implements RankingService {
     MatchRepository matchRepository;
 
     @Override
-    public List<TeamStats> viewRanking(String sports, String gameType) {
+    public List<TeamStats> viewRanking(String sports, String gameType, String sort) {
         List<Team> teamList = teamRepository.getTop20BySportsAndGameTypeOrderByPointDesc(sports, gameType);
         List<TeamStats> teamStatsList = new ArrayList<>();
 
@@ -32,37 +29,84 @@ public class RankingServiceImpl implements RankingService {
             TeamStats teamStats = getTeamStats(teamList.get(i));
             teamStatsList.add(teamStats);
         }
+        
+        //정렬 조건
+        switch (sort) {
+            case "경기" : teamStatsList.sort(Comparator.comparing(TeamStats::getMatchTimes).reversed()); break;
+            case "승" : teamStatsList.sort(Comparator.comparing(TeamStats::getWin).reversed()); break;
+            case "무" : teamStatsList.sort(Comparator.comparing(TeamStats::getDraw).reversed()); break;
+            case "패" : teamStatsList.sort(Comparator.comparing(TeamStats::getLose).reversed()); break;
+            case "rating" : teamStatsList.sort(Comparator.comparing(TeamStats::getPoint).reversed()); break;
+        }
 
         return teamStatsList;
     }
 
     @Override
-    public List<Map<String, Object>> viewMyTeamsRanking(long memberId) {
-        List<Map<String, Object>> mapList = new ArrayList<>();
-
-        List<Team> teamList = teamRepository.getTeamsByMemberId(memberId); //1. 나의 팀 리스트 검색
+    public Map<Integer, Object> viewMyTeamsRanking(int teamId, String sort) {
+        Team myTeam = teamRepository.getByTeamId(teamId); //1. 나의 팀 검색
 
         //2. 나의 팀 기준 상위 3개, 하위 3개 팀 검색
-        for(Team team : teamList) {
-            Map<String, Object> map = new HashMap<>();
+        TeamStats myTeamStat = getTeamStats(myTeam);
+        List<Team> teamList = teamRepository.findAll();
 
-            TeamStats myTeamStat = getTeamStats(team);
-            map.put("myTeamStat", myTeamStat);
-
-            List<Team> rankList = teamRepository.get7TeamsByTeamId(team.getTeamId());
-            List<TeamStats> teamStatsList = new ArrayList<>();
-
-            for(int i = 0; i < rankList.size(); i++) {
-                TeamStats teamStats = getTeamStats(rankList.get(i));
-                teamStatsList.add(teamStats);
-            }
-
-            map.put("teamStatsList", teamStatsList);
-
-            mapList.add(map);
+        List<TeamStats> teamStatsList = new ArrayList<>();
+        for(int i = 0; i < teamList.size(); i++) {
+            TeamStats teamStats = getTeamStats(teamList.get(i));
+            teamStatsList.add(teamStats);
         }
 
-        return mapList;
+        Map<Integer, Object> resultMap = new HashMap<>();
+
+        //정렬 조건
+        switch (sort) {
+            case "경기":
+                teamStatsList.sort(Comparator.comparing(TeamStats::getMatchTimes).reversed());
+                resultMap = getResultMap(teamStatsList, myTeamStat);
+                break;
+            case "승":
+                teamStatsList.sort(Comparator.comparing(TeamStats::getWin).reversed());
+                resultMap = getResultMap(teamStatsList, myTeamStat);
+                break;
+            case "무":
+                teamStatsList.sort(Comparator.comparing(TeamStats::getDraw).reversed());
+                resultMap = getResultMap(teamStatsList, myTeamStat);
+                break;
+            case "패":
+                teamStatsList.sort(Comparator.comparing(TeamStats::getLose).reversed());
+                resultMap = getResultMap(teamStatsList, myTeamStat);
+                break;
+            case "rating":
+                teamStatsList.sort(Comparator.comparing(TeamStats::getPoint).reversed());
+                resultMap = getResultMap(teamStatsList, myTeamStat);
+                break;
+        }
+
+        return resultMap;
+    }
+
+    private Map<Integer, Object> getResultMap(List<TeamStats> teamStatsList, TeamStats myTeamStat) {
+        Map<Integer, Object> resultMap = new HashMap<>();
+
+//        int idx = teamStatsList.indexOf(myTeamStat);
+//        System.out.println("인덱스: "+idx); // -1 리턴됨
+
+        int idx = -1;
+        for(int i = 0; i < teamStatsList.size(); i++) {
+            if(teamStatsList.get(i).getTeamId() == myTeamStat.getTeamId()) {
+                idx = i;
+                break;
+            }
+        }
+        System.out.println("인덱스: "+idx);
+
+        for(int i = idx - 3; i <= idx + 3; i++) {
+            if(0 <= i && i < teamStatsList.size()) {
+                resultMap.put(i + 1, teamStatsList.get(i));
+            }
+        }
+
+        return resultMap;
     }
 
     @Override
