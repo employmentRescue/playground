@@ -44,7 +44,6 @@ public class oauthController {
     @Autowired
     ServletContext servletContext;
 
-    String ReactFramework_baseUrl = "https://localhost:3000";
 
     @Value("${oauth2.client.registration.client-id.kakao}")
     String kakao_cliendID;
@@ -63,6 +62,7 @@ public class oauthController {
     KakaoLoginRefreshTokenCacheRepository kakaoLoginRefreshTokenCacheRepository;
 
     final String api_gateway_url = "https://i8b309.p.ssafy.io";
+//    final String api_gateway_url = "https://localhost:8080";
 
 
     public String getURLBase(HttpServletRequest request) throws MalformedURLException {
@@ -151,13 +151,6 @@ public class oauthController {
                                 "code=" + code //(String) map.get("code")
                         );
 
-
-        System.out.println("KAKAO REDIRECT : " + "https://kauth.kakao.com/oauth/token"+ "?" +
-                "grant_type=authorization_code&" +
-                "client_id=" + kakao_cliendID + "&" +
-                "redirect_uri=" + URLEncoder.encode(api_gateway_url + "/oauth2/login", StandardCharsets.UTF_8) + "&" +
-                "code=" + code);
-
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setRequestMethod("POST");
         httpConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -231,11 +224,7 @@ public class oauthController {
             oAuthRegisterCacheRepository.save(registerCache);
             System.out.println(registerCache);
 
-//            System.out.println(getURLBase(req));
-//            return "redirect:" + UriComponentsBuilder
-//                    .fromHttpUrl(getURLBase(req) + "/login/regist")
-//                    .queryParam("code",registerCache.getToken())
-//                    .build().toUriString();
+
             return "redirect:" + api_gateway_url + "/login/regist?code=" + registerCache.getToken();
         }
 

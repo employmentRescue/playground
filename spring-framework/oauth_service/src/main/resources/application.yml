@@ -25,7 +25,7 @@ spring:
 
   data:
     redis:
-      host: localhost # i8b309.p.ssafy.io
+      host: i8b309.p.ssafy.io # i8b309.p.ssafy.io
       port: 6379
 
 

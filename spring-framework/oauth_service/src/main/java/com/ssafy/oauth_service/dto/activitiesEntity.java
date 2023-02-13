@@ -31,5 +31,5 @@ public class activitiesEntity extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @JsonIgnore
-    public com.ssafy.userservice.dto.MemberOftenEntity memberOften = new com.ssafy.userservice.dto.MemberOftenEntity();
+    public MemberOftenEntity memberOften = new MemberOftenEntity();
 }
