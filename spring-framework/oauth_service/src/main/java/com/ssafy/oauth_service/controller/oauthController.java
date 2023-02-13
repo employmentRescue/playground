@@ -180,66 +180,66 @@ public class oauthController {
         KakaoUserInfoDTO userinfo = objectMapper.readValue(ret, KakaoUserInfoDTO.class);
         System.out.println(userinfo);
 
-//        System.out.println(entityManager.find(MemberOftenEntity.class, userinfo.getId()));
-//        if (entityManager.find(MemberOftenEntity.class, userinfo.getId()) != null){
-//            String accessToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-//            String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-//
-//
-//            kakaoLoginAccessTokenCacheRepository
-//                    .save(
-//                        KakaoLoginAccessTokenCache
-//                            .builder()
-//                            .token(accessToken)
-//                            .kakao_accessToken(codeResult.getAccess_token())
-//                            .kakao_refreshToken(codeResult.getRefresh_token())
-//                            .kakao_userID(userinfo.getId())
-//                                .build()
-//                        );
-//
-//            // 연결된 access_token에 대해서만 refresh
-//            kakaoLoginRefreshTokenCacheRepository
-//                    .save(
-//                        KakaoLoginRefreshTokenCache
-//                                .builder()
-//                                .token(refreshToken)
-//                                .connected_access_token(accessToken)
-//                                    .build()
-//                    );
-//
-//
-////            return "redirect:" + UriComponentsBuilder
-////                    .fromHttpUrl(getURLBase(req) + "/login/success")
-////                    .queryParam("access_token",accessToken)
-////                    .queryParam("refresh_token",refreshToken)
-////                    .build()
-////                    .toUriString();
-//
-//            return "redirect:" + api_gateway_url + "/login/success?"
-//                    + "access_token=" + accessToken
-//                    + "&refresh_token=" + refreshToken;
-//        }
-//        else {
-//            OAuthRegisterCache registerCache = OAuthRegisterCache
-//                                            .builder()
-//                                            .token(Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
-//                                            .kakao_userID(userinfo.getId())
-//                                            .kakao_accessToken(codeResult.getAccess_token())
-//                                            .kakao_refreshToken(codeResult.getRefresh_token())
-//                                            .build();
-//
-//            oAuthRegisterCacheRepository.save(registerCache);
-//            System.out.println(registerCache);
-//
-////            System.out.println(getURLBase(req));
-////            return "redirect:" + UriComponentsBuilder
-////                    .fromHttpUrl(getURLBase(req) + "/login/regist")
-////                    .queryParam("code",registerCache.getToken())
-////                    .build().toUriString();
-//            return "redirect:" + api_gateway_url + "/login/regist?code=" + registerCache.getToken();
-//        }
+        System.out.println(entityManager.find(MemberOftenEntity.class, userinfo.getId()));
+        if (entityManager.find(MemberOftenEntity.class, userinfo.getId()) != null){
+            String accessToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+            String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
 
-return "redirect:https://www.naver.com";
+
+            kakaoLoginAccessTokenCacheRepository
+                    .save(
+                        KakaoLoginAccessTokenCache
+                            .builder()
+                            .token(accessToken)
+                            .kakao_accessToken(codeResult.getAccess_token())
+                            .kakao_refreshToken(codeResult.getRefresh_token())
+                            .kakao_userID(userinfo.getId())
+                                .build()
+                        );
+
+            // 연결된 access_token에 대해서만 refresh
+            kakaoLoginRefreshTokenCacheRepository
+                    .save(
+                        KakaoLoginRefreshTokenCache
+                                .builder()
+                                .token(refreshToken)
+                                .connected_access_token(accessToken)
+                                    .build()
+                    );
+
+
+//            return "redirect:" + UriComponentsBuilder
+//                    .fromHttpUrl(getURLBase(req) + "/login/success")
+//                    .queryParam("access_token",accessToken)
+//                    .queryParam("refresh_token",refreshToken)
+//                    .build()
+//                    .toUriString();
+
+            return "redirect:" + api_gateway_url + "/login/success?"
+                    + "access_token=" + accessToken
+                    + "&refresh_token=" + refreshToken;
+        }
+        else {
+            OAuthRegisterCache registerCache = OAuthRegisterCache
+                                            .builder()
+                                            .token(Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
+                                            .kakao_userID(userinfo.getId())
+                                            .kakao_accessToken(codeResult.getAccess_token())
+                                            .kakao_refreshToken(codeResult.getRefresh_token())
+                                            .build();
+
+            oAuthRegisterCacheRepository.save(registerCache);
+            System.out.println(registerCache);
+
+//            System.out.println(getURLBase(req));
+//            return "redirect:" + UriComponentsBuilder
+//                    .fromHttpUrl(getURLBase(req) + "/login/regist")
+//                    .queryParam("code",registerCache.getToken())
+//                    .build().toUriString();
+            return "redirect:" + api_gateway_url + "/login/regist?code=" + registerCache.getToken();
+        }
+
+//return "redirect:https://www.naver.com";
     }
 
     @Transactional
