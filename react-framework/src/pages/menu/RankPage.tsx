@@ -13,27 +13,44 @@ import { setTabName } from "@/stores/tab/tabName";
 import { useDispatch, useSelector } from "react-redux";
 import useMyTeamRankingListQuery from "@/hooks/rank/useTeamRankingMyListQuery";
 import { RootState } from "@/stores/store";
+import useTeamListQuery from "@/hooks/team/useTeamListQuery";
+import { team } from "@/models/team";
+import useMyTeamRankingMyListQuery from "@/hooks/rank/useTeamRankingMyListQuery";
+import useTeamRankingMyListQuery from "@/hooks/rank/useTeamRankingMyListQuery";
+import { activeIndex } from "@/stores/register/registerTab";
 
 export default function RankPage() {
   const [tabIndex, setTabIndex] = useState<number>(1);
   const [teamRankIndex, setTeamRankIndex] = useState<number>(0);
-  const [teamInfo, setTeamInfo] = useState<teamRanking | null>(null);
+  const [teamInfo, setTeamInfo] = useState<any | null>(null);
   const [sportsType, setSportsType] = useState<string>('농구');
   const [gameType, setGameType] = useState<string>('3vs3');
   const [sortType, setSortType] = useState<string>('Rating');
   const [filterModal, setFilterModal] = useState<string>('none');
+  const [myTeamIndex, setMyTeamIndex] = useState<number>(0);
+  const [myTeamId, setMyteamId] = useState<number>(0);
 
   const teamList = useTeamRankingListQuery(gameType, sportsType, sortType, filterModal);
   const userId = useSelector((state: RootState) => {
     return state.userId;
   });
-  const myTeamList = useMyTeamRankingListQuery(userId);
-  console.log(teamList);
+  const myTeamList = useTeamListQuery(userId);
+  const myTeamInfo = useTeamRankingMyListQuery(myTeamId, sortType, tabIndex, myTeamList);
+  console.log(myTeamList.data);
+  if (myTeamInfo.data)
+    console.log(myTeamInfo.data.rankingMap);
+  console.log(typeof myTeamList.data)
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(setTabName('팀 랭킹'))
   }, [])
+
+  useEffect(() => {
+    if (myTeamList.data) {
+      setMyteamId(myTeamList.data[myTeamIndex].team.teamId)
+    }
+  }, [myTeamList.isSuccess, myTeamIndex])
 
   return (
     <div>
@@ -69,12 +86,13 @@ export default function RankPage() {
           pagination={{
             clickable: true,
           }}
+          onActiveIndexChange={(e) => { setMyTeamIndex(e.activeIndex); console.log(e.activeIndex) }}
         >
-          {myTeamList.data &&
-            myTeamList.data.map((item: teamRanking, index: number) => (
-              <SwiperSlide>
-                <div className="w-full h-167 ml-[-10px]" key={index}>
-                  <MyTeamInfo rank={teamRankIndex} teamRanking={item} />
+          {myTeamList.data && myTeamInfo.data &&
+            myTeamList.data.map((item: team, index: number) => (
+              <SwiperSlide key={index}>
+                <div className="w-full h-167 ml-[-10px]">
+                  <MyTeamInfo rank={myTeamInfo.data.myTeamRank} teamRanking={item} />
                 </div>
               </SwiperSlide>
             ))}
@@ -90,7 +108,7 @@ export default function RankPage() {
           {sortType === '패' ? <div className="w-47 h-full flex items-center justify-center text-12 bg-gray-600">패</div> : <div className="w-47 h-full flex items-center justify-center text-12" onClick={() => setSortType('패')}>패</div>}
           {sortType === 'Rating' ? <div className="w-57 h-full flex items-center justify-center text-12 bg-gray-600">Rating</div> : <div className="w-57 h-full flex items-center justify-center text-12" onClick={() => setSortType('Rating')}>Rating</div>}
         </div>
-        {teamList.isSuccess && teamList.data &&
+        {tabIndex == 1 && teamList.data &&
           teamList.data.map((item: teamRanking, index: number) => (
             <div onClick={() => { setTeamRankIndex(index + 1); setTeamInfo(item); }} key={index}>
               <RankInfo
@@ -100,6 +118,16 @@ export default function RankPage() {
                 sortType={sortType}
               />
             </div>
+          ))}
+        {tabIndex == 2 && myTeamInfo.isSuccess && myTeamInfo.data.rankingMap &&
+          Object.keys(myTeamInfo.data.rankingMap).map((item: any, index: number) => (
+            <RankInfo
+              teamRanking={myTeamInfo.data.rankingMap[item]}
+              rank={item}
+              isClicked={item == myTeamInfo.data.myTeamRank}
+              sortType={sortType}
+              key={index}
+            />
           ))}
       </div>
       {filterModal === 'sportsType' && <SportsTypeFilterModal setSportsType={setSportsType} setFilterModal={setFilterModal}></SportsTypeFilterModal>}
