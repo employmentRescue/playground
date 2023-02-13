@@ -4,9 +4,9 @@ import { SERVER_URL, LOCAL_SERVER_URL } from '@/utils/url';
 import { matchList } from '@/models/matchList';
 
 export const GATHERING_LIST = '/gathering';
-const URL = "https://i8b309.p.ssafy.io:10003/"
+const URL = "https://i8b309.p.ssafy.io:8080/"
 
-const fetcher = (matchList: matchList) => axios.get(SERVER_URL + GATHERING_LIST,
+const fetcher = (matchList: matchList) => axios.get(URL + GATHERING_LIST,
     { params: {
         startDate: matchList.startDate,
         lat: matchList.lat,
@@ -26,7 +26,7 @@ const fetcher = (matchList: matchList) => axios.get(SERVER_URL + GATHERING_LIST,
 
 
 const useGatheringListQuery = (matchList: matchList) => {
-    return useQuery([GATHERING_LIST, matchList], () => fetcher(matchList), { staleTime: 0, cacheTime: 60 * 5 * 1000, refetchInterval: 30 * 1000, refetchOnWindowFocus: false });
+    return useQuery([GATHERING_LIST, matchList], () => fetcher(matchList), { staleTime: 0, cacheTime: 60 * 5 * 1000, refetchInterval: 30 * 1000, refetchOnWindowFocus: false});
 }
 
 export default useGatheringListQuery;

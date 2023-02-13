@@ -11,6 +11,7 @@ import { setSortDate, setSortLocation, setSortDistance, setSortStartTime, setSor
 import basketballOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import footBallOriginal from "@/assets/icons/football-original.png"
+
 import { matchList } from "@/models/matchList";
 
 
@@ -79,46 +80,51 @@ function ListItem({ data }: { data: gatheringType }) {
     let sportImg;
     let sportColor;
     switch (data?.sports) {
-        case "basketball":
-            sportImg = basketballOriginal
-            sportColor = 'bg-[#fde8b4]'
+        case "농구":
+            sportImg = basketballOriginal;
+            sportColor = 'bg-[#fde8b4]';
             break;
-        case "football":
-            sportImg = footBallOriginal
-            sportColor = 'bg-[#d8caff]'
+        case "축구":
+            sportImg = footBallOriginal;
+            sportColor = 'bg-[#d8caff]';
             break;
-        case "badminton":
-            sportImg = badmintonOriginal
-            sportColor = 'bg-[#c4ffb6]'
+        case "배드민턴":
+            sportImg = badmintonOriginal;
+            sportColor = 'bg-[#c4ffb6]';
             break;
     }
-
     return (
-        <div className="relative w-[328px] h-120 flex-grow-0 my-10 mr-15 ml-17 pr-17 rounded-15 bg-[#fff] overflow-hidden">
-            <div className={"absolute w-59 h-120 flex-grow-0 pt-51 text-center  mr-11 inline-block " + sportColor}>
+        <div className="flex w-9/10 h-120 flex-grow-0 my-10 mx-17 rounded-15 bg-[#fff] overflow-hidden">
+            <div className={"w-1/6 h-120 flex-grow-0 pt-51 text-center " + sportColor}>
                 <span className="h-18 flex-grow-0 font-inter text-[15px] font-bold text-left text-[#000]">
                     {String(data.memberGatheringList.length) + '/' + data.people}
                 </span>
             </div>
-            <img src={sportImg} className="absolute w-20 h-20 flex-grow-0 top-17 left-70 p-0 inline-block " />
-            <span className="absolute w-130 h-18 flex-grow-0 top-18 left-[101px] font-inter text-[15px] font-bold test-left inline-block text-[#000]">{data?.title}</span>
-            <div className="absolute w-1 h-105 flex-grow-0 top-8 left-[259px] bg-[#d9d9d9]"></div>
-            <span className="absolute w-40 h-37 flex-grow-0 top-41 left-[276px] font-inter text-[13px] text-left font-[#000]">
-                {data?.startDate.slice(5)}
-                <br></br>
-                {data?.startTime.slice(0, 5)}
-            </span>
+            <div className="w-5/6 flex">
+                <div className="w-3/4">
+                    <div className="flex h-1/2 items-center">
+                        <img src={sportImg} className="w-20 h-20 flex-grow-0 mx-11 my-17 p-0" />
+                        <span className="w-130 h-18 flex-grow-0 font-inter text-[15px] font-bold test-left text-[#000]">{data?.title}</span>
+                    </div>
+                    <div className="grid items-center h-1/2 ml-42 py-10">
+                        <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#000]">{"위치는 여기에"}</span>
+                        <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#717070]">{data?.sex +"·"+ data?.gameType +"·"+ data?.level}</span>
+                    </div>
+                </div>
+                <div className="grid justify-center items-center w-1/4 my-7 border-l-1 border-solid border-[#d9d9d9]">
+                    <span className=" w-40 h-37 flex-grow-0 font-inter text-[13px] text-left font-[#000]">
+                        {data?.startDate.slice(5)}
+                        <br></br>
+                        {data?.startTime.slice(0, 5)}
+                    </span>
+                </div>
+            </div>
         </div>
     )
 }
 
-
 // 매치 페이지 출력
 export default function MatchPage() {
-
-    // const filterData = useSelector((state: RootState) => {
-    //     return state.matchSort;
-    // })
     const [ startDate, setStartDate ] = useState(useSelector((state: RootState) => {return state.matchSort.startDate;}))
     const [ location, setLocation ] = useState(useSelector((state: RootState) => {return [state.matchSort.lat, state.matchSort.lng];}))
     const [ distance, setDistance ] = useState(useSelector((state: RootState) => {return state.matchSort.distance;}))
@@ -129,6 +135,8 @@ export default function MatchPage() {
     const [ sports, setSports ] = useState(useSelector((state: RootState) => {return state.matchSort.sports;}))
     const [ gameType, setGameType ] = useState(useSelector((state: RootState) => {return state.matchSort.gameType;}))
     const [ sort, setSort ] = useState(useSelector((state: RootState) => {return state.matchSort.sort;}))
+    
+    const [ searchingData, setSearchingData ] = useState<string>("")
 
     const filterData: matchList = {
         startDate: startDate,
@@ -146,7 +154,7 @@ export default function MatchPage() {
         sort: sort,
     }
     const gatheringListQuery = useGatheringListQuery(filterData);
-    // console.log(gatheringListQuery)
+    console.log(gatheringListQuery)
     // console.log(filterData)
     // console.log(typeof(filterData))
     const filterDataDispatch = useDispatch()
@@ -169,7 +177,10 @@ export default function MatchPage() {
         if (gatheringListQuery.isSuccess) {
             console.log('success ' + gatheringListQuery)
             if (gatheringListQuery.data) {
-                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=><ListItem key={i} data={eachData}/>)
+                console.log(gatheringListQuery.data[0].title)
+                console.log(gatheringListQuery.data[0].title.includes("농구"))
+                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=>eachData.title.includes(searchingData) && <ListItem key={i} data={eachData}/>)
+                // const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=><ListItem key={i} data={eachData}/>)
                 return ( <div>{gatheringList}</div> )
             } 
             else { return ( <div>해당 모임이 존재하지 않습니다.</div> ) }
@@ -177,13 +188,9 @@ export default function MatchPage() {
         else { return ( <div>로딩중</div> )
         }
     }
-    useEffect(()=>{
-        
-    },[gatheringListQuery.isSuccess])
-
     return (
         <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
-            <MatchFilterBar setFilterData={(attr: attrType, value: any) => setFilterData(attr, value)} startDate={startDate} location={location} distance={distance} startTime={startTime} level={level} playTime={playTime} sex={sex} sports={sports} gameType={gameType} sort={sort} />
+            <MatchFilterBar setFilterData={(attr: attrType, value: any) => setFilterData(attr, value)} setSearchingData={(value:string)=>{setSearchingData(value)}} startDate={startDate} location={location} distance={distance} startTime={startTime} level={level} playTime={playTime} sex={sex} sports={sports} gameType={gameType} sort={sort}/>
             <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
                 {listItems()}
             </div>
