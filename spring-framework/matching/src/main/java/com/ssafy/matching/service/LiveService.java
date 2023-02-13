@@ -1,6 +1,5 @@
 package com.ssafy.matching.service;
 
-import com.ssafy.matching.dto.GatheringMember;
 import com.ssafy.matching.dto.Live;
 import com.ssafy.matching.dto.LiveMember;
 
