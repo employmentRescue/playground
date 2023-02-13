@@ -101,11 +101,21 @@ public class RankingServiceImpl implements RankingService {
         }
         System.out.println("인덱스: "+idx);
 
-        for(int i = idx - 3; i <= idx + 3; i++) {
-            if(0 <= i && i < teamStatsList.size()) {
+        if(idx < 5) {
+            for(int i = 0; i < 10; i++) {
+                rankingMap.put(i + 1, teamStatsList.get(i));
+            }
+        } else if(5 <= idx && idx < teamStatsList.size() - 5) {
+            for(int i = idx - 5; i <= idx + 5; i++) {
+                rankingMap.put(i + 1, teamStatsList.get(i));
+            }
+        } else {
+            for(int i = teamStatsList.size() - 10; i < teamStatsList.size(); i++) {
                 rankingMap.put(i + 1, teamStatsList.get(i));
             }
         }
+
+
 
         resultMap.put("myTeamRank", idx + 1);
         resultMap.put("rankingMap", rankingMap);
