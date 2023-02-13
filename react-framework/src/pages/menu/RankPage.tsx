@@ -23,7 +23,7 @@ export default function RankPage() {
   const [sortType, setSortType] = useState<string>('Rating');
   const [filterModal, setFilterModal] = useState<string>('none');
 
-  const teamList = useTeamRankingListQuery(gameType, sportsType, filterModal);
+  const teamList = useTeamRankingListQuery(gameType, sportsType, sortType, filterModal);
   const userId = useSelector((state: RootState) => {
     return state.userId;
   });
