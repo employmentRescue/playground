@@ -139,7 +139,7 @@ public class oauthController {
     {
         System.out.println("login : " + map);
         System.out.println(getURLBase(req));
-        if (map.isEmpty() || !map.containsKey("code")) return "redirect:" + getURLBase(req) + "/login/fail";
+        if (map.isEmpty() || !map.containsKey("code")) return "redirect:" + api_gateway_url +  "/login/fail";
 
         String code = (String) map.get("code");
 
@@ -239,7 +239,7 @@ public class oauthController {
             return "redirect:" + api_gateway_url + "/login/regist?code=" + registerCache.getToken();
         }
 
-
+//return "redirect:https://www.naver.com";
     }
 
     @Transactional
