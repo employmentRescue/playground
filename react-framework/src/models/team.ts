@@ -1,11 +1,11 @@
 export interface team {
-  teamId: number,
+  teamId?: number,
   name: string,
   sports: string,
   gameType: string,
   level: string,
-  point: number,
+  point?: number,
   teamMemberList: any,
-  teamMatchResultList: any,
-  teamStats: any,
+  teamMatchResultList?: any,
+  teamStats?: any,
 }

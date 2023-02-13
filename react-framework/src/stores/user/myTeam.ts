@@ -4,7 +4,7 @@ export interface MyTeam {
     sportsType: "축구" | "농구" | "배드민턴";
     myTeamName: string;
     teamLevel: "입문" | "초수" | "중수" | "고수";
-    personnel: "1 on 1" | "3 on 3" | "5 on 5" | "11 on 11"
+    personnel: "1vs1" | "3vs3" | "5vs5" | "6vs6" | "11vs11"
     memberIds: number[];
     record: { total: number, win: number, draw: number, lose: number };
     rank: { point: number, tier: string }
@@ -33,7 +33,7 @@ const initialState: MyTeam = {
     sportsType: "축구",
     myTeamName: "",
     teamLevel: "입문",
-    personnel: "11 on 11",
+    personnel: "11vs11",
     memberIds: [],
     record: { total: 0, win: 0, draw: 0, lose: 0 },
     rank: { point: 1500, tier: "sliver3" }

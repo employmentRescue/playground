@@ -24,42 +24,42 @@ interface toggleIsSelectedAction {
 
 const initialState: SampleUser[] = [
     {
-        userId: 1,
+        userId: 111,
         imageSrc: profileSampleImg2,
         nickname: "포르투갈 손흥민",
         isSelected: false,
         isRecent: true
     },
     {
-        userId: 2,
+        userId: 222,
         imageSrc: profileSampleImg3,
         nickname: "한반두",
         isSelected: false,
         isRecent: true
     },
     {
-        userId: 3,
+        userId: 333,
         imageSrc: profileSampleImg4,
         nickname: "얼굴 천재",
         isSelected: false,
         isRecent: true
     },
     {
-        userId: 4,
+        userId: 444,
         imageSrc: profileSampleImg5,
         nickname: "회사원",
         isSelected: false,
         isRecent: true
     },
     {
-        userId: 5,
+        userId: 555,
         imageSrc: profileSampleImg2,
         nickname: "친구1",
         isSelected: false,
         isRecent: false
     },
     {
-        userId: 6,
+        userId: 666,
         imageSrc: profileSampleImg3,
         nickname: "친구2",
         isSelected: false,
