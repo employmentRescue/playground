@@ -4,8 +4,9 @@ import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
 
 import useGetMyMatch from "@/hooks/user/useGetMyMatchList";
+import useTeamListQuery from "@/hooks/team/useTeamListQuery";
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setTabName } from "@/stores/tab/tabName"
 import { RootState } from "@/stores/store";
@@ -16,6 +17,8 @@ export default function MatchListPage() {
         return state.userId
     })
     const myMatchList = useGetMyMatch(myUserId);
+    const myTeamList = useTeamListQuery(myUserId);
+    let myTeamIdList: object[] = []
 
     const dispatch = useDispatch();
 
@@ -26,6 +29,12 @@ export default function MatchListPage() {
     useEffect(() => {
         console.log(myUserId)
         myMatchList.isSuccess && console.log(myMatchList)
+
+        myTeamIdList = myTeamList.data && myTeamList.data.map((teamInfo: any) => {
+            return teamInfo.team
+        })
+
+        myTeamList.isSuccess && console.log(myTeamIdList)
     }, [myMatchList])
 
     const MatchCardRendering = (matchTypeAndIsPast: "지난개인" | "최근개인" | "지난팀" | "최근팀") => {
@@ -53,7 +62,7 @@ export default function MatchListPage() {
         const Result = switchMatchList && switchMatchList.map((match: any) => {
             let imgSrc = ""
             let buttonColor = ""
-            switch (match.sports) {
+            switch (match.sports ? match.sports : match.host.sports) {
                 case "축구":
                     imgSrc = footballImg
                     buttonColor = "bg-[#E1D7FC]"
@@ -73,9 +82,9 @@ export default function MatchListPage() {
                     key={index}
                     imgSrc={imgSrc}
                     sportsType={match.sports}
-                    matchTitle={match.description ? match.description : match.teamMatchResultList[0].teamMatchResultId + "팀과의 매치"}
+                    matchTitle={(match.description ? match.description : (match?.teamMatchResultList[0].teamMatchResultId) + "팀과의 매치")}
                     place={match.place ? match.place.address : match.preferredPlace.address}
-                    matchPersonnel={match.gameType ? match.gameType : "몇 vs 몇 API 추가해주세요 아린님 ㅠㅠㅠㅠ"}
+                    matchPersonnel={match.gameType ? match.gameType : match.host.gameType}
                     matchType={match.matchType}
                     isOldMatch={isOldMatch}
                     buttonColor={buttonColor}
