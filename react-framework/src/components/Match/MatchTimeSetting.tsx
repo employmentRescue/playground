@@ -72,8 +72,8 @@ export function MatchTimeSetting({ clicked, startTime, setFilterData }: Iprops) 
                         </div>
                     </div>
                 </div>
-                <div className="h-1/6 justify-center mb-15 mx-13 pt-10">
-                    <div className="grid place-content-center h-34 mb-4 w-full text-center bg-[#303eff] rounded-[5px]  font-[15px] text-[#fff]" onClick={(e) => { e.preventDefault(); clicked(); setFilterData("startTime", exportedStartTime) }}>설정 완료</div>
+                <div className="h-1/6 flex justify-center mb-15 mx-13 pt-10">
+                    <div className="grid place-content-center h-34 mb-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]" onClick={(e)=>{e.preventDefault(); clicked(); setFilterData("startTime", exportedStartTime)}}>설정 완료</div>
                 </div>
             </div>
         </div>
