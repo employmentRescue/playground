@@ -34,7 +34,7 @@ export default function ListCard({ roomId, roomProfile, title, personnel, latest
             {showModal && <ChatListModal showModal={showModal} setShowModal={setShowModal} />}
             <div className="flex bg-white w-full h-70 py-10" onClick={() => handleOnClickToChattingRoom()} {...onLongPress()}>
                 <Profile profile={roomProfile} className="self-center mx-14" />
-                <div className="flex flex-col font-inter justify-center">
+                <div className="flex flex-col ">
                     <div className="flex mt-5">
                         <p className="text-15 font-semibold">{title}</p>
                         <p className="ml-5 -mt-1 text-15 opacity-20">{personnel}</p>

@@ -46,10 +46,10 @@ public class fileController {
 
     }
 
-    @RequestMapping("/upload/test/{user_id}")
-    @PostMapping("/upload/{user_id}")
+    @RequestMapping("/upload/test")
+    @PostMapping("/upload")
     @Transactional
-    ResponseEntity uploadFile(@PathVariable("user_id") long userID, String type, @RequestParam("files") MultipartFile[] files, HttpServletRequest request) throws IOException {
+    ResponseEntity uploadFile(@RequestHeader("user_id") long userID, String type, @RequestParam("files") MultipartFile[] files, HttpServletRequest request) throws IOException {
 //        Resource resource = resourceLoader.getResource("file:/resources/");
         String baseURL = getURLBase(request);
         String baseFolder = servletContext.getRealPath("/resources");

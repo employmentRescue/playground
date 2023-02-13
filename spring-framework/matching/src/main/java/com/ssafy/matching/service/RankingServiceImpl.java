@@ -117,20 +117,23 @@ public class RankingServiceImpl implements RankingService {
         return w;
     }
 
-    private TeamStats getTeamStats(Team team) {
+    public TeamStats getTeamStats(Team team) {
         TeamStats teamStats = new TeamStats();
+        teamStats.setTeamId(team.getTeamId());
         teamStats.setTeamName(team.getName());
 
         List<TeamMatchResult> teamMatchResultList = team.getTeamMatchResultList();
 
         int win = 0, draw = 0, lose = 0;
         for(TeamMatchResult teamMatchResult : teamMatchResultList) {
-            String teamResult = teamMatchResult.getResult();
 
-            switch (teamResult) {
+            if(teamMatchResult.getResult() == null) continue;
+
+            switch (teamMatchResult.getResult()) {
                 case "승" : win++; break;
                 case "무" : draw++; break;
                 case "패" : lose++; break;
+                default: break;
             }
         }
 
@@ -147,6 +150,7 @@ public class RankingServiceImpl implements RankingService {
         return  teamStats;
     }
 
+    //TODO 티어 좀 더 세분화하기
     public String calculateTier(int point) {
         if(point > 2700) return "Gold1";
         else if (2400 < point && point <= 2700) return "Gold2";

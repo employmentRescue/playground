@@ -31,7 +31,7 @@ export default function LevelCard({ className, imageSrc, imageSize, onClick, inn
         >
             <div>
                 <img src={imageSrc} className={imageSize} />
-                <h2 className="font-inter font-extrabold text-11 text-center w-45 mt-6 tracking-tight">{innerText}</h2>
+                <h2 className=" font-extrabold text-11 text-center w-45 mt-6 tracking-tight">{innerText}</h2>
             </div>
 
             <div className="flex-col text-[#3B485B] text-opacity-75">

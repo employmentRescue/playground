@@ -40,7 +40,7 @@ export default function RegisterConfirmModal(props: Iprops) {
                             },
                             registTime: now,
                             sports: props.sports,
-                        }); props.closeModal(); location.reload();
+                        }); props.closeModal();
                     }}>등록</div>
                 </div>
             </div>

@@ -6,7 +6,7 @@ import { matchList } from '@/models/matchList';
 export const GATHERING_LIST = '/gathering';
 const URL = "https://i8b309.p.ssafy.io:10003/"
 
-const fetcher = (matchList: matchList) => axios.get(URL + GATHERING_LIST,
+const fetcher = (matchList: matchList) => axios.get(SERVER_URL + GATHERING_LIST,
     {
         params: {
             startDate: matchList.startDate,

@@ -263,7 +263,7 @@ export default function ChattingRoomPage() {
     return (
         <div className="flex flex-col h-auto w-full bg-gray-100">
             <div>
-                <div className="flex justify-center font-inter text-20 my-10">
+                <div className="flex justify-center  text-20 my-10">
                     {params.roomId}번 채팅방
                 </div>
                 <div ref={scrollRef}>{TextListRendering()}</div>

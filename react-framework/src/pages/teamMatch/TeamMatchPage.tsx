@@ -133,7 +133,7 @@ function MatchContent() {
         <div className="relative w-[360px] h-[575px] m-0 pt-8 pl-6 bg-[#fff]">
             <img src={matchButton} alt="" className="absolute top-[133px] left-[80px] w-[200px] h-[200px] " />
             <div className="absolute w-[124px] h-45 flex-grow-0 top-[360px] left-[118px] pt-11 pl-22 rounded-30 bg-[#303eff]">
-                <span className="w-70 h-24 flex-grow-0 font-inter text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
+                <span className="w-70 h-24 flex-grow-0  text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
             </div>
         </div>
     )
@@ -162,14 +162,14 @@ function ListItem({ data }: { data: gatheringType }) {
     return (
         <div className="relative w-[328px] h-120 flex-grow-0 my-10 mr-15 ml-17 pr-17 rounded-15 bg-[#fff] overflow-hidden">
             <div className={"absolute w-59 h-120 flex-grow-0 pt-51 text-center  mr-11 inline-block " + sportColor}>
-                <span className="h-18 flex-grow-0 font-inter text-[15px] font-bold text-left text-[#000]">
+                <span className="h-18 flex-grow-0  text-[15px] font-bold text-left text-[#000]">
                     {String(data.memberGatheringList.length) + '/' + data.people}
                 </span>
             </div>
             <img src={sportImg} className="absolute w-20 h-20 flex-grow-0 top-17 left-70 p-0 inline-block " />
-            <span className="absolute w-130 h-18 flex-grow-0 top-18 left-[101px] font-inter text-[15px] font-bold test-left inline-block text-[#000]">{data?.title}</span>
+            <span className="absolute w-130 h-18 flex-grow-0 top-18 left-[101px]  text-[15px] font-bold test-left inline-block text-[#000]">{data?.title}</span>
             <div className="absolute w-1 h-105 flex-grow-0 top-8 left-[259px] bg-[#d9d9d9]"></div>
-            <span className="absolute w-40 h-37 flex-grow-0 top-41 left-[276px] font-inter text-[13px] text-left font-[#000]">
+            <span className="absolute w-40 h-37 flex-grow-0 top-41 left-[276px]  text-[13px] text-left font-[#000]">
                 {data?.startDate.slice(5)}
                 <br></br>
                 {data?.startTime.slice(0, 5)}

@@ -1,13 +1,12 @@
 package com.ssafy.userservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.querydsl.jpa.impl.JPAUpdateClause;
 import com.ssafy.userservice.dto.*;
+import com.ssafy.userservice.service.preferActivitiesService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -31,6 +31,9 @@ public class UserInfoController {
     @Autowired
     private JPAQueryFactory queryFactory;
 
+    @Autowired
+    preferActivitiesService prefer_activity_service;
+
 
     final private static QMemberOftenEntity qMemberOften = new QMemberOftenEntity("MEM_OFTEN");
     final private static QMemberSometimesEntity qMemberSometimes = new QMemberSometimesEntity("MEM_SOME");
@@ -42,7 +45,7 @@ public class UserInfoController {
         return "hello - user service";
     }
 
-    @GetMapping("/check/nickname/{nickname}")
+    @PostMapping("/check/nickname/{nickname}")
     ResponseEntity checkNickname(@PathVariable String nickname){
 
         try{
@@ -62,105 +65,122 @@ public class UserInfoController {
 
     }
 
-    @PostMapping("/search/{user_id}")
-    ResponseEntity searchUserInfo(@PathVariable("user_id") long userID , @RequestBody Set<String> req){
+    @Transactional
+    @PostMapping("/search")
+    ResponseEntity searchUserInfo(@RequestHeader("x-forwarded-for-user-id") long userID , @RequestBody Set<String> req){
         System.out.println("req : " + req);
+        Map<String, Object> searchResult = new HashMap<>();
 
-            Map<String, Object> searchResult = new HashMap<>();
+        Map<String, Object> memOften = objectMapper.convertValue(entityManager.find(MemberOftenEntity.class, userID), Map.class);
+        for (String attr : req) {
+            attr = attr.toLowerCase();
+            if  (memOften.containsKey(attr)) searchResult.put(attr, memOften.get(attr));
+        }
 
-            // db로부터 데이터 가져옴 --> MemberOftenEntity, MemberSometimesEntity 객체에 데이터 할당하기
-            Tuple ret = (Tuple)queryFactory
-                    .select(qMemberOften, qMemberSometimes)
-                    .from(qMemberOften)
-                    .join(qMemberSometimes)
-                    .where(qMemberOften.id.eq(qMemberSometimes.id), qMemberOften.id.eq(userID))
-                    .fetchOne();
-            // ================================================================================================================
-
-            Map<String, Object> requestSearchList = null;
-
-
-
-            // MemberOftenEntity 객체에 대해서 검색한 값만 searchResult에 넣기
-
-            requestSearchList = objectMapper.convertValue(ret.get(0, MemberOftenEntity.class), Map.class);
+        Map<String, Object> memSome = objectMapper.convertValue(entityManager.find(MemberSometimesEntity.class, userID), Map.class);
+        for (String attr : req) {
+            attr = attr.toLowerCase();
+            if  (memSome.containsKey(attr)) searchResult.put(attr, memSome.get(attr));
+        }
 
 
-            for (String key : req){
-                if (key != String.valueOf(userID) && requestSearchList.get(key) != null) searchResult.put(key, requestSearchList.get(key));
-            }
-            // ================================================================================================================
 
-            // MemberSometime 객체에 대해 검색한 값만 searchResult에 넣기
-            requestSearchList = objectMapper.convertValue(ret.get(1, MemberSometimesEntity.class), Map.class);
-            for (String key : req){
-                if (key != String.valueOf(userID) && requestSearchList.get(key) != null) searchResult.put(key, requestSearchList.get(key));
-            }
         try {
-
-            // ================================================================================================================
-
-            // searchResult를 <key,value>값 형식의 json으로 반환
-            return new ResponseEntity(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(searchResult), HttpStatus.OK);
-            // ================================================================================================================
-
         }
         catch (Throwable e){
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity(searchResult, HttpStatus.OK);
     }
+
+//    Map<String, Object>
 
     @Transactional
     @PostMapping("/regist/{user_id}")
     ResponseEntity registUserInfo(@PathVariable("user_id") long userID, @RequestBody Map<String, Object> json) throws IOException {
-//        MemberOftenEntity memOften = new MemberOftenEntity();
+        // MemberOften Entity를 입력받는다.
+        // prefer_activites를 입력받는다.
+        // MemberSome Entity를 입력받는다.
+        // prefer_activity가 null이 아니면, 중복제거후 MemberOften Entity에 넣는다.
+        //
 
 
-        MemberOftenEntity memOften = objectMapper.convertValue(json, MemberOftenEntity.class);
-        MemberSometimesEntity memSome = objectMapper.convertValue(json, MemberSometimesEntity.class);
-        memOften.setId(userID); memSome.setId(userID);
-
-//        System.out.println(memOften);
-//        System.out.println(memSome);
-
-        // ===================================================================================================
-        try
-        {
-
-            // MemberOftenEntity 객체에 대해 not null 인 값만 update(단, memOften != null인 경우만 실행)
-            if (memOften != null && userID > 0){
-
-                entityManager.persist(memOften);
-                entityManager.persist(memSome);
+        MemberOftenEntity memberOftenEntity = objectMapper.convertValue(json, MemberOftenEntity.class);
+        memberOftenEntity.setId(userID);
 
 
-                // EntityManager clear
-                entityManager.flush(); entityManager.flush();
-            }
+//        List<activitiesEntity> arr = new LinkedList();
+        Map<String, activityDTO> unique_req = new HashMap<>();
 
-            // 응답값으로 HttpStatus.OK 보내기
-            return new ResponseEntity(
-                    HttpStatus.OK);
+        for (Object obj : objectMapper.convertValue(json.get("prefer_activities"),            List.class)) {
+            activityDTO activity = objectMapper.convertValue(obj, activityDTO.class);
+            unique_req.put(activity.getActivity(), activity);
         }
-        catch (Throwable e){
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        List<activitiesEntity> chidren = new LinkedList<>();
+        for (activityDTO activity : unique_req.values().stream().toList()) {
+            chidren.add(
+                    activitiesEntity.builder()
+                            .memberOften(memberOftenEntity)
+                            .activity(activity.getActivity())
+                            .level(activity.getLevel())
+                            .build()
+            );
         }
+
+        memberOftenEntity.setPrefer_activities(chidren);
+        entityManager.persist(memberOftenEntity);
+
+        // ********************************************* memberSome *********************************************
+        MemberSometimesEntity memberSometimes = objectMapper.convertValue(json, MemberSometimesEntity.class);
+        memberSometimes.setId(userID);
+        entityManager.persist(memberSometimes);
+
+
+
+
+//        MemberOftenEntity memberOften = objectMapper.convertValue(json, MemberOftenEntity.class);
+//        MemberSometimesEntity memberSometimes = objectMapper.convertValue(json, MemberSometimesEntity.class);
+//
+//        memberOften.setId(userID); memberSometimes.setId(userID);
+//
+//
+//
+//        Map<String, activitiesEntity> result = new HashMap<>();
+//        List<Object> arr = objectMapper.convertValue(json.get("prefer_activities"),            List.class);
+//
+//
+//
+//
+//
+//        for (Object obj : arr) {
+//
+//            activityDTO activity = objectMapper.convertValue(obj, activityDTO.class);
+////            result.put(activity.getActivity(), activity);
+//            entityManager.persist(activitiesEntity.builder().activity(activity.getActivity()).level(activity.getLevel()).memberOften(memberOften).build());
+//        }
+//
+//
+//        memberOften.setPreferActivities(result.values().stream().toList());
+//        entityManager.persist(memberOften);
+
+        return new ResponseEntity(
+                HttpStatus.OK);
     }
 
 
     @Transactional
-    @PostMapping("/update/{user_id}")
-    ResponseEntity updateUserInfo(@PathVariable("user_id") long userID, MemberOftenEntity memOften, MemberSometimesEntity memSome, @RequestBody MultipartFile profile_img){
-        System.out.println(userID);
-        System.out.println(memOften);
-        System.out.println(memSome);
+    @PostMapping("/update")
+    ResponseEntity updateUserInfo(@RequestHeader("x-forwarded-for-user-id") long userID, @RequestBody Map<String, Object> json){
+        if (json.containsKey("prefer_activities")) json.remove("prefer_activities");
 
+        MemberOftenEntity memOften = objectMapper.convertValue(json, MemberOftenEntity.class);
+        MemberSometimesEntity memSome = objectMapper.convertValue(json, MemberSometimesEntity.class);
 
         // ===================================================================================================
         try
         {
-            memOften.setId(userID); memSome.setId(userID);
-
             // MemberOftenEntity 객체에 대해 not null 인 값만 update(단, memOften != null인 경우만 실행)
             if (memOften != null && userID > 0){
                 int cnt = 0;
@@ -232,101 +252,58 @@ public class UserInfoController {
         }
     }
 
-    @GetMapping("/get/prefer_activities/{user_id}")
-    ResponseEntity getUSerPreferActivities(@PathVariable("user_id") long userID){
 
-        try {
-            List<activitiesEntity> prefer_activites = queryFactory
-                    .select(qMemberOften)
-                    .from(qMemberOften)
-                    .where(qMemberOften.id.eq(userID))
-                    .fetchOne()
-                    .getPreferActivities();
+    // 처음에는 자식일것같았는데, orphan이라는 옵션이 존재한다면 부모를 지우는게 맞을것같다는 느낌이 듬
 
-            return new ResponseEntity(prefer_activites, HttpStatus.OK);
-        }
-        catch (Throwable e){
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
+    // [{사용자 id, 좋아하는 운동명, 운동능력치}, ...] 객체 배열을 입력받는다.
+    // 요청값을 전처리한다.
+    // -- 복합키가 같은 것이면 가장 마지막값으로 초기화한다.
+    // -- activity가 null이면 넣지 않는다.
+    // -- id가 0의 값이면, 사용자 id를 넣어준다.
+    // -- level이 null인 것은 상관하지 않는다.
+    // 부모 엔티티를 업데이트한다. <- 예상 : cascade에 의해 자식을 업데이트하면, 부모에 있는 자식 인스턴트도 같이 업데이트 될 것으로 예상함
     @Transactional
-    @PutMapping("/put/prefer_activities/{user_id}")
-    ResponseEntity putUSerPreferActivities(@PathVariable("user_id") long userID, @RequestBody List<activitiesEntity> plusPreferActivities){
-        System.out.println(plusPreferActivities);
-
-        MemberOftenEntity memOften = queryFactory.selectFrom(qMemberOften).where(qMemberOften.id.eq(userID)).fetchOne();
-
-        if (memOften.getPreferActivities().isEmpty()){
-            memOften.setPreferActivities(plusPreferActivities);
-        }
-        else{
-            List<activitiesEntity> preferActivities = memOften.getPreferActivities();
-
-            for (activitiesEntity activity : plusPreferActivities){
-
-                int idx = -1;
-
-                for (int i = 0;i < preferActivities.size();i++){
-                    if (preferActivities.get(i).getMember_id() == activity.getMember_id()
-                            && preferActivities.get(i).getActivity().equals(activity.getActivity())){
-                        idx = i;
-                        break;
-                    }
-                }
-
-
-                if (idx == -1){
-                    preferActivities.add(activity);
-                }
-                else {
-                    preferActivities.get(idx).setLevel(activity.getLevel());
-                }
-
-
-            }
-            memOften.setPreferActivities(preferActivities);
-        }
-
-
-        entityManager.persist(memOften);
-
-        entityManager.flush(); entityManager.clear();
+    @PostMapping("/update/prefer_activities")
+    ResponseEntity updateUserPreferActivites(@RequestHeader("x-forwarded-for-user-id") long userID, @RequestBody Set<activityDTO> req) throws Exception {
+        prefer_activity_service.updateUserPreferActivites(userID, req);
         try {
-
-            return new ResponseEntity(HttpStatus.OK);
         }
-        catch (Throwable e){
+        catch (Throwable e) {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
+    // [{사용자 id, 좋아하는 운동명, 운동능력치}, ...] 객체 배열을 입력받는다.
+    // 부모 엔티티를 삭제한다. <- 부모에 적혀져 있는 자식도 삭제..?
     @Transactional
-    @DeleteMapping("/delete/prefer_activities/{user_id}")
-    ResponseEntity deleteUSerPreferActivities(@PathVariable("user_id") long userID, @RequestBody List<activitiesEntity> plusPreferActivities){
-        System.out.println(plusPreferActivities);
-
-        MemberOftenEntity memOften = queryFactory.selectFrom(qMemberOften).where(qMemberOften.id.eq(userID)).fetchOne();
-        List<activitiesEntity> preferActivities = memOften.getPreferActivities();
-
-        for (activitiesEntity activity : plusPreferActivities){
-            for (int i = 0;i < preferActivities.size();i++){
-                if (activity.getActivity().equals(preferActivities.get(i).getActivity()) && activity.getMember_id() == preferActivities.get(i).getMember_id())
-                {
-                    preferActivities.remove(i--);
-                }
-            }
-        }
-        entityManager.persist(memOften);
-
-        entityManager.flush(); entityManager.clear();
+    @PostMapping("/delete/prefer_activities")
+    ResponseEntity deleteUserPeferActivites(@RequestHeader("x-forwarded-for-user-id") long userID, @RequestBody Set<String> activities) throws Exception {
+        prefer_activity_service.deleteUserPeferActivites(userID, activities.stream().map(s -> s.toLowerCase(Locale.ROOT)).collect(Collectors.toSet()));
 
         try {
-
-            return new ResponseEntity(HttpStatus.OK);
         }
-        catch (Throwable e){
+        catch (Throwable e) {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity(HttpStatus.OK);
     }
+
+    // [{사용자 id, 좋아하는 운동명, 운동능력치}, ...] 객체 배열을 입력받는다.
+    // 부모 엔티티에서 삽입을 한다.
+    @Transactional
+    @PostMapping("/add/prefer_activities")
+    ResponseEntity insertUserPreferActivites(@RequestHeader("x-forwarded-for-user-id") long userID, @RequestBody Set<activityDTO> req) throws Exception {
+        prefer_activity_service.insertUserPreferActivites(userID, req);
+
+
+        try {
+        }
+        catch (Throwable e) {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

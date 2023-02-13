@@ -136,7 +136,8 @@ export default function MatchRegisterPage() {
       geolocation.longitude
     );
 
-    naverMap.setCenter(location);
+    if (!curPos)
+      naverMap.setCenter(location);
 
     // 기존 현재 위치 마커 제거
     if (curPos) {

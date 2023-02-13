@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage"
 import matchSlice from "./match/match"
 import sortInfoSlice from "./match/matchSort"
 import teamSlice from "./team/team"
+import teamMatchSlice from "./teamMatch/teamMatch"
 import liveSlice from "./live/live"
 import registerTabSlice from "./register/registerTab"
 import userInfoSlice from "./register/userInfo"
@@ -15,6 +16,7 @@ import tabNameSlice from "./tab/tabName"
 const reducers = combineReducers({
     match: matchSlice,
     matchSort: sortInfoSlice,
+    teamMatch: teamMatchSlice,
     team: teamSlice,
     live: liveSlice,
     registerTab: registerTabSlice,

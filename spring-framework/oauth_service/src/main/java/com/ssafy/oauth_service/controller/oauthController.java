@@ -31,13 +31,20 @@ import java.util.UUID;
 //@CrossOrigin(origins = {"*"})
 //@CrossOrigin(origins = {"https://kauth.kakao.com","https://localhost:3000", "https://192.168.31.246", "https://192.168.31.246:3000", "https://192.168.31.246/oauth2/login/kakao"})
 public class oauthController {
+    @RequestMapping("hello")
+    @ResponseBody
+    String hello(/*@RequestHeader*/ String userID){
+        return "hello - oauth service";
+    }
+
+
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
     ServletContext servletContext;
 
-    String ReactFramework_baseUrl = "http://localhost:3000";
+    String ReactFramework_baseUrl = "https://localhost:3000";
 
     @Value("${oauth2.client.registration.client-id.kakao}")
     String kakao_cliendID;
@@ -64,15 +71,6 @@ public class oauthController {
 
     }
 
-    @RequestMapping("hello")
-    @ResponseBody
-    String hello(/*@RequestHeader*/ String userID){
-        System.out.println(userID);
-//        return "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-
-
-        return "hello - oauth server.";
-    }
 
 
     @RequestMapping("/test")
@@ -124,7 +122,7 @@ public class oauthController {
         return "redirect:" + "https://kauth.kakao.com/oauth/authorize?" +
                 "response_type=code&client_id=79c6d214ca859ea2806d6bd426ffb1fe" +
                 "&redirect_uri=" +
-                "https://i8b309.p.ssafy.io/oauth2/login"; // 내 서버로 redirect 해서 kakao access_token, kakao refresh_token 받음
+                getURLBase(req) + "/oauth2/login"; // 내 서버로 redirect 해서 kakao access_token, kakao refresh_token 받음
         // <- 나중에 naver도 합치면 @RequestMapping("/login/{provider}")로 하면 될듯.
     }
 
@@ -245,8 +243,8 @@ public class oauthController {
 
     @Transactional
     @RequestMapping("/regist")
-    ResponseEntity regist(String code/*, @RequestBody Map<String, Object> json*/) throws Exception {
-
+    ResponseEntity regist(String code, @RequestBody Map<String, Object> json/**/) throws Exception {
+        System.out.println(json);
 
 //        System.out.println(code);
 //        OAuthRegisterCache loginCache = oAuthRegisterCacheRepository.findById(code).orElse(null);

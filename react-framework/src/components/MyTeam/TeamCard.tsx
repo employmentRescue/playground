@@ -11,7 +11,7 @@ interface Iprops {
 
 export default function TeamCard({ teamId, teamName, teamImage, win, lose, tier }: Iprops) {
     return (
-        <div className="flex mx-30 my-5 justify-between font-inter">
+        <div className="flex mx-30 my-5 justify-between ">
             <div className="flex">
                 <div>
                     <img src={teamImage} className="w-53 h-53 rounded-30 my-15 mr-18" />

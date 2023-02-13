@@ -1,6 +1,8 @@
 package com.ssafy.fcmservice.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.messaging.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,23 +10,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/notify")
 public class FCMController {
+    ObjectMapper objectMapper;
+
+    @Autowired
+    FCMController(ObjectMapper objectMapper){
+        this.objectMapper = objectMapper;
+    }
+
+
     @RequestMapping("/hello")
     @ResponseBody
     String hello(){
-System.out.println("FCMController hello");
+        System.out.println("FCMController hello");
 
         return "hello";
     }
 
 
     @PostMapping("/send/token-list")
-    ResponseEntity sendByToken(String title, String body/*, @RequestParam("data") Map<String, String> fcm_data*/, @RequestBody List<String> tokenList){
-        title = title.substring(0, Math.min(1000, title.length()));
-        body = body.substring(0, Math.min(1000,body.length()));
+    ResponseEntity sendByToken(@RequestBody Map<String, Object> json){
+        String title = (String) json.get("title");
+        if (title != null) title = title.substring(0, Math.min(1000, title.length()));
+        String body = (String) json.get("body");
+        if (body != null) body = body.substring(0, Math.min(1000,body.length()));
+        List<String> tokenList = objectMapper.convertValue(json.get("token-list"), Set.class).stream().toList();
 
 
         try
@@ -61,11 +75,11 @@ System.out.println("FCMController hello");
 
             return new ResponseEntity(
                     Map.of(
-                    "total", tokenList.size(),
-                    "success", tokenList.size() - failedTokens.size(),
-                    "fail", failedTokens.size()
+                            "total", tokenList.size(),
+                            "success", tokenList.size() - failedTokens.size(),
+                            "fail", failedTokens.size()
                     )
-                , HttpStatus.OK
+                    , HttpStatus.OK
             );
         }
         catch (Throwable e){

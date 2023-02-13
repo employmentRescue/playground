@@ -9,7 +9,7 @@ const fetcher = (teamId: number) => axios.get(SERVER_URL + `/team/${teamId}`).th
 // 좌표를 받아왔을 때만 query
 const useTeamQuery = (teamId: number) => {
   return useQuery(TEAM_INFO, () => fetcher(teamId), {
-    staleTime: Infinity, cacheTime: 60 * 5 * 1000,
+    staleTime: 30 * 5 * 1000, cacheTime: 60 * 5 * 1000,
     refetchOnWindowFocus: false, refetchOnReconnect: false, refetchOnMount: false
   });
 }

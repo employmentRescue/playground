@@ -1,5 +1,5 @@
-server:
-  port: 8080
+#server:
+#  port: 443
 
 #  ssl:
 #    key-store: classpath:keystore.p12
@@ -25,7 +25,7 @@ spring:
 
   data:
     redis:
-      host: redis # i8b309.p.ssafy.io
+      host: localhost # i8b309.p.ssafy.io
       port: 6379
 
 
