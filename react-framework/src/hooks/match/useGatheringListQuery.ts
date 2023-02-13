@@ -7,21 +7,23 @@ export const GATHERING_LIST = '/gathering';
 const URL = "https://i8b309.p.ssafy.io:10003/"
 
 const fetcher = (matchList: matchList) => axios.get(URL + GATHERING_LIST,
-    { params: {
-        startDate: matchList.startDate,
-        lat: matchList.lat,
-        lng: matchList.lng,
-        distance: matchList.distance,
-        minStartTime: matchList.minStartTime,
-        maxStartTime: matchList.maxStartTime,
-        level: matchList.level,
-        minPlayTime: matchList.minPlayTime,
-        maxPlayTime: matchList.maxPlayTime,
-        sex: matchList.sex,
-        sports: matchList.sports,
-        gameType: matchList.gameType,
-        sort: matchList.sort,
-    }}
+    {
+        params: {
+            startDate: matchList.startDate,
+            lat: matchList.lat,
+            lng: matchList.lng,
+            distance: matchList.distance,
+            minStartTime: matchList.minStartTime,
+            maxStartTime: matchList.maxStartTime,
+            level: matchList.level,
+            minPlayTime: matchList.minPlayTime,
+            maxPlayTime: matchList.maxPlayTime,
+            sex: matchList.sex,
+            sports: matchList.sports,
+            gameType: matchList.gameType,
+            sort: matchList.sort,
+        }
+    }
 ).then(({ data }) => data)
 
 

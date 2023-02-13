@@ -1,68 +1,195 @@
-import { useParams } from "react-router-dom"
-import { SpeechBubble } from "@/components/Chatting/SpeechBubble";
 import defaultProfile from "@/assets/profiles/default-profile.png"
 import emoticonButton from "@/assets/icons/chatting-emoticon.png"
 import sendButton from "@/assets/icons/send-message-button.png"
+
+import { setTabName } from "@/stores/tab/tabName";
+import { SpeechBubble } from "@/components/Chatting/SpeechBubble";
+import useWebSocket from "@/hooks/chat/useWebSocket";
+
+import { useParams } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
 import { useDispatch } from "react-redux";
-import { setTabName } from "@/stores/tab/tabName";
+
 
 type TextList = {
+    roomId: number,
     isMine: boolean,
     nickName?: string,
     innerText: string,
     profile: string,
     dateTime?: Date,
-}[]
+}
 
 export default function ChattingRoomPage() {
     const params = useParams();
-    const initialTextList: TextList = [
+
+    // 더미 데이터가 조금 많습니다..
+    const initialTextList: TextList[] = [
         {
+            roomId: 1,
             isMine: false,
-            nickName: "닉네임1",
+            nickName: "축구1",
             innerText: "안녕하세요. 반가워요",
             profile: defaultProfile,
             dateTime: new Date("2023-02-04 21:11:04")
         },
         {
+            roomId: 1,
             isMine: false,
-            nickName: "축구1",
+            nickName: "축구2",
             innerText: "축구할 사람?",
             profile: defaultProfile,
             dateTime: new Date("2023-02-04 21:11:04")
         },
         {
+            roomId: 1,
             isMine: true,
             innerText: "오늘 야근이에요ㅠㅠ",
             profile: defaultProfile,
             dateTime: new Date("2023-02-04 21:11:04")
         },
         {
+            roomId: 1,
             isMine: false,
-            nickName: "축구1",
+            nickName: "축구3",
             innerText: "아쉽네요..",
             profile: defaultProfile,
             dateTime: new Date("2023-02-04 21:11:04")
         },
         {
+            roomId: 1,
             isMine: true,
             innerText: "내일 6시에 축구 하실분 계신가요?",
             profile: defaultProfile,
             dateTime: new Date("2023-02-04 21:11:04")
         },
         {
+            roomId: 1,
             isMine: false,
-            nickName: "축구2",
+            nickName: "축구1",
             innerText: "축구 ㄱ?",
             profile: defaultProfile,
             dateTime: new Date("2023-02-04 21:11:04")
-        }
+        },
+
+
+        {
+            roomId: 2,
+            isMine: false,
+            nickName: "농구1",
+            innerText: "안녕하세요. 반가워요",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 2,
+            isMine: false,
+            nickName: "농구2",
+            innerText: "농구할 사람?",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 2,
+            isMine: true,
+            innerText: "오늘 본가 내려가는 날이에요 ㅠㅠ",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 2,
+            isMine: false,
+            nickName: "농구1",
+            innerText: "아쉽네요..",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 2,
+            isMine: true,
+            innerText: "내일 6시에 농구 하실분 계신가요?",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 2,
+            isMine: false,
+            nickName: "농구2",
+            innerText: "농구 ㄱ?",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+
+
+        {
+            roomId: 3,
+            isMine: false,
+            nickName: "배민1",
+            innerText: "안녕하세요. 반가워요",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 3,
+            isMine: false,
+            nickName: "배민2",
+            innerText: "배드민턴할 사람?",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 3,
+            isMine: true,
+            innerText: "제가 오늘 몸이 안좋아서요ㅠㅠ",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 3,
+            isMine: false,
+            nickName: "배민2",
+            innerText: "아쉽네요..",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 3,
+            isMine: true,
+            innerText: "내일 6시에 배드민턴 하실분 계신가요?",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 3,
+            isMine: false,
+            nickName: "배민6",
+            innerText: "배드민턴 ㄱ?",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+
+        {
+            roomId: 4,
+            isMine: true,
+            innerText: "살려줘..",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+        {
+            roomId: 4,
+            isMine: false,
+            nickName: "닉네임",
+            innerText: "채팅방 만들기 너무 어려워요ㅠㅠㅠㅠㅠㅠㅠㅠ",
+            profile: defaultProfile,
+            dateTime: new Date("2023-02-04 21:11:04")
+        },
+
     ]
     const [textList, setTextList] = useState(initialTextList)
     const [activateSend, setActivateSend] = useState("opacity-40")
     const [inputValue, setInputValue] = useState("")
-    const newTextList = {
+    const newTextList: TextList = {
+        roomId: 1,
         isMine: true,
         innerText: inputValue,
         profile: defaultProfile,
@@ -77,7 +204,7 @@ export default function ChattingRoomPage() {
         const Result = textList.map((text) => {
             index++;
             return (
-                <SpeechBubble
+                params.roomId == String(text.roomId) && <SpeechBubble
                     key={index}
                     isMine={text.isMine}
                     nickName={text.nickName}

@@ -1,9 +1,9 @@
 import { RootState } from "@/stores/store";
+import { KAKAO_LOGIN_TEST_SERVER_URL } from "@/utils/url";
 import axios from "axios";
 import { useMutation } from "react-query"
 import { useSelector } from "react-redux";
 
-const SERVER_URL = `https://192.168.31.246:8080/oauth2/regist?code=`
 
 const useKakaoLogin = (code: string) => {
     const userInfo = useSelector((state: RootState) => {
@@ -25,7 +25,7 @@ const useKakaoLogin = (code: string) => {
         )
     })
 
-    const fetcher = () => axios.post(SERVER_URL + `${code}`, { ...userInfo });
+    const fetcher = () => axios.post(KAKAO_LOGIN_TEST_SERVER_URL + `/oauth2/regist?code=` + `${code}`, { ...userInfo });
     return useMutation(fetcher, {
         onSuccess: () => console.log("성공!")
     });
