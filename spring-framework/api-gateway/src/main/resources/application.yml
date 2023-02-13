@@ -50,6 +50,7 @@ spring:
 #            - RewritePath=/oauth/(?<path>.*),/$\{path}
         - id: react-framework2
           uri: https://i8b309.p.ssafy.io:90011
+          order: 0
           predicates:
             - Path=/oauth2/login,/oauth2/regist,/oauth2/success
 
