@@ -1,6 +1,5 @@
 package com.ssafy.matching.repository;
 
-import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.dto.Live;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

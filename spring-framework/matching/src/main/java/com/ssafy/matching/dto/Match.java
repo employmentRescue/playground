@@ -1,5 +1,6 @@
 package com.ssafy.matching.dto;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -24,6 +25,8 @@ public class Match implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty(value = "경기 번호")
     private int matchId;
+    @ApiModelProperty(value = "호스트 팀 아이디", required = true)
+    private int hostId;
 //    @ApiModelProperty(value = "장소 번호")
 //    private int placeId;
     @ApiModelProperty(value = "경기 날짜", required = true)
@@ -37,12 +40,18 @@ public class Match implements Serializable {
     @ApiModelProperty(value = "경기 결과 기록이 완료되었는지")
     private boolean isDone;
 
+    @OneToOne
+    @JoinColumn(name = "hostId", insertable=false, updatable=false)
+    @ApiModelProperty(value = "호스트 팀 정보")
+    private Team host;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "placeId")
     @ApiModelProperty(value = "경기의 선호 장소", required = true)
     private PreferredPlace preferredPlace;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "matchId")
     private List<TeamMatchResult> teamMatchResultList = new ArrayList<>();
 }

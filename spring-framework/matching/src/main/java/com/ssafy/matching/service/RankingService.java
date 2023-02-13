@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface RankingService {
-    List<TeamStats> viewRanking(String sports, String gameType);
+    List<TeamStats> viewRanking(String sports, String gameType, String sort);
 
-    List<Map<String, Object>> viewMyTeamsRanking(long memberId);
+    Map<String, Object> viewMyTeamsRanking(int teamId, String sort);
 
     void updatePoint(TeamMatchResult teamMatchResultMe, TeamMatchResult teamMatchResultOp);
 }
