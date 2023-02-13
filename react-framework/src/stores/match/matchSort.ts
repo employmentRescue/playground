@@ -17,7 +17,7 @@ const initialState: matchList = {
     maxPlayTime: 23, // Number(dayjs(new Date()).format('H')) + 2,
     sex: "남성",
     sports: "농구",
-    gameType: "5대5",
+    gameType: "5vs5",
     sort: "distance"
 }
 
