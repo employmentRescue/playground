@@ -81,6 +81,11 @@ spring:
           predicates:
             - Path=/notify/**
 
+        - id: chat-service
+          uri: https://i8b309.p.ssafy.io:9005
+          predicates:
+            - Path=/chat/**, /ws-stomp/**, /webjars/**
+
 
 
         - id: react-framework
