@@ -137,7 +137,7 @@ function ListItem({ data }: { data: any }) {
     let teamImg;
     
     return (
-        <div className="flex w-full h-114 flex-grow-0 p-10 rounded-15 bg-[#fff]">
+        <div className="flex w-[90%] h-114 flex-grow-0 mx-10 p-10 my-10 rounded-15 bg-[#fff]">
             <div className="flex flex-col items-center justify-center w-1/4 h-full">
                 <span>{data.host.sports}</span>
             </div>
@@ -162,7 +162,7 @@ function ListContent({filterData}: {filterData:teamMatchList}) {
             if (teamMatchListQuery.data) {
                 const gatheringList = teamMatchListQuery.data.map((eachData: teamMatchListType, i: number) => <ListItem key={i} data={eachData} />)
                 return (
-                    <div className="w-full p-15">{gatheringList}</div>
+                    <div className="flex flex-col items-center w-full h-full m-0">{gatheringList}</div>
                 )
             } else {
                 return (
