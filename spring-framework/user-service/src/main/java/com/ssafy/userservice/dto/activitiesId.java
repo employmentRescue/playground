@@ -10,6 +10,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class activitiesId implements Serializable {
-    private long memberOften;
+    private long memberSometimes;
     private String activity;
 }

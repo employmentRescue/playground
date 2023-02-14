@@ -101,18 +101,22 @@ public class UserInfoController {
         System.out.println("req : " + req);
         Map<String, Object> searchResult = new HashMap<>();
 
+
         Map<String, Object> memOften = objectMapper.convertValue(entityManager.find(MemberOftenEntity.class, userID), Map.class);
-        for (String attr : req) {
-            attr = attr.toLowerCase();
-            if  (memOften.containsKey(attr)) searchResult.put(attr, memOften.get(attr));
+        if (memOften != null){
+            for (String attr : req) {
+                attr = attr.toLowerCase();
+                if  (memOften.containsKey(attr)) searchResult.put(attr, memOften.get(attr));
+            }
         }
 
         Map<String, Object> memSome = objectMapper.convertValue(entityManager.find(MemberSometimesEntity.class, userID), Map.class);
-        for (String attr : req) {
-            attr = attr.toLowerCase();
-            if  (memSome.containsKey(attr)) searchResult.put(attr, memSome.get(attr));
+        if (memOften != null) {
+            for (String attr : req) {
+                attr = attr.toLowerCase();
+                if  (memSome.containsKey(attr)) searchResult.put(attr, memSome.get(attr));
+            }
         }
-
 
 
         try {
@@ -137,8 +141,8 @@ public class UserInfoController {
         //
 
 
-        MemberOftenEntity memberOftenEntity = objectMapper.convertValue(json, MemberOftenEntity.class);
-        memberOftenEntity.setId(userID);
+        MemberSometimesEntity memberSometimes = objectMapper.convertValue(json, MemberSometimesEntity.class);
+        memberSometimes.setId(userID);
 
 
 //        List<activitiesEntity> arr = new LinkedList();
@@ -149,52 +153,25 @@ public class UserInfoController {
             unique_req.put(activity.getActivity(), activity);
         }
 
-        List<activitiesEntity> chidren = new LinkedList<>();
+        List<activitiesEntity> children = new LinkedList<>();
         for (activityDTO activity : unique_req.values().stream().toList()) {
-            chidren.add(
+            children.add(
                     activitiesEntity.builder()
-                            .memberOften(memberOftenEntity)
+                            .memberSometimes(memberSometimes)
                             .activity(activity.getActivity())
                             .level(activity.getLevel())
                             .build()
             );
         }
-
-        memberOftenEntity.setPrefer_activities(chidren);
-        entityManager.persist(memberOftenEntity);
-
-        // ********************************************* memberSome *********************************************
-        MemberSometimesEntity memberSometimes = objectMapper.convertValue(json, MemberSometimesEntity.class);
-        memberSometimes.setId(userID);
+        memberSometimes.setPrefer_activities(children);
+        System.out.println(memberSometimes);
         entityManager.persist(memberSometimes);
 
+        // ********************************************* memberOften *********************************************
+        MemberOftenEntity memberOften = objectMapper.convertValue(json, MemberOftenEntity.class);
+        memberOften.setId(userID);
+        entityManager.persist(memberOften);
 
-
-
-//        MemberOftenEntity memberOften = objectMapper.convertValue(json, MemberOftenEntity.class);
-//        MemberSometimesEntity memberSometimes = objectMapper.convertValue(json, MemberSometimesEntity.class);
-//
-//        memberOften.setId(userID); memberSometimes.setId(userID);
-//
-//
-//
-//        Map<String, activitiesEntity> result = new HashMap<>();
-//        List<Object> arr = objectMapper.convertValue(json.get("prefer_activities"),            List.class);
-//
-//
-//
-//
-//
-//        for (Object obj : arr) {
-//
-//            activityDTO activity = objectMapper.convertValue(obj, activityDTO.class);
-////            result.put(activity.getActivity(), activity);
-//            entityManager.persist(activitiesEntity.builder().activity(activity.getActivity()).level(activity.getLevel()).memberOften(memberOften).build());
-//        }
-//
-//
-//        memberOften.setPreferActivities(result.values().stream().toList());
-//        entityManager.persist(memberOften);
 
         return new ResponseEntity(
                 HttpStatus.OK);

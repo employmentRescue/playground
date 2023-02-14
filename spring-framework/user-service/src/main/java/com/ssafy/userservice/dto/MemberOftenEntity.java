@@ -16,7 +16,7 @@ import java.util.Set;
 
 
 @Getter @Setter
-@ToString(exclude = "preferActivities")
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,14 +33,5 @@ public class MemberOftenEntity extends BaseTimeEntity {
     String mobile_fcm_token;
     String user_profile_img_url;
 
-////    // cascade 써야하는 이유 : https://stackoverflow.com/questions/33038202/how-do-i-solve-this-error-of-object-references-an-unsaved-transient-instance-s
-////    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER)
-//@OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-//@JoinColumn(name = "MEMBER_ID")
-//
-//
-////    @OneToMany()
 
-    @OneToMany(mappedBy = "memberOften", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<activitiesEntity> prefer_activities;
 }

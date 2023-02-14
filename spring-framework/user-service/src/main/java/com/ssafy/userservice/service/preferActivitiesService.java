@@ -1,10 +1,7 @@
 package com.ssafy.userservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.userservice.dto.MemberOftenEntity;
-import com.ssafy.userservice.dto.activitiesEntity;
-import com.ssafy.userservice.dto.activitiesId;
-import com.ssafy.userservice.dto.activityDTO;
+import com.ssafy.userservice.dto.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +29,14 @@ public class preferActivitiesService {
 
     public void updateUserPreferActivites(long userID, Set<activityDTO> req) throws Exception
     {
-        MemberOftenEntity parent = entityManager.find(MemberOftenEntity.class, userID);
+        MemberSometimesEntity parent = entityManager.find(MemberSometimesEntity.class, userID);
 
 
         if (parent == null) throw new Exception();
 
 
         for (activityDTO activity : req) {
-            activitiesEntity child = entityManager.find(activitiesEntity.class, activitiesId.builder().memberOften(userID).activity(activity.getActivity()).build());
+            activitiesEntity child = entityManager.find(activitiesEntity.class, activitiesId.builder().memberSometimes(userID).activity(activity.getActivity()).build());
 
             if (child == null) continue;
 
@@ -52,7 +49,7 @@ public class preferActivitiesService {
     public void deleteUserPeferActivites(long userID, Set<String> activities) throws Exception
     {
         for (String activity : activities) {
-            activitiesEntity child = entityManager.find(activitiesEntity.class, activitiesId.builder().memberOften(userID).activity(activity).build());
+            activitiesEntity child = entityManager.find(activitiesEntity.class, activitiesId.builder().memberSometimes(userID).activity(activity).build());
             System.out.println(child);
 
             if (child == null) continue;
@@ -62,14 +59,14 @@ public class preferActivitiesService {
     }
 
     public void insertUserPreferActivites(long userID, Set<activityDTO> req) throws Exception {
-        MemberOftenEntity parent = entityManager.find(MemberOftenEntity.class, userID);
+        MemberSometimesEntity parent = entityManager.find(MemberSometimesEntity.class, userID);
 
 
         if (parent == null) throw new Exception();
 
         for (activityDTO activity : req) {
             activitiesEntity child = activitiesEntity.builder()
-                            .memberOften(parent)
+                            .memberSometimes(parent)
                                     .activity(activity.getActivity())
                                             .level(activity.getLevel())
                                                     .build();
