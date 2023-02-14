@@ -1,9 +1,6 @@
 package com.websocket.chat.repository;
 
-import com.websocket.chat.dto.GatheringChatroom;
-import com.websocket.chat.dto.MemberTeamChatroom;
-import com.websocket.chat.dto.Team;
-import com.websocket.chat.dto.TeamChatroom;
+import com.websocket.chat.dto.*;
 import com.websocket.chat.pubsub.RedisSubscriber;
 import com.websocket.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
@@ -40,12 +37,10 @@ public class ChatRoomRepository {
     private final TeamChatRoomJpaRepository teamChatRoomJpaRepository;
     private final GatheringChatRoomJpaRepository gatheringChatRoomJpaRepository;
     private final MemberTeamChatRoomJpaRepository memberTeamChatRoomJpaRepository;
-    private final MemberGatheringChatroomJpaRepository memberGatheringChatroomJpaRepository;
+    private final MemberGatheringChatroomJpaRepository memberGatheringChatRoomJpaRepository;
 
 
-    //Todo 컨트롤러는 다 만들었음. 서비스 인터페이스 다 만들었음. + JPA 레포지토리 만들었음. 서비스 구현체 + 래포지토리
-    //Todo 이젠 JPA 로 객체를 반환받고 해당 객체를 Redis 에 넣어서 캐싱으로 사용해야 하는 단계에 왔음.
-    // MySQL 과 Redis 의 연동을 해야할 때임.
+
 
     @PostConstruct
     private void init() {
@@ -58,54 +53,72 @@ public class ChatRoomRepository {
         Team Chatroom
     */
     public List<TeamChatroom> findAllTeamChatRoomByMemberId(long memberId) {
-        String memberId1 = String.valueOf(memberId);
-        return opsHashTeamChatRoom.values(memberId1);
+        List<MemberTeamChatroom> list = memberTeamChatRoomJpaRepository.findAllByMemberId(memberId);
+        List<TeamChatroom> teamChatroomList = new ArrayList<>();
+        for(MemberTeamChatroom mtc : list){
+            int roomId = mtc.getTeamChatroomId();
+            TeamChatroom teamChatroom = teamChatRoomJpaRepository.findAllByTeamChatroomId(roomId);
+            teamChatroomList.add(teamChatroom);
+        }
+        return teamChatroomList;
     }
 
-    public TeamChatroom findTeamChatRoomByRoomId(long memberId, int roomId) {
-        String memberId1 = String.valueOf(memberId);
+    public TeamChatroom findTeamChatRoomByRoomId(int roomId) {
         return teamChatRoomJpaRepository.findAllByTeamChatroomId(roomId);
-//        return opsHashTeamChatRoom.get(memberId1, roomId);
     }
 
     public void exitTeamChatroom(long memberId, int roomId){
-        String memberId1 = String.valueOf(memberId);
-        opsHashTeamChatRoom.delete(memberId1, roomId);
+        memberTeamChatRoomJpaRepository.deleteByMemberIdAndTeamChatroomId(memberId, roomId);
     }
 
     /*
         Gathering Chatroom
     */
     public List<GatheringChatroom> findAllGatheringChatRoomByMemberId(long memberId) {
-        String memberId1 = String.valueOf(memberId);
-        return opsHashGatheringChatRoom.values(memberId1);
+        List<MemberGatheringChatroom> list = memberGatheringChatRoomJpaRepository.findAllByMemberId(memberId);
+        List<GatheringChatroom> gatheringChatroomList = new ArrayList<>();
+        for(MemberGatheringChatroom mgc : list){
+            int roomId = mgc.getGatheringChatroomId();
+            GatheringChatroom gatheringChatroom = gatheringChatRoomJpaRepository.findAllByGatheringChatroomId(roomId);
+            gatheringChatroomList.add(gatheringChatroom);
+        }
+        return gatheringChatroomList;
     }
 
-    public GatheringChatroom findGatheringChatRoomByRoomId(long memberId, int roomId) {
-        String memberId1 = String.valueOf(memberId);
-        return opsHashGatheringChatRoom.get(memberId1, roomId);
+    public GatheringChatroom findGatheringChatRoomByRoomId(int roomId) {
+        return gatheringChatRoomJpaRepository.findAllByGatheringChatroomId(roomId);
     }
 
     public void exitGatheringChatroom(long memberId, int roomId){
-        String memberId1 = String.valueOf(memberId);
-        opsHashGatheringChatRoom.delete(memberId1, roomId);
+        memberGatheringChatRoomJpaRepository.deleteByMemberIdAndGatheringChatroomId(memberId, roomId);
     }
     /*
         채팅방 생성: 서버간 채팅방 공유를 위해 redis hash에 저장.
     */
-    public TeamChatroom createTeamChatRoom(long memberId, TeamChatroom teamChatroom) {
-        String memberId1 = String.valueOf(memberId);
-        List<TeamChatroom> list = opsHashTeamChatRoom.values(memberId1);
-        teamChatroom.setTeamChatroomId(list.size());
+
+    private int mtcId=1;
+
+    public TeamChatroom createTeamChatRoom(List<Long> memberIdList, TeamChatroom teamChatroom) {
         teamChatRoomJpaRepository.save(teamChatroom);
-        opsHashTeamChatRoom.put(memberId1, teamChatroom.getTeamChatroomId(), teamChatroom);
+        List<TeamChatroom> list = teamChatRoomJpaRepository.findAll();
+        TeamChatroom teamChatroomJpa = teamChatRoomJpaRepository.findAllByTeamChatroomId(list.get(list.size()-1).getTeamChatroomId());
+        for(long memberId : memberIdList){
+            MemberTeamChatroom memberTeamChatroom = new MemberTeamChatroom(mtcId++, teamChatroomJpa.getTeamChatroomId(), memberId);
+            memberTeamChatRoomJpaRepository.save(memberTeamChatroom);
+        }
         return teamChatroom;
     }
 
-    public GatheringChatroom createGatheringChatRoom(long memberId, GatheringChatroom gatheringChatroom) {
-        String memberId1 = String.valueOf(memberId);
-        opsHashGatheringChatRoom.put(memberId1, gatheringChatroom.getGatheringChatroomId(), gatheringChatroom);
+    private int mgcId=1;
+
+    public GatheringChatroom createGatheringChatRoom(List<Long> memberIdList, GatheringChatroom gatheringChatroom) {
         gatheringChatRoomJpaRepository.save(gatheringChatroom);
+        List<GatheringChatroom> list = gatheringChatRoomJpaRepository.findAll();
+        GatheringChatroom gatheringChatroomJpa = gatheringChatRoomJpaRepository.findAllByGatheringChatroomId(list.get(list.size()-1).getGatheringChatroomId());
+        for(long memberId : memberIdList){
+            MemberGatheringChatroom memberGatheringChatroom = new MemberGatheringChatroom(mgcId++, gatheringChatroomJpa.getGatheringChatroomId(), memberId);
+            memberGatheringChatRoomJpaRepository.save(memberGatheringChatroom);
+        }
         return gatheringChatroom;
     }
 
@@ -113,19 +126,19 @@ public class ChatRoomRepository {
         채팅방 입장: redis에 topic을 만들고 pub/sub 통신을 하기 위해 리스너를 설정한다.
     */
     // Chat Controller
-    public void enterChatRoom(int roomId){
-        String roomId1 = Integer.toString(roomId);
-        ChannelTopic topic = topics.get(roomId1);
+    public void enterChatRoom(String roomId){
+        ChannelTopic topic = topics.get(roomId);
         if(topic == null) {
-            topic = new ChannelTopic(roomId1);
+            topic = new ChannelTopic(roomId);
             redisMessageListener.addMessageListener(redisSubscriber, topic);
-            topics.put(roomId1, topic);
+            topics.put(roomId, topic);
         }
     }
 
     // Chat Controller
     public ChannelTopic getTopic(int roomId){
-        return topics.get(roomId);
+        String roomId1 = Integer.toString(roomId);
+        return topics.get(roomId1);
     }
 
 
