@@ -40,11 +40,11 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
             "AND m.match_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
-            "AND ?5 between m.min_start_time AND m.max_start_time " +
-            "AND m.match_sports = ?6 AND m.match_game_type = ?7 " +
+            "AND ((?5 between m.min_start_time AND m.max_start_time) OR (?6 between m.min_start_time AND m.max_start_time) OR (?5 < m.min_start_time AND m.max_start_time < ?6)) " +
+            "AND m.match_sports = ?7 AND m.match_game_type = ?8 " +
             "AND m.match_date >= now() " +
             "ORDER BY ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) ASC", nativeQuery = true)
-    List<Match> findMatchesByFilterDistanceASC(String matchDate, double lat, double lng, int distance, String minStartTime, String sports, String gameType);
+    List<Match> findMatchesByFilterDistanceASC(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType);
 
     //필터 조건 + 티어 낮은순 정렬
     @Query(value = "SELECT * " +
@@ -52,11 +52,11 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
             "AND m.match_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
-            "AND ?5 between m.min_start_time AND m.max_start_time " +
-            "AND m.match_sports = ?6 AND m.match_game_type = ?7 " +
+            "AND ((?5 between m.min_start_time AND m.max_start_time) OR (?6 between m.min_start_time AND m.max_start_time) OR (?5 < m.min_start_time AND m.max_start_time < ?6)) " +
+            "AND m.match_sports = ?7 AND m.match_game_type = ?8 " +
             "AND m.match_date >= now() " +
             "ORDER BY t.point ASC", nativeQuery = true)
-    List<Match> findMatchesByFilterPointASC(String matchDate, double lat, double lng, int distance, String minStartTime, String sports, String gameType);
+    List<Match> findMatchesByFilterPointASC(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType);
 
     //필터 조건 + 티어 높은순 정렬
     @Query(value = "SELECT * " +
@@ -64,9 +64,9 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
             "AND m.match_date = ?1 " +
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
-            "AND ?5 between m.min_start_time AND m.max_start_time " +
-            "AND m.match_sports = ?6 AND m.match_game_type = ?7 " +
+            "AND ((?5 between m.min_start_time AND m.max_start_time) OR (?6 between m.min_start_time AND m.max_start_time) OR (?5 < m.min_start_time AND m.max_start_time < ?6)) " +
+            "AND m.match_sports = ?7 AND m.match_game_type = ?8 " +
             "AND m.match_date >= now() " +
             "ORDER BY t.point DESC", nativeQuery = true)
-    List<Match> findMatchesByFilterPointDESC(String matchDate, double lat, double lng, int distance, String minStartTime, String sports, String gameType);
+    List<Match> findMatchesByFilterPointDESC(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType);
 }
