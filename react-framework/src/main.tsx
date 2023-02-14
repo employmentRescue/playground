@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import store from './stores/store';
 import './index.css';
-import { UserDefaultPage, DefaultPage } from './pages/DefaultPages';
+import { UserDefaultPage, DefaultPage, StartDefaultPage } from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
 import MatchPage from './pages/match/MatchPage';
 
@@ -31,20 +31,31 @@ import TeamMatchRegisterPage from './pages/teamMatch/TeamMatchRegisterPage';
 import TeamMatchDetailPage from './pages/teamMatch/TeamMatchDeatilPage';
 import TeamMatchGamePage from './pages/teamMatch/TeamMatchGamePage';
 import TeamMatchPage from './pages/teamMatch/TeamMatchPage';
+import StartPage from './pages/start/StartPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: '/',
+    element: <StartDefaultPage />,
+    children: [
+      {
+        path: '',
+        element: <StartPage />,
+      },
+    ]
+  },
+  {
+    path: '/',
     element: <DefaultPage />,
     children: [
       // 메인 페이지
       {
-        path: '',
+        path: 'home',
         element: <HomePage />,
-      },
-
+      }
+      ,
       // 매칭 페이지
       {
         path: 'match/',
@@ -149,6 +160,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+
 ]);
 
 createRoot(container).render(
