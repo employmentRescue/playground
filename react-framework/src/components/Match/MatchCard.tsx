@@ -16,7 +16,6 @@ interface Iprops {
 export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, matchType, isOldMatch, buttonColor, matchId }: Iprops) {
     let bgOpacity = ""
     isOldMatch ? bgOpacity = "opacity-70" : ""
-    const navigate = useNavigate();
 
     return (
         <div className={"flex w-full h-80 bg-white mb-3 justify-between " + bgOpacity}>
@@ -30,7 +29,7 @@ export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, m
                     {matchPersonnel && <p className="text-10 mt-0 text-[#969696]">{matchPersonnel}</p>}
                 </div>
             </div>
-            <button className={"flex w-60 px-22 " + buttonColor} onClick={() => navigate(`/match/detail/${matchId}`)} disabled={isOldMatch}>
+            <button className={"flex w-60 px-22 " + buttonColor} onClick={() => location.replace(`/match/detail/${matchId}`)} disabled={isOldMatch}>
                 <img src={goButtonImage} className={"w-15 h-15 self-center"} />
             </button>
         </div >

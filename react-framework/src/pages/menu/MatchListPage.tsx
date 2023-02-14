@@ -24,11 +24,11 @@ export default function MatchListPage() {
 
     useEffect(() => {
         dispatch(setTabName('매칭 목록'))
-        console.log(myTeamList)
+        // console.log(myTeamList)
     }, [])
 
     useEffect(() => {
-        console.log(myUserId)
+        // console.log(myUserId)
         myMatchList.isSuccess && console.log(myMatchList)
 
         myTeamIdList = myTeamList.data && myTeamList.data.map((teamInfo: any) => {
