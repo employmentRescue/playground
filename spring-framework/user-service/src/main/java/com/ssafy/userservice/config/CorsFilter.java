@@ -32,22 +32,19 @@ public class CorsFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        // response.setHeader("Access-Control-Allow-Origin", "*");
-
-        //
-        // response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        // response.setHeader("Access-Control-Allow-Origin",
-        // "https://192.168.31.246/oauth2/login/kakao");
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "*");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers",
-                "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-        //
+                "Origin, X-Requested-With, Content-Type, Accept, Authorization", "x-forwarded-for-user-id");
+
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
+            chain.doFilter(req, res);
         }
+
         chain.doFilter(req, res);
     }
 
