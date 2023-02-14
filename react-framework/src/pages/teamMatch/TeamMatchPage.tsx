@@ -1,24 +1,42 @@
 import { useState, useEffect, useRef } from "react";
 import { useReducer, ComponentProps } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import 'react-calendar/dist/Calendar.css'
-
-// 요건 나중에 팀매치로 옮겨야함
-import { AutoMatchTab, ListTab } from "@/components/TeamMatch/TeamMatchTab"
-
-import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
-import { RootState } from "@/stores/store";
 import { useDispatch, useSelector } from "react-redux";
+import 'react-calendar/dist/Calendar.css'
+import { RootState } from "@/stores/store";
 
+import { team } from "@/models/team";
+import { AutoMatchTab, ListTab } from "@/components/TeamMatch/TeamMatchTab"
+import TeamMatchMyTeamInfo from "@/components/TeamMatch/TeamMatchMyTeamInfo"
+import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
+import useTeamListQuery from "@/hooks/team/useTeamListQuery";
 
 import basketballOriginal from "@/assets/icons/basketball-original.png"
 import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import footBallOriginal from "@/assets/icons/football-original.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
+import TeamMatchFilterBar from "@/components/TeamMatch/TeamMatchFilterBar";
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
-
+interface place {
+    placeId: number,
+    address: string,
+    lat: number,
+    lng: number
+}
+interface memberDetail {
+    memberId: number,
+    statusMessage: string,
+    preferTime: string,
+    userProfileImgUrl: string
+}
+interface host {
+    memberId: number,
+    name: string,
+    nickname: string,
+    memberDetail: memberDetail
+}
 
 interface gatheringType {
     gatheringId: number, // 1
@@ -33,14 +51,14 @@ interface gatheringType {
     level: string, // "중수"
     sports: string, // "basketball"
     gameType: string, // "3대3"
-    place: object,
+    place: place,
     // {
     //   "placeId": 1,
     //   "address": "고운뜰공원",
     //   "lat": 36.3663369,
     //   "lng": 127.2961423
     // }
-    host: object,
+    host: host,
     // {
     //   "memberId": 111,
     //   "name": "이경택",
@@ -73,7 +91,7 @@ interface gatheringType {
     // ],
     completed: boolean
 }
-
+type attrType = "startData" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort" 
 // ============ 상단 탭 관련 ====================================================
 // 종목 탭
 type TabAction = { type: 'AUTOMATCH' | 'LIST' };
@@ -100,45 +118,18 @@ function registerTabType(state: TabState, action: TabAction) {
             }
     }
 }
-
 // ========================= 상단 탭 ===================================================
-
-// 내용 - 자동매칭인지 목록인지
-function Content({ clickedTab }: { clickedTab: string }) {
-    const [filterData, setFilterData] = useState(useSelector((state: RootState) => {
-        return state.matchSort;
-    }))
-
-    if (clickedTab === 'AUTOMATCH') {
-        return (
-            <div>
-                {/* <MatchFilterBar filterData={filterData}/> */}
-                <MatchContent />
-            </div>
-        )
-    }
-    else {
-        return (
-            <div>
-                {/* <MatchFilterBar filterData={filterData}/> */}
-                <ListContent />
-            </div>
-        )
-    }
-}
-
 // 자동 매칭 내용
 function MatchContent() {
     return (
-        <div className="relative w-[360px] h-[575px] m-0 pt-8 pl-6 bg-[#fff]">
-            <img src={matchButton} alt="" className="absolute top-[133px] left-[80px] w-[200px] h-[200px] " />
-            <div className="absolute w-[124px] h-45 flex-grow-0 top-[360px] left-[118px] pt-11 pl-22 rounded-30 bg-[#303eff]">
-                <span className="w-70 h-24 flex-grow-0  text-20 font-[500] text-left text-[#fff]">매칭 시작</span>
+        <div className="flex flex-col place-items-center w-full h-full m-0 py-[30%] bg-[#fff]">
+            <img src={matchButton} alt="" className="w-[200px] h-[200px] " />
+            <div className="grid place-content-center w-124 h-45 mt-[5%] flex-grow-0 rounded-30 bg-[#303eff]">
+                <span className="w-90 h-28 flex-grow-0  text-20 font-[500] text-center text-[#fff]">매칭 시작</span>
             </div>
         </div>
     )
 }
-
 // 목록 각 컴포넌트
 function ListItem({ data }: { data: gatheringType }) {
     console.log(data);
@@ -158,7 +149,6 @@ function ListItem({ data }: { data: gatheringType }) {
             sportColor = 'bg-[#c4ffb6]'
             break;
     }
-
     return (
         <div className="relative w-[328px] h-120 flex-grow-0 my-10 mr-15 ml-17 pr-17 rounded-15 bg-[#fff] overflow-hidden">
             <div className={"absolute w-59 h-120 flex-grow-0 pt-51 text-center  mr-11 inline-block " + sportColor}>
@@ -177,15 +167,12 @@ function ListItem({ data }: { data: gatheringType }) {
         </div>
     )
 }
-
 // 목록 전체 내용
 function ListContent() {
-    const filterData = useSelector((state: RootState) => {
-        return state.matchSort;
-    })
+    const filterData = useSelector((state: RootState) => { return state.matchSort; });
     const gatheringListQuery = useGatheringListQuery(filterData);
-    console.log(gatheringListQuery)
-    console.log(filterData)
+    console.log(gatheringListQuery);
+    console.log(filterData);
 
     const listItems = () => {
         if (gatheringListQuery.isSuccess) {
@@ -195,16 +182,14 @@ function ListContent() {
                 return (
                     <div>{gatheringList}</div>
                 )
-            }
-            else {
+            } else {
                 return (
                     <div>
                         해당 모임이 존재하지 않습니다.
                     </div>
                 )
             }
-        }
-        else {
+        } else {
             return (
                 <div>
                     로딩중
@@ -212,32 +197,42 @@ function ListContent() {
             )
         }
     }
-
     useEffect(() => {
 
     }, [gatheringListQuery.isSuccess])
-
     return (
         <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
             {listItems()}
         </div>
     )
 }
-
 // 상세 목록
-
 // 매치 페이지 출력
 export default function TeamMatchPage() {
     const [state, dispatch] = useReducer(registerTabType, initialTabState);
+    const userId = useSelector((state: RootState) => {
+        return state.userId;
+    });
+    console.log('userId', userId);
+
+    const myTeamList = useTeamListQuery(userId);
+    console.log('myTeamList', myTeamList)
+    // 내팀 데이터 불러오기
 
     const autoMatch = () => dispatch({ type: 'AUTOMATCH' });
     const list = () => dispatch({ type: 'LIST' });
-
+    const content = ()=>{
+        if (state.tabType === 'AUTOMATCH') {
+            return ( <MatchContent /> )
+        } else {
+            return ( <ListContent /> )
+        }
+    }
     return (
-        <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
-            <div className="h-1/5 w-full m-0 p-0">
+        <div className="flex flex-col h-auto w-full bg-[#f5f5f5] m-0 pt-55">
+            <div className="h-1/6 w-full m-0 p-0">
                 <div className="h-100 w-[90%]"></div>
-            {/* <Swiper
+            <Swiper
                 slidesPerView={1.1}
                 centeredSlides={true}
                 spaceBetween={0}
@@ -245,24 +240,27 @@ export default function TeamMatchPage() {
                 pagination={{
                     clickable: true,
                 }}
-                onActiveIndexChange={(e) => { setMyTeamIndex(e.activeIndex); console.log(e.activeIndex) }}
+                onActiveIndexChange={(e) => { console.log(e.activeIndex) }}
                 >
-                {myTeamList.data && myTeamInfo.data &&
-                    myTeamList.data.map((item: team, index: number) => (
+                {/* {myTeamList.data && myTeamList.data.map((item: team, index: number)=>
                     <SwiperSlide key={index}>
                         <div className="w-full h-167 ml-[-10px]">
+                            <TeamMatchMyTeamInfo myTeamData={item} />
                         <MyTeamInfo rank={myTeamInfo.data.myTeamRank} teamRanking={item} />
                         </div>
                     </SwiperSlide>
-                    ))}
-                </Swiper> */}
+                    )} */}
+                </Swiper>
             </div>
-            <div className="h-4/5 w-full m-0 p-0">
-                <div className="w-full h-55 px-16 py-0 grow-0 bg-[#fff] rounded-t-lg flex">
+            <div className="flex flex-col items-center h-5/6 w-full m-0 p-0">
+                <div className="flex items-center w-full h-[10%] px-16 py-0 grow-0 bg-[#fff] rounded-t-lg">
                     <AutoMatchTab clickedTab={state.tabType} changeType={()=>{autoMatch();}} />
                     <ListTab clickedTab={state.tabType} changeType={()=>{list();}} />
                 </div>
-                <Content clickedTab={state.tabType} />
+                {/* <TeamMatchFilterBar /> */}
+                <div className="w-full h-[90%]">
+                    {content()}
+                </div>
             </div>
         </div>
     )

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import 'react-calendar/dist/Calendar.css'
 
-import { MatchFilterBar } from "@/components/Match/MatchFilterBar"
+import MatchFilterBar from "@/components/Match/MatchFilterBar"
 
 import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
 import { RootState } from "@/stores/store";
@@ -16,7 +16,6 @@ import { matchList } from "@/models/matchList";
 
 
 // ============ 기타 타입 =================================================
-// 자동 매칭, 목록 선택 탭
 interface place {
     placeId: number,
     address: string,
