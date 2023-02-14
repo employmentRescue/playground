@@ -6,20 +6,21 @@ import { useCallback, useState } from "react";
 import ChatListModal from "./ChatListModal";
 
 interface ListCardProps {
+    roomId: number;
     roomProfile: string;    // 채팅방 사진(팀 로고, 기본 이미지 등등)
     title: string;      // 채팅방 제목
     personnel: number;  // 채팅방 인원
     latestMsg: string   // 채팅방 제목 밑에서 볼 수 있는 최근 메세지
 }
 
-export default function ListCard({ roomProfile, title, personnel, latestMsg }: ListCardProps) {
+export default function ListCard({ roomId, roomProfile, title, personnel, latestMsg }: ListCardProps) {
 
     const [showModal, setShowModal] = useState(false)
     const navigate = useNavigate();
     function handleOnClickToChattingRoom() {
         return (
             // room/1 대신 변수 사용하기
-            navigate("/chatting/room/1")
+            navigate(`/chatting/room/${roomId}`)
         )
     }
 
@@ -31,7 +32,7 @@ export default function ListCard({ roomProfile, title, personnel, latestMsg }: L
     return (
         <div className="flex">
             {showModal && <ChatListModal showModal={showModal} setShowModal={setShowModal} />}
-            <div className="flex bg-white w-full h-60 py-10" onClick={() => handleOnClickToChattingRoom()} {...onLongPress()}>
+            <div className="flex bg-white w-full h-70 py-10" onClick={() => handleOnClickToChattingRoom()} {...onLongPress()}>
                 <Profile profile={roomProfile} className="self-center mx-14" />
                 <div className="flex flex-col ">
                     <div className="flex mt-5">

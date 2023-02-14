@@ -10,8 +10,8 @@ export default function ProfilePage() {
         setIsClicked(!isClicked)
     }
     return (
-        <div>
-            <ProfileModifyButton onClick={handleOnClick} isClicked={isClicked} className="w-50 h-26 self-end bg-blue-700 text-12 text-white rounded-20 fixed top-80 right-15" />
+        <div className="flex flex-col bg-[#EEF3FC] pt-[5%]">
+            <ProfileModifyButton onClick={handleOnClick} isClicked={isClicked} className="w-50 h-26 mr-[5%] self-end bg-blue-700 text-12 text-white rounded-20 right-15" />
             {isClicked ? <ProfileModifyPage /> : <ProfileMainPage />}
         </div>
     )

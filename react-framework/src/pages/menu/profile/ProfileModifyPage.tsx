@@ -31,13 +31,13 @@ export default function ProfileModifyPage() {
 
     const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
     const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
-  const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
-  const [sportsType, setSportsType] = useState<string | null>(null);
+    const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
+    const [sportsType, setSportsType] = useState<string | null>(null);
     const [date, setDate] = useState<Date | null>(null);
     const [place, setPlace] = useState<place | null>(null);
     const [detailPlace, setDetailPlace] = useState<string>('');
-  const [preferDist, setPreferDist] = useState<number>(0);
-  const [circle, setCircle] = useState<naver.maps.Circle | null>(null);
+    const [preferDist, setPreferDist] = useState<number>(0);
+    const [circle, setCircle] = useState<naver.maps.Circle | null>(null);
 
     const distMarks = [
         {
@@ -186,54 +186,54 @@ export default function ProfileModifyPage() {
     }, [geolocation]);
 
     useEffect(() => {
-      if (naverMap === null) return;
+        if (naverMap === null) return;
 
-      naver.maps.Event.addListener(naverMap, 'click', function (e) {
-        const latlng = e.coord;
-  
-        if (marker) {
-          marker.setPosition(latlng);
-        }
-        else {
-          setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
-    
-        }
-  
-        naver.maps.Service.reverseGeocode({
-          coords: new naver.maps.LatLng(latlng._lat, latlng._lng),
-        }, function (status, response) {
-          if (status !== naver.maps.Service.Status.OK) {
-            console.log("wrong!");
-          }
-  
-          const result = response.v2; // 검색 결과의 컨테이너
-          const address = result.address.jibunAddress; // 검색 결과로 만든 주소
-          console.log(result);
-          setPlace({
-            address: address,
-            lat: latlng._lat,
-            lng: latlng._lng,
-          })
-        })
-      });
-  
+        naver.maps.Event.addListener(naverMap, 'click', function (e) {
+            const latlng = e.coord;
+
+            if (marker) {
+                marker.setPosition(latlng);
+            }
+            else {
+                setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+
+            }
+
+            naver.maps.Service.reverseGeocode({
+                coords: new naver.maps.LatLng(latlng._lat, latlng._lng),
+            }, function (status, response) {
+                if (status !== naver.maps.Service.Status.OK) {
+                    console.log("wrong!");
+                }
+
+                const result = response.v2; // 검색 결과의 컨테이너
+                const address = result.address.jibunAddress; // 검색 결과로 만든 주소
+                console.log(result);
+                setPlace({
+                    address: address,
+                    lat: latlng._lat,
+                    lng: latlng._lng,
+                })
+            })
+        });
+
     }, [naverMap, marker])
-  
-  
+
+
     useEffect(() => {
-      if (!naverMap || !marker) return;
-      if (circle)
-        circle.setMap(null);
-  
-      setCircle(new naver.maps.Circle({
-        map: naverMap,
-        center: marker.getPosition(),
-        radius: preferDist * 1000,
-        fillColor: 'red',
-        fillOpacity: 0.5
-      }))
+        if (!naverMap || !marker) return;
+        if (circle)
+            circle.setMap(null);
+
+        setCircle(new naver.maps.Circle({
+            map: naverMap,
+            center: marker.getPosition(),
+            radius: preferDist * 1000,
+            fillColor: 'red',
+            fillOpacity: 0.5
+        }))
     }, [preferDist])
-  
+
     return (
         <div>
 

@@ -31,8 +31,8 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
         return state.myTeam.memberIds
     })
     const userId = useSelector((state: RootState) => {
-      return state.userId;
-  });
+        return state.userId;
+    });
 
     const teamNameInputRef: any = useRef();
 
@@ -56,8 +56,8 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
         let teamMemberList = [];
         for (const m of memberIds) {
             teamMemberList.push({ memberId: m });
-      }
-      teamMemberList.push({ memberId: userId });
+        }
+        teamMemberList.push({ memberId: userId });
         setTeamMemberList(teamMemberList);
     }, [memberIds])
 

@@ -1,26 +1,32 @@
-import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "@/stores/store"
-
 import ProfileCard from "@/components/Profile/ProfileCard"
 import myProfile from "@/assets/profiles/my-profile-sample.png"
 import matchListImage from "@/assets/menu/match-list.png"
 import teamRankingImage from "@/assets/menu/team-ranking.png"
 import teamCreateImage from "@/assets/menu/team-create.png"
 import myTeamImage from "@/assets/menu/my-team.png"
+
+import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/stores/store"
 import { useEffect } from "react"
+
 import { setTabName } from "@/stores/tab/tabName"
+import useGetUserInfo from "@/hooks/user/useGetUserInfo"
 
 
 export default function MenuListPage() {
     const nickname = useSelector((state: RootState) => {
         return state.userInfo.nickname
     });
-
+    const myUserId = useSelector((state: RootState) => {
+        return state.userId
+    });
+    const { mutate } = useGetUserInfo(myUserId)
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setTabName('playGround'))
+        mutate()
     }, [])
 
     return (

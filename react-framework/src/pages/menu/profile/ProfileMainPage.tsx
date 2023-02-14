@@ -9,9 +9,14 @@ import basketballImage from "@/assets/profiles/auto-match-basketball.png"
 import badmintonImage from "@/assets/profiles/auto-match-badminton.png"
 import { useEffect } from "react"
 import { setTabName } from "@/stores/tab/tabName"
+import useGetUserInfo from "@/hooks/user/useGetUserInfo"
 
 
 export default function ProfileMainPage() {
+    const userId = useSelector((state: RootState) => {
+        return state.userId
+    })
+    const { mutate } = useGetUserInfo(userId)
     const userInfo = useSelector((state: RootState) => {
         return state.userInfo
     });
@@ -29,6 +34,7 @@ export default function ProfileMainPage() {
 
     useEffect(() => {
         dispatch(setTabName('프로필'))
+        mutate()
     }, [])
 
     return (
