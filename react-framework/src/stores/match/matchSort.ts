@@ -32,13 +32,15 @@ const sortInfoSlice = createSlice({
             state.distance = action.payload;
         },
         setSortStartTime(state, action) {
-            state.minStartTime, state.maxStartTime = action.payload;
+            state.minStartTime = action.payload[0];
+            state.maxStartTime = action.payload[1];
         },
         setSortlevel(state, action) {
             state.level = action.payload;
         },
         setSortPlayTime(state, action) {
-            state.minPlayTime, state.maxPlayTime = action.payload;
+            state.minPlayTime = action.payload[0];
+            state.maxPlayTime = action.payload[1];
         },
         setSortSex(state, action) {
             state.sex = action.payload;
