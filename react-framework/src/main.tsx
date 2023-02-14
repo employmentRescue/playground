@@ -58,12 +58,12 @@ const router = createBrowserRouter([
       ,
       // 매칭 페이지
       {
-        path: 'match/',
+        path: 'match',
         element: <MatchPage />,
       },
       {
         path: 'match/detail/:matchId',
-        element: <MatchDetailPage />,
+        element: <MatchDetailPage />, 
       },
       {
         path: 'match/register',
