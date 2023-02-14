@@ -21,9 +21,9 @@ spring:
     port: 6379
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://i8b309.p.ssafy.io:3306/playground?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://i8b309.p.ssafy.io:3333/playground?serverTimezone=UTC&characterEncoding=UTF-8
     username: ssafy
-    password: ssafy
+    password: 1q2w3e4r
 
 
 
