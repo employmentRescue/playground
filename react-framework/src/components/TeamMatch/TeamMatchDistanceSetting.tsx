@@ -12,14 +12,14 @@ type Iprops = {
     distance: number, 
     setFilterData: (attr:attrType, value:any) => void 
 }
-type attrType = "startDate" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort" 
+type attrType = "matchDate" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort"
 
 
 // 자동 매칭 필터바 - 거리범위
 export function MatchFilterDistance({ shutOtherWindow, clicked, distance }: { shutOtherWindow: () => void, clicked: () => void, distance: number }) {
 
     return (
-        <div className="flex flex-row w-70 h-25 flex-grow-0 mt-7 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
+        <div className="flex flex-row w-70 h-25 flex-grow-0 mt-0 pt-0 pr-6 pb-4 pl-9 rounded-5 bg-[#303eff]"
             onClick={(e) => {
                 e.preventDefault();
                 clicked();
@@ -39,7 +39,7 @@ export function TeamMatchDistanceSetting({ clicked, location, distance, setFilte
     }
 
     return (
-        <div className="flex flex-col absolute top-[-117px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">
+        <div className="flex flex-col absolute top-[-250px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">
             <div className="h-1/4 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
             <div className="justify-center pt-10 w-full h-3/4 flex-grow-0 bg-[#fff] z-20">
                 <div className="flex relative place-content-center w-full">

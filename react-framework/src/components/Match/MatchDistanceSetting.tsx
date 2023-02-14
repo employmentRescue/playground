@@ -215,7 +215,7 @@ export function MatchDistanceSetting({ clicked, sportsType, location, distance, 
                         </div>
                     </div>
                     <div className="h-1/2 flex justify-center mb-15 mx-13 pt-10">
-                        <div className="grid place-content-center h-34 mt-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff] " onClick={(e) => { e.preventDefault(); clicked(); setFilterData("distance", Number(temDistance)) }}>설정 완료</div>
+                        <div className="grid place-content-center h-34 mt-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter text-[15px] text-[#fff] " onClick={(e) => { e.preventDefault(); clicked(); setFilterData("distance", Number(temDistance)) }}>설정 완료</div>
                     </div>
                 </div>
             </div>

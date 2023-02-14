@@ -10,7 +10,7 @@ type Iprops = {
     startTime: (string | null)[],
     setFilterData: (attr: attrType, value: any) => void
 }
-type attrType = "startDate" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort" 
+type attrType = "matchDate" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort"
 
 const numberToTime = (num: number) => {
     if (num / 10 < 1) {
@@ -26,7 +26,7 @@ export function MatchFilterTime({ shutOtherWindow, clicked, startTime }: { shutO
     const maxStartTime = startTime[1] && startTime[1].slice(0, 2)
     console.log(maxStartTime)
     return (
-        <div className="flex flex-row w-74 h-25 flex-grow-0 mt-7 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
+        <div className="flex flex-row w-74 h-25 flex-grow-0 mt-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e) => { e.preventDefault(); clicked(); shutOtherWindow(); }}>
             <span className="w-43 h-15 flex-grow mt-5 p-0  text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{minStartTime + " ~ " + maxStartTime}</span>
             <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
         </div>
@@ -48,7 +48,7 @@ export function TeamMatchTimeSetting({ clicked, startTime, setFilterData }: Ipro
         return `${value}:00:00`
     }
     return (
-        <div className="flex flex-col absolute top-[-117px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">
+        <div className="flex flex-col absolute top-[-250px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">
             <div className="h-3/4 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
             <div className="justify-center pt-10 w-full h-1/4 flex-grow-0 bg-[#fff] z-20">
                 <div className="flex relative place-content-center w-full h-1/6">
