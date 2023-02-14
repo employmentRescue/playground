@@ -26,7 +26,6 @@ public class ChatRoomController {
     private static final String FAIL = "fail";
 
     private final ChatRoomService chatRoomService;
-    private final ChatRoomRepository chatRoomRepository;
 
 
     @ApiOperation(value = "전체 팀 채팅방 조회", notes = "회원의 팀 채팅방을 전부 가져온다.")
@@ -37,14 +36,14 @@ public class ChatRoomController {
 
     @ApiOperation(value = "팀 채팅방 1개 조회", notes = "회원이 입장하는 특정 팀 채팅방 1개를 가져온다.")
     @GetMapping("/TeamChatRoom/enter/{roomId}")
-    public ResponseEntity<TeamChatroom> getTeamChatRoom(@RequestParam long memberId, @PathVariable int roomId){
-        return new ResponseEntity<TeamChatroom>(chatRoomService.getTeamChatroomByRoomId(memberId, roomId), HttpStatus.OK);
+    public ResponseEntity<TeamChatroom> getTeamChatRoom(@PathVariable int roomId){
+        return new ResponseEntity<TeamChatroom>(chatRoomService.getTeamChatroomByRoomId(roomId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "팀 채팅방 생성", notes = "팀 채팅방을 생성한다.")
     @PostMapping("/TeamChatRoom")
-    public ResponseEntity<String> createTeamChatRoom(@RequestParam long memberId, @RequestBody TeamChatroom teamChatroom){
-        chatRoomService.createTeamChatroom(memberId, teamChatroom);
+    public ResponseEntity<String> createTeamChatRoom(@RequestParam List<Long> memberIdList, @RequestBody TeamChatroom teamChatroom){
+        chatRoomService.createTeamChatroom(memberIdList, teamChatroom);
         return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
     }
 
@@ -67,14 +66,14 @@ public class ChatRoomController {
 
     @ApiOperation(value = "운동모임 채팅방 1개 조회", notes = "회원이 입장하는 특정 운동모임 채팅방 1개를 가져온다.")
     @GetMapping("/GatheringChatRoom/enter/{roomId}")
-    public ResponseEntity<GatheringChatroom> getGatheringChatRoom(@RequestParam long memberId, @PathVariable int roomId) {
-        return new ResponseEntity<GatheringChatroom>(chatRoomService.getGatheringChatroomByRoomId(memberId, roomId), HttpStatus.OK);
+    public ResponseEntity<GatheringChatroom> getGatheringChatRoom(@PathVariable int roomId) {
+        return new ResponseEntity<GatheringChatroom>(chatRoomService.getGatheringChatroomByRoomId(roomId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "운동모임 채팅방 생성", notes = "운동모임 채팅방을 생성한다.")
     @PostMapping("/GatheringChatRoom")
-    public ResponseEntity<String> createGatheringChatRoom(@RequestParam long memberId, @RequestBody GatheringChatroom gatheringChatroom){
-        chatRoomService.createGatheringChatroom(memberId, gatheringChatroom);
+    public ResponseEntity<String> createGatheringChatRoom(@RequestParam List<Long> memberIdList, @RequestBody GatheringChatroom gatheringChatroom){
+        chatRoomService.createGatheringChatroom(memberIdList, gatheringChatroom);
         return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
     }
 
@@ -84,6 +83,7 @@ public class ChatRoomController {
         chatRoomService.exitGatheringChatroom(memberId, roomId);
         return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
+
 
 
 //    =================================================================================================================

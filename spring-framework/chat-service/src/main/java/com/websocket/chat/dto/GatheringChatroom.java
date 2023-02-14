@@ -28,8 +28,8 @@ public class GatheringChatroom implements Serializable {
     private List<MemberGatheringChatroom> memberGatheringChatrooms;
 
     @OneToMany
-    @JoinColumn(name = "gatheringChatroomId")
-    private List<TeamMessage> messages;
+    @JoinColumn(name = "chatroomId")
+    private List<ChatMessage> messages;
 
 
 }

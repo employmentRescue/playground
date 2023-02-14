@@ -1,17 +1,17 @@
 package com.websocket.chat.service;
 
-import com.websocket.chat.dto.Gathering;
 import com.websocket.chat.dto.GatheringChatroom;
 import com.websocket.chat.dto.TeamChatroom;
 import com.websocket.chat.repository.ChatRoomRepository;
-import com.websocket.chat.repository.GatheringChatRoomJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class ChatRoomServiceImpl implements ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -26,18 +26,18 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public TeamChatroom getTeamChatroomByRoomId(long memberId, int roomId) {
-        return chatRoomRepository.findTeamChatRoomByRoomId(memberId, roomId);
+    public TeamChatroom getTeamChatroomByRoomId(int roomId) {
+        return chatRoomRepository.findTeamChatRoomByRoomId(roomId);
     }
 
     @Override
-    public TeamChatroom createTeamChatroom(long memberId, TeamChatroom teamChatroom) {
-        return chatRoomRepository.createTeamChatRoom(memberId, teamChatroom);
+    public TeamChatroom createTeamChatroom(List<Long> memberIdList, TeamChatroom teamChatroom) {
+        return chatRoomRepository.createTeamChatRoom(memberIdList, teamChatroom);
     }
 
     @Override
     public void exitTeamChatroom(long memberId, int roomId) {
-
+        chatRoomRepository.exitTeamChatroom(memberId, roomId);
     }
 
 
@@ -52,18 +52,18 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public GatheringChatroom getGatheringChatroomByRoomId(long memberId, int roomId) {
-        return chatRoomRepository.findGatheringChatRoomByRoomId(memberId, roomId);
+    public GatheringChatroom getGatheringChatroomByRoomId(int roomId) {
+        return chatRoomRepository.findGatheringChatRoomByRoomId(roomId);
     }
 
     @Override
-    public GatheringChatroom createGatheringChatroom(long memberId, GatheringChatroom gatheringChatroom) {
-        return chatRoomRepository.createGatheringChatRoom(memberId, gatheringChatroom);
+    public GatheringChatroom createGatheringChatroom(List<Long> memberIdList, GatheringChatroom gatheringChatroom) {
+        return chatRoomRepository.createGatheringChatRoom(memberIdList, gatheringChatroom);
     }
 
     @Override
     public void exitGatheringChatroom(long memberId, int roomId) {
-
+        chatRoomRepository.exitGatheringChatroom(memberId, roomId);
     }
 
 
