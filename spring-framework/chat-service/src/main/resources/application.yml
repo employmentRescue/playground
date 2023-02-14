@@ -37,7 +37,7 @@ server:
     enabled: true
     key-store: classpath:keystore.p12
     key-store-password: b309309
-  port: 10005
+  port: 8080
 
 
 

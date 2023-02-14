@@ -43,7 +43,8 @@
     <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
     <script>
         // websocket & stomp initialize
-        var sock = new SockJS("https://localhost:10005/ws-stomp");
+        var sock = new SockJS("https://localhost:8080/ws-stomp");
+        // var sock = new WebSocket("https://localhost:10005/ws-stomp");
         var ws = Stomp.over(sock);
         // vue.js
         var vm = new Vue({
