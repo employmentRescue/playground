@@ -24,6 +24,7 @@ export default function MatchListPage() {
 
     useEffect(() => {
         dispatch(setTabName('매칭 목록'))
+        console.log(myTeamList)
     }, [])
 
     useEffect(() => {
@@ -88,7 +89,7 @@ export default function MatchListPage() {
                     matchType={match.matchType}
                     isOldMatch={isOldMatch}
                     buttonColor={buttonColor}
-                    linkToDetailPage={match.linkToDetailPage}
+                    matchId={match.matchId ? match.matchId : match.gatheringId}
                 />
             )
         })

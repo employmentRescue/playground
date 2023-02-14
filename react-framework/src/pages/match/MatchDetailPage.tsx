@@ -43,6 +43,9 @@ export default function MatchDetailPage() {
   const { matchId } = useParams();
 
   const match = useMatchDetailQuery(Number(matchId));
+
+  console.log(matchId);
+  console.log(match);
   const joinMatch = useMatchJoin();
   const quitMatch = useMatchQuit();
 
