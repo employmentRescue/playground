@@ -44,7 +44,6 @@ export function MatchTimeSetting({ clicked, startTime, setFilterData }: Iprops) 
         setTemStartTime(newValue)
     }
     function valueText(value: number, index:number) {
-        console.log(`${value}:00:00`)
         return `${value}:00:00`
     }
     return (

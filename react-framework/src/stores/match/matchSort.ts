@@ -26,21 +26,19 @@ const sortInfoSlice = createSlice({
             state.startDate = action.payload;
         },
         setSortLocation(state, action) {
-            state.lat, state.lng = action.payload;
+            [state.lat, state.lng] = action.payload;
         },
         setSortDistance(state, action) {
             state.distance = action.payload;
         },
         setSortStartTime(state, action) {
-            state.minStartTime = action.payload[0];
-            state.maxStartTime = action.payload[1];
+            [state.minStartTime, state.maxStartTime] = action.payload;
         },
         setSortlevel(state, action) {
             state.level = action.payload;
         },
         setSortPlayTime(state, action) {
-            state.minPlayTime = action.payload[0];
-            state.maxPlayTime = action.payload[1];
+            [state.minPlayTime, state.maxPlayTime] = action.payload;
         },
         setSortSex(state, action) {
             state.sex = action.payload;

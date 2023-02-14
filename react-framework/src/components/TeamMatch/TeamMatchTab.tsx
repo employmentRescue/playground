@@ -10,7 +10,7 @@ export function AutoMatchTab({ clickedTab, changeType }: propsTab) {
     if (clickedTab === 'LIST') {
         return (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events
-            <div className="flex flex-col items-center w-[40%] h-50 mx-10 pt-15 bg-[#fff]" onClick={(event) => {
+            <div className="flex flex-col items-center justify-center w-[40%] h-50 mx-10 bg-[#fff]" onClick={(event) => {
                 event.preventDefault();
                 changeType();
             }}>
@@ -21,7 +21,7 @@ export function AutoMatchTab({ clickedTab, changeType }: propsTab) {
         )
     } else {
         return (
-            <div className="flex flex-col items-center w-[40%] h-50 pt-15 mx-10 border-b-1 border-solid border-[#303eff] bg-[#fff]" onClick={(event) => {
+            <div className="flex flex-col items-center justify-center w-[40%] h-50 mx-10 border-b-1 border-solid border-[#303eff] bg-[#fff]" onClick={(event) => {
                 event.preventDefault();
                 changeType();
             }}>
@@ -37,7 +37,7 @@ export function AutoMatchTab({ clickedTab, changeType }: propsTab) {
 export function ListTab({ clickedTab, changeType }: propsTab) {
     if (clickedTab === 'AUTOMATCH') {
         return (
-            <div className="flex flex-col items-center w-[40%] h-50 pt-15 mx-10 bg-[#fff]" onClick={(event) => {
+            <div className="flex flex-col items-center justify-center w-[40%] h-50 mx-10 bg-[#fff]" onClick={(event) => {
                 event.preventDefault();
                 changeType();
             }}>
@@ -49,7 +49,7 @@ export function ListTab({ clickedTab, changeType }: propsTab) {
     }
     else {
         return (
-            <div className="flex flex-col items-center w-[40%] h-50 pt-15 mx-10 border-b-1 border-solid border-[#303eff] bg-[#fff]" onClick={(event) => {
+            <div className="flex flex-col items-center justify-center w-[40%] h-50 mx-10 border-b-1 border-solid border-[#303eff] bg-[#fff]" onClick={(event) => {
                 event.preventDefault();
                 changeType();
             }}>
