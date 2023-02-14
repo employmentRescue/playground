@@ -6,14 +6,13 @@ import { getImgUrl } from "@/utils/getImgUrl";
 import { useEffect } from "react";
 import { setTabName } from "@/stores/tab/tabName";
 import useTeamMatchQuery from "@/hooks/teamMatch/useTeamMatchQuery";
+import { useParams } from "react-router-dom";
 
 export default function TeamMatchDetailPage() {
 
-  const teamId = useSelector((state: RootState) => {
-    return state.team.id;
-  });
+  const { teamMatchId } = useParams();
 
-  const team = useTeamMatchQuery(teamId);
+  const team = useTeamMatchQuery(Number(teamMatchId));
 
   console.log(team)
   const dispatch = useDispatch();
@@ -33,7 +32,7 @@ export default function TeamMatchDetailPage() {
   return team.isSuccess && team.data && (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-white">
-        <img className="w-100 h-100" src={getImgUrl('profiles/team', String(teamId))}></img>
+        <img className="w-100 h-100" src={getImgUrl('profiles/team', String(teamMatchId))}></img>
         <div className="text-20 mt-4">{team.data.name}</div>
       </div>
 

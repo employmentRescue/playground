@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         element: <MatchPage />,
       },
       {
-        path: 'match/detail',
+        path: 'match/detail/:matchId',
         element: <MatchDetailPage />,
       },
       {
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
         element: <TeamMatchRegisterPage />
       },
       {
-        path: 'team-match/detail',
+        path: 'team-match/detail/:teamMatchId',
         element: <TeamMatchDetailPage />
       },
       {

@@ -21,7 +21,11 @@ const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
 );
 
 const useMatchRegister = () => {
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      location.replace('/match')
+    },
+  });
 };
 
 export default useMatchRegister;    

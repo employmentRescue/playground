@@ -1,6 +1,7 @@
 import { place } from "./place";
 
 export interface match {
+  gatheringId?: number,
   title: string;
   description?: string,
   sports: string,
