@@ -10,10 +10,10 @@ interface Iprops {
     matchType: "개인" | "팀";
     isOldMatch: boolean;        // 약속 시간을 넘어간 매칭은 전부 흐릿하게 표시됨
     buttonColor: string;
-    linkToDetailPage: string;
+    matchId: number;
 }
 
-export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, matchType, isOldMatch, buttonColor, linkToDetailPage }: Iprops) {
+export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, matchType, isOldMatch, buttonColor, matchId }: Iprops) {
     let bgOpacity = ""
     isOldMatch ? bgOpacity = "opacity-70" : ""
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, m
                     {matchPersonnel && <p className="text-10 mt-0 text-[#969696]">{matchPersonnel}</p>}
                 </div>
             </div>
-            <button className={"flex w-60 px-22 " + buttonColor} onClick={() => navigate(linkToDetailPage)} disabled={isOldMatch}>
+            <button className={"flex w-60 px-22 " + buttonColor} onClick={() => navigate(`/match/detail/${matchId}`)} disabled={isOldMatch}>
                 <img src={goButtonImage} className={"w-15 h-15 self-center"} />
             </button>
         </div >
