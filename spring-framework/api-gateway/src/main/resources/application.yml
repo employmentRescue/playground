@@ -76,17 +76,17 @@ spring:
           filters:
             - RewritePath=/test/(?<path>.*),/$\{path}
 
-#        - id: chat-service-tester
-#          uri: https://i8b309.p.ssafy.io:10003
-#          predicates:
-#            - Path=/test/chat/**, /test/ws-stomp/**, /test/webjars/**
-#          filters:
-#            - RewritePath=/test/(?<path>.*),/$\{path}
-
         - id: notify-service
           uri: https://i8b309.p.ssafy.io:9004
           predicates:
             - Path=/notify/**
+
+       - id: chat-service-tester
+         uri: https://i8b309.p.ssafy.io:9005
+         predicates:
+           - Path=/test/chat/**, /test/ws-stomp/**, /test/webjars/**
+#          filters:
+#            - RewritePath=/test/(?<path>.*),/$\{path}
 
 
 
