@@ -135,7 +135,6 @@ public class MatchServiceImpl implements MatchService {
         teamMatchResultRepository.deleteByMatchAndTeamId(match, teamId);
     }
 
-    //TODO sort별 결과값 얻어오기
     @Override
     public List<Match> findMatchesByFilter(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String sort) {
         switch (sort) {

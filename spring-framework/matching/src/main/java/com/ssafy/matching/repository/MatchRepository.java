@@ -35,7 +35,6 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "ORDER BY m.match_date DESC", nativeQuery = true)
     List<Match> getMatchesTimeNotPast(long memberId);
 
-    //TODO 팀 경기 거리순 정렬 쿼리 작성하기
     //필터 조건 + 거리순 정렬
     @Query(value = "SELECT * FROM `match` m, team t, preferred_place p " +
             "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
@@ -47,7 +46,6 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "ORDER BY ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) ASC", nativeQuery = true)
     List<Match> findMatchesByFilterDistanceASC(String matchDate, double lat, double lng, int distance, String minStartTime, String sports, String gameType);
 
-    //TODO 팀 경기 티어 낮은순 정렬 쿼리 작성하기
     //필터 조건 + 티어 낮은순 정렬
     @Query(value = "SELECT * " +
             "FROM `match` m, team t, preferred_place p " +
@@ -60,7 +58,6 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "ORDER BY t.point ASC", nativeQuery = true)
     List<Match> findMatchesByFilterPointASC(String matchDate, double lat, double lng, int distance, String minStartTime, String sports, String gameType);
 
-    //TODO 팀 경기 티어 낮은순 정렬 쿼리 작성하기
     //필터 조건 + 티어 높은순 정렬
     @Query(value = "SELECT * " +
             "FROM `match` m, team t, preferred_place p " +
