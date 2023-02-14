@@ -13,7 +13,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString(exclude = {"memberOften"})
+@ToString(exclude = {"memberSometimes"})
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,5 +31,5 @@ public class activitiesEntity extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     @JsonIgnore
-    public MemberOftenEntity memberOften = new MemberOftenEntity();
+    public MemberSometimesEntity memberSometimes = new MemberSometimesEntity();
 }
