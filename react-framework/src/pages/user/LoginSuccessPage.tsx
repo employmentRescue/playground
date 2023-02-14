@@ -54,7 +54,7 @@ export default function LoginSuccessPage() {
     onMessage(messaging, (payload) => {
         console.log('Message received. ', payload);
         // ...
-      });
+    });
 
     return (
         <div>

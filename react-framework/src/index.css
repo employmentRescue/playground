@@ -11,5 +11,10 @@
   font-family: "Nanum Gothic", sans-serif;
 }
 
+@font-face {
+  font-family: "cookie";
+  src: url("assets/fonts/CookieRun Bold.ttf");
+}
+
 @tailwind components;
 @tailwind utilities;

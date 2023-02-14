@@ -22,6 +22,7 @@ import useMatchJoin from '@/hooks/match/useMatchJoin';
 import useMatchQuit from '@/hooks/match/useMatchQuit';
 import { getImgUrl } from '@/utils/getImgUrl';
 import { setTabName } from '@/stores/tab/tabName';
+import { useParams } from 'react-router-dom';
 
 export default function MatchDetailPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
@@ -35,23 +36,23 @@ export default function MatchDetailPage() {
   // initial call
   const geolocation = useGeolocation();
 
-  const matchId = useSelector((state: RootState) => {
-    return state.match.id;
-  });
-
   const userId = useSelector((state: RootState) => {
     return state.userId;
   });
 
+  const { matchId } = useParams();
 
-  const match = useMatchDetailQuery(matchId);
+  const match = useMatchDetailQuery(Number(matchId));
+
+  console.log(matchId);
+  console.log(match);
   const joinMatch = useMatchJoin();
   const quitMatch = useMatchQuit();
 
   const join = () => {
     console.log('join');
     joinMatch.mutate({
-      gatheringId: matchId,
+      gatheringId: Number(matchId),
       memberId: userId,
     })
   };
@@ -59,7 +60,7 @@ export default function MatchDetailPage() {
   const quit = () => {
     console.log('quit');
     quitMatch.mutate({
-      gatheringId: matchId,
+      gatheringId: Number(matchId),
       memberId: userId,
     })
   };

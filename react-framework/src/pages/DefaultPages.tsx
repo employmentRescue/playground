@@ -38,3 +38,11 @@ export function ChattingDefaultPage() {
 
   )
 }
+
+export function StartDefaultPage() {
+  return (
+    <div className='w-screen h-screen overflow-hidden'>
+      <Outlet />
+    </div>
+  )
+}

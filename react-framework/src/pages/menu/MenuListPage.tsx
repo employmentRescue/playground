@@ -1,26 +1,32 @@
-import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "@/stores/store"
-
 import ProfileCard from "@/components/Profile/ProfileCard"
 import myProfile from "@/assets/profiles/my-profile-sample.png"
 import matchListImage from "@/assets/menu/match-list.png"
 import teamRankingImage from "@/assets/menu/team-ranking.png"
 import teamCreateImage from "@/assets/menu/team-create.png"
 import myTeamImage from "@/assets/menu/my-team.png"
+
+import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/stores/store"
 import { useEffect } from "react"
+
 import { setTabName } from "@/stores/tab/tabName"
+import useGetUserInfo from "@/hooks/user/useGetUserInfo"
 
 
 export default function MenuListPage() {
-    const nickname = useSelector((state: RootState) => {
-        return state.userInfo.nickname
+
+    const myUserId = useSelector((state: RootState) => {
+        return state.userId
     });
+  const userInfo = useGetUserInfo(myUserId)
+  
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setTabName('playGround'))
+       // mutate()
     }, [])
 
     return (
@@ -31,8 +37,8 @@ export default function MenuListPage() {
                     className={"flex bg-[#F1F3FF] mx-15 mt-15 pl-15 py-20 rounded-15 tracking-tight justify-between"}
                     imageSize="w-60 h-60"
                     imageSrc={myProfile}
-                    name="카톡 닉네임(본명)"
-                    nickname={nickname}
+            name={userInfo.data?.data.name}
+                    nickname={userInfo.data?.data.nickname}
                     rating="bronze.1"
                 />
             </Link>

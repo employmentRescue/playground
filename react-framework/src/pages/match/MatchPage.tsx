@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import 'react-calendar/dist/Calendar.css'
 
-import { MatchFilterBar } from "@/components/Match/MatchFilterBar"
+import MatchFilterBar from "@/components/Match/MatchFilterBar"
 
 import useGatheringListQuery from "@/hooks/match/useGatheringListQuery";
 import { RootState } from "@/stores/store";
@@ -16,7 +16,24 @@ import { matchList } from "@/models/matchList";
 
 
 // ============ 기타 타입 =================================================
-// 자동 매칭, 목록 선택 탭
+interface place {
+    placeId: number,
+    address: string,
+    lat: number,
+    lng: number
+}
+interface memberDetail {
+    memberId: number,
+    statusMessage: string,
+    preferTime: string,
+    userProfileImgUrl: string
+}
+interface host {
+    memberId: number,
+    name: string,
+    nickname: string,
+    memberDetail: memberDetail
+}
 
 interface gatheringType {
     gatheringId: number, // 1
@@ -31,14 +48,14 @@ interface gatheringType {
     level: string, // "중수"
     sports: string, // "basketball"
     gameType: string, // "3대3"
-    place: object,
+    place: place,
     // {
     //   "placeId": 1,
     //   "address": "고운뜰공원",
     //   "lat": 36.3663369,
     //   "lng": 127.2961423
     // }
-    host: object,
+    host: host,
     // {
     //   "memberId": 111,
     //   "name": "이경택",
@@ -107,8 +124,8 @@ function ListItem({ data }: { data: gatheringType }) {
                         <span className="w-130 h-18 flex-grow-0 font-inter text-[15px] font-bold test-left text-[#000]">{data?.title}</span>
                     </div>
                     <div className="grid items-center h-1/2 ml-42 py-10">
-                        <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#000]">{"위치는 여기에"}</span>
-                        <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#717070]">{data?.sex +"·"+ data?.gameType +"·"+ data?.level}</span>
+                        <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#000]">{data?.place.address}</span>
+                        <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#717070]">{data?.sex + "·" + data?.gameType + "·" + data?.level}</span>
                     </div>
                 </div>
                 <div className="grid justify-center items-center w-1/4 my-7 border-l-1 border-solid border-[#d9d9d9]">
@@ -125,18 +142,18 @@ function ListItem({ data }: { data: gatheringType }) {
 
 // 매치 페이지 출력
 export default function MatchPage() {
-    const [ startDate, setStartDate ] = useState(useSelector((state: RootState) => {return state.matchSort.startDate;}))
-    const [ location, setLocation ] = useState(useSelector((state: RootState) => {return [state.matchSort.lat, state.matchSort.lng];}))
-    const [ distance, setDistance ] = useState(useSelector((state: RootState) => {return state.matchSort.distance;}))
-    const [ startTime, setStartTime ] = useState(useSelector((state: RootState) => {return [state.matchSort.minStartTime, state.matchSort.maxStartTime];}))
-    const [ level, setLevel ] = useState(useSelector((state: RootState) => {return state.matchSort.level;}))
-    const [ playTime, setPlayTime ] = useState(useSelector((state: RootState) => {return [state.matchSort.minPlayTime, state.matchSort.maxPlayTime];}))
-    const [ sex, setSex ] = useState(useSelector((state: RootState) => {return state.matchSort.sex;}))
-    const [ sports, setSports ] = useState(useSelector((state: RootState) => {return state.matchSort.sports;}))
-    const [ gameType, setGameType ] = useState(useSelector((state: RootState) => {return state.matchSort.gameType;}))
-    const [ sort, setSort ] = useState(useSelector((state: RootState) => {return state.matchSort.sort;}))
-    
-    const [ searchingData, setSearchingData ] = useState<string>("")
+    const [startDate, setStartDate] = useState(useSelector((state: RootState) => { return state.matchSort.startDate; }))
+    const [location, setLocation] = useState(useSelector((state: RootState) => { return [state.matchSort.lat, state.matchSort.lng]; }))
+    const [distance, setDistance] = useState(useSelector((state: RootState) => { return state.matchSort.distance; }))
+    const [startTime, setStartTime] = useState(useSelector((state: RootState) => { return [state.matchSort.minStartTime, state.matchSort.maxStartTime]; }))
+    const [level, setLevel] = useState(useSelector((state: RootState) => { return state.matchSort.level; }))
+    const [playTime, setPlayTime] = useState(useSelector((state: RootState) => { return [state.matchSort.minPlayTime, state.matchSort.maxPlayTime]; }))
+    const [sex, setSex] = useState(useSelector((state: RootState) => { return state.matchSort.sex; }))
+    const [sports, setSports] = useState(useSelector((state: RootState) => { return state.matchSort.sports; }))
+    const [gameType, setGameType] = useState(useSelector((state: RootState) => { return state.matchSort.gameType; }))
+    const [sort, setSort] = useState(useSelector((state: RootState) => { return state.matchSort.sort; }))
+
+    const [searchingData, setSearchingData] = useState<string>("")
 
     const filterData: matchList = {
         startDate: startDate,
@@ -179,11 +196,11 @@ export default function MatchPage() {
             if (gatheringListQuery.data) {
                 console.log(gatheringListQuery.data[0].title)
                 console.log(gatheringListQuery.data[0].title.includes("농구"))
-                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=>eachData.title.includes(searchingData) && <ListItem key={i} data={eachData}/>)
+                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => eachData.title.includes(searchingData) && <ListItem key={i} data={eachData} />)
                 // const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=><ListItem key={i} data={eachData}/>)
-                return ( <div>{gatheringList}</div> )
-            } 
-            else { return ( <div>해당 모임이 존재하지 않습니다.</div> ) }
+                return (<div>{gatheringList}</div>)
+            }
+            else { return (<div>해당 모임이 존재하지 않습니다.</div>) }
         }
         else {
             return (<div>로딩중</div>)
@@ -191,7 +208,7 @@ export default function MatchPage() {
     }
     return (
         <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
-            <MatchFilterBar setFilterData={(attr: attrType, value: any) => setFilterData(attr, value)} setSearchingData={(value:string)=>{setSearchingData(value)}} startDate={startDate} location={location} distance={distance} startTime={startTime} level={level} playTime={playTime} sex={sex} sports={sports} gameType={gameType} sort={sort}/>
+            <MatchFilterBar setFilterData={(attr: attrType, value: any) => setFilterData(attr, value)} setSearchingData={(value: string) => { setSearchingData(value) }} startDate={startDate} location={location} distance={distance} startTime={startTime} level={level} playTime={playTime} sex={sex} sports={sports} gameType={gameType} sort={sort} />
             <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
                 {listItems()}
             </div>

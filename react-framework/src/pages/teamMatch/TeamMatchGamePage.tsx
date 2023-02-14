@@ -6,15 +6,13 @@ import { getImgUrl } from "@/utils/getImgUrl";
 import { useEffect } from "react";
 import { setTabName } from "@/stores/tab/tabName";
 import useTeamMatchQuery from "@/hooks/teamMatch/useTeamMatchQuery";
+import { useParams } from "react-router-dom";
 
 export default function TeamMatchGamePage() {
 
-  const teamMatchId = useSelector((state: RootState) => {
-    return state.teamMatch.id;
-  });
+  const { teamMatchId } = useParams();
 
-  const team = useTeamMatchQuery(teamMatchId);
-
+  const team = useTeamMatchQuery(Number(teamMatchId));
   console.log(team)
   const dispatch = useDispatch();
 

@@ -11,11 +11,11 @@ export default function Footer() {
     return (
         <div className="w-full h-[55px] pl-5 pr-5 flex justify-between items-center border-t-1 fixed bottom-0 border-gray-600 bg-white z-50">
             {tabIndex === 1 ?
-                <div className="w-70 h-55 flex flex-col justify-center items-center border-t-2 border-blue-700" onClick={() => { navigate("/"); setTabIndex(1); }}>
+                <div className="w-70 h-55 flex flex-col justify-center items-center border-t-2 border-blue-700" onClick={() => { navigate("/home"); setTabIndex(1); }}>
                     <img className="w-17 h-17" src={home}></img>
                     <div className="text-8 text-gray-700 mt-3">홈</div>
                 </div> :
-                <div className="w-70 h-55 flex flex-col justify-center items-center" onClick={() => { navigate("/"); setTabIndex(1); }}>
+                <div className="w-70 h-55 flex flex-col justify-center items-center" onClick={() => { navigate("/home"); setTabIndex(1); }}>
                     <img className="w-17 h-17" src={home}></img>
                     <div className="text-8 text-gray-700 mt-3">홈</div>
                 </div>

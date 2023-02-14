@@ -10,7 +10,7 @@ type Iprops = {
     startTime: (string | null)[],
     setFilterData: (attr: attrType, value: any) => void
 }
-type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | "playTime" | "sex" | "sports" | "gameType" | "sort"
+type attrType = "startDate" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort" 
 
 const numberToTime = (num: number) => {
     if (num / 10 < 1) {
@@ -33,7 +33,7 @@ export function MatchFilterTime({ shutOtherWindow, clicked, startTime }: { shutO
     )
 }
 
-export function MatchTimeSetting({ clicked, startTime, setFilterData }: Iprops) {
+export function TeamMatchTimeSetting({ clicked, startTime, setFilterData }: Iprops) {
     const minStartTime = Number(startTime[0] && startTime[0].slice(0, 2))
     const maxStartTime = Number(startTime[1] && startTime[1].slice(0, 2))
     const [temStartTime, setTemStartTime] = useState([minStartTime, maxStartTime])

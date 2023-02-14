@@ -15,7 +15,11 @@ const fetcher = (teamMatch: teamMatch) => axios.post(SERVER_URL + '/match/regist
 );
 
 const useTeamMatchRegister = () => {
-  return useMutation(fetcher);
+  return useMutation(fetcher, {
+    onSuccess: () => {
+      location.replace('/team-match')
+    },
+  });
 };
 
 export default useTeamMatchRegister;    

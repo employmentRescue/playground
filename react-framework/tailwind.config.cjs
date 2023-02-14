@@ -38,6 +38,9 @@ module.exports = {
       },
 
     },
+    fontFamily: {
+      cookie: ["cookie"]
+    }
 
   },
   plugins: [require('tailwindcss-font-inter')],
