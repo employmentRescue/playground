@@ -91,7 +91,7 @@ interface gatheringType {
     // ],
     completed: boolean
 }
-type attrType = "startData" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort" 
+type attrType = "startData" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort"
 // ============ 상단 탭 관련 ====================================================
 // 종목 탭
 type TabAction = { type: 'AUTOMATCH' | 'LIST' };
@@ -221,28 +221,28 @@ export default function TeamMatchPage() {
 
     const autoMatch = () => dispatch({ type: 'AUTOMATCH' });
     const list = () => dispatch({ type: 'LIST' });
-    const content = ()=>{
+    const content = () => {
         if (state.tabType === 'AUTOMATCH') {
-            return ( <MatchContent /> )
+            return (<MatchContent />)
         } else {
-            return ( <ListContent /> )
+            return (<ListContent />)
         }
     }
     return (
         <div className="flex flex-col h-auto w-full bg-[#f5f5f5] m-0 pt-55">
             <div className="h-1/6 w-full m-0 p-0">
                 <div className="h-100 w-[90%]"></div>
-            <Swiper
-                slidesPerView={1.1}
-                centeredSlides={true}
-                spaceBetween={0}
-                grabCursor={true}
-                pagination={{
-                    clickable: true,
-                }}
-                onActiveIndexChange={(e) => { console.log(e.activeIndex) }}
+                <Swiper
+                    slidesPerView={1.1}
+                    centeredSlides={true}
+                    spaceBetween={0}
+                    grabCursor={true}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    onActiveIndexChange={(e) => { console.log(e.activeIndex) }}
                 >
-                {/* {myTeamList.data && myTeamList.data.map((item: team, index: number)=>
+                    {/* {myTeamList.data && myTeamList.data.map((item: team, index: number)=>
                     <SwiperSlide key={index}>
                         <div className="w-full h-167 ml-[-10px]">
                             <TeamMatchMyTeamInfo myTeamData={item} />
@@ -254,8 +254,8 @@ export default function TeamMatchPage() {
             </div>
             <div className="flex flex-col items-center h-5/6 w-full m-0 p-0">
                 <div className="flex items-center w-full h-[10%] px-16 py-0 grow-0 bg-[#fff] rounded-t-lg">
-                    <AutoMatchTab clickedTab={state.tabType} changeType={()=>{autoMatch();}} />
-                    <ListTab clickedTab={state.tabType} changeType={()=>{list();}} />
+                    <AutoMatchTab clickedTab={state.tabType} changeType={() => { autoMatch(); }} />
+                    <ListTab clickedTab={state.tabType} changeType={() => { list(); }} />
                 </div>
                 {/* <TeamMatchFilterBar /> */}
                 <div className="w-full h-[90%]">
