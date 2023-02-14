@@ -81,37 +81,6 @@ spring:
           predicates:
             - Path=/notify/**
 
-       - id: chat-service-tester
-         uri: https://i8b309.p.ssafy.io:9005
-         predicates:
-           - Path=/test/chat/**, /test/ws-stomp/**, /test/webjars/**
-#          filters:
-#            - RewritePath=/test/(?<path>.*),/$\{path}
-
-
-
-
-
-
-
-
-
-
-        - id: local-chat-service
-          uri: wss://i8b309.p.ssafy.io:9110
-          predicates:
-            - Path=/websocket/**
-
-
-
-
-
-
-
-
-
-
-
 
 
         - id: react-framework
