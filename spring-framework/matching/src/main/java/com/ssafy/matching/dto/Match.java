@@ -37,6 +37,10 @@ public class Match implements Serializable {
     private String maxStartTime;
     @ApiModelProperty(value = "선호 지역의 최대 반경", required = true)
     private int distance;
+    @ApiModelProperty(value = "팀 경기의 스포츠 종류", required = true)
+    private String matchSports;
+    @ApiModelProperty(value = "팀 경기의 게임 타입", required = true)
+    private String matchGameType;
     @ApiModelProperty(value = "경기 결과 기록이 완료되었는지")
     private boolean isDone;
 
