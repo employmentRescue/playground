@@ -229,9 +229,8 @@ export default function TeamMatchPage() {
         }
     }
     return (
-        <div className="flex flex-col h-auto w-full bg-[#f5f5f5] m-0 pt-55">
+        <div className="flex flex-col h-auto w-full bg-[#f5f5f5] m-0">
             <div className="h-1/6 w-full m-0 p-0">
-                <div className="h-100 w-[90%]"></div>
             <Swiper
                 slidesPerView={1.1}
                 centeredSlides={true}
@@ -242,14 +241,14 @@ export default function TeamMatchPage() {
                 }}
                 onActiveIndexChange={(e) => { console.log(e.activeIndex) }}
                 >
-                {/* {myTeamList.data && myTeamList.data.map((item: team, index: number)=>
+                {myTeamList.data && myTeamList.data.map((item: team, index: number)=>
                     <SwiperSlide key={index}>
                         <div className="w-full h-167 ml-[-10px]">
                             <TeamMatchMyTeamInfo myTeamData={item} />
-                        <MyTeamInfo rank={myTeamInfo.data.myTeamRank} teamRanking={item} />
+                        {/* <MyTeamInfo rank={myTeamInfo.data.myTeamRank} teamRanking={item} /> */}
                         </div>
                     </SwiperSlide>
-                    )} */}
+                    )}
                 </Swiper>
             </div>
             <div className="flex flex-col items-center h-5/6 w-full m-0 p-0">
