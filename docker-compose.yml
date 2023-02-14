@@ -62,7 +62,7 @@ services:
     image: chat-service
     container_name: chat-service
     ports:
-      - "9004:8080"
+      - "9005:8080"
     networks:
       - playground-broadcast-network
 
