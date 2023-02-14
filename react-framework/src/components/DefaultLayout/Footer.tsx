@@ -15,7 +15,7 @@ export default function Footer() {
                     <img className="w-17 h-17" src={home}></img>
                     <div className="text-8 text-gray-700 mt-3">홈</div>
                 </div> :
-                <div className="w-70 h-55 flex flex-col justify-center items-center" onClick={() => { navigate("/"); setTabIndex(1); }}>
+                <div className="w-70 h-55 flex flex-col justify-center items-center" onClick={() => { navigate("/home"); setTabIndex(1); }}>
                     <img className="w-17 h-17" src={home}></img>
                     <div className="text-8 text-gray-700 mt-3">홈</div>
                 </div>

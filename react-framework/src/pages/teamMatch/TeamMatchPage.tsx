@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useReducer, ComponentProps } from "react";
 import 'react-calendar/dist/Calendar.css'
 
-import { MatchFilterBar } from "@/components/Match/MatchFilterBar"
+import MatchFilterBar from "@/components/Match/MatchFilterBar"
 // 요건 나중에 팀매치로 옮겨야함
 import { AutoMatchTab, ListTab } from "@/components/TeamMatch/TeamMatchTab"
 
