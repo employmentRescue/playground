@@ -253,7 +253,7 @@ export default function ChattingRoomPage() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setTabName('슬램덩크'))
+        dispatch(setTabName(`roomid=${params.roomId}에 해당하는 팀 이름 넣기`))
     }, [])
 
     useEffect(() => {
@@ -263,9 +263,7 @@ export default function ChattingRoomPage() {
     return (
         <div className="flex flex-col h-auto w-full bg-gray-100">
             <div>
-                <div className="flex justify-center  text-20 my-10">
-                    {params.roomId}번 채팅방
-                </div>
+                <div className="h-10" />
                 <div ref={scrollRef}>{TextListRendering()}</div>
                 <div className="pb-40 bg-gray-100"></div>
             </div>

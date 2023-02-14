@@ -75,14 +75,14 @@ export default function NotificationModal({ onClickShowModal }: Iprops) {
         <div className="flex">
             <div className="w-[280px] h-[400px] bg-white rounded-15 fixed right-0 top-55 z-50">
                 <div className="flex justify-start">
-                    <div className="pl-15 pr-10 py-20" onClick={onClickShowModal}>
+                    <div className="pl-15 pr-10 py-20" >
                         <img src={backButton} className="w-15 h-15" />
                     </div>
                     <h1 className="mt-15 text-16  font-bold ">알림</h1>
                 </div>
                 <div>{notificationCardsRendering()}</div>
             </div>
-            <div className="w-[100vh] h-[calc(100vh-110px)] bg-black opacity-50 fiexed top-55"></div>
+            <div className="w-[100vh] h-[calc(100vh-110px)] bg-black opacity-50 fiexed top-55" onClick={onClickShowModal}></div>
         </div>
     )
 }

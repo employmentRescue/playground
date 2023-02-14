@@ -13,6 +13,13 @@ import { useEffect } from "react"
 import { setTabName } from "@/stores/tab/tabName"
 import { RootState } from "@/stores/store"
 
+interface Room {
+    roomId: number;
+    roomProfile: string;
+    title: string;
+    personnel: number;
+}
+
 export default function ChattingListPage() {
 
     const myUserId = useSelector((state: RootState) => {
