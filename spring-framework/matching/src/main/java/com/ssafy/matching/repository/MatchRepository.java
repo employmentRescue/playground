@@ -34,4 +34,39 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "AND m.match_date >= now() " +
             "ORDER BY m.match_date DESC", nativeQuery = true)
     List<Match> getMatchesTimeNotPast(long memberId);
+
+    //필터 조건 + 거리순 정렬
+    @Query(value = "SELECT * FROM `match` m, team t, preferred_place p " +
+            "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
+            "AND m.match_date = ?1 " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
+            "AND ?5 between m.min_start_time AND m.max_start_time " +
+            "AND m.match_sports = ?6 AND m.match_game_type = ?7 " +
+            "AND m.match_date >= now() " +
+            "ORDER BY ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) ASC", nativeQuery = true)
+    List<Match> findMatchesByFilterDistanceASC(String matchDate, double lat, double lng, int distance, String minStartTime, String sports, String gameType);
+
+    //필터 조건 + 티어 낮은순 정렬
+    @Query(value = "SELECT * " +
+            "FROM `match` m, team t, preferred_place p " +
+            "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
+            "AND m.match_date = ?1 " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
+            "AND ?5 between m.min_start_time AND m.max_start_time " +
+            "AND m.match_sports = ?6 AND m.match_game_type = ?7 " +
+            "AND m.match_date >= now() " +
+            "ORDER BY t.point ASC", nativeQuery = true)
+    List<Match> findMatchesByFilterPointASC(String matchDate, double lat, double lng, int distance, String minStartTime, String sports, String gameType);
+
+    //필터 조건 + 티어 높은순 정렬
+    @Query(value = "SELECT * " +
+            "FROM `match` m, team t, preferred_place p " +
+            "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
+            "AND m.match_date = ?1 " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
+            "AND ?5 between m.min_start_time AND m.max_start_time " +
+            "AND m.match_sports = ?6 AND m.match_game_type = ?7 " +
+            "AND m.match_date >= now() " +
+            "ORDER BY t.point DESC", nativeQuery = true)
+    List<Match> findMatchesByFilterPointDESC(String matchDate, double lat, double lng, int distance, String minStartTime, String sports, String gameType);
 }
