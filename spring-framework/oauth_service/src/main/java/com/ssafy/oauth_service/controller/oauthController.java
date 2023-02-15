@@ -236,68 +236,46 @@ public class oauthController {
     ResponseEntity regist(String code, @RequestBody Map<String, Object> json/**/) throws Exception {
         System.out.println(json);
 
-//        System.out.println(code);
-//        OAuthRegisterCache loginCache = oAuthRegisterCacheRepository.findById(code).orElse(null);
-//        System.out.println("regist : " + loginCache);
-//        if (loginCache == null || code == null || code.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
-//
-//        System.out.println("regist : " + loginCache);
+        System.out.println(code);
+        OAuthRegisterCache loginCache = oAuthRegisterCacheRepository.findById(code).orElse(null);
+        System.out.println("regist : " + loginCache);
+        if (loginCache == null || code == null || code.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+        System.out.println("regist : " + loginCache);
 
 
-//
-//        //JSON 데이터 받을 URL 객체 생성
-//        URL url = new URL ("http://localhost:9000/user/regist/" + loginCache.getKakao_userID());
-//        //HttpURLConnection 객체를 생성해 openConnection 메소드로 url 연결
-//        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-//        //전송 방식 (POST)
-//        httpConn.setRequestMethod("POST");
-//        //application/json 형식으로 전송, Request body를 JSON으로 던져줌.
-//        httpConn.setRequestProperty("Content-Type", "application/json; utf-8");
-//        //Response data를 JSON으로 받도록 설정
-//        httpConn.setRequestProperty("Accept", "application/json");
-//        //Output Stream을 POST 데이터로 전송
-//        httpConn.setDoOutput(true);
-//        //json data
-//        String jsonInputString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
-//        System.out.println(jsonInputString);
-//
-//        //JSON 보내는 Output stream
-//        try(OutputStream os = httpConn.getOutputStream()) {
-//            byte[] input = jsonInputString.getBytes("utf-8");
-//            os.write(input, 0, input.length);
-//        }
-//        httpConn.connect();
-//        httpConn.getInputStream().readAllBytes();
-//
-//
-//
-//        if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
-//        oAuthRegisterCacheRepository.delete(loginCache);
-//
-//        String accessToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-//        String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
-//
-//
-//        kakaoLoginAccessTokenCacheRepository
-//                .save(
-//                        KakaoLoginAccessTokenCache
-//                                .builder()
-//                                .token(accessToken)
-//                                .kakao_accessToken(loginCache.getKakao_accessToken())
-//                                .kakao_refreshToken(loginCache.getKakao_refreshToken())
-//                                .kakao_userID(loginCache.getKakao_userID())
-//                                .build()
-//                );
-//
-//        // 연결된 access_token에 대해서만 refresh
-//        kakaoLoginRefreshTokenCacheRepository
-//                .save(
-//                        KakaoLoginRefreshTokenCache
-//                                .builder()
-//                                .token(refreshToken)
-//                                .connected_access_token(accessToken)
-//                                .build()
-//                );
+
+        //JSON 데이터 받을 URL 객체 생성
+        URL url = new URL ("http://localhost:9000/user/regist/" + loginCache.getKakao_userID());
+        //HttpURLConnection 객체를 생성해 openConnection 메소드로 url 연결
+        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+        //전송 방식 (POST)
+        httpConn.setRequestMethod("POST");
+        //application/json 형식으로 전송, Request body를 JSON으로 던져줌.
+        httpConn.setRequestProperty("Content-Type", "application/json; utf-8");
+        //Response data를 JSON으로 받도록 설정
+        httpConn.setRequestProperty("Accept", "application/json");
+        //Output Stream을 POST 데이터로 전송
+        httpConn.setDoOutput(true);
+        //json data
+        String jsonInputString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+        System.out.println(jsonInputString);
+
+        //JSON 보내는 Output stream
+        try(OutputStream os = httpConn.getOutputStream()) {
+            byte[] input = jsonInputString.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
+        httpConn.connect();
+        httpConn.getInputStream().readAllBytes();
+
+
+
+        if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
+        oAuthRegisterCacheRepository.delete(loginCache);
+
+
+        Map<String, String> tokens = kakao_
 
 //        return new ResponseEntity(Map.of(
 //                "user-id", loginCache.getKakao_userID(),
