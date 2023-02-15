@@ -38,10 +38,6 @@ interface sportTypeState {
     sportType: string;
 }
 
-const initialSportTypeState: sportTypeState = {
-    isClicked: false,
-    sportType: '농구'
-}
 
 function registerSportType(state: sportTypeState, action: sportAction) {
     switch (action.type) {
@@ -81,14 +77,25 @@ function registerSportType(state: sportTypeState, action: sportAction) {
 
 export default function MatchFilterBar({ setFilterData, setSearchingData, startDate, location, distance, startTime, level, playTime, sex, sports, gameType, sort }: Iprops) {
     // 종목 탭
-    const [sportState, setSportType] = useReducer(registerSportType, initialSportTypeState)
+    const [sportState, setSportType] = useReducer(registerSportType, { isClicked: false, sportType: sports })
 
     const isClicked = () => setSportType({ type: 'ISCLICKED' })
     const basketball = () => { sportChange("BASKETBALL"); setSportType({ type: '농구' }); }
     const footBall = () => { sportChange("footBall"); setSportType({ type: '축구' }); }
     const badminton = () => { sportChange("BADMINTON"); setSportType({ type: '배드민턴' }); }
 
-    const [sportIcon, setSportIcon] = useState({ border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal })
+    const initialSportSet = ()=> {
+        switch (sports) {
+            case "농구":
+                return { border: "border-[#efad45] bg-[#fde9b4]", img: basketballOriginal };
+            case "축구":
+                return { border: "border-[#9C8DD3] bg-[#d8caff]", img: footBallOriginal };
+            case "배드민턴":
+                return { border: "border-[#71D354] bg-[#c4ffb6]", img: badmintonOriginal };
+        }
+        return { border: "", img: "" }
+    }
+    const [sportIcon, setSportIcon] = useState(initialSportSet())
     const sportChange = (type: string) => {
         switch (type) {
             case "BASKETBALL":

@@ -35,7 +35,7 @@ export function MatchSortSetting({ clicked, sort, setFilterData }: Iprops) {
             <div className="h-2/3 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
             <div className="justify-center pt-10 w-full h-1/3 flex-grow-0 bg-[#fff] z-20">
                 <div className="flex relative place-content-center w-full h-1/6">
-                    <span className="w-70 h-16 flex-grow-0 font-inter text-[15px] text-left text-[#000]">시간 선택</span>
+                    <span className="w-70 h-16 flex-grow-0 font-inter text-[15px] text-left text-[#000]">정렬</span>
                     <img src={closeIcon} alt="" className="absolute right-10 w-10 h-10 flex-grow-0 my-3" onClick={(e) => { e.preventDefault(); clicked(); }} />
                 </div>
                 <div className="justify-center p-0 w-full h-5/6 flex-grow-0 bg-[#fff] ">

@@ -17,8 +17,10 @@ import levelIcon from '@/assets/icons/level.png';
 import sexIcon from '@/assets/icons/sex.png';
 import useMatchRegister from '@/hooks/match/useMatchRegister';
 import RegisterButton from '@/components/Match/Buttons/RegisterButton';
+import Calender from "react-calendar";
 import { useNavigate } from 'react-router';
 import { setTabName } from '@/stores/tab/tabName';
+import moment from 'moment';
 
 export default function MatchRegisterPage() {
   const [naverMap, setNaverMap] = useState<naver.maps.Map | null>(null);
@@ -26,7 +28,7 @@ export default function MatchRegisterPage() {
   const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
   const [title, setTitle] = useState<string | null>(null);
   const [description, setDescription] = useState<string>('');
-  const [date, setDate] = useState<string | null>(null);
+  const [date, setDate] = useState<Date | null>(null);
   const [hour, setHour] = useState<number | null>(null);
   const [minute, setMinute] = useState<number | null>(null);
   const [place, setplace] = useState<place | null>(null);
@@ -59,7 +61,7 @@ export default function MatchRegisterPage() {
         sports: sportsType,
         title: title,
         description: description,
-        startDate: "2023-02-07",
+        startDate: moment(date).format("YYYY-MM-DD"),
         startTime: hour + ":" + minute,
         place: {
           address: place.address + " " + detailPlace,
@@ -313,7 +315,17 @@ export default function MatchRegisterPage() {
         <img className="w-20 h-20" src={calendarIcon}></img>
         <div className="ml-7 text-15">일시</div>
       </div>
-      <div className="flex mt-5 items-center">
+      <Calender
+        onChange={setDate}
+        value={date}
+        formatDay={(locale, date) => moment(date).format("DD")}
+        minDetail="month"
+        maxDetail="month"
+        showNeighboringMonth={false}
+        calendarType='US'
+        className="mt-10"
+      />
+      <div className="flex mt-15 items-center">
         <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={(e) => setHour(Number(e.target.value))}></input>
         <div className="text-13 text-gray-400 mr-10">시</div>
         <input className="w-50 h-25 text-12 text-blue-700 border-1 border-blue-700 rounded-5 text-center mr-10" onChange={(e) => setMinute(Number(e.target.value))}></input>

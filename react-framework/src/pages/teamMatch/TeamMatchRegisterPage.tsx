@@ -44,6 +44,7 @@ export default function TeamMatchRegisterPage() {
   });
 
   const teamInfo = useTeamQuery(teamId);
+  console.log(teamInfo)
   const { mutate } = useTeamMatchRegister();
   const movePage = useNavigate();
 
@@ -88,6 +89,7 @@ export default function TeamMatchRegisterPage() {
 
   const register = () => {
     if (date && place) {
+      console.log(date)
       mutate({
         distance: preferDist,
         matchDate: moment(date).format("YYYY-MM-DD"),
@@ -181,7 +183,7 @@ export default function TeamMatchRegisterPage() {
     if (naverMap === null) return;
 
     if (marker) {
-      switch (teamInfo.data.sports) {
+      switch (teamInfo.data.team.sports) {
         case '농구':
           marker.setIcon({
             url: basketballMap,
@@ -219,7 +221,7 @@ export default function TeamMatchRegisterPage() {
         marker.setPosition(latlng);
       }
       else {
-        switch (teamInfo.data.sports) {
+        switch (teamInfo.data.team.sports) {
           case '농구':
             setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
             break;

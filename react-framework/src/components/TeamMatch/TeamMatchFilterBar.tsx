@@ -9,13 +9,13 @@ import { MatchFilterSort, TeamMatchSortSetting } from "@/components/TeamMatch/Te
 import searchIcon from "@/assets/icons/search-icon.png";
 import { teamMatchList } from "@/models/teamMatchList";
 
-type attrType = "startDate" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort" 
+type attrType = "matchDate" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort"
 type sportAction = { type: 'ISCLICKED' | '농구' | '축구' | '배드민턴' }
 
 type Iprops = {
     setFilterData: (attr:attrType, value:any) => void, 
-    setSearchingData:(value:string)=>void,
-    startDate : string, 
+    tabState: string,
+    matchDate : string, 
     location: number[], 
     distance:number, 
     startTime:(string | null)[],
@@ -70,7 +70,7 @@ function registerSportType(state: sportTypeState, action: sportAction) {
     }
 }
 
-export default function TeamMatchFilterBar({setFilterData, setSearchingData, startDate, location, distance, startTime, sports, gameType, sort}: Iprops) {
+export default function TeamMatchFilterBar({setFilterData, tabState, matchDate, location, distance, startTime, sports, gameType, sort}: Iprops) {
     // 종목 탭
     const [sportState, setSportType] = useReducer(registerSportType, initialSportTypeState)
     
@@ -133,42 +133,49 @@ export default function TeamMatchFilterBar({setFilterData, setSearchingData, sta
     }
     // 날짜 탭 포맷팅
     const dateDisplay = () => {
-        if (startDate[5] === '0') {
-            if (startDate[8] === '0') { 
-                return startDate.slice(6,7) + "월 " + startDate.slice(9) + "일"           
+        if (matchDate[5] === '0') {
+            if (matchDate[8] === '0') { 
+                return matchDate.slice(6,7) + "월 " + matchDate.slice(9) + "일"           
             } else { 
-                return startDate.slice(6,7) + "월 " + startDate.slice(8, 10) + "일" 
+                return matchDate.slice(6,7) + "월 " + matchDate.slice(8, 10) + "일" 
             }
         } else {
-            if (startDate[8] === '0') {
-                return startDate.slice(5,7) + "월 " + startDate.slice(9) + "일"
+            if (matchDate[8] === '0') {
+                return matchDate.slice(5,7) + "월 " + matchDate.slice(9) + "일"
             } else {
-                return startDate.slice(5,7) + "월 " + startDate.slice(8, 10) + "일"
+                return matchDate.slice(5,7) + "월 " + matchDate.slice(8, 10) + "일"
             }
         }
     }
     // 매칭 모임 검색
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         console.log(event.target.value);
-        setSearchingData(event.target.value);
+    }
+    const searchBarState = ()=>{
+        if (tabState === "LIST") {
+            return (
+                <div className="flex flex-row relative place-content-between w-full h-40 grow-0 m-0 px-15 bg-[#f1f3ff]">
+                    <img src={searchIcon} alt="" className="w-20 h-20 flex-grow-0 mt-2 mr-6 mb-15 ml-5" />
+                    <input type="text" placeholder={"게시물 이름 검색"} onChange={valueChange} className="w-5/6 h-25 flex-grow-0 mr-20 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]" />
+                    <MatchFilterSort shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{sortPage();}} sort={sort} />
+                    {sortState === true && <TeamMatchSortSetting clicked={()=>{sortPage();}} sort={sort} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}} />}
+                </div>
+            )
+        } 
     }
     return (
-        <div className="w-full h-93 grow-0 m-0 p-0 bg-[#f1f3ff]">
-            <div className="flex flex-row relative place-content-between w-full h-53 grow-0 m-0 px-15 bg-[#f1f3ff]">
+        <div className="w-full h-auto grow-0 m-0 p-0 bg-[#f1f3ff]">
+            <div className="flex flex-row relative items-center place-content-between w-full h-53 grow-0 m-0 px-15 bg-[#f1f3ff]">
                 
                 <MatchFilterDistance shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{distancePage();}} distance={distance}/>
                 <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{datePage();}} date={dateDisplay()} />
                 <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{timePage();}} startTime={startTime}/>
-                {distanceState === true && <TeamMatchDistanceSetting clicked={()=>{distancePage();}} location={location} distance={distance} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
-                {dateState === true && <TeamMatchDateSetting clicked={()=>{datePage();}} startDate={startDate} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+                <div className="flex flex-row w-70 h-25 flex-grow-0 mt-0 pt-0 pr-6 pb-4 pl-9 rounded-5">매칭중?</div>
+                {distanceState === true && <TeamMatchDistanceSetting clicked={()=>{distancePage();}} sportsType={sports} location={location} distance={distance} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+                {dateState === true && <TeamMatchDateSetting clicked={()=>{datePage();}} matchDate={matchDate} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
                 {timeState === true && <TeamMatchTimeSetting clicked={()=>{timePage();}} startTime={startTime} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
             </div>
-            <div className="flex flex-row relative place-content-between w-full h-40 grow-0 m-0 px-15 bg-[#f1f3ff]">
-                <img src={searchIcon} alt="" className="w-20 h-20 flex-grow-0 mt-2 mr-6 mb-15 ml-5" />
-                <input type="text" placeholder={"게시물 이름 검색"} onChange={valueChange} className="w-5/6 h-25 flex-grow-0 mr-20 mb-13 ml-6 pt-0 pl-11 rounded-[5px] bg-[#dbdbdb] font-inter text-[12px] font-[500] text-left text-[#a7a7a7]" />
-                <MatchFilterSort shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{sortPage();}} sort={sort} />
-                {sortState === true && <TeamMatchSortSetting clicked={()=>{sortPage();}} sort={sort} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}} />}
-            </div>
+            {searchBarState()}
         </div>
     )
 }

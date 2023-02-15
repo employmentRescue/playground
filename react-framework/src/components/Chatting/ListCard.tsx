@@ -9,7 +9,7 @@ interface ListCardProps {
     roomId: number;
     roomProfile: string;    // 채팅방 사진(팀 로고, 기본 이미지 등등)
     title: string;      // 채팅방 제목
-    personnel: number;  // 채팅방 인원
+    personnel: any;  // 채팅방 인원
     latestMsg: string   // 채팅방 제목 밑에서 볼 수 있는 최근 메세지
 }
 

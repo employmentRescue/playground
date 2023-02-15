@@ -34,9 +34,9 @@ export function SpeechBubble({ innerText, isMine, profile, nickName, dateTime }:
 
             <div className="flex flex-col w-auto my-10 mr-50">
                 <div className="flex flex-col">
-                    <div className={"-mt-5  text-10 tracking-tight " + (isMine && "pt-15 ")}>{nickName}</div>
+                    <div className={"-mt-5 text-10 tracking-tight" + (!isMine && "pt-15 ")}>{!isMine && nickName}</div>
                     <div className={"flex "}>
-                        <div className={"h-auto -ml-2 rounded-10 p-12  text-15 break-all tracking-tight justify-self-start " + squareBgColor + Reversed}>
+                        <div className={"h-auto -ml-2 rounded-10 p-12 text-15 break-all tracking-tight justify-self-start " + squareBgColor + Reversed}>
                             <p>{innerText}</p>
                         </div>
                         <div className={Reversed + "ml-4 self-end text-10"}>

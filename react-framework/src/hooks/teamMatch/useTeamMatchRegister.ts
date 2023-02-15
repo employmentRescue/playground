@@ -11,7 +11,7 @@ const fetcher = (teamMatch: teamMatch) => axios.post(SERVER_URL + '/match/regist
     minStartTime: teamMatch.minStartTime,
     preferredPlace: teamMatch.preferredPlace,
     teamMatchResultList: teamMatch.teamMatchResultList
-  }
+  },
 );
 
 const useTeamMatchRegister = () => {

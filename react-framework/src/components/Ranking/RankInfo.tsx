@@ -8,7 +8,6 @@ interface Iprops {
 }
 
 export default function RankInfo({ rank, teamRanking, isClicked, sortType }: Iprops) {
-  console.log(teamRanking);
   return (
     isClicked ?
       <div className="w-full h-66 bg-blue-300 border-1 border-blue-700 flex justify-center items-center mb-2">
