@@ -23,7 +23,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://i8b309.p.ssafy.io:3333/playground?serverTimezone=UTC&characterEncoding=UTF-8
     username: ssafy
-    password: 1q2w3e4r
+    password: b309oo
 
 
 
