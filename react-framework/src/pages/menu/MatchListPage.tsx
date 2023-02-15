@@ -83,7 +83,7 @@ export default function MatchListPage() {
                     key={index}
                     imgSrc={imgSrc}
                     sportsType={match.sports}
-                    matchTitle={(match.description ? match.description : (match?.teamMatchResultList[0].teamMatchResultId) + "팀과의 매치")}
+                    matchTitle={(match.title ? match.title : (match?.teamMatchResultList[0].teamMatchResultId) + "팀과의 매치")}
                     place={match.place ? match.place.address : match.preferredPlace.address}
                     matchPersonnel={match.gameType ? match.gameType : match.host.gameType}
                     matchType={match.matchType}
