@@ -44,10 +44,10 @@ spring:
             - classpath:cert1.pem
 
       routes:
-        - id: react-framework2
-          uri: https://i8b309.p.ssafy.io:3000
-          predicates:
-            - Path=/oauth2/regist,/oauth2/success
+        # - id: react-framework2
+        #   uri: https://i8b309.p.ssafy.io:3000
+        #   predicates:
+        #     - Path=/oauth2/regist,/oauth2/success
 
         - id: oauth2-service
           uri: https://i8b309.p.ssafy.io:9001
