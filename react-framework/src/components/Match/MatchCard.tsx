@@ -16,6 +16,7 @@ interface Iprops {
 export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, matchType, isOldMatch, buttonColor, matchId }: Iprops) {
     let bgOpacity = ""
     isOldMatch ? bgOpacity = "opacity-70" : ""
+    //const navigate = useNavigate();
 
     return (
         <div className={"flex w-full h-80 bg-white mb-3 justify-between " + bgOpacity}>
