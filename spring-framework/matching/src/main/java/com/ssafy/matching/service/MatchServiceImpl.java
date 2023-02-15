@@ -67,7 +67,6 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    //TODO ERROR : Column 'match_id' cannot be null
     public void deleteMatch(int matchId) {
         matchRepository.deleteByMatchId(matchId);
     }

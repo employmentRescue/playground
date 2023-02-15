@@ -36,8 +36,7 @@ public class Team implements Serializable {
     private int point;
     
     @ApiModelProperty(value = "팀의 멤버 리스트", required = true)
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "teamId")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamMember> teamMemberList = new ArrayList<>();
 
     @ApiModelProperty(value = "팀의 경기 리스트")

@@ -68,7 +68,6 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    //TODO ERROR : Column 'team_id' cannot be null
     public void deleteTeam(int teamId) {
         teamRepository.deleteByTeamId(teamId);
     }

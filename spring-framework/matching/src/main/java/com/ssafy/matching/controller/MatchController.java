@@ -63,7 +63,7 @@ public class MatchController {
         return new ResponseEntity<Match>(matchService.updateMatch(match), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "경기 삭제하기(구현중)", notes = "경기Id에 해당하는 경기를 삭제한다.")
+    @ApiOperation(value = "경기 삭제하기", notes = "경기Id에 해당하는 경기를 삭제한다.")
     @DeleteMapping("/{matchid}")
     public void delete(@PathVariable("matchid") int matchId) throws Exception {
         matchService.deleteMatch(matchId);
