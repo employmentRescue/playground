@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { matchList } from '@/models/matchList';
+import moment from "moment";
 
 const initialState: matchList = {
-    startDate: "2023-02-14", // dayjs(new Date()).format('YYYY-MM-DD'),
+    startDate: moment(new Date()).format('YYYY-MM-DD'),
     lat: 36.3561823752851,
     lng: 127.37279449758137,
     distance: 0,
@@ -26,21 +27,19 @@ const sortInfoSlice = createSlice({
             state.startDate = action.payload;
         },
         setSortLocation(state, action) {
-            state.lat, state.lng = action.payload;
+            [state.lat, state.lng] = action.payload;
         },
         setSortDistance(state, action) {
             state.distance = action.payload;
         },
         setSortStartTime(state, action) {
-            state.minStartTime = action.payload[0];
-            state.maxStartTime = action.payload[1];
+            [state.minStartTime, state.maxStartTime] = action.payload;
         },
         setSortlevel(state, action) {
             state.level = action.payload;
         },
         setSortPlayTime(state, action) {
-            state.minPlayTime = action.payload[0];
-            state.maxPlayTime = action.payload[1];
+            [state.minPlayTime, state.maxPlayTime] = action.payload;
         },
         setSortSex(state, action) {
             state.sex = action.payload;

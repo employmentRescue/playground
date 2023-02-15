@@ -9,7 +9,12 @@
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
   <!-- Naver Map  -->
   <script type="text/javascript"
-    src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=9e2gyny1nb&submodules=geocoder"></script>
+    src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=9e2gyny1nb&submodules=geocoder">
+    </script>
+  <script>
+    const global = window;
+    if (isFlutterApp != undefined) alert(isFlutterApp);
+  </script>
   <title>Playground</title>
 </head>
 

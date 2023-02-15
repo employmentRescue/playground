@@ -315,7 +315,7 @@ export default function HomePage() {
                             <MatchSlide
                                 sports={item.sports}
                                 date={item.startDate}
-                                place={item.place.address}
+                                place={item.place.address.split(' ').splice(-1)[0]}
                                 time={item.startTime.slice(0, 5)}
                                 host={item.host.name}
                                 people={item.people - 1} /></div>
