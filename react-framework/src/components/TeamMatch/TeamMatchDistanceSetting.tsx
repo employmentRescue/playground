@@ -184,7 +184,7 @@ export function TeamMatchDistanceSetting({ clicked, sportsType, location, distan
     }, [marker, temDistance])
 
     return (
-        <div className="flex flex-col absolute top-[-200px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">
+        <div className="flex flex-col absolute top-[-250px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">
             <div className="h-1/4 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
             <div className="justify-center pt-10 w-full h-3/4 flex-grow-0 bg-[#fff] z-20">
                 <div className="flex relative place-content-center w-full">
