@@ -19,14 +19,19 @@ public class TeamController {
 
     @ApiOperation(value = "원하는 조건으로 팀 경기 매칭하기(구현중)", notes = "조건(날짜(matchDate), 지역(lat, lng), 반경(distance), 최소 시작시간(minStartTime), 최대 시작시간(maxStartTime), 스포츠 종류(sports), 게임 타입(gameType)에 맞는 팀 경기를 매칭해준다.")
     @PostMapping("/matching")
-    public ResponseEntity<Match> match(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, int teamId) throws Exception {
-        return new ResponseEntity<Match>(matchingService.startMatch(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, teamId), HttpStatus.OK);
+    public ResponseEntity<Match> match(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId) throws Exception {
+        return new ResponseEntity<Match>(matchingService.startMatch(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, registerTime, teamId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "팀 경기 매칭하기 취소(구현중)", notes = "팀 경기 매칭하기를 취소시킨다.")
     @DeleteMapping("/matching")
     public void cancel(int teamId) throws Exception {
         matchingService.cancelMatching(teamId);
+    }
+
+    @GetMapping("/matching/hello")
+    public String test() {
+        return "team-matching server - hello";
     }
 
     private ResponseEntity<?> exceptionHandling(Exception e) {
