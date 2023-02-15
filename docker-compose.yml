@@ -66,6 +66,17 @@ services:
     networks:
       - playground-broadcast-network
 
+
+  team_matching-service:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: team_matching-service
+    container_name: team_matching-service
+    ports:
+      - "9005:8080"
+    networks:
+      - playground-broadcast-network
+
   react-framework:
     # build: 
     #   context: ./spring-framework/fcm-service
