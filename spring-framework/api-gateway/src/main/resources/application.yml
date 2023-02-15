@@ -37,11 +37,11 @@ spring:
 
       httpclient:
         ssl:
-          useInsecureTrustManager: true # SSL Route(?) 허용
+          # useInsecureTrustManager: true # SSL Route(?) 허용
           # ssl과 domain 관련(https를 사용할 경우 상대 docker container의 name 사용이 불가능한 이유, spring cloud gateway에서 라우팅이 안됨.)
           #    : https://juinthyme.tistory.com/3
-          # trustedX509Certificates:
-          #   - classpath:cert1.pem
+          trustedX509Certificates:
+            - classpath:cert1.pem
 
       routes:
         - id: react-framework2
