@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { matchList } from '@/models/matchList';
+import moment from "moment";
 
 const initialState: matchList = {
-    startDate: "2023-02-14", // dayjs(new Date()).format('YYYY-MM-DD'),
+    startDate: moment(new Date()).format('YYYY-MM-DD'),
     lat: 36.3561823752851,
     lng: 127.37279449758137,
     distance: 0,
