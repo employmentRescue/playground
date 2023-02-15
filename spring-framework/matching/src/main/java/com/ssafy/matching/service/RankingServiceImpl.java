@@ -115,8 +115,6 @@ public class RankingServiceImpl implements RankingService {
             }
         }
 
-
-
         resultMap.put("myTeamRank", idx + 1);
         resultMap.put("rankingMap", rankingMap);
 
@@ -210,15 +208,22 @@ public class RankingServiceImpl implements RankingService {
 
     //TODO 티어 좀 더 세분화하기
     public String calculateTier(int point) {
-        if(point > 2700) return "Gold1";
-        else if (2400 < point && point <= 2700) return "Gold2";
-        else if (2100 < point && point <= 2400) return "Gold3";
-        else if (1800 < point && point <= 2100) return "silver1";
-        else if (1500 < point && point <= 1800) return "silver2";
-        else if (1300 < point && point <= 1500) return "silver3";
-        else if (1000 < point && point <= 1300) return "bronze1";
-        else if (900 < point && point <= 1000) return "bronze2";
-        else if (point <= 900) return "bronze3";
+        if(point > 2300) return "Platinum";
+        else if (2200 < point && point <= 2300) return "Gold1";
+        else if (2100 < point && point <= 2200) return "Gold2";
+        else if (2000 < point && point <= 2100) return "Gold3";
+        else if (1900 < point && point <= 2000) return "Gold4";
+        else if (1800 < point && point <= 1900) return "Gold5";
+        else if (1700 < point && point <= 1800) return "silver1";
+        else if (1600 < point && point <= 1700) return "silver2";
+        else if (1500 < point && point <= 1600) return "silver3";
+        else if (1400 < point && point <= 1500) return "silver4";
+        else if (1300 < point && point <= 1400) return "silver5";
+        else if (1200 < point && point <= 1300) return "bronze1";
+        else if (1100 < point && point <= 1200) return "bronze2";
+        else if (1000 < point && point <= 1100) return "bronze3";
+        else if (900 < point && point <= 1000) return "bronze4";
+        else if (point <= 900) return "bronze5";
 
         return "";
     }
