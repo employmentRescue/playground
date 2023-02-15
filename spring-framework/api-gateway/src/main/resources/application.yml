@@ -66,6 +66,7 @@ spring:
 
         - id: matching-service
           uri: https://i8b309.p.ssafy.io:9003
+          order: 1
           predicates:
             - Path=/match/**, /matching/**, /gathering/**, /live/**, /ranking/**, /team/**
 
@@ -89,7 +90,7 @@ spring:
         - id: team_match-service
           uri: https://i8b309.p.ssafy.io:9006
           predicates:
-            - Path=/team/**
+            - Path=/team/matching/**
 
 
 
