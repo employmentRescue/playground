@@ -40,6 +40,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "reselect": "^4.1.7",
+    "sockjs-client": "^1.6.1",
     "sort-by": "^0.0.2",
     "swiper": "^9.0.3",
     "use-long-press": "^2.0.3"
