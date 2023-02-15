@@ -1,6 +1,7 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import SwiperCore from 'swiper'; // 타입지정을 위해 필요하다.
 import { useDispatch, useSelector } from "react-redux";
 import 'react-calendar/dist/Calendar.css'
 import { RootState } from "@/stores/store";
@@ -260,7 +261,15 @@ export default function TeamMatchPage() {
             return (<ListContent filterData={filterData}/>)
         }
     }
-    console.log('myteam data', myTeamList.data, Boolean(myTeamList.data))
+    // console.log('myteam data', myTeamList.data, Boolean(myTeamList.data))
+    // 멋진 스와이퍼를 위해
+    const [swiper, setSwiper] = useState<SwiperCore>();
+    const navigate = useNavigate();
+    const toTeamCreate = (translateNum: number)=>{
+        if (translateNum > 100) {
+            navigate("/menu/team/create");
+        }
+    }
     return (
         <div className="flex flex-col h-auto w-full bg-[#f5f5f5] m-0">
             <div className="h-[20%] w-full m-0 p-0">
@@ -279,20 +288,14 @@ export default function TeamMatchPage() {
                     clickable: true,
                 }}
                 onActiveIndexChange={(e) => { setMyTeamIndex(e.activeIndex); console.log('activeIndex', e.activeIndex) }}
-                initialSlide={1}
+                initialSlide={0}
+                onSwiper={setSwiper}
+                onSlideResetTransitionStart={(swiper)=>toTeamCreate(swiper.getTranslate())}
                 >
-                    <SwiperSlide className="w-1/4" onChange={()=>{console.log("되나?")}}>
-                        <div className="flex w-200 h-100 ml-[-10px] p-10">
-                            <div className="flex flex-col justify-center items-center w-full h-full ml-0 p-0 bg-[#ffffff] rounded-5">
-                                <span className="mx-10 font-inter text-[30px] text-center text-[#000]">+</span>
-                                <span className=" h-18 font-inter text-[15px] text-center text-[#000]">팀생성</span>
-                            </div>
-                        </div>
-                    </SwiperSlide>
                     {myTeamList.data && myTeamList.data.map((item: team, index: number)=>
                         <SwiperSlide key={index}>
                         <div className="flex w-full h-100 ml-[-10px] p-10">
-                            <TeamMatchMyTeamInfo myTeamData={item} />
+                            <TeamMatchMyTeamInfo myTeamData={item} index={index}/>
                         {/* <MyTeamInfo rank={myTeamInfo.data.myTeamRank} teamRanking={item} /> */}
                         </div>
                     </SwiperSlide>
