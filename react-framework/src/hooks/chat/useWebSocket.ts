@@ -1,8 +1,6 @@
-import { CompatClient } from "@stomp/stompjs"
-import { Stomp } from "@stomp/stompjs/esm6";
 import axios from "axios";
-
 import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 
 export default function useWebSocket(roomId: string, room: {}, content: string, memberId: string, messages: Array<Object>) {
 
