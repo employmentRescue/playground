@@ -31,8 +31,6 @@ public class TeamMatchResult implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "teamId", insertable=false, updatable=false)
-//    @JsonIgnore
-    @JsonBackReference
     private Team team;
 
     @ManyToOne

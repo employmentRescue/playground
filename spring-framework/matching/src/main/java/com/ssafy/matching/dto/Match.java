@@ -54,7 +54,6 @@ public class Match implements Serializable {
     @ApiModelProperty(value = "경기의 선호 장소", required = true)
     private PreferredPlace preferredPlace;
 
-    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "matchId")
     private List<TeamMatchResult> teamMatchResultList = new ArrayList<>();
