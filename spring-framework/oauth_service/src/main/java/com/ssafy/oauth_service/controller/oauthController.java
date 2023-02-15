@@ -60,8 +60,8 @@ public class oauthController {
     @Autowired
     kakaoOauthService kakao_oauthService;
 
-//    final String api_gateway_url = "https://i8b309.p.ssafy.io";
-    final String api_gateway_url = "http://localhost:8080";
+    final String api_gateway_url = "https://i8b309.p.ssafy.io";
+//    final String api_gateway_url = "http://localhost:8080";
 
 
 
