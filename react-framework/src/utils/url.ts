@@ -9,5 +9,5 @@ export const LOCAL_SERVER_URL = 'https://localhost:8080'
 export const KAKAO_LOGIN_TEST_SERVER_URL = 'https://i8b309.p.ssafy.io'
 
 // export const CHATTING_SERVER_URL = 'https://i8b309.p.ssafy.io'
-export const CHATTING_SERVER_URL = 'https://192.168.31.247:8080/'
-export const USER_SERVER_URL = 'https://192.168.31.246:9000'
+export const CHATTING_SERVER_URL = 'https://i8b309.p.ssafy.io'
+export const USER_SERVER_URL = 'https://i8b309.p.ssafy.io'
