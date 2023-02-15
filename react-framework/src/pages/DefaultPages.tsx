@@ -11,7 +11,7 @@ export function DefaultPage() {
       <Outlet />
       <div className="pt-55" />
       <Footer />
-      {/* <TeamMatchNotificationModal/> */}
+      <TeamMatchNotificationModal/> 
     </div>
   )
 }
