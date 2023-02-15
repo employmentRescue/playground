@@ -171,7 +171,7 @@ export default function TeamMatchFilterBar({setFilterData, tabState, matchDate, 
                 <MatchFilterDate shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{datePage();}} date={dateDisplay()} />
                 <MatchFilterTime shutOtherWindow={()=>shutOtherWindow()} clicked={()=>{timePage();}} startTime={startTime}/>
                 <div className="flex flex-row w-70 h-25 flex-grow-0 mt-0 pt-0 pr-6 pb-4 pl-9 rounded-5">매칭중?</div>
-                {distanceState === true && <TeamMatchDistanceSetting clicked={()=>{distancePage();}} location={location} distance={distance} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
+                {distanceState === true && <TeamMatchDistanceSetting clicked={()=>{distancePage();}} sportsType={sports} location={location} distance={distance} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
                 {dateState === true && <TeamMatchDateSetting clicked={()=>{datePage();}} matchDate={matchDate} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
                 {timeState === true && <TeamMatchTimeSetting clicked={()=>{timePage();}} startTime={startTime} setFilterData={(attr: attrType, value: any)=>{setFilterData(attr,value)}}/>}
             </div>
