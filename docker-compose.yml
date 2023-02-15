@@ -73,7 +73,7 @@ services:
     image: team_matching-service
     container_name: team_matching-service
     ports:
-      - "9005:8080"
+      - "9006:8080"
     networks:
       - playground-broadcast-network
 
