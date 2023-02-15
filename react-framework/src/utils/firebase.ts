@@ -20,7 +20,6 @@ async function requestPermission() {
   await Notification.requestPermission().then((permission) => {
     if (permission === 'granted') {
       console.log('Notification permission granted.');
-      navigate("/");
     }
   })
 }
@@ -49,7 +48,10 @@ export const requestForToken = () => {
 };
 
 // foreground message handling
-onMessage(messaging, (payload) => {
-  console.log('Message received. ', payload);
-  // ...
-});
+export const onMessageListener = () =>
+  new Promise((resolve) => {
+    onMessage(messaging, (payload) => {
+      console.log("payload", payload)
+      resolve(payload);
+    });
+  });
