@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
+@ToString(exclude = {"team","match"})
 
 @SuppressWarnings("serial")
 @Entity
@@ -31,8 +31,7 @@ public class TeamMatchResult implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "teamId", insertable=false, updatable=false)
-//    @JsonIgnore
-    @JsonBackReference
+    @JsonIgnore
     private Team team;
 
     @ManyToOne
