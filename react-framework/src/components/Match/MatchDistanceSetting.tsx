@@ -45,6 +45,7 @@ export function MatchDistanceSetting({ clicked, sportsType, location, distance, 
 	const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
 	const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
 	const [circle, setCircle] = useState<naver.maps.Circle | null>(null);
+	const [markerPos, setMarkerPos] = useState<any | null>(null);
 	const [temDistance, setDistance] = useState(String(distance))
 	const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
 		setDistance(event.target.value);
@@ -119,41 +120,42 @@ export function MatchDistanceSetting({ clicked, sportsType, location, distance, 
 		setCurPos(setMapIcon(currentPos, location, naverMap, 40, 40, false, false));
 	}, [geolocation]);
 
-	const clickListenerMarker = useCallback(() => {
+	useEffect(() => {
 		if (naverMap === null) return;
-		console.log("hi")
-		naver.maps.Event.addListener(naverMap, 'click', function (e) {
+
+		naver.maps.Event.once(naverMap, 'click', function (e) {
 			const latlng = e.coord;
-			console.log(marker)
-			if (marker) {
-				marker.setPosition(latlng);
-			}
-			else {
-				switch (sportsType) {
-					case '농구':
-						setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
-						break;
-					case '축구':
-						setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
-						break;
-					case '배드민턴':
-						setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
-						break;
-				}
+			switch (sportsType) {
+				case '농구':
+					setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
+					break;
+				case '축구':
+					setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
+					break;
+				case '배드민턴':
+					setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
+					break;
 			}
 		})
-	}, [marker, naverMap])
+	}, [naverMap])
 
 	useEffect(() => {
-		clickListenerMarker();
-	}, [marker, naverMap])
+		if (naverMap === null) return;
+		naver.maps.Event.addListener(naverMap, 'click', function (e) {
+			const latlng = e.coord;
+			if (marker) {
+				marker.setPosition(latlng);
+				setMarkerPos(marker.getPosition());
+			}
+		})
+	}, [marker])
 
 	useEffect(() => {
 		if (!naverMap || !marker) return;
 
-		if (circle)
+		if (circle) {
 			circle.setMap(null);
-
+		}
 		setCircle(new naver.maps.Circle({
 			map: naverMap,
 			center: marker.getPosition(),
@@ -162,8 +164,7 @@ export function MatchDistanceSetting({ clicked, sportsType, location, distance, 
 			fillOpacity: 0.5
 		}));
 
-	}, [marker])
-
+	}, [markerPos, temDistance])
 
 	return (
 		<div className="flex flex-col absolute top-[-117px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">

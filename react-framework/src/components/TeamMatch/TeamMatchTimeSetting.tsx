@@ -43,7 +43,7 @@ export function TeamMatchTimeSetting({ clicked, startTime, setFilterData }: Ipro
         const newValue = value as number[];
         setTemStartTime(newValue)
     }
-    function valueText(value: number, index:number) {
+    function valueText(value: number, index: number) {
         console.log(`${value}:00:00`)
         return `${value}:00:00`
     }
@@ -56,17 +56,25 @@ export function TeamMatchTimeSetting({ clicked, startTime, setFilterData }: Ipro
                     <img src={closeIcon} alt="" className="absolute right-10 w-10 h-10 flex-grow-0 my-3" onClick={(e) => { e.preventDefault(); clicked(); }} />
                 </div>
                 <div className="justify-center h-1/2 py-11 px-13">
-                    <Slider
-                        value={temStartTime}
-                        onChange={handleChange}
-                        valueLabelDisplay="auto"
-                        // marks={marks}
-                        min={0}
-                        max={24}
-                        getAriaValueText={valueText}
-                        disableSwap
-                        className="mt-12"
-                    />
+                    <div className="w-[calc(100%-30px)] ml-auto mr-auto">
+                        <Slider
+                            value={temStartTime}
+                            onChange={handleChange}
+                            valueLabelDisplay="auto"
+                            min={0}
+                            max={24}
+                            sx={{
+                                color: 'blue',
+                                '& .MuiSlider-thumb': {
+                                    width: '15px',
+                                    height: '15px',
+                                    color: 'white',
+                                    borderWidth: '1px',
+                                    borderColor: 'blue',
+                                },
+                            }}
+                        />
+                    </div>
                     <div className="flex mb-12 w-full place-content-between">
                         <div className="flex">
                             <div className="w-23 h-16 flex-grow-0 mt-3 p-0 text-left text-12 border-solid border-1 border-[#bbc0ff] bg-[#fff]">{temStartTime[0]}</div>
@@ -79,7 +87,7 @@ export function TeamMatchTimeSetting({ clicked, startTime, setFilterData }: Ipro
                     </div>
                 </div>
                 <div className="h-1/6 flex justify-center mb-15 mx-13 pt-10">
-                    <div className="grid place-content-center h-34 mb-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]" onClick={(e)=>{e.preventDefault(); clicked(); setFilterData("startTime", exportedStartTime)}}>설정 완료</div>
+                    <div className="grid place-content-center h-34 mb-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]" onClick={(e) => { e.preventDefault(); clicked(); setFilterData("startTime", exportedStartTime) }}>설정 완료</div>
                 </div>
             </div>
         </div>
