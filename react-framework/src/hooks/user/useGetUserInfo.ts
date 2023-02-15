@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { KAKAO_LOGIN_TEST_SERVER_URL } from '@/utils/url';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 const useGetUserInfo = (userId: number) => {
     const fetcher = () => axios.post(KAKAO_LOGIN_TEST_SERVER_URL + ":9002" + "/user/search",
@@ -12,7 +12,7 @@ const useGetUserInfo = (userId: number) => {
             }
         }
     );
-    return useMutation(fetcher, {
+    return useQuery('getuser', fetcher, {
         onSuccess: (data) => {
             console.log(data)
         },
