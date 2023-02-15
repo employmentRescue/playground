@@ -89,7 +89,7 @@ spring:
         - id: team_match-service
           uri: https://i8b309.p.ssafy.io:9006
           predicates:
-            - Path=/test/**
+            - Path=/team/**
 
 
 
