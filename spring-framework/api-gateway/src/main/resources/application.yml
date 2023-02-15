@@ -25,6 +25,7 @@ spring:
               - credential
               - X-AUTH-TOKEN
               - X-CSRF-TOKEN
+              - x-forwarded-for-user-id
 
             allowedMethods:
               - POST
