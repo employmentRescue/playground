@@ -4,172 +4,96 @@ import sendButton from "@/assets/icons/send-message-button.png"
 
 import { setTabName } from "@/stores/tab/tabName";
 import { SpeechBubble } from "@/components/Chatting/SpeechBubble";
-import useWebSocket from "@/hooks/chat/useWebSocket";
-import useGetExactChattingRoom from "@/hooks/chat/useGetExactChattingRoomId";
+// import useGetMessagesOfRoom from "@/hooks/chat/useGetMessagesOfRoom";
 
 import { useParams } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { RootState } from "@/stores/store";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
+import { CompatClient } from "@stomp/stompjs";
+import { CHATTING_SERVER_URL, SOCKET_URL } from "@/utils/url";
+import { async } from "@firebase/util";
 
 type TextList = {
-    roomId: number,
-    isMine: boolean,
-    nickName?: string,
-    innerText: string,
-    profile: string,
-    dateTime?: Date,
+    "chatroomId": string;
+    "regTime": string;
+    "memberId": string;
+    "content": string;
+    "notice": boolean;
+    "type": string;
 }
 
 export default function ChattingRoomPage() {
     const params = useParams();
 
     // 더미 데이터가 조금 많습니다..
-    const initialTextList: TextList[] = [
-        {
-            roomId: 1,
-            isMine: false,
-            nickName: "축구1",
-            innerText: "안녕하세요. 반가워요",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
-        {
-            roomId: 1,
-            isMine: true,
-            innerText: "오늘 야근이에요ㅠㅠ",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
-        {
-            roomId: 1,
-            isMine: false,
-            nickName: "축구3",
-            innerText: "아쉽네요..",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
 
+    const sock = new SockJS(SOCKET_URL + "/ws-stomp")
+    const webSocket = Stomp.over(sock);
+    const [textList, setTextList] = useState<TextList[]>([])
 
-        {
-            roomId: 2,
-            isMine: false,
-            nickName: "농구1",
-            innerText: "안녕하세요. 반가워요",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
-        {
-            roomId: 2,
-            isMine: false,
-            nickName: "농구2",
-            innerText: "농구할 사람?",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
+    webSocket.connect({}, function (frame: any) {
+        // console.log("0000000000000000000000000000000001")
+        webSocket.subscribe(`/sub/chat/room/` + `${params.roomId}`, function (message) {
+            // console.log("111111111111111111111")
+            recvMessage(JSON.parse(message.body));
+        });
+        webSocket.send(`/pub/chat/Message`, {}, JSON.stringify({ "chatroomId": `${params.roomId}`, "regTime": '10', "memberId": `${myUserId}`, "isNotice": false, "type": 'ENTER' }));
+        // console.log("22222222222222");
+    }, function (error: any) {
+        alert("error" + error)
+    })
 
+    useEffect(() => {
+        const getMessageList = async () => {
+            await axios.get(CHATTING_SERVER_URL + `/chat/messageList/${params.roomId}`)
+                .then(response => {
+                    console.log(response.data)
+                    for (const text of response.data) {
+                        setTextList([...textList, text])
+                    }
+                });
+        }
+        console.log(getMessageList())
 
-        {
-            roomId: 3,
-            isMine: false,
-            nickName: "배민1",
-            innerText: "안녕하세요. 반가워요",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
-        {
-            roomId: 3,
-            isMine: true,
-            innerText: "내일 6시에 배드민턴 하실분 계신가요?",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
-        {
-            roomId: 3,
-            isMine: false,
-            nickName: "배민6",
-            innerText: "배드민턴 ㄱ?",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
+        // getMessageList().forEach((element: any) => {
+        //     setTextList([...textList, element])
+        // });
+    }, [])
 
-        {
-            roomId: 4,
-            isMine: true,
-            innerText: "살려줘..",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
-        {
-            roomId: 4,
-            isMine: false,
-            nickName: "닉네임",
-            innerText: "채팅방 만들기 너무 어려워요ㅠㅠㅠㅠㅠㅠㅠㅠ",
-            profile: defaultProfile,
-            dateTime: new Date("2023-02-04 21:11:04")
-        },
-
-    ]
-    const [textList, setTextList] = useState(initialTextList)
     const [activateSend, setActivateSend] = useState("opacity-40")
     const [inputValue, setInputValue] = useState("")
-    const newTextList: TextList = {
-        roomId: 1,
-        isMine: true,
-        innerText: inputValue,
-        profile: defaultProfile,
-        dateTime: new Date()
-    }
+    // const { data } = useGetMessagesOfRoom(Number(params.roomId));
+
     const myUserId = useSelector((state: RootState) => {
         return state.userId
     })
     let scrollRef: any | undefined = useRef(null);
     let inputRef: any | undefined = useRef(null);
 
-
-    const sock = new SockJS("/ws-stomp")
-    const webSocket = Stomp.over(sock);
-    // const stompClient = useRef<CompatClient>()
-
-    // const recvMessage = (message: any) => {
-    //     textList.push({ "chatroomId": message.chatroomId, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : message.memberId, "content": message.content, "isNotice": false, "type": message.type })
-    //     axios.post('/chat/readMessage/' + params.roomId + '?memberId=' + myUserId, message);
-    // }
-
     const sendMessage = (content: string) => {
-        webSocket.send("/pub/chat/Message", {}, JSON.stringify({ chatroomId: params.roomId, regTime: '10', memberId: myUserId, content: content, isNotice: false, type: 'TALK' }));
+        webSocket.send("/pub/chat/Message", {}, JSON.stringify({ "chatroomId": params.roomId, "regTime": '10', "memberId": myUserId, "content": content, "isNotice": false, "type": 'TALK' }));
         content = '';
     }
 
-    webSocket.connect({}, function (frame: any) {
-        webSocket.subscribe("/sub/chat/room/" + params.roomId, function (message) {
-            const recv = JSON.parse(message.body);
-            // recvMessage(recv);
-        });
-        webSocket.send("/pub/chat/Message", {}, JSON.stringify({ chatroomId: params.roomId, regTime: '10', memberId: myUserId, isNotice: false, type: 'ENTER' }));
-    }, function (error: any) {
-        console.log(error)
-    })
-
-
-
     // 서버에서 불러온 해당 채팅방의 모든 채팅을 화면에 렌더링 해줄 함수
+
     const TextListRendering = () => {
         let index = 0
-        const Result = textList.map((text) => {
+        const Result = textList.map((text: TextList) => {
             index++;
             return (
-                params.roomId == String(text.roomId) && <SpeechBubble
+                params.roomId == String(text.chatroomId) && <SpeechBubble
                     key={index}
-                    isMine={text.isMine}
-                    nickName={text.nickName}
-                    innerText={text.innerText}
-                    profile={text.profile}
-                    dateTime={text.dateTime}
+                    isMine={String(myUserId) == text.memberId}
+                    nickName={text.memberId}    // 닉네임 대신 임시로 멤버 ID
+                    innerText={text.content}
+                    profile={defaultProfile}    // 임시로 기본 이미지
+                    dateTime={new Date()}
                 />
             )
 
@@ -191,9 +115,9 @@ export default function ChattingRoomPage() {
     const handleKeyPress = (e: any) => {
         if (e.code === "Enter") {
             if (!inputValue) return
-            setTextList(
-                [...textList, newTextList]
-            )
+            // setTextList(
+            //     [...textList, newTextList]
+            // )
             setInputValue("")
             setActivateSend("opacity-40")
             sendMessage(inputValue)
@@ -204,17 +128,27 @@ export default function ChattingRoomPage() {
     // 버튼 클릭으로도 텍스트 전송이 가능
     function handleOnClick() {
         if (!inputValue) return
-        setTextList([...textList, newTextList])
+        // setTextList([...textList, newTextList])
         setInputValue("")
         setActivateSend("opacity-40")
+        sendMessage(inputValue)
         inputRef.current.focus()
     }
 
     const dispatch = useDispatch();
 
+
+    const recvMessage = (message: any) => {
+        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
+        setTextList([...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : message.memberId, "content": message.content, "notice": false, "type": message.type }])
+        axios.post(SOCKET_URL + `/chat/readMessage/` + `${params.roomId}` + `?memberId=` + `${myUserId}`, message);
+    }
+
     useEffect(() => {
         dispatch(setTabName(`roomid=${params.roomId}에 해당하는 팀 이름 넣기`))
+        // console.log(data)
     }, [])
+
 
     // 채팅이 올라올 때 마다 스크롤도 같이 움직임
     useEffect(() => {
