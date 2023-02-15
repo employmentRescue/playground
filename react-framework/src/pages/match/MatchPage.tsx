@@ -13,6 +13,7 @@ import badmintonOriginal from "@/assets/icons/badminton-original.png"
 import footBallOriginal from "@/assets/icons/football-original.png"
 
 import { matchList } from "@/models/matchList";
+import useGatheringSearchQuery from "@/hooks/match/useGatheringSearchQuery";
 
 
 // ============ 기타 타입 =================================================
@@ -154,6 +155,7 @@ export default function MatchPage() {
     const [sort, setSort] = useState(useSelector((state: RootState) => { return state.matchSort.sort; }))
 
     const [searchingData, setSearchingData] = useState<string>("")
+    const gatheringSearchQuery = useGatheringSearchQuery(searchingData)
 
     const filterData: matchList = {
         startDate: startDate,
@@ -171,6 +173,7 @@ export default function MatchPage() {
         sort: sort,
     }
     const gatheringListQuery = useGatheringListQuery(filterData);
+    console.log('개인 요청데이터', filterData)
     console.log(gatheringListQuery)
     // console.log(filterData)
     // console.log(typeof(filterData))
