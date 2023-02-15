@@ -35,16 +35,23 @@ export function TeamMatchDateSetting({ matchDate, clicked, setFilterData }: Ipro
         <div className="flex flex-col absolute top-[-250px] left-0 w-full h-screen m-0 p-0 z-20">
             <div className="h-2/5 w-full bg-[#000] opacity-50" onClick={(e) => { e.preventDefault(); clicked(); }}></div>
             <div className="flex flex-col justify-center pt-10 w-full h-3/5 flex-grow-0 bg-[#fff] z-20">
-                <div className="flex relative place-content-center w-full h-1/6">
+                <div className="flex relative justify-center w-full h-40">
                     <span className="w-70 h-16 flex-grow-0  text-[15px] text-left text-[#000]">날짜 선택</span>
                     <img src={closeIcon} alt="" className="absolute right-10 w-10 h-10 flex-grow-0 my-3"
                         onClick={(e) => { e.preventDefault(); clicked(); }} />
                 </div>
                 <div className="flex justify-center w-full h-2/3 mt-10 bg-[#fff]">
-                    <Calender onChange={onChange} value={temDate} formatDay={(locale, rawDate) => dayjs(rawDate).format('DD')}/>
+                    <Calender
+                        onChange={onChange}
+                        value={temDate}
+                        formatDay={(locale, rawDate) => dayjs(rawDate).format('DD')}
+                        minDetail="month"
+                        maxDetail="month"
+                        showNeighboringMonth={false}
+                        calendarType='US' />
                 </div>
                 <div className="h-1/6 flex justify-center mb-15 mx-13 pt-10">
-                    <div className="grid place-content-center h-34 mt-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]" onClick={(e)=>{e.preventDefault(); clicked(); setFilterData("matchDate", dayjs(temDate).format('YYYY-MM-DD'))}}>설정 완료</div>
+                    <div className="grid place-content-center h-34 mt-24 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff]" onClick={(e) => { e.preventDefault(); clicked(); setFilterData("matchDate", dayjs(temDate).format('YYYY-MM-DD')) }}>설정 완료</div>
                 </div>
             </div>
         </div>

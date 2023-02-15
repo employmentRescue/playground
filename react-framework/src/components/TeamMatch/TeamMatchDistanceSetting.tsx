@@ -11,12 +11,12 @@ import basketballMap from '@/assets/icons/basketball-map.png';
 import footballMap from '@/assets/icons/football-map.png';
 import badmintonMap from '@/assets/icons/badminton-map.png';
 
-type Iprops = { 
-    clicked: () => void, 
+type Iprops = {
+    clicked: () => void,
     sportsType: string,
     location: number[],
-    distance: number, 
-    setFilterData: (attr:attrType, value:any) => void 
+    distance: number,
+    setFilterData: (attr: attrType, value: any) => void
 }
 type attrType = "matchDate" | "location" | "distance" | "startTime" | "sports" | "gameType" | "sort"
 
@@ -43,6 +43,7 @@ export function TeamMatchDistanceSetting({ clicked, sportsType, location, distan
     const [curPos, setCurPos] = useState<naver.maps.Marker | null>(null);
     const [marker, setMarker] = useState<naver.maps.Marker | null>(null);
     const [circle, setCircle] = useState<naver.maps.Circle | null>(null);
+    const [markerPos, setMarkerPos] = useState<any | null>(null);
     const [temDistance, setDistance] = useState(String(distance))
     const valueChange: ComponentProps<'input'>['onChange'] = (event) => {
         setDistance(event.target.value);
@@ -116,72 +117,48 @@ export function TeamMatchDistanceSetting({ clicked, sportsType, location, distan
     useEffect(() => {
         if (naverMap === null) return;
 
-        if (marker) {
+        naver.maps.Event.once(naverMap, 'click', function (e) {
+            const latlng = e.coord;
             switch (sportsType) {
                 case '농구':
-                    marker.setIcon({
-                        url: basketballMap,
-                        size: new naver.maps.Size(60, 60),
-                        scaledSize: new naver.maps.Size(60, 60),
-                        origin: new naver.maps.Point(0, 0),
-                        anchor: new naver.maps.Point(30, 60)
-                    });
+                    setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
                     break;
                 case '축구':
-                    marker.setIcon({
-                        url: footballMap,
-                        size: new naver.maps.Size(60, 60),
-                        scaledSize: new naver.maps.Size(60, 60),
-                        origin: new naver.maps.Point(0, 0),
-                        anchor: new naver.maps.Point(30, 60)
-                    });
+                    setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
                     break;
                 case '배드민턴':
-                    marker.setIcon({
-                        url: badmintonMap,
-                        size: new naver.maps.Size(60, 60),
-                        scaledSize: new naver.maps.Size(60, 60),
-                        origin: new naver.maps.Point(0, 0),
-                        anchor: new naver.maps.Point(30, 60)
-                    });
+                    setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
                     break;
             }
-        }
+        })
+    }, [naverMap])
+
+    useEffect(() => {
+        if (naverMap === null) return;
         naver.maps.Event.addListener(naverMap, 'click', function (e) {
             const latlng = e.coord;
-
             if (marker) {
                 marker.setPosition(latlng);
-            }
-            else {
-                switch (sportsType) {
-                    case '농구':
-                        setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
-                        break;
-                    case '축구':
-                        setMarker(setMapIcon(footballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
-                        break;
-                    case '배드민턴':
-                        setMarker(setMapIcon(badmintonMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true, true));
-                        break;
-                }
+                setMarkerPos(marker.getPosition());
             }
         })
-    }, [marker, naverMap])
+    }, [marker])
 
     useEffect(() => {
         if (!naverMap || !marker) return;
-        if (circle)
-            circle.setMap(null);
 
+        if (circle) {
+            circle.setMap(null);
+        }
         setCircle(new naver.maps.Circle({
             map: naverMap,
             center: marker.getPosition(),
             radius: Number(temDistance) * 1000,
             fillColor: 'red',
             fillOpacity: 0.5
-        }))
-    }, [marker, temDistance])
+        }));
+
+    }, [markerPos, temDistance])
 
     return (
         <div className="flex flex-col absolute top-[-250px] left-0 place-content-around w-full h-screen m-0 p-0 z-20">
@@ -208,7 +185,7 @@ export function TeamMatchDistanceSetting({ clicked, sportsType, location, distan
                         </div>
                     </div>
                     <div className="h-1/2 flex justify-center mb-15 mx-13 pt-10">
-                        <div className="grid place-content-center h-34 mt-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff] " onClick={(e)=>{e.preventDefault(); clicked(); setFilterData("distance", Number(temDistance))}}>설정 완료</div>
+                        <div className="grid place-content-center h-34 mt-4 w-[326px] text-center bg-[#303eff] rounded-[5px] font-inter font-[15px] text-[#fff] " onClick={(e) => { e.preventDefault(); clicked(); setFilterData("distance", Number(temDistance)) }}>설정 완료</div>
                     </div>
                 </div>
             </div>
