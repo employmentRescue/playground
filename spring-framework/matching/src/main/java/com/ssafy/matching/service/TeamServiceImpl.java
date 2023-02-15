@@ -43,6 +43,14 @@ public class TeamServiceImpl implements TeamService {
     public Team registerTeam(Team team) {
         System.out.println(team);
 
+        String level = team.getLevel();
+        switch (level) {
+            case "입문": team.setPoint(900); break;
+            case "초보": team.setPoint(1200); break;
+            case "중수": team.setPoint(1500); break;
+            case "고수": team.setPoint(1800); break;
+        }
+
         for(TeamMember teamMember : team.getTeamMemberList()) {
             teamMember.setTeam(team);
         }
