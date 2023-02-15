@@ -16,9 +16,8 @@ import titleFavoriteTime from "@/assets/profiles/title-favorite-time.png"
 import footballImg from "@/assets/icons/football-bg-colored.png"
 import basketballImg from "@/assets/icons/basketball-bg-colored.png"
 import badmintonImg from "@/assets/icons/badminton-bg-colored.png"
-import basketballMap from '@/assets/icons/basketball-map.png';
-import footballMap from '@/assets/icons/football-map.png';
-import badmintonMap from '@/assets/icons/badminton-map.png';
+import markerIcon from '@/assets/icons/marker.png';
+
 import searchIcon from "@/assets/icons/search.png"
 
 import { Slider } from "@mui/material"
@@ -45,12 +44,12 @@ export default function ProfileModifyPage() {
             label: '0km',
         },
         {
-            value: 15,
-            label: '15km',
+            value: 5,
+            label: '5km',
         },
         {
-            value: 30,
-            label: '30km',
+            value: 10,
+            label: '10km',
         },
     ];
     // naver map
@@ -195,7 +194,7 @@ export default function ProfileModifyPage() {
                 marker.setPosition(latlng);
             }
             else {
-                setMarker(setMapIcon(basketballMap, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 60, 60, true));
+                setMarker(setMapIcon(markerIcon, new naver.maps.LatLng(latlng._lat, latlng._lng), naverMap, 40, 40, true));
 
             }
 
@@ -362,7 +361,7 @@ export default function ProfileModifyPage() {
                         valueLabelDisplay="auto"
                         marks={distMarks}
                         min={0}
-                        max={30}
+                        max={10}
                         sx={{
                             color: 'blue',
                             '& .MuiSlider-thumb': {

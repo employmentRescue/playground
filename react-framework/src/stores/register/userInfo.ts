@@ -41,7 +41,7 @@ interface UserInfo {
 
 const initialState: UserInfo = {
     nickname: "",
-    favoriteTime: [6, 18],
+    favoriteTime: [0, 24],
     favoriteSports: {
         football: false,
         basketball: false,

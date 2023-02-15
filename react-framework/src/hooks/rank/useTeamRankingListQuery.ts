@@ -9,7 +9,7 @@ const fetcher = (gameType: string, sports: string, sort: string) => axios.get(SE
 // 페이지 들어왔을때만 query
 const useTeamRankingListQuery = (gameType: string, sports: string, sort: string, filterModal: string) => {
   return useQuery([TEAM_INFO, filterModal === 'none', sort], () => fetcher(gameType, sports, sort), {
-    staleTime: 0, cacheTime: 60 * 5 * 1000, refetchInterval: 1 * 1000,
+    staleTime: 0, cacheTime: 60 * 5 * 1000,
     refetchOnWindowFocus: false, refetchOnReconnect: false
   });
 }
