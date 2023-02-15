@@ -206,7 +206,6 @@ public class RankingServiceImpl implements RankingService {
         return  teamStats;
     }
 
-    //TODO 티어 좀 더 세분화하기
     public String calculateTier(int point) {
         if(point > 2300) return "Platinum";
         else if (2200 < point && point <= 2300) return "Gold1";

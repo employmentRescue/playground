@@ -42,7 +42,7 @@ public class TeamController {
         return new ResponseEntity<Team>(teamService.updateTeam(team), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "팀 삭제하기(구현중)", notes = "팀Id에 해당하는 팀을 삭제한다.")
+    @ApiOperation(value = "팀 삭제하기", notes = "팀Id에 해당하는 팀을 삭제한다.")
     @DeleteMapping("/{teamid}")
     public void delete(@PathVariable("teamid") int teamId) throws Exception {
         teamService.deleteTeam(teamId);
