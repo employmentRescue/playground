@@ -25,8 +25,8 @@ public class MemberSometimesEntity extends BaseTimeEntity {
     String nickname;
     String name;
     String address;
-    double lat;
-    double lng;
+    Double lat;
+    Double lng;
 
     @OneToMany(mappedBy = "memberSometimes", cascade = CascadeType.ALL, orphanRemoval = true)
     List<activitiesEntity> prefer_activities;

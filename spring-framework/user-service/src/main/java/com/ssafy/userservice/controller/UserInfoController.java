@@ -145,12 +145,13 @@ public class UserInfoController {
         memberSometimes.setId(userID);
 
 
-//        List<activitiesEntity> arr = new LinkedList();
         Map<String, activityDTO> unique_req = new HashMap<>();
 
-        for (Object obj : objectMapper.convertValue(json.get("prefer_activities"),            List.class)) {
-            activityDTO activity = objectMapper.convertValue(obj, activityDTO.class);
-            unique_req.put(activity.getActivity(), activity);
+        if (json.containsKey("prefer_activities")){
+            for (Object obj : objectMapper.convertValue(json.get("prefer_activities"),            List.class)) {
+                activityDTO activity = objectMapper.convertValue(obj, activityDTO.class);
+                unique_req.put(activity.getActivity(), activity);
+            }
         }
 
         List<activitiesEntity> children = new LinkedList<>();
@@ -171,6 +172,10 @@ public class UserInfoController {
         MemberOftenEntity memberOften = objectMapper.convertValue(json, MemberOftenEntity.class);
         memberOften.setId(userID);
         entityManager.persist(memberOften);
+
+
+        System.out.println(memberOften);
+        System.out.println(memberSometimes);
 
 
         return new ResponseEntity(
