@@ -33,7 +33,7 @@ const useKakaoLogin = (code: string) => {
         onSuccess: () => {
             console.log("로그인 성공!")
             alert("로그인 성공!!!!!!!!!!!!!!!!!")
-            navigate("/login/register/complete")
+            navigate("/login/success")
         },
         onError: () => {
             console.log("로그인 실패 ㅠㅠ")
