@@ -39,7 +39,7 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
     @Query(value = "SELECT * FROM `match` m, team t, preferred_place p " +
             "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
             "AND m.match_date = ?1 " +
-            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) * 1000 " +
             "AND ((?5 between m.min_start_time AND m.max_start_time) OR (?6 between m.min_start_time AND m.max_start_time) OR (?5 < m.min_start_time AND m.max_start_time < ?6)) " +
             "AND m.match_sports = ?7 AND m.match_game_type = ?8 " +
             "AND m.match_date >= now() " +
@@ -51,7 +51,7 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "FROM `match` m, team t, preferred_place p " +
             "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
             "AND m.match_date = ?1 " +
-            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) * 1000 " +
             "AND ((?5 between m.min_start_time AND m.max_start_time) OR (?6 between m.min_start_time AND m.max_start_time) OR (?5 < m.min_start_time AND m.max_start_time < ?6)) " +
             "AND m.match_sports = ?7 AND m.match_game_type = ?8 " +
             "AND m.match_date >= now() " +
@@ -63,7 +63,7 @@ public interface MatchRepository extends JpaRepository<Match, Integer> {
             "FROM `match` m, team t, preferred_place p " +
             "WHERE m.host_id = t.team_id AND m.place_id = p.preferred_place_id " +
             "AND m.match_date = ?1 " +
-            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (m.distance + ?4) * 1000 " +
             "AND ((?5 between m.min_start_time AND m.max_start_time) OR (?6 between m.min_start_time AND m.max_start_time) OR (?5 < m.min_start_time AND m.max_start_time < ?6)) " +
             "AND m.match_sports = ?7 AND m.match_game_type = ?8 " +
             "AND m.match_date >= now() " +
