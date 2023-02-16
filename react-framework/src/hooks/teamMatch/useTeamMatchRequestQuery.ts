@@ -1,4 +1,4 @@
-import { SERVER_URL } from '@/utils/url';
+import { MATCHING_URL } from '@/utils/url';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
@@ -16,7 +16,7 @@ interface matchRequestData {
     teamId: number
 }
 
-const fetcher = (matchRequest: matchRequestData) => axios.post(SERVER_URL + '/match/matching',
+const fetcher = (matchRequest: matchRequestData) => axios.post(MATCHING_URL + '/team/matching',
   {
     params :{
         distance: matchRequest.distance,
@@ -37,7 +37,7 @@ const fetcher = (matchRequest: matchRequestData) => axios.post(SERVER_URL + '/ma
 const useTeamMatchRequestQuery = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
-      location.replace('/team-match')
+      
     },
   });
 };
