@@ -9,11 +9,11 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/jpatest?serverTimezone=UTC&characterEncoding=UTF-8
-#    url: jdbc:mysql://i8b309.p.ssafy.io:3333/playground?serverTimezone=UTC&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3306/jpatest?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://i8b309.p.ssafy.io:3333/playground?serverTimezone=UTC&characterEncoding=UTF-8
     username: ssafy
-#    password: b309oo
-    password: ssafy
+    password: b309oo
+#    password: ssafy
 
 
   jpa:
@@ -31,7 +31,7 @@ spring:
 
 
 oauth2:
-  api_gateway_url: "http://localhost:8080" # "https://i8b309.p.ssafy.io"
+  api_gateway_url: "https://i8b309.p.ssafy.io" # "http://localhost:8080" #
   client:
     registration:
       client-id:
