@@ -95,7 +95,7 @@ type attrType = "startDate" | "location" | "distance" | "startTime" | "level" | 
 
 // 목록 각 컴포넌트
 function ListItem({ data }: { data: gatheringType }) {
-    console.log(data);
+    // console.log(data);
     let sportImg;
     let sportColor;
     switch (data?.sports) {
@@ -156,8 +156,8 @@ export default function MatchPage() {
     const [sort, setSort] = useState(useSelector((state: RootState) => { return state.matchSort.sort; }))
 
     const [searchingData, setSearchingData] = useState<string>("")
-    const gatheringSearchQuery = useGatheringSearchQuery(searchingData)
-    const [gatheringList, setGatheringList] = useState(<div></div>)
+    // const gatheringSearchQuery = useGatheringSearchQuery(searchingData)
+    // const [gatheringList, setGatheringList] = useState(<div></div>)
     
     const filterData: matchList = {
         startDate: startDate,
@@ -177,7 +177,6 @@ export default function MatchPage() {
     const gatheringListQuery = useGatheringListQuery(filterData);
     console.log('개인 요청데이터', filterData)
     console.log(gatheringListQuery)
-    // console.log(filterData)
     // console.log(typeof(filterData))
     const filterDataDispatch = useDispatch()
 
@@ -199,11 +198,10 @@ export default function MatchPage() {
         if (gatheringListQuery.isSuccess) {
             console.log('success ' + gatheringListQuery)
             if (gatheringListQuery.data) {
-                console.log(gatheringListQuery.data[0].title)
-                console.log(gatheringListQuery.data[0].title.includes("농구"))
-                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => eachData.title.includes(searchingData) && <ListItem key={i} data={eachData} />)
+                // console.log(gatheringListQuery.data[0].title)
+                // console.log(gatheringListQuery.data[0].title.includes("농구"))
+                return gatheringListQuery.data.map((eachData: gatheringType, i: number) => eachData.title.includes(searchingData) && <ListItem key={i} data={eachData} />)
                 // const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=><ListItem key={i} data={eachData}/>)
-                return (<div>{gatheringList}</div>)
             } else { return (<div>해당 모임이 존재하지 않습니다.</div>) }
         } else {
             return (<div>로딩중</div>)

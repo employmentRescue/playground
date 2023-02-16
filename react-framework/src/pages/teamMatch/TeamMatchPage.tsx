@@ -141,7 +141,7 @@ interface matchRequestData {
 }
 
 function MatchContent({ matchRequestData }: { matchRequestData: matchRequestData }) {
-    const [matchStatus, setMatchStatus] = useState<matchOnOff>("매칭 취소")
+    const [matchStatus, setMatchStatus] = useState<matchOnOff>("매칭 시작")
     const useTeamMatchRequest = useTeamMatchRequestQuery()
     const useTeamMatchCancel = useTeamMatchCancelQuery()
 
@@ -175,7 +175,7 @@ function MatchContent({ matchRequestData }: { matchRequestData: matchRequestData
 function ListItem({ data }: { data: any }) {
     // console.log('리스트데이터', data);
     let teamImg;
-    console.log(data)
+    console.log('data', data)
 
     return (
         <Link to={"join/" + data.matchId} className="flex w-[90%] h-114 flex-grow-0 mx-10 p-10 my-10 rounded-15 bg-[#fff]">
@@ -193,42 +193,7 @@ function ListItem({ data }: { data: any }) {
     )
 }
 // 목록 전체 내용
-function ListContent({ filterData }: { filterData: teamMatchList }) {
-    const teamMatchListQuery = useTeamMatchListQuery(filterData);
-    // console.log('teamMatchListQuery', teamMatchListQuery);
-    console.log("되나?", filterData)
-    const listItems = () => {
-        if (teamMatchListQuery.isSuccess) {
-            // console.log('success ' + teamMatchListQuery)
-            if (teamMatchListQuery.data) {
-                const gatheringList = teamMatchListQuery.data.map((eachData: teamMatchListType, i: number) => <ListItem key={i} data={eachData} />)
-                return (
-                    <div className="flex flex-col items-center w-full h-full m-0">{gatheringList}</div>
-                )
-            } else {
-                return (
-                    <div>
-                        해당 모임이 존재하지 않습니다.
-                    </div>
-                )
-            }
-        } else {
-            return (
-                <div>
-                    로딩중
-                </div>
-            )
-        }
-    }
-    useEffect(() => {
 
-    }, [teamMatchListQuery.isSuccess])
-    return (
-        <div className="flex flex-col items-center w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg-[#f5f5f5]">
-            {listItems()}
-        </div>
-    )
-}
 // 상세 목록
 // 매치 페이지 출력
 export default function TeamMatchPage() {
@@ -270,35 +235,15 @@ export default function TeamMatchPage() {
     const [sports, setSports] = useState<string>(temSports());
     const [gameType, setGameType] = useState<string>(temGameType());
     const [sort, setSort] = useState<string>("distance");
+    // useEffect 로 슬라이더 변경시 불러오기용
+    const [sliderIndex, setSliderIndex] = useState(0);
     // console.log('myTeamList', myTeamList)
 
 
     const [searchingData, setSearchingData] = useState<string>("");
-    const [filterData, fetchFilterData] = useState({
-        matchDate: matchDate,
-        lat: location[0],
-        lng: location[1],
-        distance: distance,
-        minStartTime: startTime[0],
-        maxStartTime: startTime[1],
-        sports: sports,
-        gameType: gameType,
-        sort: sort,
-    })
-    const slideFetchFilterData = () => {
-        console.log("rerendering")
-        fetchFilterData({
-            matchDate: matchDate,
-            lat: location[0],
-            lng: location[1],
-            distance: distance,
-            minStartTime: startTime[0],
-            maxStartTime: startTime[1],
-            sports: sports,
-            gameType: gameType,
-            sort: sort,
-        })
-    }
+
+    const teamMatchListQuery = useTeamMatchListQuery(matchDate, location[0], location[1], distance, startTime[0], startTime[1], sports, gameType, sort);
+
 
     const matchRequestData: matchRequestData = {
         distance: distance,
@@ -317,34 +262,65 @@ export default function TeamMatchPage() {
     // console.log('filterData', filterData())
     const setFilterData = (attr: attrType, value: any) => {
         switch (attr) {
-            case "matchDate": setMatchDate(value); break;
-            case "location": setLocation(value); break;
-            case "distance": setDistance(value); break;
-            case "startTime": setStartTime(value); break;
+            case "matchDate": setMatchDate(value); console.log(teamMatchListQuery); break;
+            case "location": setLocation(value); console.log(teamMatchListQuery); break;
+            case "distance": setDistance(value); console.log(teamMatchListQuery); break;
+            case "startTime": setStartTime(value); console.log(teamMatchListQuery); break;
             case "sports": setSports(value); break;
             case "gameType": setGameType(value); break;
             case "sort": setSort(value); break;
         }
     }
 
+    useEffect(() => {
+        teamMatchListQuery
+        listItems();
+        // console.log('팀매치리스트', teamMatchListQuery)
+    }, [sliderIndex, teamMatchListQuery.isError, teamMatchListQuery.isLoading, matchDate, location, distance, startTime, sports, gameType, sort])
+
     const autoMatch = () => dispatch({ type: 'AUTOMATCH' });
     const list = () => dispatch({ type: 'LIST' });
+
+    const listItems = () => {
+        if (teamMatchListQuery.isSuccess) {
+            // console.log('success ' + teamMatchListQuery)
+            if (teamMatchListQuery.data) {
+                return (
+                    <div className="flex flex-col items-center w-full h-full m-0">{teamMatchListQuery.data.map((eachData: teamMatchListType, i: number) => <ListItem key={i} data={eachData} />)}</div>
+                )
+            } else {
+                return (
+                    <div>
+                        해당 모임이 존재하지 않습니다.
+                    </div>
+                )
+            }
+        } else {
+            return (
+                <div>
+                    로딩중
+                </div>
+            )
+        }
+    }
+
     const content = () => {
         if (state.tabType === 'AUTOMATCH') {
             return (<MatchContent matchRequestData={matchRequestData} />)
         } else {
-            return (<ListContent filterData={filterData} />)
+            return (listItems())
         }
     }
     // console.log('myteam data', myTeamList.data, Boolean(myTeamList.data))
-    // 멋진 스와이퍼를 위해
-    const [swiper, setSwiper] = useState<SwiperCore>();
+
     const navigate = useNavigate();
     const toTeamCreate = (translateNum: number) => {
         if (translateNum > 100) {
             navigate("/menu/team/create");
         }
     }
+
+
     return (
         <div className="flex flex-col h-auto w-full bg-[#f5f5f5] m-0">
             <div className="h-[20%] w-full m-0 p-0">
@@ -364,9 +340,8 @@ export default function TeamMatchPage() {
                     }}
                     onActiveIndexChange={(e) => { setMyTeamIndex(e.activeIndex); console.log('activeIndex', e.activeIndex) }}
                     initialSlide={0}
-                    onSwiper={setSwiper}
                     onSlideResetTransitionStart={(swiper) => toTeamCreate(swiper.getTranslate())}
-                    onSlideChange={(swiper) => { slideFetchFilterData(); }}
+                    onSlideChange={(swiper) => { setSliderIndex(swiper.activeIndex); }}
                 >
                     {myTeamList.data && myTeamList.data.map((item: team, index: number) =>
                         <SwiperSlide key={index}>
