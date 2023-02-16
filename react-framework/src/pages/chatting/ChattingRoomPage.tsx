@@ -25,19 +25,20 @@ type TextList = {
     "type": 'TALK' | 'ENTER'
 }
 
+let sock = new SockJS(SOCKET_URL + "/ws-stomp")
+let webSocket = Stomp.over(sock);
+webSocket.debug = () => console.log()
+
 export default function ChattingRoomPage() {
     const params = useParams();
 
     // 더미 데이터가 조금 많습니다..
 
-    const sock = new SockJS(SOCKET_URL + "/ws-stomp")
-    const webSocket = Stomp.over(sock);
     const [textList, setTextList] = useState<TextList[]>([])
 
     const recvMessage = (message: any) => {
-        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
-        setTextList([...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : String(message.memberId), "content": message.content, "notice": false, "type": message.type }])
-        // axios.post(SOCKET_URL + `/chat/readMessage/` + `${params.roomId}` + `?memberId=` + `${myUserId}`, message);
+        setTextList(textList => [...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : String(message.memberId), "content": message.content, "notice": false, "type": message.type }])
+
     }
 
     const sendMessage = (content: string) => {
@@ -45,31 +46,29 @@ export default function ChattingRoomPage() {
         content = '';
     }
 
-    webSocket.connect({}, function (frame: any) {
-        webSocket.subscribe(`/sub/chat/room/` + `${params.roomId}`, function (message) {
-            recvMessage(JSON.parse(message.body));
-        });
-        webSocket.send(`/pub/chat/Message`, {}, JSON.stringify({ "chatroomId": `${params.roomId}`, "regTime": '10', "memberId": `${myUserId}`, "isNotice": false, "type": 'ENTER' }));
-    }, function (error: any) {
-        alert("error" + error)
-    })
-
     const getMessageList = async () => {
         await axios.get(CHATTING_SERVER_URL + `/chat/messageList/${params.roomId}`)
             .then(response => {
                 console.log(response.data)
-                setTextList([...textList, ...response.data])
+                setTextList(textList => [...textList, ...response.data])
             });
     }
     // 채팅방 처음 접속 시 API에서 해당 채팅방의 모든 메시지 기록을 받아옴
     useEffect(() => {
         dispatch(setTabName(`roomid=${params.roomId}에 해당하는 팀 이름 넣기`))
         getMessageList()
-
-        // return (() => {
-        //     webSocket.disconnect();
-        // })
     }, [])
+
+    useEffect(() => {
+        webSocket.connect({}, function (frame: any) {
+            webSocket.subscribe(`/sub/chat/room/` + `${params.roomId}`, function (message) {
+                recvMessage(JSON.parse(message.body));
+            });
+            webSocket.send(`/pub/chat/Message`, {}, JSON.stringify({ "chatroomId": `${params.roomId}`, "regTime": '10', "memberId": `${myUserId}`, "isNotice": false, "type": 'ENTER' }));
+        }, function (error: any) {
+            alert("error" + error)
+        })
+    }, [textList])
 
     // 채팅이 올라올 때 마다 스크롤도 같이 움직임
     useEffect(() => {
@@ -85,10 +84,6 @@ export default function ChattingRoomPage() {
     let scrollRef: any | undefined = useRef(null);
     let inputRef: any | undefined = useRef(null);
 
-    // textList에 받아온 메시지 혹은 내가 보낼 메시지를 push
-    function pushMessage(content: string, memberId: any) {
-        setTextList([...textList, { "chatroomId": `${params.roomId}`, "regTime": "10", "memberId": String(memberId), "content": content, "notice": false, "type": 'TALK' }])
-    }
 
     // 메시지 입력창의 텍스트를 얻어오는 함수
     const handleOnChange = (e: any) => {
@@ -106,7 +101,6 @@ export default function ChattingRoomPage() {
         e.preventDefault()
         if (e.code === "Enter") {
             if (!inputValue) return
-            pushMessage(inputValue, myUserId)
             setInputValue("")
             setActivateSend("opacity-40")
             sendMessage(inputValue)
@@ -118,7 +112,6 @@ export default function ChattingRoomPage() {
     function handleOnClick(e: any) {
         e.preventDefault()
         if (!inputValue) return
-        pushMessage(inputValue, myUserId)
         setInputValue("")
         setActivateSend("opacity-40")
         sendMessage(inputValue)
@@ -130,7 +123,6 @@ export default function ChattingRoomPage() {
 
     // 서버에서 불러온 해당 채팅방의 모든 채팅을 화면에 렌더링 해줄 함수
     const TextListRendering = () => {
-        console.log(textList)
         let index = 0
         const Result = textList.map((text: TextList) => {
             index++;
@@ -144,7 +136,6 @@ export default function ChattingRoomPage() {
                     dateTime={new Date()}
                 />
             )
-
         })
         return Result
     }

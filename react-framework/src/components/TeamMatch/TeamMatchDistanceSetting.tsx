@@ -176,7 +176,7 @@ export function TeamMatchDistanceSetting({ clicked, sportsType, location, distan
                     <h1>지도</h1>
                 </div>
                 <div className="h-1/6 justify-center mb-15 mx-13 pt-10">
-                    <input type="range" min="0" max="22" className="w-full" placeholder={temDistance} defaultValue={temDistance} onChange={valueChange} />
+                    <input type="range" min="0" max="10" className="w-full" placeholder={temDistance} defaultValue={temDistance} onChange={valueChange} />
                     <div className="flex mb-12 w-full place-content-between">
                         <span className="w-26 h-15 flex-grow-0 mt-3  text-[12px] font-[500] text-left text-[#bbc0ff]">0km</span>
                         <div className="flex">
