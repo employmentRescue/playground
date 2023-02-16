@@ -6,7 +6,6 @@ import store from "@/stores/store"
 
 import { useState } from "react"
 import { useDispatch } from "react-redux"
-import { setSportsType } from "@/stores/user/myTeam"
 
 interface Iprops {
     selectedSports: "축구" | "농구" | "배드민턴";
@@ -25,8 +24,6 @@ export default function SportsSelectButtons({ selectedSports, setSelectedSports 
             setSelectedSports("")
         } else {
             setSelectedSports(sportsName)
-            dispatch(setSportsType(sportsName))
-            console.log(store.getState().myTeam.sportsType)
         }
     }
 

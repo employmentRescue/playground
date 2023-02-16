@@ -14,7 +14,10 @@ export default function TeamCard({ teamId, teamName, win, lose, tier }: Iprops) 
         <div className="flex mx-30 my-5 justify-between ">
             <div className="flex">
                 <div>
-                    <img src={getImgUrl('profiles/team', teamId)} className="w-53 h-53 rounded-30 my-15 mr-18" />
+                    <img src={getImgUrl('profiles/team', teamId)} onError={({ currentTarget }) => {
+                        currentTarget.onerror = null;
+                        currentTarget.src = getImgUrl('profiles/team', 'default_team')
+                    }} className="w-53 h-53 rounded-30 my-15 mr-18" />
                 </div>
                 <div className="flex flex-col justify-center">
                     <h1 className="mb-10 text-17">{teamName}</h1>

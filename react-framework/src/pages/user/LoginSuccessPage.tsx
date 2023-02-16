@@ -1,10 +1,17 @@
+import { KAKAO_LOGIN_TEST_SERVER_URL, SERVER_URL } from "@/utils/url";
+import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import { useNavigate } from "react-router-dom";
+import useGetUserInfoByToken from "@/hooks/user/useGetUserInfoByToken";
+import { useEffect } from "react"
+import { useDispatch } from "react-redux";
+import { saveUserId } from '@/stores/user/userId';
 
 export default function LoginSuccessPage() {
     // 이 페이지는 굳이 만들 필요 없이 바로 메인 페이지로 연결시켜도 될 듯 함
     // Your web app's Firebase configuration
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
@@ -17,6 +24,10 @@ export default function LoginSuccessPage() {
         appId: "1:808423483984:web:abdb73b3b73219b3b1bf55",
         measurementId: "G-S20W3SX3K1"
     };
+    const params = new URLSearchParams(location.search);
+    let myId = params.get("user_id")
+    console.log(myId)
+    dispatch(saveUserId(myId))
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -26,7 +37,7 @@ export default function LoginSuccessPage() {
         await Notification.requestPermission().then((permission) => {
             if (permission === 'granted') {
                 console.log('Notification permission granted.');
-                navigate("/");
+                // navigate("/");
             }
         })
     }
@@ -37,9 +48,12 @@ export default function LoginSuccessPage() {
     // Add the public key generated from the console here.
     getToken(messaging, { vapidKey: "BNQmQhy0t5IXHTfP3RhasoNL_no_HYBNDPnygCfciW5c3nopkkWkqxasbcesQ5DzISkX5JvheAIOrNaeeBrQ2ho" }).then((currentToken) => {
         if (currentToken) {
-            // Send the token to your server and update the UI if necessary
-            // ...
             console.log("current Token : ", currentToken)
+            axios.post(KAKAO_LOGIN_TEST_SERVER_URL + `/user/update`, [{ "web_fcm_token": currentToken }])
+                .then(response => {
+                    console.log("토큰 보냈으니까 확인해봐")
+                })
+                .catch(error => console.log("에러 발생"))
         } else {
             // Show permission request UI
             console.log('No registration token available. Request permission to generate one.');

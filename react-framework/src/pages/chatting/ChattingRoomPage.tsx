@@ -56,6 +56,8 @@ export default function ChattingRoomPage() {
     // 채팅방 처음 접속 시 API에서 해당 채팅방의 모든 메시지 기록을 받아옴
     useEffect(() => {
         dispatch(setTabName(`roomid=${params.roomId}에 해당하는 팀 이름 넣기`))
+        console.log("1111111111111111111111111")
+
         getMessageList()
     }, [])
 
@@ -88,7 +90,6 @@ export default function ChattingRoomPage() {
 
     // 메시지 입력창의 텍스트를 얻어오는 함수
     const handleOnChange = (e: any) => {
-        //e.preventDefault()
         setInputValue(e.target.value)
         if (e.target.value) {
             setActivateSend("")
@@ -99,7 +100,6 @@ export default function ChattingRoomPage() {
 
     // Enter 입력시 메시지 입력창에 입력된 텍스트를 전송
     const handleKeyPress = (e: any) => {
-        //e.preventDefault()
         if (e.code === "Enter") {
             if (!inputValue) return
             sendMessage(inputValue)
@@ -110,8 +110,7 @@ export default function ChattingRoomPage() {
     }
 
     // 버튼 클릭으로도 텍스트 전송이 가능
-    function handleOnClick(e: any) {
-        //e.preventDefault()
+    function handleOnClick() {
         if (!inputValue) return
         sendMessage(inputValue)
         setInputValue("")
@@ -158,7 +157,7 @@ export default function ChattingRoomPage() {
                     onKeyPress={(e) => handleKeyPress(e)}
                     ref={inputRef}
                 />
-                <img src={sendButton} onClick={(e) => handleOnClick(e)} className={"w-21 h-21 ml-10 mr-18 self-center " + activateSend} />
+                <img src={sendButton} onClick={() => handleOnClick()} className={"w-21 h-21 ml-10 mr-18 self-center " + activateSend} />
             </div>
         </div>
     )

@@ -24,7 +24,10 @@ export default function MyTeamDetailPage() {
   return data && (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-[#fcfffb]">
-        <img className="w-100 h-100" src={getImgUrl('profiles/team', data.team.teamId)}></img>
+        <img className="w-100 h-100" src={getImgUrl('profiles/team', data.team.teamId)} onError={({ currentTarget }) => {
+          currentTarget.onerror = null;
+          currentTarget.src = getImgUrl('profiles/team', 'default_team')
+        }}></img>
         <div className="text-20 mt-4">{data.team.name}</div>
       </div>
 

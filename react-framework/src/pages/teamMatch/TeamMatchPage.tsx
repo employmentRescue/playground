@@ -21,6 +21,8 @@ import footBallOriginal from "@/assets/icons/football-original.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
 import TeamMatchFilterBar from "@/components/TeamMatch/TeamMatchFilterBar";
 import { teamMatchList } from "@/models/teamMatchList";
+import { getImgUrl } from "@/utils/getImgUrl";
+import { setTabName } from "@/stores/tab/tabName";
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
@@ -164,7 +166,8 @@ function MatchContent({ matchRequestData }: { matchRequestData: matchRequestData
 
     return (
         <div className="flex flex-col place-items-center w-full h-full m-0 py-[30%] bg-[#fff]">
-            <img src={matchButton} alt="" className="w-[200px] h-[200px]" />
+            <div className={matchStatus === '매칭 시작' ? "absolute ml-auto mr-auto mt-auto mb-auto w-[210px] h-[210px] rounded-50" : "absolute ml-auto mr-auto mt-auto mb-auto w-[200px] h-[200px] rounded-[50%] border-t-blue-700 border-t-5 border-b-blue-200 border-b-5 border-l-blue-200 border-r-blue-200 border-r-5 border-l-5 animate-spin"}></div>
+            <img src={matchButton} alt="" className={matchStatus === '매칭 시작' ? "w-[200px] h-[200px]" : "w-[200px] h-[200px] animate-pulse"} />
             <div className={"grid place-content-center w-124 h-45 mt-[5%] flex-grow-0 rounded-30 " + matchStatusColor()} onClick={(e) => { e.preventDefault(); handleClicked(); }}>
                 <span className="w-90 h-28 flex-grow-0 text-20 font-[500] text-center text-[#fff]">{matchStatus}</span>
             </div>
@@ -180,9 +183,9 @@ function ListItem({ data }: { data: any }) {
     return (
         <Link to={"join/" + data.matchId} className="flex w-[90%] h-114 flex-grow-0 mx-10 p-10 my-10 rounded-15 bg-[#fff]">
             <div className="flex flex-col items-center justify-center w-1/4 h-full">
-                <span>{data.host.sports}</span>
+                <img className="w-60 h-60 rounded-[50%]" src={getImgUrl('profiles/team', data.host.teamId)} />
             </div>
-            <div className="flex flex-col justify-center w-1/2 h-full">
+            <div className="flex flex-col justify-center w-1/2 h-full ml-10">
                 <span className="flex-grow-0 font-inter text-[17px] font-normal text-left text-[#000]">{data.host.name}</span>
                 <span className="flex-grow-0 font-inter text-[17px] font-bold text-left text-[#000]">{data.preferredPlace.address}</span>
             </div>
@@ -308,6 +311,12 @@ export default function TeamMatchPage() {
             navigate("/menu/team/create");
         }
     }
+
+    const dispatch2 = useDispatch();
+
+    useEffect(() => {
+        dispatch2(setTabName('playGround'))
+    }, [])
 
 
     return (

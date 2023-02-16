@@ -6,10 +6,13 @@ import { useDispatch, useSelector } from "react-redux"
 import { setNickname, setFavoriteTime } from "@/stores/register/userInfo"
 import { RootState } from "@/stores/store";
 
+import axios from "axios";
+import { KAKAO_LOGIN_TEST_SERVER_URL } from "@/utils/url";
 
 export default function UserInfoTab() {
     // const [favoriteTime, setFavoriteTime] = useState(initialTimeState);
     // const [nickname, setNickname] = useState("");
+    const [isNicknameDuplicated, setIsnicknameDuplicated] = useState<boolean>(false)
     const dispatch = useDispatch();
     const favoriteTime = useSelector((state: RootState) => {
         return state.userInfo.favoriteTime;
@@ -17,6 +20,21 @@ export default function UserInfoTab() {
     const nickname = useSelector((state: RootState) => {
         return state.userInfo.nickname;
     });
+
+    const nicknameChecker = async () => {
+        await axios.post(KAKAO_LOGIN_TEST_SERVER_URL + `/user/check/nickname/` + `${nickname}`)
+            .then(response => {
+                // console.log("asdasdas")
+                if (response.data.isExist) {
+                    alert("중복된 닉네임 입니다. 다시 설정해주세요.")
+                    setIsnicknameDuplicated(true)
+                    dispatch(setNickname(""))
+                    nicknameInput.current.focus()
+                } else {
+                    alert("사용 가능한 닉네임 입니다.")
+                }
+            })
+    }
 
     const handleChange = (event: Event, value: number | number[]) => {
         event.preventDefault();
@@ -38,26 +56,10 @@ export default function UserInfoTab() {
             value: 0,
             label: '0시',
         },
-        // {
-        //     value: 4,
-        //     label: '4시',
-        // },
-        // {
-        //     value: 8,
-        //     label: '8시',
-        // },
         {
             value: 12,
             label: '12시',
         },
-        // {
-        //     value: 16,
-        //     label: '16시',
-        // },
-        // {
-        //     value: 20,
-        //     label: '20시',
-        // },
         {
             value: 24,
             label: '24시',
@@ -90,14 +92,14 @@ export default function UserInfoTab() {
                             dispatch(setNickname(""))
                             return
                         } else {
-                            alert("사용 가능한 닉네임 입니다.")
+                            nicknameChecker()
+                            nicknameInput.current.focus()
+
                         }
                         /* 백엔드에 요청해서 중복되는 아이디가 있는지 검사하는 코드 넣기!!
 
 
                         */
-
-                        console.log(nickname)
                     }} />
                 </div>
 
@@ -120,7 +122,7 @@ export default function UserInfoTab() {
 
             <div className="self-center sticky bottom-0">
                 <div className="self-center bg-gradient-to-t from-white pt-50" />
-                <ChoiceCompoleteButton innerText="선택 완료" />
+                <ChoiceCompoleteButton innerText="선택 완료" isNicknameDuplicated={isNicknameDuplicated} />
             </div>
         </div>
     )

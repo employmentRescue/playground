@@ -19,7 +19,7 @@ export default function ProfileCard({ className, imageSrc, imageSize, name, nick
                 <h1 className="text-16 font-bold mb-5">{name}</h1>
                 <h2 className="text-15 text-[#858e94]">{nickname}</h2>
             </div>
-            <div className="bg-[#cb7537] w-auto h-18 rounded-10 mt-8 text-11 mr-10">
+            <div className="bg-[#cb7537] w-auto h-18 rounded-10 text-11 mr-20">
                 <p className="mt-1 mx-5 text-11 text-white  text-center tracking-tight">{rating}</p>
             </div>
         </div>
