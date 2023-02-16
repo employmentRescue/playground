@@ -206,45 +206,36 @@ export default function TeamMatchPage() {
     // const userId = 0
 
     const myTeamList = useTeamListQuery(userId);
-    // console.log(myTeamList)
+    console.log(myTeamList)
     const [myTeamIndex, setMyTeamIndex] = useState<number>(0);
-
-    const temSports = () => {
-        if (myTeamList.data) {
-            return myTeamList.data[myTeamIndex]?.team.sports;
-        } else {
-            return "농구";
-        }
-    }
-    const temGameType = () => {
-        if (myTeamList.data) {
-            return myTeamList.data[myTeamIndex]?.team.gameType;
-        } else {
-            return "3vs3";
-        }
-    }
-    const currentTeamId = () => {
-        if (myTeamList.data) {
-            return myTeamList.data[0]?.teamStats.teamId;
-        }
-    }
     const [matchDate, setMatchDate] = useState<string>(dayjs(new Date()).format('YYYY-MM-DD'));
     const [location, setLocation] = useState<number[]>([36.3563369, 127.2991423]);
     const [distance, setDistance] = useState<number>(0);
     const [startTime, setStartTime] = useState<string[]>(["00:00:00", "24:00:00"]);
-    const [sports, setSports] = useState<string>(temSports());
-    const [gameType, setGameType] = useState<string>(temGameType());
+    const [sports, setSports] = useState<string>('농구');
+    const [gameType, setGameType] = useState<string>('3vs3');
     const [sort, setSort] = useState<string>("distance");
+    const [currentTeamId, setCurrentTeamId] = useState<number>(1);
     // useEffect 로 슬라이더 변경시 불러오기용
     const [sliderIndex, setSliderIndex] = useState(0);
     // console.log('myTeamList', myTeamList)
+
+    useEffect(() => {
+        if (myTeamList.data) {
+            console.log(myTeamList.data)
+            setSports(myTeamList.data[myTeamIndex].team.sports);
+            setGameType(myTeamList.data[myTeamIndex].team.gameType)
+            setCurrentTeamId(myTeamList.data[myTeamIndex].team.teamId);
+        }
+
+    }, [myTeamList.isSuccess, sliderIndex])
 
 
     const [searchingData, setSearchingData] = useState<string>("");
 
     const teamMatchListQuery = useTeamMatchListQuery(matchDate, location[0], location[1], distance, startTime[0], startTime[1], sports, gameType, sort);
 
-
+    console.log(teamMatchListQuery);
     const matchRequestData: matchRequestData = {
         distance: distance,
         gameType: gameType,
@@ -256,7 +247,7 @@ export default function TeamMatchPage() {
         minStartTime: startTime[0],
         registerTime: dayjs(new Date()).format('YYYY-MM-DD HH-mm-ss'),
         sports: sports,
-        teamId: currentTeamId(),
+        teamId: currentTeamId,
     }
 
     // console.log('filterData', filterData())
@@ -273,17 +264,15 @@ export default function TeamMatchPage() {
     }
 
     useEffect(() => {
-        teamMatchListQuery
         listItems();
         // console.log('팀매치리스트', teamMatchListQuery)
-    }, [sliderIndex, teamMatchListQuery.isError, teamMatchListQuery.isLoading, matchDate, location, distance, startTime, sports, gameType, sort])
+    }, [sliderIndex, teamMatchListQuery.isError, teamMatchListQuery.isLoading, teamMatchListQuery.isSuccess, matchDate, location, distance, startTime, sports, gameType, sort])
 
     const autoMatch = () => dispatch({ type: 'AUTOMATCH' });
     const list = () => dispatch({ type: 'LIST' });
 
     const listItems = () => {
         if (teamMatchListQuery.isSuccess) {
-            // console.log('success ' + teamMatchListQuery)
             if (teamMatchListQuery.data) {
                 return (
                     <div className="flex flex-col items-center w-full h-full m-0">{teamMatchListQuery.data.map((eachData: teamMatchListType, i: number) => <ListItem key={i} data={eachData} />)}</div>

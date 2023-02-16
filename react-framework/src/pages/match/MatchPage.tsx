@@ -126,7 +126,7 @@ function ListItem({ data }: { data: gatheringType }) {
                         <span className="w-130 h-18 flex-grow-0 font-inter text-[15px] font-bold test-left text-[#000]">{data?.title}</span>
                     </div>
                     <div className="grid items-center h-1/2 ml-42 py-10">
-                        <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#000]">{data?.place.address}</span>
+                        <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#000]">{data?.place.address.split(' ').splice(-1)[0]}</span>
                         <span className="flex-grow-0 font-inter text-[13px] font-normal test-left text-[#717070]">{data?.sex + "·" + data?.gameType + "·" + data?.level}</span>
                     </div>
                 </div>
@@ -158,7 +158,7 @@ export default function MatchPage() {
     const [searchingData, setSearchingData] = useState<string>("")
     // const gatheringSearchQuery = useGatheringSearchQuery(searchingData)
     // const [gatheringList, setGatheringList] = useState(<div></div>)
-    
+
     const filterData: matchList = {
         startDate: startDate,
         lat: location[0],
@@ -194,7 +194,7 @@ export default function MatchPage() {
             case "sort": setSort(value); filterDataDispatch(setSortSort(value)); break;
         }
     }
-    const listItems = ()=>{
+    const listItems = () => {
         if (gatheringListQuery.isSuccess) {
             console.log('success ' + gatheringListQuery)
             if (gatheringListQuery.data) {
@@ -207,14 +207,17 @@ export default function MatchPage() {
             return (<div>로딩중</div>)
         }
     }
-    
-    
+
+    const navigate = useNavigate();
+
     return (
         <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
             <MatchFilterBar setFilterData={(attr: attrType, value: any) => setFilterData(attr, value)} setSearchingData={(value: string) => { setSearchingData(value) }} startDate={startDate} location={location} distance={distance} startTime={startTime} level={level} playTime={playTime} sex={sex} sports={sports} gameType={gameType} sort={sort} />
             <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
                 {listItems()}
             </div>
+            <div className="fixed bottom-70 right-15 rounded-50 w-45 h-45 bg-blue-700 text-white text-45 flex justify-center items-center"
+                onClick={() => navigate('/match/register')}>+</div>
         </div>
     )
 }       

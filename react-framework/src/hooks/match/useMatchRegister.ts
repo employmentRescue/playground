@@ -20,7 +20,8 @@ const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
     people: match.people,
   }
 ).then(() => {
-  axios.post(CHATTING_SERVER_URL + '/chat/GatheringChatRoom',);
+  const gatheringId =
+    axios.post(CHATTING_SERVER_URL + '/chat/GatheringChatRoom', { chatroomName: match.title, memberIdList: [match.hostId] });
   console.log("?")
 });
 
@@ -28,7 +29,7 @@ const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
 const useMatchRegister = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
-      location.assign('/match')
+      //location.assign('/match')
     },
   });
 };

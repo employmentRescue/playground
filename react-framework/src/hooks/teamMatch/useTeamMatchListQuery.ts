@@ -23,7 +23,8 @@ const fetcher = (matchDate: string, lat: number, lng: number, distance: number, 
 
 
 const useTeamMatchListQuery = (matchDate: string, lat: number, lng: number, distance: number, minStartTime: string, maxStartTime: string, sports: string, gameType: string, sort: string) => {
-    return useQuery([MATCH_LIST], () => fetcher(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, sort), { staleTime: 0, cacheTime: 60 * 5 * 1000, refetchInterval: 30 * 1000, refetchOnWindowFocus: false });
+    console.log(gameType, sports)
+    return useQuery([MATCH_LIST, matchDate, lat, distance, sort, minStartTime, sports, gameType], () => fetcher(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, sort),);
 }
 
 export default useTeamMatchListQuery;
