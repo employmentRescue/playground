@@ -35,6 +35,9 @@ public class Team implements Serializable {
     @ApiModelProperty(value = "팀의 랭킹 포인트")
     private int point;
 
+    @Transient
+    private String tier;
+
     @ApiModelProperty(value = "팀의 경기 리스트")
     @OneToMany
     @JoinColumn(name = "teamId", insertable=false, updatable=false)

@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 
@@ -18,6 +19,7 @@ public class WaitingRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomId;
     private int teamId;
+    private long memberId;
     private String matchDate;
     private double lat;
     private double lng;
@@ -30,8 +32,9 @@ public class WaitingRoom {
     private String registerTime;
 
     @Builder
-    public WaitingRoom(int teamId, String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, int teamPoint, String registerTime) {
+    public WaitingRoom(int teamId, long memberId, String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, int teamPoint, String registerTime) {
         this.teamId = teamId;
+        this.memberId = memberId;
         this.matchDate = matchDate;
         this.lat = lat;
         this.lng = lng;
