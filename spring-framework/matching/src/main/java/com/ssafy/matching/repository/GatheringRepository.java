@@ -15,13 +15,13 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
             "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
-            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (?4 * 1000) " +
             "AND g.is_completed = false " +
             "AND (g.start_time BETWEEN ?5 AND ?6)" +
             "AND g.level = ?7 " +
             "AND (g.play_time BETWEEN ?8 AND ?9) " +
             "AND g.sex like %?10% AND g.sports = ?11 AND g.game_type LIKE %?12% " +
-            "AND g.is_completed = 0 AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
+            "AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
             "ORDER BY g.start_time ASC", nativeQuery = true)
     List<Gathering> findGatheringsByFilterTimeASC(String startDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String level, int minPlayTime, int maxPlayTime, String sex, String sports, String gameType);
 
@@ -30,13 +30,13 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
             "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
-            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (?4 * 1000) " +
             "AND g.is_completed = false " +
             "AND (g.start_time BETWEEN ?5 AND ?6)" +
             "AND g.level = ?7 " +
             "AND (g.play_time BETWEEN ?8 AND ?9) " +
             "AND g.sex like %?10% AND g.sports = ?11 AND g.game_type LIKE %?12% " +
-            "AND g.is_completed = 0 AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
+            "AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
             "ORDER BY g.people - (SELECT COUNT(*) FROM gathering g, gathering_member m " +
             "where g.gathering_id = m.gathering_id " +
             ") ASC", nativeQuery = true)
@@ -47,13 +47,13 @@ public interface GatheringRepository extends JpaRepository<Gathering, Integer> {
             "FROM gathering g, place p " +
             "WHERE g.place_id = p.place_id " +
             "AND g.start_date = ?1 " +
-            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= ?4 " +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) <= (?4 * 1000) " +
             "AND g.is_completed = false " +
             "AND (g.start_time BETWEEN ?5 AND ?6)" +
             "AND g.level = ?7 " +
             "AND (g.play_time BETWEEN ?8 AND ?9) " +
             "AND g.sex like %?10% AND g.sports = ?11 AND g.game_type LIKE %?12% " +
-            "AND g.is_completed = 0 AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
+            "AND TIMESTAMP(g.start_date, g.start_time) >= now() " +
             "ORDER BY ST_Distance_Sphere(POINT(?3, ?2), POINT(p.lng, p.lat)) ASC", nativeQuery = true)
     List<Gathering> findGatheringsByFilterDistanceASC(String startDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String level, int minPlayTime, int maxPlayTime, String sex, String sports, String gameType);
 
