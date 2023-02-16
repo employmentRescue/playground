@@ -1,6 +1,9 @@
 package com.ssafy.oauth_service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
+import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor

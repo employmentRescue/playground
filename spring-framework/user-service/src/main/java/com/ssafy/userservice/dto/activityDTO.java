@@ -28,4 +28,5 @@ public class activityDTO {
     @EqualsAndHashCode.Include
     String activity;
     String level;
+    Boolean is_preferable;
 }

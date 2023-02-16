@@ -1,11 +1,14 @@
 package com.ssafy.edu.api_gateway.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.annotation.Nonnull;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+
+import java.time.Instant;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 
@@ -23,4 +26,6 @@ public class KakaoLoginAccessTokenCache {
     long kakao_userID;
     String kakao_accessToken;
     String kakao_refreshToken;
+    @JsonIgnore
+    Instant _expires_in; //
 }

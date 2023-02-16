@@ -51,6 +51,7 @@ spring:
 
         - id: oauth2-service
           uri: https://i8b309.p.ssafy.io:9001
+#          uri: http://localhost:8080
           order: 1
           predicates:
             - Path=/oauth2/**
@@ -60,6 +61,7 @@ spring:
 
         - id: user-service
           uri: https://i8b309.p.ssafy.io:9002
+#          uri: http://localhost:9000
           predicates:
             - Path=/user/**, /file/**
 #          filters:
@@ -106,7 +108,7 @@ spring:
 
   data:
     redis:
-      host: redis
+      host: i8b309.p.ssafy.io  # localhost
       port: 6379
 
 oauth2:

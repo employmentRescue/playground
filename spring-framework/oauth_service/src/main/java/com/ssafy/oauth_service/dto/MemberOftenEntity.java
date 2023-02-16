@@ -22,7 +22,6 @@ import lombok.*;
 public class MemberOftenEntity extends BaseTimeEntity {
     @Id @EqualsAndHashCode.Include
     @Column(name = "MEMBER_ID")
-    @JsonIgnore
     long id;
     String status_message;
     String prefer_time;

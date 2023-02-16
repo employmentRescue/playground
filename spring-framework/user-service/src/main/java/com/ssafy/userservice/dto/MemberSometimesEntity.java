@@ -25,6 +25,7 @@ public class MemberSometimesEntity extends BaseTimeEntity {
     String nickname;
     String name;
     String address;
+    Integer distance;
     Double lat;
     Double lng;
 

@@ -98,6 +98,7 @@ public class UserInfoController {
     @Transactional
     @PostMapping("/search")
     ResponseEntity searchUserInfo(@RequestHeader("x-forwarded-for-user-id") long userID , @RequestBody Set<String> req){
+        if (req == null) return new ResponseEntity(HttpStatus.BAD_REQUEST);
         System.out.println("req : " + req);
         Map<String, Object> searchResult = new HashMap<>();
 
@@ -140,42 +141,49 @@ public class UserInfoController {
         // prefer_activity가 null이 아니면, 중복제거후 MemberOften Entity에 넣는다.
         //
 
+        try {
 
-        MemberSometimesEntity memberSometimes = objectMapper.convertValue(json, MemberSometimesEntity.class);
-        memberSometimes.setId(userID);
+            MemberSometimesEntity memberSometimes = objectMapper.convertValue(json, MemberSometimesEntity.class);
+            memberSometimes.setId(userID);
 
 
-        Map<String, activityDTO> unique_req = new HashMap<>();
+            Map<String, activityDTO> unique_req = new HashMap<>();
 
-        if (json.containsKey("prefer_activities")){
-            for (Object obj : objectMapper.convertValue(json.get("prefer_activities"),            List.class)) {
-                activityDTO activity = objectMapper.convertValue(obj, activityDTO.class);
-                unique_req.put(activity.getActivity(), activity);
+            if (json.containsKey("prefer_activities")){
+                for (Object obj : objectMapper.convertValue(json.get("prefer_activities"),            List.class)) {
+                    activityDTO activity = objectMapper.convertValue(obj, activityDTO.class);
+                    unique_req.put(activity.getActivity(), activity);
+                }
             }
+
+            List<activitiesEntity> children = new LinkedList<>();
+            for (activityDTO activity : unique_req.values().stream().toList()) {
+                children.add(
+                        activitiesEntity.builder()
+                                .memberSometimes(memberSometimes)
+                                .activity(activity.getActivity())
+                                .level(activity.getLevel())
+                                .is_preferable(activity.getIs_preferable())
+                                .build()
+                );
+            }
+            memberSometimes.setPrefer_activities(children);
+            System.out.println(memberSometimes);
+            entityManager.persist(memberSometimes);
+
+            // ********************************************* memberOften *********************************************
+            MemberOftenEntity memberOften = objectMapper.convertValue(json, MemberOftenEntity.class);
+            memberOften.setId(userID);
+            entityManager.persist(memberOften);
+
+
+            System.out.println(memberOften);
+            System.out.println(memberSometimes);
         }
-
-        List<activitiesEntity> children = new LinkedList<>();
-        for (activityDTO activity : unique_req.values().stream().toList()) {
-            children.add(
-                    activitiesEntity.builder()
-                            .memberSometimes(memberSometimes)
-                            .activity(activity.getActivity())
-                            .level(activity.getLevel())
-                            .build()
-            );
+        catch (Throwable e){
+            return new ResponseEntity(
+                    HttpStatus.BAD_REQUEST);
         }
-        memberSometimes.setPrefer_activities(children);
-        System.out.println(memberSometimes);
-        entityManager.persist(memberSometimes);
-
-        // ********************************************* memberOften *********************************************
-        MemberOftenEntity memberOften = objectMapper.convertValue(json, MemberOftenEntity.class);
-        memberOften.setId(userID);
-        entityManager.persist(memberOften);
-
-
-        System.out.println(memberOften);
-        System.out.println(memberSometimes);
 
 
         return new ResponseEntity(
@@ -243,6 +251,26 @@ public class UserInfoController {
 
                 if (memSome.getNickname() != null){
                     updateQ.set(qMemberSometimes.nickname, memSome.getNickname());
+                    cnt++;
+                }
+
+                if (memSome.getDistance() != null){
+                    updateQ.set(qMemberSometimes.distance, memSome.getDistance());
+                    cnt++;
+                }
+
+                if (memSome.getNickname() != null){
+                    updateQ.set(qMemberSometimes.address, memSome.getAddress());
+                    cnt++;
+                }
+
+                if (memSome.getNickname() != null){
+                    updateQ.set(qMemberSometimes.lat, memSome.getLat());
+                    cnt++;
+                }
+
+                if (memSome.getNickname() != null){
+                    updateQ.set(qMemberSometimes.lng, memSome.getLng());
                     cnt++;
                 }
 
