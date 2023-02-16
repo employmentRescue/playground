@@ -192,7 +192,7 @@ public class oauthController {
 
         //JSON 데이터 받을 URL 객체 생성
 //        URL url = new URL (api_gateway_url + "/user/regist/" + loginCache.getKakao_userID());
-        URL url = new URL (/*api_gateway_url*/   "http://localhost:9000" + "/user/regist/" + loginCache.getKakao_userID());
+        URL url = new URL (api_gateway_url   /*"http://localhost:9000"*/ + "/user/regist/" + loginCache.getKakao_userID());
         //HttpURLConnection 객체를 생성해 openConnection 메소드로 url 연결
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         //전송 방식 (POST)
