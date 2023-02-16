@@ -16,7 +16,7 @@ export default function MyTeamPage() {
     });
 
     const { data } = useTeamListQuery(userId);
-  console.log(data);
+    console.log(data);
     const [selectedSports, setSelectedSports] = useState<"축구" | "농구" | "배드민턴">("축구")
 
     const getTeamListBySports = (selectedSports: "축구" | "농구" | "배드민턴") => {

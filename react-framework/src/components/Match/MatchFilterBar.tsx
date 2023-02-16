@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { useReducer, ComponentProps } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import { MatchSportSetting, MatchFilterSport } from "@/components/Match/MatchSportSetting"
 import { MatchDistanceSetting, MatchFilterDistance } from "@/components/Match/MatchDistanceSetting"

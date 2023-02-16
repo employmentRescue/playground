@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom"
 import 'react-calendar/dist/Calendar.css'
 
 import MatchFilterBar from "@/components/Match/MatchFilterBar"
@@ -14,7 +15,6 @@ import footBallOriginal from "@/assets/icons/football-original.png"
 
 import { matchList } from "@/models/matchList";
 import useGatheringSearchQuery from "@/hooks/match/useGatheringSearchQuery";
-import { useNavigate } from "react-router-dom";
 
 
 // ============ 기타 타입 =================================================
@@ -113,7 +113,7 @@ function ListItem({ data }: { data: gatheringType }) {
             break;
     }
     return (
-        <div className="flex w-9/10 h-120 flex-grow-0 my-10 mx-17 rounded-15 bg-[#fff] overflow-hidden">
+        <Link to={"detail/" + data.gatheringId} className="flex w-9/10 h-120 flex-grow-0 my-10 mx-17 rounded-15 bg-[#fff] overflow-hidden">
             <div className={"w-1/6 h-120 flex-grow-0 pt-51 text-center " + sportColor}>
                 <span className="h-18 flex-grow-0 font-inter text-[15px] font-bold text-left text-[#000]">
                     {String(data.memberGatheringList.length) + '/' + data.people}
@@ -138,7 +138,7 @@ function ListItem({ data }: { data: gatheringType }) {
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 
@@ -180,7 +180,6 @@ export default function MatchPage() {
     // console.log(filterData)
     // console.log(typeof(filterData))
     const filterDataDispatch = useDispatch()
-    const navigate = useNavigate();
 
     const setFilterData = (attr: attrType, value: any) => {
         switch (attr) {
@@ -196,45 +195,28 @@ export default function MatchPage() {
             case "sort": setSort(value); filterDataDispatch(setSortSort(value)); break;
         }
     }
-    const listItems = (dom:any)=>{
-        return dom
-    }
-    // useEffect(()=>{
-    //     if (gatheringListQuery.isSuccess) {
-    //         console.log('success ' + gatheringListQuery)
-    //         if (gatheringListQuery.data) {
-    //             console.log(gatheringListQuery.data[0].title)
-    //             console.log(gatheringListQuery.data[0].title.includes("농구"))
-    //             const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => eachData.title.includes(searchingData) && <ListItem key={i} data={eachData} />)
-    //             // const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=><ListItem key={i} data={eachData}/>)
-    //             return (<div>{gatheringList}</div>)
-    //         } else { return (<div>해당 모임이 존재하지 않습니다.</div>) }
-    //     } else {
-    //         return (<div>로딩중</div>)
-    //     }
-    // }, [filterData])
-    useEffect(()=>{
-        const searchedItems = () => {
-            if (gatheringSearchQuery.isSuccess) {
-                if (gatheringSearchQuery.data) {
-                    console.log("gatheringSearchQuery", gatheringSearchQuery)
-                    const gatheringSearchList = gatheringSearchQuery.data.map((eachData: gatheringType, i: number) => eachData.title.includes(searchingData) && <ListItem key={i} data={eachData} />)
-                    return (<div>{gatheringSearchList}</div>)
-                } else { return (<div>해당 모임이 존재하지 않습니다.</div>) }
-            } else {
-                return (<div>로딩중</div>)
-            }
+    const listItems = ()=>{
+        if (gatheringListQuery.isSuccess) {
+            console.log('success ' + gatheringListQuery)
+            if (gatheringListQuery.data) {
+                console.log(gatheringListQuery.data[0].title)
+                console.log(gatheringListQuery.data[0].title.includes("농구"))
+                const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number) => eachData.title.includes(searchingData) && <ListItem key={i} data={eachData} />)
+                // const gatheringList = gatheringListQuery.data.map((eachData: gatheringType, i: number)=><ListItem key={i} data={eachData}/>)
+                return (<div>{gatheringList}</div>)
+            } else { return (<div>해당 모임이 존재하지 않습니다.</div>) }
+        } else {
+            return (<div>로딩중</div>)
         }
-        console.log("???")
-    }, [searchingData])
+    }
+    
     
     return (
         <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
             <MatchFilterBar setFilterData={(attr: attrType, value: any) => setFilterData(attr, value)} setSearchingData={(value: string) => { setSearchingData(value) }} startDate={startDate} location={location} distance={distance} startTime={startTime} level={level} playTime={playTime} sex={sex} sports={sports} gameType={gameType} sort={sort} />
             <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
-                {/* {listItems()} */}
+                {listItems()}
             </div>
-            <div className="fixed bottom-70 right-15 rounded-50 w-45 h-45 bg-blue-700 text-40 text-white flex justify-center items-center z-10" onClick={() => navigate('/match/register')}>+</div>
         </div>
     )
 }       

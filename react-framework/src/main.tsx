@@ -84,7 +84,7 @@ const router = createBrowserRouter([
         element: <TeamMatchDetailPage />
       },
       {
-        path: 'team-match/join',
+        path: 'team-match/join/:teamMatchId',
         element: <TeamMatchGamePage />
       },
 
