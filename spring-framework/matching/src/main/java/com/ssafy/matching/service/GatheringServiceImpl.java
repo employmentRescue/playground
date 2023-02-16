@@ -31,8 +31,8 @@ public class GatheringServiceImpl implements GatheringService {
 
         switch (sort) {
             case "time" : return gatheringRepository.findGatheringsByFilterTimeASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
-            case "people" : return gatheringRepository.findGatheringsByFilterDistanceASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
-            case "distance" : return gatheringRepository.findGatheringsByFilterRemainPeopleASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
+            case "people" : return gatheringRepository.findGatheringsByFilterRemainPeopleASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
+            case "distance" : return gatheringRepository.findGatheringsByFilterDistanceASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
         }
 
         return gatheringRepository.findGatheringsByFilterRemainPeopleASC(startDate, lat, lng, distance, minStartTime, maxStartTime, level, minPlayTime, maxPlayTime, sex, sports, gameType);
