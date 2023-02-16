@@ -1,7 +1,8 @@
 import { match } from '@/models/match';
-import { SERVER_URL } from '@/utils/url';
+import { CHATTING_SERVER_URL, SERVER_URL } from '@/utils/url';
 import axios from 'axios';
 import { useMutation } from 'react-query';
+import useGatheringChatRegister from '../chat/useGatheringChatRegister';
 
 const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
   {
@@ -18,7 +19,11 @@ const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
     hostId: match.hostId,
     people: match.people,
   }
-);
+).then(() => {
+  axios.post(CHATTING_SERVER_URL + '/chat/GatheringChatRoom',);
+  console.log("?")
+});
+
 
 const useMatchRegister = () => {
   return useMutation(fetcher, {
