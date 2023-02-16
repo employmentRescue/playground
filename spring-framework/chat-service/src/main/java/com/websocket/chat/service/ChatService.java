@@ -10,5 +10,6 @@ public interface ChatService {
     List<ChatMessage> messageList(int roomId);
     void readMessage(long memberId, int roomId, ChatMessage message);
     ChatMessage bringMessage(long memberId, int roomId);
+    int unreadMessageNumber(long memberId, int roomId);
 
 }

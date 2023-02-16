@@ -10,6 +10,7 @@ public interface ChatRoomService {
     List<TeamChatroom> getAllTeamChatroomByMemberId(long memberId);
     TeamChatroom getTeamChatroomByRoomId(int roomId);
     TeamChatroom createTeamChatroom(List<Long> memberIdList, TeamChatroom teamChatroom);
+//    TeamChatroom createTeamChatroom2(TeamChatroom teamChatroom);
     void exitTeamChatroom(long memberId, int roomId);
 
     List<GatheringChatroom> getAllGatheringChatroomByMemberId(long memberId);

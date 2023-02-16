@@ -1,5 +1,7 @@
 package com.websocket.chat.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.websocket.chat.dto.GatheringChatroom;
 import com.websocket.chat.dto.TeamChatroom;
 import com.websocket.chat.repository.ChatRoomRepository;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Api(tags = "채팅방")
 @RequiredArgsConstructor
@@ -40,12 +43,35 @@ public class ChatRoomController {
         return new ResponseEntity<TeamChatroom>(chatRoomService.getTeamChatroomByRoomId(roomId), HttpStatus.OK);
     }
 
+
+
+//    @ApiOperation(value = "팀 채팅방 생성", notes = "팀 채팅방을 생성한다.")
+//    @PostMapping("/TeamChatRoom")
+//    public ResponseEntity<String> createTeamChatRoom(@RequestParam List<Long> memberIdList, @RequestBody TeamChatroom teamChatroom){
+//        chatRoomService.createTeamChatroom(memberIdList, teamChatroom);
+//        return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
+//    }
+
     @ApiOperation(value = "팀 채팅방 생성", notes = "팀 채팅방을 생성한다.")
     @PostMapping("/TeamChatRoom")
-    public ResponseEntity<String> createTeamChatRoom(@RequestParam List<Long> memberIdList, @RequestBody TeamChatroom teamChatroom){
+    public ResponseEntity<String> createTeamChatRoom(@RequestBody Map<String, Object> map){
+        ObjectMapper objectMapper = new ObjectMapper();
+        TeamChatroom teamChatroom = objectMapper.convertValue(map.get("teamChatroom"), TeamChatroom.class);
+        List<Long> memberIdList = objectMapper.convertValue(map.get("memberIdList"), new TypeReference<List<Long>>() {
+        });
         chatRoomService.createTeamChatroom(memberIdList, teamChatroom);
         return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
     }
+
+
+//    @ApiOperation(value = "팀 채팅방 생성", notes = "팀 채팅방을 생성한다.")
+//    @PostMapping("/TeamChatRoom")
+//    public ResponseEntity<String> createTeamChatRoom(@RequestBody TeamChatroom teamChatroom){
+//
+//        chatRoomService.createTeamChatroom(memberIdList, teamChatroom);
+//        return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
+//    }
+
 
     @ApiOperation(value = "팀 채팅방 삭제", notes = "회원이 특정 채팅방에서 나간다.")
     @DeleteMapping("/TeamChatRoom/{roomId}")

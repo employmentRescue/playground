@@ -1,8 +1,10 @@
 package com.websocket.chat.service;
 
 import com.websocket.chat.dto.GatheringChatroom;
+import com.websocket.chat.dto.MemberTeamChatroom;
 import com.websocket.chat.dto.TeamChatroom;
 import com.websocket.chat.repository.ChatRoomRepository;
+import com.websocket.chat.repository.TeamChatRoomJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
 
+    private final TeamChatRoomJpaRepository teamChatRoomJpaRepository;
 
     /*
         팀 채팅방
@@ -34,6 +37,14 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     public TeamChatroom createTeamChatroom(List<Long> memberIdList, TeamChatroom teamChatroom) {
         return chatRoomRepository.createTeamChatRoom(memberIdList, teamChatroom);
     }
+
+//    @Override
+//    public TeamChatroom createTeamChatroom2(TeamChatroom teamChatroom) {
+//        for(MemberTeamChatroom memberTeamChatroom : teamChatroom.getMemberTeamChatrooms()){
+//            memberTeamChatroom.setTeamChatroom(teamChatroom);
+//        }
+//        return teamChatRoomJpaRepository.save(teamChatroom);
+//    }
 
     @Override
     public void exitTeamChatroom(long memberId, int roomId) {

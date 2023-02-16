@@ -1,12 +1,10 @@
 package com.websocket.chat.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -15,8 +13,12 @@ import javax.persistence.ManyToOne;
 public class MemberTeamChatroom {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "고유번호", required = true)
     private int memberTeamChatroomId;
+    @ApiModelProperty(value = "팀 채팅방 아이디", required = true)
     private int teamChatroomId;
+    @ApiModelProperty(value = "멤버 계정", required = true)
     private long memberId;
 
     @ManyToOne
