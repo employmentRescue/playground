@@ -32,6 +32,7 @@ export default function TeamCreateDefaultPage() {
         console.log(store.getState().createTeam)
     }
 
+
     function handleOnClickChangePage(num: number) {
         setCurrentPage(currentPage + num)
     }

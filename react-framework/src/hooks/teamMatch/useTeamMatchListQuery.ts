@@ -21,6 +21,7 @@ const fetcher = (teamMatchList: teamMatchList) => axios.get(SERVER_URL + MATCH_L
     }
 ).then(({ data }) => data)
 
+
 const useTeamMatchListQuery = (teamMatchList: teamMatchList) => {
     return useQuery([MATCH_LIST, teamMatchList], () => fetcher(teamMatchList), { staleTime: 0, cacheTime: 60 * 5 * 1000, refetchInterval: 30 * 1000, refetchOnWindowFocus: false });
 }
