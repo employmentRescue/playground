@@ -35,6 +35,8 @@ public class TeamController {
     public ResponseEntity<?> match(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId, Long memberId) throws Exception {
         Map<String, Object> map = matchingService.startMatch(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, registerTime, teamId);
 
+        System.out.println("매칭 결과: " + map);
+
         if(map != null) {
             //알림 서버로 보내기
             URL url = new URL ("https://i8b309.p.ssafy.io/notify/send/token-list");

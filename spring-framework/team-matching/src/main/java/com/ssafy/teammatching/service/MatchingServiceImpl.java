@@ -32,6 +32,7 @@ public class MatchingServiceImpl implements MatchingService {
         Team team = teamRepository.findTeamByTeamId(teamId);
         int point = team.getPoint();
 
+        int count = 0;
         while(true) {
             //1. 대기열에서 같은 조건의 방이 있는지 검색
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -104,14 +105,19 @@ public class MatchingServiceImpl implements MatchingService {
 
             } else { //3. 없으면 대기열에 등록 or 기다림
                 //TODO 만약 match에 내 팀 경기가 등록이 되어있으면 중지하고 알림 보냄(상대팀이 나를 매칭함)
-                
+
                 WaitingRoom waitingRoom = waitingRoomRepository.findByTeamId(teamId);
                 System.out.println("내 팀 대기열 상태: " + waitingRoom);
 
                 //취소한거 알았을때 취소하도록함
-                if(waitingRoom != null && waitingRoom.isCanceled()) {System.out.println("취소됨"); return null;}
+//                if(waitingRoom != null && waitingRoom.isCanceled()) {System.out.println("취소됨"); return null;}
 
                 if(waitingRoom == null) { //기존 대기열에 없으면 대기열에 등록
+                    if(count > 0) {
+                        System.out.println("취소됨");
+                        return null;
+                    }
+
                     System.out.println("대기열에 등록");
                     
                     waitingRoom = WaitingRoom.builder()
@@ -130,6 +136,8 @@ public class MatchingServiceImpl implements MatchingService {
                             .build();
 
                     waitingRoomRepository.save(waitingRoom);
+
+                    count++;
                 }
             }
 
@@ -141,10 +149,11 @@ public class MatchingServiceImpl implements MatchingService {
     @Override
     @Transactional
     public void cancelMatching(int teamId) {
-        WaitingRoom waitingRoom = waitingRoomRepository.findByTeamId(teamId);
-        waitingRoom.setCanceled(true);
-
-        waitingRoomRepository.save(waitingRoom);
+//        WaitingRoom waitingRoom = waitingRoomRepository.findByTeamId(teamId);
+//        waitingRoom.setCanceled(true);
+//
+//        waitingRoomRepository.save(waitingRoom);
+        waitingRoomRepository.deleteByTeamId(teamId);
     }
 
     public TeamStats getTeamStats(Team team) {
