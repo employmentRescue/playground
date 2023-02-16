@@ -150,7 +150,7 @@ public class UserInfoController {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        searchResult.put("user-id",userID);
+        searchResult.put("user_id",userID);
         return new ResponseEntity(searchResult, HttpStatus.OK);
     }
 
