@@ -15,7 +15,7 @@ public interface WaitingRoomRepository extends JpaRepository<WaitingRoom, Intege
 
     @Query(value = "SELECT * FROM waiting_room " +
             "WHERE match_date = ?1 " +
-            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(lng, lat)) <= (distance + ?4) * 1000" +
+            "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(lng, lat)) <= (distance + ?4) * 1000 " +
             "AND ((?5 between min_start_time AND max_start_time) OR (?6 between min_start_time AND max_start_time) OR (?5 < min_start_time AND max_start_time < ?6)) " +
             "AND sports = ?7 AND game_type = ?8 " +
             "AND match_date >= now() " +
