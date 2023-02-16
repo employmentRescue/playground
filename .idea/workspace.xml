@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b343b698-aa2c-4d0b-af66-a9946ba4d981" name="Changes" comment="docker 테스트용">
-      <change beforePath="$PROJECT_DIR$/spring-framework/oauth_service/src/main/java/com/ssafy/oauth_service/controller/oauthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/spring-framework/oauth_service/src/main/java/com/ssafy/oauth_service/controller/oauthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring-framework/oauth_service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/spring-framework/oauth_service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring-framework/oauth_service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/spring-framework/oauth_service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spring-framework/oauth_service/src/main/resources/keystore.p12" beforeDir="false" afterPath="$PROJECT_DIR$/spring-framework/oauth_service/src/main/resources/keystore.p12" afterDir="false" />
-    </list>
+    <list default="true" id="b343b698-aa2c-4d0b-af66-a9946ba4d981" name="Changes" comment="docker 테스트용" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -250,6 +245,7 @@
       <workItem from="1675640770663" duration="5831000" />
       <workItem from="1675658152162" duration="12000" />
       <workItem from="1676262982263" duration="17000" />
+      <workItem from="1676585258469" duration="2000" />
     </task>
     <task id="LOCAL-00001" summary="docker 테스트용">
       <created>1675436548462</created>

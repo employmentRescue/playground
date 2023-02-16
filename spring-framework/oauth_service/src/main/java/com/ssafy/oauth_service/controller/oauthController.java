@@ -150,7 +150,8 @@ public class oauthController {
 
             return "redirect:" + /*api_gateway_url+ */ "https://localhost:3000" +  "/login/success?"
                     + "access_token=" + tokens.get("access_token")
-                    + "&refresh_token=" + tokens.get("refresh_token");
+                    + "&refresh_token=" + tokens.get("refresh_token")
+                    + "&user_id=" + userinfo.getId();
         }
         else {
 
@@ -234,6 +235,7 @@ public class oauthController {
         return new ResponseEntity(Map.of(
                 "access_token", tokens.get("access_token")
                 , "refresh_token", tokens.get("refresh_token")
+                , "user_id", loginCache.getKakao_userID()
         ) , HttpStatus.OK);
     }
 }
