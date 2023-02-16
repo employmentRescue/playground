@@ -28,9 +28,9 @@ public class MatchingServiceImpl implements MatchingService {
     TeamMatchResultRepository teamMatchResultRepository;
 
     @Override
-    public Map<String, Object> startMatch(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId) throws ParseException, InterruptedException {
-        Team team = teamRepository.findTeamByTeamId(teamId);
-        int point = team.getPoint();
+    public Map<String, Object> startMatch(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId, long memberId) throws ParseException, InterruptedException {
+        Team myTeam = teamRepository.findTeamByTeamId(teamId);
+        int point = myTeam.getPoint();
 
         int count = 0;
         while(true) {
@@ -54,12 +54,15 @@ public class MatchingServiceImpl implements MatchingService {
             if(roomList != null && roomList.size() != 0) {
                 WaitingRoom room = roomList.get(0); //매칭된 방
 
-                //상대팀 정보 저장
+                //매칭 완료 알람 정보 저장
+                TeamStats myTeamStats = getTeamStats(myTeam); //매칭 요청한 팀 정보
+
                 Team opTeam = teamRepository.findTeamByTeamId(room.getTeamId());
-                TeamStats opTeamStat = getTeamStats(opTeam);
+                TeamStats opTeamStats = getTeamStats(opTeam); //먼저 대기열에 들어와 매칭 당한 팀 정보
 
                 //대기열에서 매칭된 팀 삭제하기
-                waitingRoomRepository.deleteByTeamId(teamId);
+                waitingRoomRepository.deleteByTeamId(teamId); //우리팀 대기열에서 삭제
+                waitingRoomRepository.deleteByTeamId(room.getTeamId()); //상대팀 대기열에서 삭제
 
                 //Match에 등록하기
                 PreferredPlace preferredPlace = PreferredPlace.builder()
@@ -96,32 +99,49 @@ public class MatchingServiceImpl implements MatchingService {
 
                 matchRepository.save(match);
 
-                //Map으로 담아서 반환하기
+                //Map으로 담아서 각각 상대팀의 정보 반환하기
                 Map<String, Object> resultMap = new HashMap<>();
-                resultMap.put("match", match);
-                resultMap.put("opTeamStat", opTeamStat);
-                
+                MatchingResult myTeamMatchingResult = MatchingResult.builder() //우리팀과 매칭된 상대팀 정보
+                        .memberId(memberId)
+                        .opTeamName(opTeamStats.getTeamName())
+                        .opTier(opTeamStats.getTier())
+                        .build();
+
+                MatchingResult opTeamMatchingResult = MatchingResult.builder() //상대팀이 매칭된 우리팀 정보
+                        .memberId(room.getMemberId())
+                        .opTeamName(myTeamStats.getTeamName())
+                        .opTier(myTeamStats.getTier())
+                        .build();
+
+                System.out.println(myTeamMatchingResult);
+                System.out.println(opTeamMatchingResult);
+
+                resultMap.put("myTeamMatchingResult", myTeamMatchingResult);
+                resultMap.put("opTeamMatchingResult", opTeamMatchingResult);
+
+                resultMap.put("match", match); //매칭된 경기의 정보
+
                 return resultMap;
 
             } else { //3. 없으면 대기열에 등록 or 기다림
-                //TODO 만약 match에 내 팀 경기가 등록이 되어있으면 중지하고 알림 보냄(상대팀이 나를 매칭함)
-
                 WaitingRoom waitingRoom = waitingRoomRepository.findByTeamId(teamId);
                 System.out.println("내 팀 대기열 상태: " + waitingRoom);
 
                 //취소한거 알았을때 취소하도록함
 //                if(waitingRoom != null && waitingRoom.isCanceled()) {System.out.println("취소됨"); return null;}
 
-                if(waitingRoom == null) { //기존 대기열에 없으면 대기열에 등록
-                    if(count > 0) {
-                        System.out.println("취소됨");
+                if(waitingRoom == null) {
+                    if(count > 0) { //대기열에 있다가 대기열에서 빠졌는지 확인(내가 취소함 or 내가 상대방에게 매칭당함)
+                        System.out.println("취소됨 or 매칭 당함");
                         return null;
                     }
 
+                    //기존 대기열에 없으면 대기열에 등록
                     System.out.println("대기열에 등록");
                     
                     waitingRoom = WaitingRoom.builder()
                             .teamId(teamId)
+                            .memberId(memberId)
                             .matchDate(matchDate)
                             .lat(lat)
                             .lng(lng)
@@ -132,7 +152,6 @@ public class MatchingServiceImpl implements MatchingService {
                             .gameType(gameType)
                             .teamPoint(point)
                             .registerTime(registerTime)
-                            .isCanceled(false)
                             .build();
 
                     waitingRoomRepository.save(waitingRoom);

@@ -4,11 +4,13 @@ import com.ssafy.teammatching.dto.WaitingRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface WaitingRoomRepository extends JpaRepository<WaitingRoom, Integer> {
     WaitingRoom findByTeamId(int teamId);
     WaitingRoom save(WaitingRoom waitingRoom);
+    @Transactional
     void deleteByTeamId(int teamId);
 
     @Query(value = "SELECT * FROM waiting_room " +

@@ -19,6 +19,7 @@ public class WaitingRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomId;
     private int teamId;
+    private long memberId;
     private String matchDate;
     private double lat;
     private double lng;
@@ -29,11 +30,11 @@ public class WaitingRoom {
     private String gameType;
     private int teamPoint;
     private String registerTime;
-    private boolean isCanceled;
 
     @Builder
-    public WaitingRoom(int teamId, String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, int teamPoint, String registerTime, boolean isCanceled) {
+    public WaitingRoom(int teamId, long memberId, String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, int teamPoint, String registerTime) {
         this.teamId = teamId;
+        this.memberId = memberId;
         this.matchDate = matchDate;
         this.lat = lat;
         this.lng = lng;
@@ -44,6 +45,5 @@ public class WaitingRoom {
         this.gameType = gameType;
         this.teamPoint = teamPoint;
         this.registerTime = registerTime;
-        this.isCanceled = isCanceled;
     }
 }

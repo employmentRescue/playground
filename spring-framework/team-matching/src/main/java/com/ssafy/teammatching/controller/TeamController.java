@@ -1,10 +1,7 @@
 package com.ssafy.teammatching.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.teammatching.dto.FCM;
-import com.ssafy.teammatching.dto.Match;
-import com.ssafy.teammatching.dto.MemberDetail;
-import com.ssafy.teammatching.dto.TeamStats;
+import com.ssafy.teammatching.dto.*;
 import com.ssafy.teammatching.service.MatchingService;
 import com.ssafy.teammatching.service.MemberService;
 import io.swagger.annotations.Api;
@@ -33,7 +30,7 @@ public class TeamController {
     @ApiOperation(value = "원하는 조건으로 팀 경기 매칭하기", notes = "조건(날짜(matchDate), 지역(lat, lng), 반경(distance), 최소 시작시간(minStartTime), 최대 시작시간(maxStartTime), 스포츠 종류(sports), 게임 타입(gameType)에 맞는 팀 경기를 매칭해준다.")
     @PostMapping("/matching")
     public ResponseEntity<?> match(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId, Long memberId) throws Exception {
-        Map<String, Object> map = matchingService.startMatch(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, registerTime, teamId);
+        Map<String, Object> map = matchingService.startMatch(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, registerTime, teamId, memberId);
 
         System.out.println("매칭 결과: " + map);
 
@@ -53,22 +50,33 @@ public class TeamController {
             //json data
             ObjectMapper objectMapper = new ObjectMapper();
 
+            //매칭 결과 가져오기
+            Match match = (Match) map.get("match");
+            MatchingResult matchingResult1 = (MatchingResult) map.get("myTeamMatchingResult");
+            MatchingResult matchingResult2 = (MatchingResult) map.get("opTeamMatchingResult");
+
+            matchingResult1.setMatchId(match.getMatchId());
+            matchingResult2.setMatchId(match.getMatchId());
+
             //멤버의 토큰 가져오기 -> 토큰 리스트에 넣기
-            MemberDetail memberDetail = memberService.getMemberDetail(memberId);
-            String token = memberDetail.getWebFcmToken();
-            token = "fNGBxyTXLbabHNgQbvL9Y1:APA91bFTWorrmDTNO9--VergBZSiOX_SP7ZdeBWNi2lYmG3Dwzw30kvObyek9Aq4Zr1-vma_cduMZUBuLhSXZy5EOchanPYAKCeXSJE2IfBM4Ah7c_iEVL2EuEmt0Svr0Ua7c91nCC2-";
+            MemberDetail memberDetail1 = memberService.getMemberDetail(matchingResult1.getMemberId());
+            String token1 = memberDetail1.getWebFcmToken();
+//            token1 = "fNGBxyTXLbabHNgQbvL9Y1:APA91bFTWorrmDTNO9--VergBZSiOX_SP7ZdeBWNi2lYmG3Dwzw30kvObyek9Aq4Zr1-vma_cduMZUBuLhSXZy5EOchanPYAKCeXSJE2IfBM4Ah7c_iEVL2EuEmt0Svr0Ua7c91nCC2-";
+
+            MemberDetail memberDetail2 = memberService.getMemberDetail(matchingResult1.getMemberId());
+            String token2 = memberDetail2.getWebFcmToken();
+//            token2 = "fNGBxyTXLbabHNgQbvL9Y1:APA91bFTWorrmDTNO9--VergBZSiOX_SP7ZdeBWNi2lYmG3Dwzw30kvObyek9Aq4Zr1-vma_cduMZUBuLhSXZy5EOchanPYAKCeXSJE2IfBM4Ah7c_iEVL2EuEmt0Svr0Ua7c91nCC2-";
 
             List<String> token_list = new ArrayList<>();
-            token_list.add(token);
+            token_list.add(token1);
+            token_list.add(token2);
 
-            //데이터 담기
-            Match match = (Match) map.get("match");
-            TeamStats teamStats = (TeamStats) map.get("opTeamStat");
+            System.out.println("매칭 멤버1" + matchingResult1.getMemberId());
+            System.out.println("매칭 멤버2" + matchingResult2.getMemberId());
 
             Map<String, String> data = new HashMap<>();
-            data.put("matchId", String.valueOf(match.getMatchId()));
-            data.put("teamName", teamStats.getTeamName()); //상대방 팀 이름
-            data.put("tier", teamStats.getTier()); //상대방 티어
+            data.put(matchingResult1.getMemberId().toString(), matchingResult1.toString());
+            data.put(matchingResult2.getMemberId().toString(), matchingResult2.toString());
 
             FCM fcm = FCM.builder()
                     .title("매칭 완료")
