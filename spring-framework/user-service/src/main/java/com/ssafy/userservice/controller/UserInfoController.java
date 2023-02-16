@@ -66,6 +66,30 @@ public class UserInfoController {
 
     }
 
+    @PostMapping("/search/id/similar")
+    ResponseEntity searchSimilarNickname(String nickname){
+        System.out.println(nickname);
+        List<Object> searchResult = new LinkedList<>();
+
+        for (Tuple t : queryFactory.select(qMemberSometimes.id, qMemberSometimes.nickname)
+                .from(qMemberSometimes)
+                .where(qMemberSometimes.nickname.like(nickname + "%"))
+                .fetch()){
+            Map<String, Object> member = new HashMap<>();
+            member.put("id", t.get(0, Long.class));
+            member.put("nickname", t.get(1, String.class));
+
+            searchResult.add(member);
+        }
+
+        try {
+        }
+        catch (Throwable e){
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity(searchResult, HttpStatus.OK);
+    }
 
 
     @Transactional
