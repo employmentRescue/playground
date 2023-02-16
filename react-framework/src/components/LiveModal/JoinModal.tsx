@@ -7,6 +7,8 @@ import { liveMatch } from '@/models/liveMatch'
 import useLiveMatchJoin from '@/hooks/liveMatch/useLiveMatchJoin'
 import moment from 'moment'
 import { getImgUrl } from '@/utils/getImgUrl'
+import { useSelector } from 'react-redux';
+import { RootState } from '@/stores/store';
 
 interface Iprops {
     liveMatch: liveMatch;
@@ -16,6 +18,11 @@ interface Iprops {
 
 
 export default function JoinModal(props: Iprops) {
+
+    const userId = useSelector((state: RootState) => {
+        return state.userId
+    })
+
     const join = () => {
         props.closeModal();
     }
@@ -68,7 +75,7 @@ export default function JoinModal(props: Iprops) {
             <JoinButton onClick={() => {
                 mutate({
                     liveId: props.liveMatch.liveId,
-                    memberId: 111,
+                    memberId: userId,
                 }), join();
             }}>참여하기</JoinButton>
         </div >

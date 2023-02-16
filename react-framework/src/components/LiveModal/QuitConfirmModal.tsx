@@ -1,5 +1,7 @@
 import useLiveMatchQuit from "@/hooks/liveMatch/useLiveMatchQuit";
 import { liveMatch } from "@/models/liveMatch";
+import { RootState } from "@/stores/store";
+import { useSelector } from "react-redux";
 
 interface Iprops {
     liveMatch: liveMatch;
@@ -8,7 +10,9 @@ interface Iprops {
 }
 
 export default function QuitConfirmModal(props: Iprops) {
-
+    const userId = useSelector((state: RootState) => {
+        return state.userId
+    })
     const { mutate } = useLiveMatchQuit();
 
     return (
@@ -21,7 +25,7 @@ export default function QuitConfirmModal(props: Iprops) {
                     <div className="text-16 mr-24 text-blue-700" onClick={() => {
                         mutate({
                             liveId: props.liveMatch.liveId,
-                            memberId: 111,
+                            memberId: userId,
                         }); props.closeModal();
                     }}>취소</div>
                 </div>

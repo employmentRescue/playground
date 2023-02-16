@@ -2,7 +2,7 @@ import { SERVER_URL } from '@/utils/url';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
-const fetcher = (matchId: number) => axios.post(SERVER_URL + `/match/join/${matchId}`);
+const fetcher = (variables: { matchId: number, teamId: number }) => axios.post(SERVER_URL + `/match/join/${variables.matchId}`, { teamId: variables.teamId });
 
 const useTeamMatchJoin = () => {
   return useMutation(fetcher, {

@@ -18,12 +18,16 @@ export default function TeamMatchGamePage() {
   console.log(teamMatch)
   const dispatch = useDispatch();
 
+  const teamId = useSelector((state: RootState) => {
+    return state.team.id;
+  });
+
   useEffect(() => {
     dispatch(setTabName('팀 매칭 상세'))
   }, [])
 
   const joinChatting = () => {
-    mutate(Number(teamMatchId))
+    mutate({ matchId: Number(teamMatchId), teamId: teamId })
   }
 
   const quit = () => {

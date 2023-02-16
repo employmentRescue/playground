@@ -1,7 +1,9 @@
 import useLiveMatchQuit from "@/hooks/liveMatch/useLiveMatchQuit";
 import useLiveMatchRegister from "@/hooks/liveMatch/useLiveMatchRegister";
 import { place } from "@/models/place";
+import { RootState } from "@/stores/store";
 import moment from 'moment';
+import { useSelector } from "react-redux";
 
 interface Iprops {
     currentPeopleNum: number,
@@ -16,6 +18,10 @@ interface Iprops {
 
 
 export default function RegisterConfirmModal(props: Iprops) {
+
+    const userId = useSelector((state: RootState) => {
+        return state.userId
+    })
 
     const { mutate } = useLiveMatchRegister();
     const now = moment().format('YYYY-MM-DD HH:mm:ss'); // 시:분:초
@@ -32,7 +38,7 @@ export default function RegisterConfirmModal(props: Iprops) {
                             currentPeopleNum: props.currentPeopleNum,
                             totalPeopleNum: props.totalPeopleNum,
                             detail: props.detail,
-                            hostId: 111,
+                            hostId: userId,
                             place: {
                                 address: props.place.address,
                                 lat: props.place.lat,

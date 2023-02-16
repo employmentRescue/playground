@@ -18,12 +18,17 @@ export default function TeamMatchGamePage() {
   console.log(teamMatch)
   const dispatch = useDispatch();
 
+
+  const teamId = useSelector((state: RootState) => {
+    return state.team.id;
+  });
+
   useEffect(() => {
     dispatch(setTabName('팀 매칭 상세'))
   }, [])
 
   const join = () => {
-    mutate(Number(teamMatchId))
+    mutate({ matchId: Number(teamMatchId), teamId: 1 })
   }
 
   return teamMatch.data && (
@@ -61,7 +66,7 @@ export default function TeamMatchGamePage() {
           <div className="mt-15 text-12 text-gray-700">{teamMatch.data.done ? '매칭 결과 입력 완료' : '상대가 매칭 결과를 입력하기 전입니다.'}</div>
         </div>
         <div className="flex mb-15">
-          <button className="w-2/3 h-34 rounded-5 bg-blue-700 mr-6 text-15 text-white" onClick={join}>매칭 신청하기</button>
+          <button className="w-full h-34 rounded-5 bg-blue-700 mr-6 text-15 text-white" onClick={join}>매칭 신청하기</button>
         </div>
       </div>
     </div>
