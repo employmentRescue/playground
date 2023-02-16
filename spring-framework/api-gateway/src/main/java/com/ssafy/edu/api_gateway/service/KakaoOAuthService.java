@@ -59,10 +59,10 @@ public class KakaoOAuthService {
             // 오류 !!
             throw new Exception("No such refresh token or access_token which is connected with refresh_token was deleted");
         }
-
-        // delete my access_token, refresh_token
-        accessTokenCacheRepository.delete(old_access_token);
-        refreshTokenCacheRepository.delete(old_refresh_token);
+//
+//        // delete my access_token, refresh_token
+//        accessTokenCacheRepository.delete(old_access_token);
+//        refreshTokenCacheRepository.delete(old_refresh_token);
 
 
         // get kakao access_token, refresh_token
@@ -79,34 +79,35 @@ public class KakaoOAuthService {
         httpConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         InputStream responseStream = httpConn.getInputStream();
         String ret = new String(responseStream.readAllBytes());
-        System.out.println(ret);
 
         if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
         Instant curTime = Instant.now();
 
-        Map<String, Object> map = objectMapper.convertValue(ret, Map.class);
+        System.out.println();
+//        objectMapper.convertValue(ret, Map.class);
 
-        String access_token = UUID.randomUUID().toString();
-        refresh_token = UUID.randomUUID().toString();
-
-        KakaoLoginAccessTokenCache accessTokenCache = KakaoLoginAccessTokenCache.builder()
-                .token(access_token)
-                .kakao_userID(kakao_userID)
-                .kakao_accessToken((String) map.get("access_token"))
-                .kakao_refreshToken((String) map.get("refresh_token"))
-                ._expires_in(curTime.plusSeconds((Integer) map.get("expires_in"))).build();
-        accessTokenCacheRepository.save(accessTokenCache);
-
-        KakaoLoginRefreshTokenCache refreshTokenCache = KakaoLoginRefreshTokenCache.builder()
-                .token(refresh_token)
-                .connected_access_token(access_token)
-                ._refresh_token_expires_in(curTime.plusSeconds((Integer) map.get("refresh_token_expires_in"))).build();
-        refreshTokenCacheRepository.save(refreshTokenCache);
-
-        return Map.of(
-                "access_token", access_token
-                , "refresh_token", refresh_token
-        );
+//        String access_token = UUID.randomUUID().toString();
+//        refresh_token = UUID.randomUUID().toString();
+//
+//        KakaoLoginAccessTokenCache accessTokenCache = KakaoLoginAccessTokenCache.builder()
+//                .token(access_token)
+//                .kakao_userID(kakao_userID)
+//                .kakao_accessToken((String) map.get("access_token"))
+//                .kakao_refreshToken((String) map.get("refresh_token"))
+//                ._expires_in(curTime.plusSeconds((Integer) map.get("expires_in"))).build();
+//        accessTokenCacheRepository.save(accessTokenCache);
+//
+//        KakaoLoginRefreshTokenCache refreshTokenCache = KakaoLoginRefreshTokenCache.builder()
+//                .token(refresh_token)
+//                .connected_access_token(access_token)
+//                ._refresh_token_expires_in(curTime.plusSeconds((Integer) map.get("refresh_token_expires_in"))).build();
+//        refreshTokenCacheRepository.save(refreshTokenCache);
+//
+//        return Map.of(
+//                "access_token", access_token
+//                , "refresh_token", refresh_token
+//        );
+        return null;
     }
 
 }

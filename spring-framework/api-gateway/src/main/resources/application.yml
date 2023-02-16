@@ -37,8 +37,8 @@ spring:
 
       httpclient:
         ssl:
-          # useInsecureTrustManager: true # SSL Route(?) 허용
-          # ssl과 domain 관련(https를 사용할 경우 상대 docker container의 name 사용이 불가능한 이유, spring cloud gateway에서 라우팅이 안됨.)
+#           useInsecureTrustManager: true # SSL Route(?) 허용
+#           ssl과 domain 관련(https를 사용할 경우 상대 docker container의 name 사용이 불가능한 이유, spring cloud gateway에서 라우팅이 안됨.)
           #    : https://juinthyme.tistory.com/3
           trustedX509Certificates:
             - classpath:cert1.pem
@@ -51,6 +51,7 @@ spring:
 
         - id: oauth2-service
           uri: https://i8b309.p.ssafy.io:9001
+#          uri: http://localhost:8080
           order: 1
           predicates:
             - Path=/oauth2/**
@@ -59,8 +60,8 @@ spring:
 
 
         - id: user-service
-#          uri: https://i8b309.p.ssafy.io:9002
-          uri: https://localhost:9000
+          uri: https://i8b309.p.ssafy.io:9002
+#          uri: http://localhost:9000
           predicates:
             - Path=/user/**, /file/**
 #          filters:
@@ -107,7 +108,7 @@ spring:
 
   data:
     redis:
-      host: i8b309.p.ssafy.io
+      host: i8b309.p.ssafy.io  # localhost
       port: 6379
 
 oauth2:

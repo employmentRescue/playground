@@ -66,6 +66,30 @@ public class UserInfoController {
 
     }
 
+    @PostMapping("/search/id/similar")
+    ResponseEntity searchSimilarNickname(String nickname){
+        System.out.println(nickname);
+        List<Object> searchResult = new LinkedList<>();
+
+        for (Tuple t : queryFactory.select(qMemberSometimes.id, qMemberSometimes.nickname)
+                .from(qMemberSometimes)
+                .where(qMemberSometimes.nickname.like(nickname + "%"))
+                .fetch()){
+            Map<String, Object> member = new HashMap<>();
+            member.put("id", t.get(0, Long.class));
+            member.put("nickname", t.get(1, String.class));
+
+            searchResult.add(member);
+        }
+
+        try {
+        }
+        catch (Throwable e){
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity(searchResult, HttpStatus.OK);
+    }
 
 
     @Transactional
@@ -98,6 +122,7 @@ public class UserInfoController {
     @Transactional
     @PostMapping("/search")
     ResponseEntity searchUserInfo(@RequestHeader("x-forwarded-for-user-id") long userID , @RequestBody Set<String> req){
+        if (req == null) return new ResponseEntity(HttpStatus.BAD_REQUEST);
         System.out.println("req : " + req);
         Map<String, Object> searchResult = new HashMap<>();
 
@@ -125,7 +150,7 @@ public class UserInfoController {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        searchResult.put("user-id",userID);
+        searchResult.put("user_id",userID);
         return new ResponseEntity(searchResult, HttpStatus.OK);
     }
 

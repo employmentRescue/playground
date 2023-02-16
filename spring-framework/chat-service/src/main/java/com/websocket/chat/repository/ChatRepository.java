@@ -31,6 +31,7 @@ public class ChatRepository {
         if(list == null){
             list = new ArrayList<>();
         }
+        message.setMessageId(list.size()+1);
         list.add(message);
         opsHashMessageList.put(MessageList, roomId, list);
     }
@@ -41,6 +42,8 @@ public class ChatRepository {
 
     public void readMessage(long memberId, int roomId, ChatMessage message){
         String stMemberId = Long.toString(memberId);
+        List<ChatMessage> messageList = messageList(roomId);
+        message.setMessageId(messageList.size());
         opsHashMessage.put(stMemberId, roomId, message);
     }
 
@@ -49,4 +52,10 @@ public class ChatRepository {
         return opsHashMessage.get(stMemberId, roomId);
     }
 
+    public int unreadMessageNumber(long memberId, int roomId) {
+        List<ChatMessage> messageList = messageList(roomId);
+        ChatMessage chatMessage = bringMessage(memberId, roomId);
+        int unreadMessageNumber = messageList.size() - chatMessage.getMessageId();
+        return unreadMessageNumber;
+    }
 }

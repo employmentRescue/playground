@@ -35,5 +35,10 @@ public class ChatServiceImpl implements ChatService{
         return chatRepository.bringMessage(memberId, roomId);
     }
 
+    @Override
+    public int unreadMessageNumber(long memberId, int roomId) {
+        return chatRepository.unreadMessageNumber(memberId, roomId);
+    }
+
 
 }

@@ -52,6 +52,18 @@ public class ChatRoomRepository {
     /*
         Team Chatroom
     */
+
+    public TeamChatroom createTeamChatRoom(List<Long> memberIdList, TeamChatroom teamChatroom) {
+        teamChatRoomJpaRepository.save(teamChatroom);
+        List<TeamChatroom> list = teamChatRoomJpaRepository.findAll();
+        TeamChatroom teamChatroomJpa = teamChatRoomJpaRepository.findAllByTeamChatroomId(list.get(list.size()-1).getTeamChatroomId());
+        for(long memberId : memberIdList){
+            MemberTeamChatroom memberTeamChatroom = new MemberTeamChatroom(0, teamChatroomJpa.getTeamChatroomId(), memberId);
+            memberTeamChatRoomJpaRepository.save(memberTeamChatroom);
+        }
+        return teamChatroom;
+    }
+
     public List<TeamChatroom> findAllTeamChatRoomByMemberId(long memberId) {
         List<MemberTeamChatroom> list = memberTeamChatRoomJpaRepository.findAllByMemberId(memberId);
         List<TeamChatroom> teamChatroomList = new ArrayList<>();
@@ -74,6 +86,18 @@ public class ChatRoomRepository {
     /*
         Gathering Chatroom
     */
+
+    public GatheringChatroom createGatheringChatRoom(List<Long> memberIdList, GatheringChatroom gatheringChatroom) {
+        gatheringChatRoomJpaRepository.save(gatheringChatroom);
+        List<GatheringChatroom> list = gatheringChatRoomJpaRepository.findAll();
+        GatheringChatroom gatheringChatroomJpa = gatheringChatRoomJpaRepository.findAllByGatheringChatroomId(list.get(list.size()-1).getGatheringChatroomId());
+        for(long memberId : memberIdList){
+            MemberGatheringChatroom memberGatheringChatroom = new MemberGatheringChatroom(0, gatheringChatroomJpa.getGatheringChatroomId(), memberId);
+            memberGatheringChatRoomJpaRepository.save(memberGatheringChatroom);
+        }
+        return gatheringChatroom;
+    }
+
     public List<GatheringChatroom> findAllGatheringChatRoomByMemberId(long memberId) {
         List<MemberGatheringChatroom> list = memberGatheringChatRoomJpaRepository.findAllByMemberId(memberId);
         List<GatheringChatroom> gatheringChatroomList = new ArrayList<>();
@@ -92,35 +116,7 @@ public class ChatRoomRepository {
     public void exitGatheringChatroom(long memberId, int roomId){
         memberGatheringChatRoomJpaRepository.deleteByMemberIdAndGatheringChatroomId(memberId, roomId);
     }
-    /*
-        채팅방 생성: 서버간 채팅방 공유를 위해 redis hash에 저장.
-    */
 
-    private int mtcId=1;
-
-    public TeamChatroom createTeamChatRoom(List<Long> memberIdList, TeamChatroom teamChatroom) {
-        teamChatRoomJpaRepository.save(teamChatroom);
-        List<TeamChatroom> list = teamChatRoomJpaRepository.findAll();
-        TeamChatroom teamChatroomJpa = teamChatRoomJpaRepository.findAllByTeamChatroomId(list.get(list.size()-1).getTeamChatroomId());
-        for(long memberId : memberIdList){
-            MemberTeamChatroom memberTeamChatroom = new MemberTeamChatroom(mtcId++, teamChatroomJpa.getTeamChatroomId(), memberId);
-            memberTeamChatRoomJpaRepository.save(memberTeamChatroom);
-        }
-        return teamChatroom;
-    }
-
-    private int mgcId=1;
-
-    public GatheringChatroom createGatheringChatRoom(List<Long> memberIdList, GatheringChatroom gatheringChatroom) {
-        gatheringChatRoomJpaRepository.save(gatheringChatroom);
-        List<GatheringChatroom> list = gatheringChatRoomJpaRepository.findAll();
-        GatheringChatroom gatheringChatroomJpa = gatheringChatRoomJpaRepository.findAllByGatheringChatroomId(list.get(list.size()-1).getGatheringChatroomId());
-        for(long memberId : memberIdList){
-            MemberGatheringChatroom memberGatheringChatroom = new MemberGatheringChatroom(mgcId++, gatheringChatroomJpa.getGatheringChatroomId(), memberId);
-            memberGatheringChatRoomJpaRepository.save(memberGatheringChatroom);
-        }
-        return gatheringChatroom;
-    }
 
     /*
         채팅방 입장: redis에 topic을 만들고 pub/sub 통신을 하기 위해 리스너를 설정한다.

@@ -43,8 +43,8 @@
     <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
     <script>
         // websocket & stomp initialize
+        // var sock = new SockJS("https://192.168.31.247:8080/ws-stomp");
         var sock = new SockJS("https://localhost:8080/ws-stomp");
-        // var sock = new WebSocket("https://localhost:10005/ws-stomp");
         var ws = Stomp.over(sock);
         // vue.js
         var vm = new Vue({
@@ -61,6 +61,7 @@
                 this.roomId = localStorage.getItem('roomId');
                 this.findRoom();
                 this.bringAllMessage();
+                this.readMessage();
             },
             methods: {
                 findRoom: function() {
@@ -85,6 +86,11 @@
                             this.messages.push(message)
                         )
                     });
+                },
+                readMessage(){
+                    const message = this.messages[this.messages.length-1];
+                    console.log(message);
+                    axios.post('/chat/readMessage/'+this.roomId+'?memberId='+this.memberId, message);
                 }
             }
         });

@@ -21,8 +21,10 @@ public class TeamChatroom implements Serializable {
     private static final long serialVersionUID = 6494678977089006639L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "팀 채팅방 아이디", required = true)
     private int teamChatroomId;
-    @ApiModelProperty(value = "팀 ID", required = true)
+    @ApiModelProperty(value = "팀 아이디", required = true)
     private int teamId;
     @ApiModelProperty(value = "팀채팅방 이름", required = true)
     private String chatroomName;

@@ -1,6 +1,7 @@
 package com.ssafy.edu.api_gateway.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.annotation.Nonnull;
 import lombok.*;
@@ -25,5 +26,6 @@ public class KakaoLoginAccessTokenCache {
     long kakao_userID;
     String kakao_accessToken;
     String kakao_refreshToken;
-    Instant _expires_in;
+    @JsonIgnore
+    Instant _expires_in; //
 }

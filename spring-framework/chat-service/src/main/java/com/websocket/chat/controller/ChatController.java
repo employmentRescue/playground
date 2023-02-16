@@ -39,8 +39,10 @@ public class ChatController {
         if(!message.getType().equals("ENTER"))
             redisPublisher.messagePublish(chatRoomRepository.getTopic(message.getChatroomId()), message);
 
-        if(!message.getType().equals("ENTER"))
+        if(!message.getType().equals("ENTER")){
             chatService.saveMessage(message.getChatroomId(), message);
+
+        }
     }
 
     @ApiOperation(value = "채팅방 모든 메세지 출력", notes = "해당 채팅방의 모든 메세지를 가져온다.")
@@ -59,7 +61,13 @@ public class ChatController {
     @ApiOperation(value = "채팅방에서 읽은 마지막 메세지", notes = "해당 채팅방에서 읽은 마지막 메세지를 가져온다.")
     @GetMapping("/chat/readMessage/{roomId}")
     public ResponseEntity<ChatMessage> bringLstReadMessage(@RequestParam long memberId, @PathVariable int roomId){
-        return new ResponseEntity<>(chatService.bringMessage(memberId, roomId), HttpStatus.CREATED);
+        return new ResponseEntity<>(chatService.bringMessage(memberId, roomId), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "채팅방에서 안 읽은 메세지 개수", notes = "해당 채팅방에서 안 읽은 메세지의 개수를 가져온다.")
+    @GetMapping("/chat/unreadMessage/{roomId}")
+    public ResponseEntity<Integer> unreadMessageNumber(@RequestParam long memberId, @PathVariable int roomId){
+        return new ResponseEntity<>(chatService.unreadMessageNumber(memberId, roomId), HttpStatus.OK);
     }
 
 }
