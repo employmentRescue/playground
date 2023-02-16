@@ -22,6 +22,7 @@ import matchButton from "@/assets/icons/personal-match-button.png"
 import TeamMatchFilterBar from "@/components/TeamMatch/TeamMatchFilterBar";
 import { teamMatchList } from "@/models/teamMatchList";
 import { getImgUrl } from "@/utils/getImgUrl";
+import { setTabName } from "@/stores/tab/tabName";
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
@@ -182,11 +183,7 @@ function ListItem({ data }: { data: any }) {
     return (
         <Link to={"join/" + data.matchId} className="flex w-[90%] h-114 flex-grow-0 mx-10 p-10 my-10 rounded-15 bg-[#fff]">
             <div className="flex flex-col items-center justify-center w-1/4 h-full">
-                <img className="w-60 h-60 rounded-[50%]" src={getImgUrl('profiles/team', data.host.teamId)}
-                    onError={({ currentTarget }) => {
-                        currentTarget.onerror = null;
-                        currentTarget.src = getImgUrl('profiles/team', 'default_team')
-                    }} />
+                <img className="w-60 h-60 rounded-[50%]" src={getImgUrl('profiles/team', data.host.teamId)} />
             </div>
             <div className="flex flex-col justify-center w-1/2 h-full ml-10">
                 <span className="flex-grow-0 font-inter text-[17px] font-normal text-left text-[#000]">{data.host.name}</span>
@@ -314,6 +311,12 @@ export default function TeamMatchPage() {
             navigate("/menu/team/create");
         }
     }
+
+    const dispatch2 = useDispatch();
+
+    useEffect(() => {
+        dispatch2(setTabName('playGround'))
+    }, [])
 
 
     return (

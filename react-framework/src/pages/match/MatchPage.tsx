@@ -15,6 +15,7 @@ import footBallOriginal from "@/assets/icons/football-original.png"
 
 import { matchList } from "@/models/matchList";
 import useGatheringSearchQuery from "@/hooks/match/useGatheringSearchQuery";
+import { setTabName } from "@/stores/tab/tabName";
 
 
 // ============ 기타 타입 =================================================
@@ -209,7 +210,11 @@ export default function MatchPage() {
     }
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(setTabName('playGround'))
+    }, [])
     return (
         <div className="h-auto w-full bg-[#f5f5f5] m-0 pt-12">
             <MatchFilterBar setFilterData={(attr: attrType, value: any) => setFilterData(attr, value)} setSearchingData={(value: string) => { setSearchingData(value) }} startDate={startDate} location={location} distance={distance} startTime={startTime} level={level} playTime={playTime} sex={sex} sports={sports} gameType={gameType} sort={sort} />
