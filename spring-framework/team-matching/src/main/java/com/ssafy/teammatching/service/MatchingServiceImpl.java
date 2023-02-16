@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-@Transactional
 public class MatchingServiceImpl implements MatchingService {
     @Autowired
     TeamRepository teamRepository;
@@ -29,7 +28,7 @@ public class MatchingServiceImpl implements MatchingService {
     TeamMatchResultRepository teamMatchResultRepository;
 
     @Override
-    public Map<String, Object> startMatch(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId) throws ParseException {
+    public Map<String, Object> startMatch(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId) throws ParseException, InterruptedException {
         Team team = teamRepository.findTeamByTeamId(teamId);
         int point = team.getPoint();
 
@@ -43,11 +42,11 @@ public class MatchingServiceImpl implements MatchingService {
 
             List<WaitingRoom> roomList = new ArrayList<>();
             if(diffMin < 30) {
-                roomList = waitingRoomRepository.getWaitingRoomByFilter1(matchDate, lat, lng, distance, minStartTime, maxStartTime , sports, gameType, point);
+                roomList = waitingRoomRepository.getWaitingRoomByFilter1(matchDate, lat, lng, distance, minStartTime, maxStartTime , sports, gameType, point, teamId);
             } else if(30 <= diffMin && diffMin < 60) {
-                roomList = waitingRoomRepository.getWaitingRoomByFilter2(matchDate, lat, lng, distance, minStartTime, maxStartTime , sports, gameType, point);
+                roomList = waitingRoomRepository.getWaitingRoomByFilter2(matchDate, lat, lng, distance, minStartTime, maxStartTime , sports, gameType, point, teamId);
             } else {
-                roomList = waitingRoomRepository.getWaitingRoomByFilter3(matchDate, lat, lng, distance, minStartTime, maxStartTime , sports, gameType, point);
+                roomList = waitingRoomRepository.getWaitingRoomByFilter3(matchDate, lat, lng, distance, minStartTime, maxStartTime , sports, gameType, point, teamId);
             }
             
             //2. 있으면 대기열에서 꺼내서 Match db에 저장
@@ -58,8 +57,8 @@ public class MatchingServiceImpl implements MatchingService {
                 Team opTeam = teamRepository.findTeamByTeamId(room.getTeamId());
                 TeamStats opTeamStat = getTeamStats(opTeam);
 
-                //대기열에서 매칭된 팀 꺼내기
-                waitingRoomRepository.deleteByTeamId(room.getTeamId());
+                //대기열에서 매칭된 팀 삭제하기
+                waitingRoomRepository.deleteByTeamId(teamId);
 
                 //Match에 등록하기
                 PreferredPlace preferredPlace = PreferredPlace.builder()
@@ -104,9 +103,17 @@ public class MatchingServiceImpl implements MatchingService {
                 return resultMap;
 
             } else { //3. 없으면 대기열에 등록 or 기다림
+                //TODO 만약 match에 내 팀 경기가 등록이 되어있으면 중지하고 알림 보냄(상대팀이 나를 매칭함)
+                
                 WaitingRoom waitingRoom = waitingRoomRepository.findByTeamId(teamId);
+                System.out.println("내 팀 대기열 상태: " + waitingRoom);
+
+                //취소한거 알았을때 취소하도록함
+                if(waitingRoom != null && waitingRoom.isCanceled()) {System.out.println("취소됨"); return null;}
 
                 if(waitingRoom == null) { //기존 대기열에 없으면 대기열에 등록
+                    System.out.println("대기열에 등록");
+                    
                     waitingRoom = WaitingRoom.builder()
                             .teamId(teamId)
                             .matchDate(matchDate)
@@ -119,18 +126,25 @@ public class MatchingServiceImpl implements MatchingService {
                             .gameType(gameType)
                             .teamPoint(point)
                             .registerTime(registerTime)
+                            .isCanceled(false)
                             .build();
 
                     waitingRoomRepository.save(waitingRoom);
                 }
             }
+
+            Thread.sleep(10000); //10초 대기
         }
 
     }
 
     @Override
+    @Transactional
     public void cancelMatching(int teamId) {
-        waitingRoomRepository.deleteByTeamId(teamId);
+        WaitingRoom waitingRoom = waitingRoomRepository.findByTeamId(teamId);
+        waitingRoom.setCanceled(true);
+
+        waitingRoomRepository.save(waitingRoom);
     }
 
     public TeamStats getTeamStats(Team team) {

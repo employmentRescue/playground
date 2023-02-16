@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 
@@ -28,9 +29,10 @@ public class WaitingRoom {
     private String gameType;
     private int teamPoint;
     private String registerTime;
+    private boolean isCanceled;
 
     @Builder
-    public WaitingRoom(int teamId, String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, int teamPoint, String registerTime) {
+    public WaitingRoom(int teamId, String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, int teamPoint, String registerTime, boolean isCanceled) {
         this.teamId = teamId;
         this.matchDate = matchDate;
         this.lat = lat;
@@ -42,5 +44,6 @@ public class WaitingRoom {
         this.gameType = gameType;
         this.teamPoint = teamPoint;
         this.registerTime = registerTime;
+        this.isCanceled = isCanceled;
     }
 }

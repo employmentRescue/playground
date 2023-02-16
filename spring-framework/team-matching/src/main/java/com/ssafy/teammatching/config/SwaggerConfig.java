@@ -16,7 +16,7 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 @EnableWebMvc
 //@EnableSwagger2
 public class SwaggerConfig {
-	//https://localhost:10003/swagger-ui/index.html
+	//https://localhost:8080/swagger-ui/index.html
 	//https://i8b309.p.ssafy.io:10003/swagger-ui/index.html
 
 	private ApiInfo info() {
