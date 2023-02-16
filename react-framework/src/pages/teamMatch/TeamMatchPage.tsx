@@ -164,7 +164,8 @@ function MatchContent({ matchRequestData }: { matchRequestData: matchRequestData
 
     return (
         <div className="flex flex-col place-items-center w-full h-full m-0 py-[30%] bg-[#fff]">
-            <img src={matchButton} alt="" className="w-[200px] h-[200px]" />
+            <div className={matchStatus === '매칭 시작' ? "absolute ml-auto mr-auto mt-auto mb-auto w-[210px] h-[210px] rounded-50" : "absolute ml-auto mr-auto mt-auto mb-auto w-[200px] h-[200px] rounded-[50%] border-t-blue-700 border-t-5 border-b-blue-200 border-b-5 border-l-blue-200 border-r-blue-200 border-r-5 border-l-5 animate-spin"}></div>
+            <img src={matchButton} alt="" className={matchStatus === '매칭 시작' ? "w-[200px] h-[200px]" : "w-[200px] h-[200px] animate-pulse"} />
             <div className={"grid place-content-center w-124 h-45 mt-[5%] flex-grow-0 rounded-30 " + matchStatusColor()} onClick={(e) => { e.preventDefault(); handleClicked(); }}>
                 <span className="w-90 h-28 flex-grow-0 text-20 font-[500] text-center text-[#fff]">{matchStatus}</span>
             </div>
