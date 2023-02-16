@@ -1,6 +1,5 @@
 version: '3.5'
 
-
 services:
   api-gateway:
     # build:
@@ -12,7 +11,6 @@ services:
       - "443:443"
     networks:
       - playground-broadcast-network
-
 
   oauth2-service:
     # build: 
@@ -58,6 +56,26 @@ services:
     # - user-service
 
 
+  chat-service:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: chat-service
+    container_name: chat-service
+    ports:
+      - "9005:8080"
+    networks:
+      - playground-broadcast-network
+
+
+  team_matching-service:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: team_matching-service
+    container_name: team_matching-service
+    ports:
+      - "9006:8080"
+    networks:
+      - playground-broadcast-network
 
   react-framework:
     # build: 
@@ -73,4 +91,3 @@ networks:
   playground-broadcast-network:
     name: playground-broadcast-network
     driver: bridge
-

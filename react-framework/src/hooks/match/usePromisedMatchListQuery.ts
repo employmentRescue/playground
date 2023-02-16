@@ -8,7 +8,7 @@ const fetcher = (id: number) => axios.get(SERVER_URL + `/mypage/join/part/${id}`
 
 // 좌표를 받아왔을 때만 query
 const usePromisedMatchListQuery = (id: number) => {
-  return useQuery(PROMISEDMATCHLIST, () => fetcher(id), { staleTime: 30 * 1000, cacheTime: 60 * 5 * 1000, refetchInterval: 30 * 1000, refetchOnWindowFocus: false });
+  return useQuery(PROMISEDMATCHLIST, () => fetcher(id));
 }
 
 export default usePromisedMatchListQuery;

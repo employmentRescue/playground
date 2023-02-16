@@ -36,6 +36,6 @@ public class TeamChatroom implements Serializable {
     private List<MemberTeamChatroom> memberTeamChatrooms;
 
     @OneToMany
-    @JoinColumn(name = "teamChatroomId")
-    private List<TeamMessage> messages;
+    @JoinColumn(name = "chatroomId")
+    private List<ChatMessage> messages;
 }

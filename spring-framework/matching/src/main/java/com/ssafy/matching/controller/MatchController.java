@@ -3,7 +3,6 @@ package com.ssafy.matching.controller;
 import com.ssafy.matching.dto.Match;
 import com.ssafy.matching.dto.TeamMatchResult;
 import com.ssafy.matching.service.MatchService;
-import com.ssafy.matching.service.RankingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,6 +19,23 @@ import java.util.List;
 @Api("팀 경기 API")
 public class MatchController {
     private MatchService matchService;
+
+    @ApiOperation(value = "팀 경기 필터 검색", notes = "필터 조건(날짜(matchDate), 지역(lat, lng), 반경(distance), 최소 시작시간(minStartTime), 최대 시작시간(maxStartTime), 스포츠 종류(sports), 게임 타입(gameType), 정렬조건(sort - tierLow, tierHigh, distance))에 맞는 운동 모임을 검색해 반환한다", response = List.class)
+    @GetMapping
+    public ResponseEntity<?> listByFilter(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String sort) {
+        try {
+            System.out.println("gameType: "+ gameType);
+            List<Match> list = matchService.findMatchesByFilter(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, sort);
+            if (list != null && !list.isEmpty()) {
+                System.out.println(list);
+                return new ResponseEntity<List<Match>>(list, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return exceptionHandling(e);
+        }
+    }
 
     @ApiOperation(value = "팀 경기 보기", notes = "경기id에 해당하는 팀 경기를 확인한다.")
     @GetMapping("/{matchid}")

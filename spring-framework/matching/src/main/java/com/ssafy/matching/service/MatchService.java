@@ -19,4 +19,5 @@ public interface MatchService {
     TeamMatchResult joinMatch(TeamMatchResult teamMatchResult, int matchId);
     void leaveMatch(int matchId, int teamId);
 
+    List<Match> findMatchesByFilter(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String sort);
 }

@@ -24,7 +24,7 @@ public class PreferredPlace implements Serializable {
     @ApiModelProperty(value = "장소 번호")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int placeId;
+    private int preferredPlaceId;
     @ApiModelProperty(value = "주소", required = true)
     private String address;
     @ApiModelProperty(value = "위도", required = true)

@@ -15,6 +15,8 @@ spring:
             allowedOrigins:
               - "https://openapi.map.naver.com"
               - "http://localhost:3000"
+              - "https://localhost:3000"
+              - "http://192.168.56.1:3000"
             allow-credentials: true   #추가
             allowedHeaders:
               - x-requested-with
@@ -64,6 +66,7 @@ spring:
 
         - id: matching-service
           uri: https://i8b309.p.ssafy.io:9003
+          order: 1
           predicates:
             - Path=/match/**, /matching/**, /gathering/**, /live/**, /ranking/**, /team/**
 
@@ -74,41 +77,20 @@ spring:
           filters:
             - RewritePath=/test/(?<path>.*),/$\{path}
 
-#        - id: chat-service-tester
-#          uri: https://i8b309.p.ssafy.io:10003
-#          predicates:
-#            - Path=/test/chat/**, /test/ws-stomp/**, /test/webjars/**
-#          filters:
-#            - RewritePath=/test/(?<path>.*),/$\{path}
-
         - id: notify-service
           uri: https://i8b309.p.ssafy.io:9004
           predicates:
             - Path=/notify/**
 
-
-
-
-
-
-
-
-
-
-        - id: local-chat-service
-          uri: wss://i8b309.p.ssafy.io:9110
+        - id: chat-service
+          uri: https://i8b309.p.ssafy.io:9005
           predicates:
-            - Path=/websocket/**
+            - Path=/chat/**, /ws-stomp/**, /webjars/**
 
-
-
-
-
-
-
-
-
-
+        - id: team_match-service
+          uri: https://i8b309.p.ssafy.io:9006
+          predicates:
+            - Path=/team/matching/**
 
 
 
