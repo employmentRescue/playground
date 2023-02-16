@@ -77,17 +77,19 @@ public class AuthentificationGatewayFilter implements WebFilter {
         System.out.println("api-gateway routes for : " + exchange.getRequest().getPath());
 
 
+        if (AuthorizationHeaderContains(exchange)){
+            String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring("bearer ".length());
+            KakaoLoginAccessTokenCache accessTokenCache = kakao_oauth_service.isValidAccess_tokenCache(token);
+            System.out.println(token);
+            System.out.println(accessTokenCache);
 
-//        String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring("bearer ".length());
-//        KakaoLoginAccessTokenCache accessTokenCache = kakao_oauth_service.isValidAccess_tokenCache(token);
-//        System.out.println(token);
-//        System.out.println(accessTokenCache);
-//
-//        if (kakao_oauth_service.isValidAccess_tokenCache(token) != null) {
-//            exchange.getRequest()
-//                    .mutate()
-//                    .header("x-forwarded-for-user-id", String.valueOf(accessTokenCache.getKakao_userID()));
-//        }
+            if (kakao_oauth_service.isValidAccess_tokenCache(token) != null) {
+                exchange.getRequest()
+                        .mutate()
+                        .header("x-forwarded-for-user-id", String.valueOf(accessTokenCache.getKakao_userID()));
+            }
+        }
+
 
         // 잠시풀래..
         // if
@@ -96,45 +98,45 @@ public class AuthentificationGatewayFilter implements WebFilter {
         // }
 
 
-        if (isSecured(exchange)){
-
-            // if (!AuthorizationHeaderContains(exchange)) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
-
-            String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring("bearer ".length());
-
-            KakaoLoginAccessTokenCache accessTokenCache = kakao_oauth_service.isValidAccess_tokenCache(token);
-            KakaoLoginRefreshTokenCache refreshTokenCache = kakao_oauth_service.isValidRefresh_tokenCache(token);
-
-            System.out.println("access : " + accessTokenCache);
-            System.out.println("refresh : " + refreshTokenCache);
-
-
-//            if (accessTokenCache == null && refreshTokenCache == null) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
-
-            if (accessTokenCache != null) {
-                exchange.getRequest()
-                        .mutate()
-                        .header("x-forwarded-for-user-id", String.valueOf(accessTokenCache.getKakao_userID()));
-            }
-
-//            if (refreshTokenCache != null) {
-//                accessTokenCache = loginAccessTokenCacheRepository.findById(refreshTokenCache.getConnected_access_token()).orElse(null);
+//        if (isSecured(exchange)){
+//
+//            // if (!AuthorizationHeaderContains(exchange)) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
+//
+//            String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring("bearer ".length());
+//
+//            KakaoLoginAccessTokenCache accessTokenCache = kakao_oauth_service.isValidAccess_tokenCache(token);
+//            KakaoLoginRefreshTokenCache refreshTokenCache = kakao_oauth_service.isValidRefresh_tokenCache(token);
+//
+//            System.out.println("access : " + accessTokenCache);
+//            System.out.println("refresh : " + refreshTokenCache);
 //
 //
+////            if (accessTokenCache == null && refreshTokenCache == null) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
 //
-//
-//                ServerHttpResponse response = exchange.getResponse();
-//
-//                kakao_oauth_service.refreshKakaoTokens(token, kakao_cliendID, accessTokenCache.getKakao_userID());
-////                System.out.println("refresh token is fired.");
-////                response.getHeaders().add("access_token", tokens.get("access_token"));
-////                response.getHeaders().add("refresh_token", tokens.get("refresh_token"));
-//
-//                return response.setComplete();
+//            if (accessTokenCache != null) {
+//                exchange.getRequest()
+//                        .mutate()
+//                        .header("x-forwarded-for-user-id", String.valueOf(accessTokenCache.getKakao_userID()));
 //            }
-
-
-        }
+//
+////            if (refreshTokenCache != null) {
+////                accessTokenCache = loginAccessTokenCacheRepository.findById(refreshTokenCache.getConnected_access_token()).orElse(null);
+////
+////
+////
+////
+////                ServerHttpResponse response = exchange.getResponse();
+////
+////                kakao_oauth_service.refreshKakaoTokens(token, kakao_cliendID, accessTokenCache.getKakao_userID());
+//////                System.out.println("refresh token is fired.");
+//////                response.getHeaders().add("access_token", tokens.get("access_token"));
+//////                response.getHeaders().add("refresh_token", tokens.get("refresh_token"));
+////
+////                return response.setComplete();
+////            }
+//
+//
+//        }
 
 
 
