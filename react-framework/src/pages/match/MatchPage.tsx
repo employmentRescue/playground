@@ -14,6 +14,7 @@ import footBallOriginal from "@/assets/icons/football-original.png"
 
 import { matchList } from "@/models/matchList";
 import useGatheringSearchQuery from "@/hooks/match/useGatheringSearchQuery";
+import { useNavigate } from "react-router-dom";
 
 
 // ============ 기타 타입 =================================================
@@ -179,6 +180,7 @@ export default function MatchPage() {
     // console.log(filterData)
     // console.log(typeof(filterData))
     const filterDataDispatch = useDispatch()
+    const navigate = useNavigate();
 
     const setFilterData = (attr: attrType, value: any) => {
         switch (attr) {
@@ -232,6 +234,7 @@ export default function MatchPage() {
             <div className="flex flex-col w-full h-full m-0 pt-10 border-t-1 border-solid border-[#D8CAFF] bg=[#f5f5f5]">
                 {/* {listItems()} */}
             </div>
+            <div className="fixed bottom-70 right-15 rounded-50 w-45 h-45 bg-blue-700 text-40 text-white flex justify-center items-center z-10" onClick={() => navigate('/match/register')}>+</div>
         </div>
     )
 }       

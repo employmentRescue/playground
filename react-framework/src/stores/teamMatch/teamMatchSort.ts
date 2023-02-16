@@ -1,16 +1,17 @@
-import { createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import { teamMatchList } from '@/models/teamMatchList';
+import moment from "moment";
 
 const initialState: teamMatchList = {
-    matchDate: "2023-02-14",
+    matchDate: moment(new Date()).format('YYYY-MM-DD'),
     lat: 36.3561823752851,
     lng: 127.37279449758137,
-    distance: 100,
-    minStartTime: "01:00:00",
-    maxStartTime: "23:00:00",
+    distance: 0,
+    minStartTime: "00:00:00",
+    maxStartTime: "24:00:00",
     sports: "농구",
-    gameType: "5vs5",
+    gameType: "3vs3",
     sort: "distance"
 }
 
