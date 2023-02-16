@@ -85,11 +85,11 @@ public class AuthentificationGatewayFilter implements WebFilter {
 
         if (isSecured(exchange)){
 
-            if (!AuthorizationHeaderContains(exchange)) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
+            // if (!AuthorizationHeaderContains(exchange)) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
 
-            String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring("bearer ".length());
+            // String token = exchange.getRequest().getHeaders().get("Authorization").get(0).substring("bearer ".length());
 
-            KakaoLoginAccessTokenCache accessTokenCache = kakao_oauth_service.isValidAccess_tokenCache(token);
+            // KakaoLoginAccessTokenCache accessTokenCache = kakao_oauth_service.isValidAccess_tokenCache(token);
 //            KakaoLoginRefreshTokenCache refreshTokenCache = kakao_oauth_service.isValidRefresh_tokenCache(token);
 
 //            if (accessTokenCache == null && refreshTokenCache == null) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
