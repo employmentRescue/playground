@@ -28,7 +28,7 @@ export default function LoginSuccessPage() {
     let myId = params.get("user_id")
     console.log(myId)
     dispatch(saveUserId(myId))
-
+    navigate("/home")
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
 
@@ -73,7 +73,6 @@ export default function LoginSuccessPage() {
     return (
         <div>
             <h1>로그인 성공!</h1>
-            <h2>인증 토큰 발급 완료</h2>
         </div>
     )
 }

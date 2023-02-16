@@ -85,7 +85,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports, mem
     }, [selectedSports])
 
     return (
-        <div className="flex flex-col self-center h-[calc(100vh-173px)]">
+        <div className="flex flex-col self-center h-[100px]">
             <div className="mt-65" />
             <label htmlFor="uploadImg" className="self-center">
                 <img src={teamProfileCreateImg} className="w-100 h-100 self-center" />
@@ -120,8 +120,11 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports, mem
             <div className="flex justify-around mx-20">
                 {personnelRendering()}
             </div>
-            <ButtonDesign innerText="뒤로" onClick={() => onClickChangePage(-1)} className={"w-[37%] h-38 mb-32 text-16 text-blue-700 bg-white fixed left-30 bottom-55"} />
-            <ButtonDesign innerText="팀만들기" onClick={() => handleOnClickCreateTeam()} className={"w-[37%] h-38 mb-32 text-16 text-white bg-blue-700 fixed right-30 bottom-55"} />
+            <div className="mt-[20%] flex justify-between">
+
+                <ButtonDesign innerText="뒤로" onClick={() => onClickChangePage(-1)} className={"w-[37%] h-38 mb-32 text-16 text-blue-700 bg-white left-30 bottom-55"} />
+                <ButtonDesign innerText="팀만들기" onClick={() => handleOnClickCreateTeam()} className={"w-[37%] h-38 mb-32 text-16 text-white bg-blue-700 right-30 bottom-55"} />
+            </div>
         </div>
     )
 }

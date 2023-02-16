@@ -130,7 +130,7 @@ export default function TeamCreateDefaultPage() {
     // }, [selectedMemberIds])
 
     return (
-        <div className="flex flex-col h-[calc(100vh-113px)] w-auto justify-start bg-white">
+        <div className="flex flex-col h-full w-auto justify-start bg-white">
             <div className="flex justify-evenly mt-16">
                 <SportsSelectButtons selectedSports={selectedSports} setSelectedSports={setSelectedSports} />
             </div>
