@@ -98,7 +98,11 @@ public class ChatRoomController {
 
     @ApiOperation(value = "운동모임 채팅방 생성", notes = "운동모임 채팅방을 생성한다.")
     @PostMapping("/GatheringChatRoom")
-    public ResponseEntity<String> createGatheringChatRoom(@RequestParam List<Long> memberIdList, @RequestBody GatheringChatroom gatheringChatroom){
+    public ResponseEntity<String> createGatheringChatRoom(@RequestBody Map<String, Object> map){
+        ObjectMapper objectMapper = new ObjectMapper();
+        GatheringChatroom gatheringChatroom = objectMapper.convertValue(map.get("gatheringChatroom"), GatheringChatroom.class);
+        List<Long> memberIdList = objectMapper.convertValue(map.get("memberIdList"), new TypeReference<List<Long>>() {
+        });
         chatRoomService.createGatheringChatroom(memberIdList, gatheringChatroom);
         return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
     }

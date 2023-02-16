@@ -25,6 +25,10 @@ spring:
     username: ssafy
     password: b309oo
 
+
+
+
+
 # jdbc:mysql://localhost:3306/playground?serverTimezone=UTC&characterEncoding=UTF-8
 # jdbc:mysql://i8b309.p.ssafy.io:3306/playground?serverTimezone=UTC&characterEncoding=UTF-8
 
@@ -34,3 +38,6 @@ server:
     key-store: classpath:chat-service.p12
     key-store-password: b309309
   port: 8080
+
+
+
