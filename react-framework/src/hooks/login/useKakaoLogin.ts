@@ -7,10 +7,11 @@ import { useSelector } from "react-redux";
 
 const useKakaoLogin = (code: string) => {
     const userInfo = useSelector((state: RootState) => {
+        console.log(state.userInfo)
         const prefer_activities = [
-            { "activity": "football", "level": state.userInfo.sportsLevel.football },
-            { "activity": "basketball", "level": state.userInfo.sportsLevel.basketball },
-            { "activity": "badminton", "level": state.userInfo.sportsLevel.badminton }
+            { "activity": "football", "level": state.userInfo.sportsLevel.football, "is_preferable": state.userInfo.favoriteSports.football },
+            { "activity": "basketball", "level": state.userInfo.sportsLevel.basketball, "is_preferable": state.userInfo.favoriteSports.basketball },
+            { "activity": "badminton", "level": state.userInfo.sportsLevel.badminton, "is_preferable": state.userInfo.favoriteSports.badminton }
         ]
         return (
             {

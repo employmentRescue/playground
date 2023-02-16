@@ -36,8 +36,8 @@ export default function ChattingRoomPage() {
 
     const recvMessage = (message: any) => {
         console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
-        setTextList([...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : String(message.memberId), "content": message.content, "notice": false, "type": message.type }])
-        // axios.post(SOCKET_URL + `/chat/readMessage/` + `${params.roomId}` + `?memberId=` + `${myUserId}`, message);
+        setTextList([...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : message.memberId, "content": message.content, "notice": false, "type": message.type }])
+        axios.post(SOCKET_URL + `/chat/readMessage/` + `${params.roomId}` + `?memberId=` + `${myUserId}`, message);
     }
 
     const sendMessage = (content: string) => {
@@ -45,31 +45,40 @@ export default function ChattingRoomPage() {
         content = '';
     }
 
-    webSocket.connect({}, function (frame: any) {
-        webSocket.subscribe(`/sub/chat/room/` + `${params.roomId}`, function (message) {
-            recvMessage(JSON.parse(message.body));
-        });
-        webSocket.send(`/pub/chat/Message`, {}, JSON.stringify({ "chatroomId": `${params.roomId}`, "regTime": '10', "memberId": `${myUserId}`, "isNotice": false, "type": 'ENTER' }));
-    }, function (error: any) {
-        alert("error" + error)
-    })
+
 
     const getMessageList = async () => {
         await axios.get(CHATTING_SERVER_URL + `/chat/messageList/${params.roomId}`)
             .then(response => {
                 console.log(response.data)
                 setTextList([...textList, ...response.data])
-            });
+            })
     }
     // 채팅방 처음 접속 시 API에서 해당 채팅방의 모든 메시지 기록을 받아옴
     useEffect(() => {
         dispatch(setTabName(`roomid=${params.roomId}에 해당하는 팀 이름 넣기`))
+        console.log("1111111111111111111111111")
+
         getMessageList()
 
-        // return (() => {
-        //     webSocket.disconnect();
-        // })
+        return (() => {
+            webSocket.disconnect();
+        })
     }, [])
+
+    useEffect(() => {
+        webSocket.connect({}, function (frame: any) {
+            // webSocket.reconnectDelay = 0
+            console.log("2222222222222222")
+            webSocket.subscribe(`/sub/chat/room/` + `${params.roomId}`, function (message) {
+                recvMessage(JSON.parse(message.body));
+            });
+            webSocket.send(`/pub/chat/Message`, {}, JSON.stringify({ "chatroomId": `${params.roomId}`, "regTime": '10', "memberId": `${myUserId}`, "isNotice": false, "type": 'ENTER' }));
+            console.log("333333333333333333333333")
+        }, function (error: any) {
+            alert("error" + error)
+        })
+    }, [textList])
 
     // 채팅이 올라올 때 마다 스크롤도 같이 움직임
     useEffect(() => {
@@ -92,7 +101,6 @@ export default function ChattingRoomPage() {
 
     // 메시지 입력창의 텍스트를 얻어오는 함수
     const handleOnChange = (e: any) => {
-        e.preventDefault()
         setInputValue(e.target.value)
         if (e.target.value) {
             setActivateSend("")
@@ -103,7 +111,6 @@ export default function ChattingRoomPage() {
 
     // Enter 입력시 메시지 입력창에 입력된 텍스트를 전송
     const handleKeyPress = (e: any) => {
-        e.preventDefault()
         if (e.code === "Enter") {
             if (!inputValue) return
             pushMessage(inputValue, myUserId)
@@ -115,8 +122,7 @@ export default function ChattingRoomPage() {
     }
 
     // 버튼 클릭으로도 텍스트 전송이 가능
-    function handleOnClick(e: any) {
-        e.preventDefault()
+    function handleOnClick() {
         if (!inputValue) return
         pushMessage(inputValue, myUserId)
         setInputValue("")
@@ -166,7 +172,7 @@ export default function ChattingRoomPage() {
                     onKeyPress={(e) => handleKeyPress(e)}
                     ref={inputRef}
                 />
-                <img src={sendButton} onClick={(e) => handleOnClick(e)} className={"w-21 h-21 ml-10 mr-18 self-center " + activateSend} />
+                <img src={sendButton} onClick={() => handleOnClick()} className={"w-21 h-21 ml-10 mr-18 self-center " + activateSend} />
             </div>
         </div>
     )
