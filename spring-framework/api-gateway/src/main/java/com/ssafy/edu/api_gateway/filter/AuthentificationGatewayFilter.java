@@ -117,21 +117,21 @@ public class AuthentificationGatewayFilter implements WebFilter {
                         .header("x-forwarded-for-user-id", String.valueOf(accessTokenCache.getKakao_userID()));
             }
 
-            if (refreshTokenCache != null) {
-                accessTokenCache = loginAccessTokenCacheRepository.findById(refreshTokenCache.getConnected_access_token()).orElse(null);
-
-
-
-
-                ServerHttpResponse response = exchange.getResponse();
-
-                kakao_oauth_service.refreshKakaoTokens(token, kakao_cliendID, accessTokenCache.getKakao_userID());
-//                System.out.println("refresh token is fired.");
-//                response.getHeaders().add("access_token", tokens.get("access_token"));
-//                response.getHeaders().add("refresh_token", tokens.get("refresh_token"));
-
-                return response.setComplete();
-            }
+//            if (refreshTokenCache != null) {
+//                accessTokenCache = loginAccessTokenCacheRepository.findById(refreshTokenCache.getConnected_access_token()).orElse(null);
+//
+//
+//
+//
+//                ServerHttpResponse response = exchange.getResponse();
+//
+//                kakao_oauth_service.refreshKakaoTokens(token, kakao_cliendID, accessTokenCache.getKakao_userID());
+////                System.out.println("refresh token is fired.");
+////                response.getHeaders().add("access_token", tokens.get("access_token"));
+////                response.getHeaders().add("refresh_token", tokens.get("refresh_token"));
+//
+//                return response.setComplete();
+//            }
 
 
         }
