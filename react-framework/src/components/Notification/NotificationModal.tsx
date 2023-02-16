@@ -1,9 +1,9 @@
 import backButton from "@/assets/icons/back-button.png"
 import { useState, useEffect } from "react";
 import NotificationCard, { NotificationCardType } from "./NotificationCard";
-import notitifactionDefaultImage from "@/assets/icons/notification-default.png"
-import notitifactionTeamMatchImage from "@/assets/icons/notification-team-match.png"
-import notitifactionChatImage from "@/assets/icons/notification-chat.png"
+import DefaultImage from "@/assets/icons/notification-default.png"
+import TeamMatchImage from "@/assets/icons/notification-team-match.png"
+import ChatImage from "@/assets/icons/notification-chat.png"
 
 interface Iprops {
     onClickShowModal: () => void;
@@ -11,7 +11,7 @@ interface Iprops {
 
 const initialCards: NotificationCardType[] = [
     {
-        imgSrc: notitifactionDefaultImage,
+        imgSrc: DefaultImage,
         title: "매칭",
         content: "매칭이 완료 되었습니다.",
         elapsedTime: "23분 전",
@@ -19,7 +19,7 @@ const initialCards: NotificationCardType[] = [
         noticeCount: 1
     },
     {
-        imgSrc: notitifactionTeamMatchImage,
+        imgSrc: TeamMatchImage,
         title: "팀 매칭",
         content: "팀 매칭이 취소 되었습니다.",
         elapsedTime: "3시간 전",
@@ -27,7 +27,7 @@ const initialCards: NotificationCardType[] = [
         noticeCount: 1
     },
     {
-        imgSrc: notitifactionChatImage,
+        imgSrc: ChatImage,
         title: "채팅",
         content: "새로운 채팅방이 생성 되었습니다.",
         elapsedTime: "1일 전",

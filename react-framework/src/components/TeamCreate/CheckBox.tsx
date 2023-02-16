@@ -10,11 +10,10 @@ interface Iprops {
     imageSrc: string;
     nickname: string;
     isSelected: boolean;
-    isRecent: boolean;
     onClick?: any;
 }
 
-export default function CheckBox({ userId, className, imageSrc, nickname, isSelected, isRecent, onClick }: Iprops) {
+export default function CheckBox({ userId, className, imageSrc, nickname, isSelected, onClick }: Iprops) {
     const dispatch = useDispatch();
     const [selected, setSelected] = useState(isSelected)
     const memberIds = useSelector((state: RootState) => {

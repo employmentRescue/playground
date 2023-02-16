@@ -28,62 +28,33 @@ export default function TeamCreateDefaultPage() {
     })
 
     const handleOnChange = (e: React.BaseSyntheticEvent) => {
+        console.log(searchInput)
         setSearchInput(e.target.value)
         console.log(store.getState().createTeam)
     }
 
-
     function handleOnClickChangePage(num: number) {
         setCurrentPage(currentPage + num)
-    }
-
-    function searchTitle() {
-        if (searchInput) {
-            return "검색"
-        } else {
-            return "최근 매칭"
-        }
     }
 
     function searchProfileRendering() {
         let Result
         let index = 0
 
-        if (searchInput) {
-            Result = ProfileList.map((profile) => {
-                index++;
-                return (
-                    !profile.isRecent &&
-                    <ProfileCard
-                        key={profile.userId}
-                        userId={profile.userId}
-                        className={"flex my-5 justify-between"}
-                        imageSrc={profile.imageSrc}
-                        imageSize="ml-24 w-52 h-52"
-                        nickname={profile.nickname}
-                        isSelected={profile.isSelected}
-                        isRecent={profile.isRecent}
-                    />
-                )
-            })
-        } else {
-            Result = ProfileList.map((profile) => {
-                index++;
-                return (
-                    profile.isRecent &&
-                    <ProfileCard
-                        key={profile.userId}
-                        userId={profile.userId}
-                        className={"flex my-5 justify-between"}
-                        imageSrc={profile.imageSrc}
-                        imageSize="ml-24 w-52 h-52"
-                        nickname={profile.nickname}
-                        isSelected={profile.isSelected}
-                        isRecent={profile.isRecent}
-                    />
-                )
-            })
-        }
+        Result = ProfileList.map((profile) => {
+            index++;
+            return (
+                <ProfileCard
+                    key={profile.userId}
+                    userId={profile.userId}
+                    className={"flex my-5 justify-between"}
+                    imageSrc={profile.imageSrc}
+                    imageSize="ml-24 w-52 h-52"
+                    nickname={profile.nickname}
+                    isSelected={profile.isSelected}
+                />
+            )
+        })
         return Result
     }
 
@@ -109,9 +80,9 @@ export default function TeamCreateDefaultPage() {
     function MemberInvitePage() {
         return (
             <>
-                <input type="text" className="h-40 bg-[#F2EFEF] mt-15 mx-14 px-10 py-5 outline-none text-14 rounded-3" placeholder="닉네임, 이름 검색" onChange={handleOnChange} />
-                <div className="mx-15 mt-13 mb-3 text-12">{searchTitle()}</div>
-                {searchProfileRendering()}
+                <input value={searchInput} type="text" className="h-40 bg-[#F2EFEF] mt-15 mx-14 px-10 py-5 outline-none text-14 rounded-3" placeholder="닉네임, 이름 검색" onChange={handleOnChange} />
+                <div className="mx-15 mt-13 mb-3 text-12">친구 목록</div>
+                {searchInput && searchProfileRendering()}
                 <ButtonDesign innerText="다음" className={"w-[300px] h-38 bg-blue-700 mb-32 text-white fixed bottom-55 border-blue-700"} onClick={() => handleOnClickChangePage(1)} />
             </>
         )

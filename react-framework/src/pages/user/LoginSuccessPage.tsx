@@ -1,3 +1,5 @@
+import { KAKAO_LOGIN_TEST_SERVER_URL, SERVER_URL } from "@/utils/url";
+import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import { useNavigate } from "react-router-dom";
@@ -37,9 +39,12 @@ export default function LoginSuccessPage() {
     // Add the public key generated from the console here.
     getToken(messaging, { vapidKey: "BNQmQhy0t5IXHTfP3RhasoNL_no_HYBNDPnygCfciW5c3nopkkWkqxasbcesQ5DzISkX5JvheAIOrNaeeBrQ2ho" }).then((currentToken) => {
         if (currentToken) {
-            // Send the token to your server and update the UI if necessary
-            // ...
             console.log("current Token : ", currentToken)
+            axios.post(KAKAO_LOGIN_TEST_SERVER_URL + `/user/update/`, { "web_fcm_token": currentToken })
+                .then(response => {
+                    console.log("토큰 보냈으니까 확인해봐")
+                })
+                .catch(error => console.log("뒤질래?"))
         } else {
             // Show permission request UI
             console.log('No registration token available. Request permission to generate one.');
