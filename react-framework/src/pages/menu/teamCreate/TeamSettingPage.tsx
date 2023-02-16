@@ -3,7 +3,6 @@ import modifyImage from "@/assets/profiles/modify.png"
 import titleFavoriteSports from "@/assets/profiles/title-favorite-sports.png"
 
 import ButtonDesign from "../../../components/TeamCreate/Buttons/ButtonDesign";
-import { setSportsType, setMyTeamName, setMyTeamLevel, setPersonnel, MyTeam } from "@/stores/user/myTeam"
 import { setMyTeam } from "@/stores/register/userInfo";
 
 import { useState, useRef, useEffect } from "react";
@@ -15,24 +14,25 @@ interface Iprops {
     onClickChangePage: (num: number) => void;
     selectedSports: "축구" | "농구" | "배드민턴"
     setSelectedSports: any;
+    memberIds: number[];
 }
 
-const footballPersonnel: MyTeam["personnel"][] = ["5vs5", "6vs6", "11vs11"];
-const basketballPersonnel: MyTeam["personnel"][] = ["3vs3", "5vs5"];
-const badmintonPersonnel: MyTeam["personnel"][] = ["1vs1", "3vs3"];
+type Personnel = "1vs1" | "3vs3" | "5vs5" | "6vs6" | "11vs11"
+type TeamLevel = "입문" | "초수" | "중수" | "고수"
+
+const footballPersonnel: Personnel[] = ["5vs5", "6vs6", "11vs11"];
+const basketballPersonnel: Personnel[] = ["3vs3", "5vs5"];
+const badmintonPersonnel: Personnel[] = ["1vs1", "3vs3"];
 
 
-export default function TeamSettingPage({ onClickChangePage, selectedSports }: Iprops) {
+export default function TeamSettingPage({ onClickChangePage, selectedSports, memberIds }: Iprops) {
     const [teamNameInput, setTeamNameInput] = useState<string>("");
-    const [teamLevel, setTeamLevel] = useState<MyTeam["teamLevel"]>("입문");
-    const [sportsPersonnel, setSportsPersonnel] = useState<MyTeam["personnel"]>("11vs11");
-    const [teamMemberList, setTeamMemberList] = useState<any | null>(null);
-    const memberIds = useSelector((state: RootState) => {
-        return state.myTeam.memberIds
-    })
+    const [teamLevel, setTeamLevel] = useState<TeamLevel>("입문");
+    const [sportsPersonnel, setSportsPersonnel] = useState<Personnel>("11vs11");
     const userId = useSelector((state: RootState) => {
         return state.userId;
     });
+    const selectedMemberIds = [...memberIds, userId]
 
     const teamNameInputRef: any = useRef();
 
@@ -48,18 +48,13 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
             level: teamLevel,
             name: teamNameInput,
             sports: selectedSports,
-            teamMemberList: teamMemberList,
+            teamMemberList: selectedMemberIds,
         })
     }
 
     useEffect(() => {
-        let teamMemberList = [];
-        for (const m of memberIds) {
-            teamMemberList.push({ memberId: m });
-        }
-        teamMemberList.push({ memberId: userId });
-        setTeamMemberList(teamMemberList);
-    }, [memberIds])
+        console.log(selectedMemberIds)
+    })
 
     function personnelRendering() {
         switch (selectedSports) {
@@ -90,7 +85,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports }: I
     }, [selectedSports])
 
     return (
-        <div className="flex flex-col self-center">
+        <div className="flex flex-col self-center h-[calc(100vh-173px)]">
             <div className="mt-65" />
             <label htmlFor="uploadImg" className="self-center">
                 <img src={teamProfileCreateImg} className="w-100 h-100 self-center" />

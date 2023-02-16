@@ -7,9 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 interface CompleteButtonProps {
     innerText: string
+    isNicknameDuplicated?: boolean
 }
 
-export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps) {
+export default function ChoiceCompoleteButton({ innerText, isNicknameDuplicated }: CompleteButtonProps) {
     const dispatch = useDispatch();
     const [info, setInfo] = useState();
 
@@ -31,18 +32,23 @@ export default function ChoiceCompoleteButton({ innerText }: CompleteButtonProps
     return (
         <button
             onClick={() => {
+                // if (isNicknameDuplicated) {
+                //     alert("닉네임이 중복되었습니다. 다시 설정해주세요.")
+                //     dispatch(activeIndex(0))
+                //     return
+                // }
                 console.log(userInfo)
                 if (innerText == "선택 완료") {
                     if (currentIndex == 2) {
                         saveInfo();
                         console.log(info)
-                        navigate("/login/register/complete")
+
                     } else {
                         dispatch(activeIndex(currentIndex + 1))
                     }
                 }
                 else if (innerText == "운동하러 가기") {
-                    navigate("/")
+                    navigate("/home")
                 }
 
             }}

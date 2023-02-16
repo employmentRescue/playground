@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { MyTeam } from "../user/myTeam";
 
 type Level = "입문" | "초수" | "중수" | "고수" | null
+
+interface SampleUser {
+    id: number;
+    imageSrc: string;
+    nickname: string;
+    isSelected: boolean;
+}
 
 interface NicknameAction {
     payload: string
@@ -22,7 +28,7 @@ interface SportsLevelAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, level: Level }
 }
 interface myTeamAction {
-    payload: MyTeam
+    payload: SampleUser
 }
 interface statusMessageAction {
     payload: string
@@ -42,7 +48,7 @@ interface UserInfo {
         basketball?: Level,
         badminton?: Level,
     },
-    myTeam: MyTeam[],
+    myTeam: SampleUser[],
     statusMessage: string,
     favoritePlace: string,
 }
