@@ -2,11 +2,13 @@ import { RootState } from "@/stores/store";
 import { KAKAO_LOGIN_TEST_SERVER_URL } from "@/utils/url";
 import axios from "axios";
 import { useMutation } from "react-query"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { saveUserId } from "@/stores/user/userId";
 
 const useKakaoLogin = (code: string) => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const userInfo = useSelector((state: RootState) => {
         console.log(state.userInfo)
         const prefer_activities = [
@@ -30,8 +32,9 @@ const useKakaoLogin = (code: string) => {
 
     const fetcher = () => axios.post(KAKAO_LOGIN_TEST_SERVER_URL + `/oauth2/regist?code=` + `${code}`, { ...userInfo });
     return useMutation(fetcher, {
-        onSuccess: () => {
-            console.log("로그인 성공!")
+        onSuccess: (e: any) => {
+            console.log("로그인 성공!", e)
+            dispatch(saveUserId(e.user_id))
             alert("로그인 성공!!!!!!!!!!!!!!!!!")
             navigate("/login/success")
         },
