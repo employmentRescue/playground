@@ -14,7 +14,7 @@ export default function StartPage() {
         setTimeout(() => {
           setPaintLoad(true);
           setTimeout(() => {
-            location.replace('/home');
+            location.assign('/home');
           }, 1000)
         }, 500)
       }, 1000);

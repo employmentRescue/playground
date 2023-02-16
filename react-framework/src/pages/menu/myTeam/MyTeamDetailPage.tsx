@@ -14,7 +14,6 @@ export default function MyTeamDetailPage() {
 
   const { teamId } = useParams();
   const { data } = useTeamQuery(Number(teamId));
-  console.log(data)
 
   const dispatch = useDispatch();
 

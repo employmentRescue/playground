@@ -28,7 +28,7 @@ export default function Header() {
                 {tabName === 'playGround' ?
                     <img className="w-120 h-20 ml-14" src={getImgUrl('icons', 'logo')}></img> :
                     <div className="flex ml-14 items-center">
-                        <img className="w-13 h-13" src={back} onClick={() => history.back()}></img>
+                        <img className="w-13 h-13" src={back} onClick={() => navigate(-1)}></img>
                         <div className="ml-6 text-15">{tabName}</div>
                     </div>
                 }

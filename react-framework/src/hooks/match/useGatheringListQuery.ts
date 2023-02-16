@@ -3,9 +3,9 @@ import { useQuery } from 'react-query';
 import { SERVER_URL, LOCAL_SERVER_URL } from '@/utils/url';
 import { matchList } from '@/models/matchList';
 
-export const GATHERING_LIST = '/gathering';
+export const GATHERING_LIST = '/match';
 
-const fetcher = (matchList: matchList) => axios.get(SERVER_URL + GATHERING_LIST,
+const fetcher = (matchList: matchList) => axios.get(SERVER_URL + '/gathering',
     {
         params: {
             startDate: matchList.startDate,

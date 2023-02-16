@@ -6,18 +6,20 @@ import { useMutation } from 'react-query';
 const fetcher = (teamMatch: teamMatch) => axios.post(SERVER_URL + '/match/register',
   {
     distance: teamMatch.distance,
+    matchGameType: teamMatch.matchGameType,
     matchDate: teamMatch.matchDate,
     maxStartTime: teamMatch.maxStartTime,
     minStartTime: teamMatch.minStartTime,
     preferredPlace: teamMatch.preferredPlace,
-    teamMatchResultList: teamMatch.teamMatchResultList
+    teamMatchResultList: teamMatch.teamMatchResultList,
+    matchSports: teamMatch.matchSports
   },
 );
 
 const useTeamMatchRegister = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
-      location.replace('/team-match')
+      location.assign('/team-match')
     },
   });
 };

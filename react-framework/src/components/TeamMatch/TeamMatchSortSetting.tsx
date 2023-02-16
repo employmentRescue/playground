@@ -1,5 +1,3 @@
-import { useState, useEffect, useRef } from "react";
-
 import whiteArrow from "@/assets/icons/white-arrow.png";
 import closeIcon from "@/assets/icons/exit.png";
 

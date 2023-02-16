@@ -1,6 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { useReducer, ComponentProps } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Calender from "react-calendar";
 import dayjs from "dayjs";
 // import 'react-calendar/dist/Calendar.css'

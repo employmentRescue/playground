@@ -102,7 +102,10 @@ export default function TeamMatchRegisterPage() {
         },
         teamMatchResultList: [{
           teamId: teamId
-        }]
+        }],
+        matchGameType: teamInfo.data.gameType,
+        matchSports: teamInfo.data.sports,
+
       })
       movePage('/team-match')
     } else {

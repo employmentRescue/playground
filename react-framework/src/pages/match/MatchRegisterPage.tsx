@@ -46,17 +46,15 @@ export default function MatchRegisterPage() {
   // initial call
   const geolocation = useGeolocation();
 
-  const matchId = useSelector((state: RootState) => {
-    return state.match.id;
-  });
+  const userId = useSelector((state: RootState) => {
+    return state.userId;
+  })
 
   const { mutate } = useMatchRegister();
-  const movePage = useNavigate();
+  const navigate = useNavigate();
 
   const register = () => {
     if (sportsType && title && place && level && gameType && playTime && sex && people) {
-      console.log('register');
-      console.log(people);
       mutate({
         sports: sportsType,
         title: title,
@@ -72,11 +70,10 @@ export default function MatchRegisterPage() {
         gameType: gameType,
         playTime: playTime,
         sex: sex,
-        hostId: 111,
+        hostId: userId,
         people: people,
       })
-
-      movePage('/match')
+      navigate('/match')
     } else {
       console.log('fail!')
       console.log(people)

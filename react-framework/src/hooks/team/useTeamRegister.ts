@@ -1,5 +1,5 @@
 import { team } from '@/models/team';
-import { SERVER_URL } from '@/utils/url';
+import { CHATTING_SERVER_URL, SERVER_URL } from '@/utils/url';
 import axios from 'axios';
 import { useMutation } from 'react-query';
 
@@ -11,12 +11,15 @@ const fetcher = (team: team) => axios.post(SERVER_URL + '/team/register',
     sports: team.sports,
     teamMemberList: team.teamMemberList
   }
-);
+).then(() => {
+  axios.post(CHATTING_SERVER_URL + '/chat/GatheringChatRoom',);
+  console.log("?")
+});
 
 const useTeamRegister = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
-      location.replace('/menu/team')
+      location.assign('/menu/team')
     },
   });
 };
