@@ -20,13 +20,14 @@ export default function ListCard({ roomId, roomProfile, title, personnel, latest
     function handleOnClickToChattingRoom() {
         return (
             // room/1 대신 변수 사용하기
-            navigate(`/chatting/room/${roomId}`)
+            location.assign(`/chatting/room/${roomId}`)
         )
     }
 
     const callback = useCallback((event: any) => {
         setShowModal(!showModal)
     }, [])
+
     const onLongPress = useLongPress(callback, { threshold: 600 })
 
     return (

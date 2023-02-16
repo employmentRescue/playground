@@ -2,7 +2,7 @@ import defaultProfile from "@/assets/profiles/default-profile.png"
 import emoticonButton from "@/assets/icons/chatting-emoticon.png"
 import sendButton from "@/assets/icons/send-message-button.png"
 
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import { useState, useRef, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 
@@ -27,18 +27,17 @@ type TextList = {
 
 let sock = new SockJS(SOCKET_URL + "/ws-stomp")
 let webSocket = Stomp.over(sock);
+
 webSocket.debug = () => console.log()
 
 export default function ChattingRoomPage() {
+
+
     const params = useParams();
-
-    // 더미 데이터가 조금 많습니다..
-
     const [textList, setTextList] = useState<TextList[]>([])
 
     const recvMessage = (message: any) => {
         setTextList(textList => [...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : String(message.memberId), "content": message.content, "notice": false, "type": message.type }])
-
     }
 
     const sendMessage = (content: string) => {
@@ -53,6 +52,7 @@ export default function ChattingRoomPage() {
                 setTextList(textList => [...textList, ...response.data])
             });
     }
+
     // 채팅방 처음 접속 시 API에서 해당 채팅방의 모든 메시지 기록을 받아옴
     useEffect(() => {
         dispatch(setTabName(`roomid=${params.roomId}에 해당하는 팀 이름 넣기`))
@@ -61,6 +61,7 @@ export default function ChattingRoomPage() {
 
     useEffect(() => {
         webSocket.connect({}, function (frame: any) {
+            console.log(params)
             webSocket.subscribe(`/sub/chat/room/` + `${params.roomId}`, function (message) {
                 recvMessage(JSON.parse(message.body));
             });
@@ -87,7 +88,7 @@ export default function ChattingRoomPage() {
 
     // 메시지 입력창의 텍스트를 얻어오는 함수
     const handleOnChange = (e: any) => {
-        e.preventDefault()
+        //e.preventDefault()
         setInputValue(e.target.value)
         if (e.target.value) {
             setActivateSend("")
@@ -98,23 +99,23 @@ export default function ChattingRoomPage() {
 
     // Enter 입력시 메시지 입력창에 입력된 텍스트를 전송
     const handleKeyPress = (e: any) => {
-        e.preventDefault()
+        //e.preventDefault()
         if (e.code === "Enter") {
             if (!inputValue) return
+            sendMessage(inputValue)
             setInputValue("")
             setActivateSend("opacity-40")
-            sendMessage(inputValue)
             inputRef.current.focus()
         }
     }
 
     // 버튼 클릭으로도 텍스트 전송이 가능
     function handleOnClick(e: any) {
-        e.preventDefault()
+        //e.preventDefault()
         if (!inputValue) return
+        sendMessage(inputValue)
         setInputValue("")
         setActivateSend("opacity-40")
-        sendMessage(inputValue)
         inputRef.current.focus()
     }
 

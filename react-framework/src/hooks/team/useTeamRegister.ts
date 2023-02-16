@@ -16,7 +16,7 @@ const fetcher = (team: team) => axios.post(SERVER_URL + '/team/register',
 const useTeamRegister = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
-      location.replace('/menu/team')
+      location.assign('/menu/team')
     },
   });
 };

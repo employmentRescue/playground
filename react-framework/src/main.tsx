@@ -63,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'match/detail/:matchId',
-        element: <MatchDetailPage />, 
+        element: <MatchDetailPage />,
       },
       {
         path: 'match/register',

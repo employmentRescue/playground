@@ -6,7 +6,6 @@ export const CHATTING = '/chatting';
 
 const fetcher = (memberId: number) => axios.get(CHATTING_SERVER_URL + `/chat/TeamChatRoom/${memberId}`).then(({ data }) => data).catch((error) => console.log(error))
 
-// 좌표를 받아왔을 때만 query
 const useGetAllTeamChattingRoomsByMemberId = (memberId: number) => {
     return useQuery(CHATTING, () => fetcher(memberId), {
         staleTime: 0, cacheTime: 60 * 5 * 1000,
