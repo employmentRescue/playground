@@ -20,6 +20,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
 import java.util.UUID;
@@ -56,6 +57,7 @@ public class kakaoOauthService {
         InputStream responseStream = httpConn.getInputStream();
         KakaoTokenByCodeDTO codeResult = objectMapper.readValue(responseStream, KakaoTokenByCodeDTO.class);
 
+
         return codeResult;
     }
 
@@ -74,7 +76,7 @@ public class kakaoOauthService {
         return userinfo;
     }
 
-    public Map<String, String> login(long kakao_userID, String kakao_accessToken, String kakao_refreshToken) {
+    public Map<String, String> login(long kakao_userID, String kakao_accessToken, String kakao_refreshToken, Instant _expires_in, Instant _refresh_token_expires_in) {
         String accessToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
         String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
 
@@ -87,6 +89,7 @@ public class kakaoOauthService {
                                 .kakao_accessToken(kakao_accessToken)
                                 .kakao_refreshToken(kakao_refreshToken)
                                 .kakao_userID(kakao_userID)
+                                ._expires_in(_expires_in)
                                 .build()
                 );
 
@@ -97,8 +100,25 @@ public class kakaoOauthService {
                                 .builder()
                                 .token(refreshToken)
                                 .connected_access_token(accessToken)
+                                ._refresh_token_expires_in(_refresh_token_expires_in)
                                 .build()
                 );
+
+        System.out.println("login - access_token : " + KakaoLoginAccessTokenCache
+                .builder()
+                .token(accessToken)
+                .kakao_accessToken(kakao_accessToken)
+                .kakao_refreshToken(kakao_refreshToken)
+                .kakao_userID(kakao_userID)
+                ._expires_in(_expires_in)
+                .build());
+
+        System.out.println("login - refresh_token : " + KakaoLoginRefreshTokenCache
+                .builder()
+                .token(refreshToken)
+                .connected_access_token(accessToken)
+                ._refresh_token_expires_in(_refresh_token_expires_in)
+                .build());
 
         return Map.of(
                 "access_token", accessToken,

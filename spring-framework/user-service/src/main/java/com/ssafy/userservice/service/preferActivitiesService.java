@@ -41,6 +41,7 @@ public class preferActivitiesService {
             if (child == null) continue;
 
             child.setLevel(activity.getLevel());
+            child.setIs_preferable(activity.getIs_preferable());
 
             entityManager.persist(child);
         }
@@ -69,7 +70,8 @@ public class preferActivitiesService {
                             .memberSometimes(parent)
                                     .activity(activity.getActivity())
                                             .level(activity.getLevel())
-                                                    .build();
+                                                    .is_preferable(activity.getIs_preferable())
+                                                        .build();
 
             entityManager.persist(child);
         }

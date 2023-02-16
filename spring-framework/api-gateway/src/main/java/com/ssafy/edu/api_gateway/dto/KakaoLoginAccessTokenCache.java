@@ -7,6 +7,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.time.Instant;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 
 @AllArgsConstructor
@@ -23,4 +25,5 @@ public class KakaoLoginAccessTokenCache {
     long kakao_userID;
     String kakao_accessToken;
     String kakao_refreshToken;
+    Instant _expires_in;
 }

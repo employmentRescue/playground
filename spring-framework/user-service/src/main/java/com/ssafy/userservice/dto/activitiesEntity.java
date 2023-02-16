@@ -22,6 +22,8 @@ public class activitiesEntity extends BaseTimeEntity {
     String activity;
     @Column(name = "LEVEL")
     String level;
+    @Column(name = "IS_PREFERABLE") @NonNull
+    Boolean is_preferable;
 
 
     @Id @EqualsAndHashCode.Include

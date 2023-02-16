@@ -23,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
 import java.util.UUID;
@@ -60,49 +61,11 @@ public class oauthController {
     @Autowired
     kakaoOauthService kakao_oauthService;
 
-    final String api_gateway_url = "https://i8b309.p.ssafy.io";
-//    final String api_gateway_url = "http://localhost:8080";
+    @Value("${oauth2.api_gateway_url}")
+    private String api_gateway_url;
 
 
 
-
-    @RequestMapping("/test")
-    ResponseEntity test(@RequestBody Map<String, Object> map){
-        try{
-            System.out.println(map);
-
-            //JSON 데이터 받을 URL 객체 생성
-            URL url = new URL ("http://localhost:9000/user/regist/123");
-            //HttpURLConnection 객체를 생성해 openConnection 메소드로 url 연결
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            //전송 방식 (POST)
-            con.setRequestMethod("POST");
-            //application/json 형식으로 전송, Request body를 JSON으로 던져줌.
-            con.setRequestProperty("Content-Type", "application/json; utf-8");
-            //Response data를 JSON으로 받도록 설정
-            con.setRequestProperty("Accept", "application/json");
-            //Output Stream을 POST 데이터로 전송
-            con.setDoOutput(true);
-            //json data
-            String jsonInputString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);
-            System.out.println(jsonInputString);
-
-            //JSON 보내는 Output stream
-            try(OutputStream os = con.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes("utf-8");
-                os.write(input, 0, input.length);
-            }
-            con.connect();
-            con.getInputStream().readAllBytes();
-
-
-        } catch (Throwable e){
-            e.printStackTrace();
-        }
-
-
-        return new ResponseEntity(HttpStatus.OK);
-    }
 
 
 
@@ -127,18 +90,11 @@ public class oauthController {
         String code = (String) map.get("code");
 
         // oauth code를 이용해서 access_token, refresh_token 받기
-        URL url = new URL("https://kauth.kakao.com/oauth/token"+ "?" +
-                "grant_type=authorization_code&" +
-                "client_id=" +
-
-
-
-                "0ec9e81052acada4b61a0e98229b431d"
-
-
-                + "&" +
-                "redirect_uri=" + URLEncoder.encode(api_gateway_url + "/oauth2/login/app", StandardCharsets.UTF_8) + "&" +
-                "code=" + code //(String) map.get("code")
+        URL url = new URL("https://kauth.kakao.com/oauth/token"+ "?"
+                + "grant_type=authorization_code&"
+                + "client_id=" + kakao_cliendID
+                + "&redirect_uri=" + URLEncoder.encode(api_gateway_url + "/oauth2/login/app", StandardCharsets.UTF_8)
+                + "&code=" + code //(String) map.get("code")
         );
 
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
@@ -164,8 +120,8 @@ public class oauthController {
         KakaoUserInfoDTO userinfo = objectMapper.readValue(ret, KakaoUserInfoDTO.class);
         System.out.println(userinfo);
 
-        System.out.println("redirect:kakao67fadb0c2e58144896ec4c10c5c2beb7://oauth?access_token=" + codeResult.getAccess_token());
-        return "redirect:kakao67fadb0c2e58144896ec4c10c5c2beb7://oauth?server_error=abc&access_token=" + codeResult.getAccess_token();
+        System.out.println("redirect:kakao" + kakao_cliendID + "://oauth?server_error=abc&access_token=" + codeResult.getAccess_token());
+        return "redirect:kakao" + kakao_cliendID + "://oauth?server_error=abc&access_token=" + codeResult.getAccess_token();
     }
 
 
@@ -180,6 +136,7 @@ public class oauthController {
         String code = (String) map.get("code");
 
         KakaoTokenByCodeDTO codeResult = kakao_oauthService.getKakaoToken(kakao_cliendID, api_gateway_url, code);
+        Instant curTime = Instant.now();
 
 
 
@@ -188,7 +145,7 @@ public class oauthController {
 
         System.out.println(entityManager.find(MemberOftenEntity.class, userinfo.getId()));
         if (entityManager.find(MemberOftenEntity.class, userinfo.getId()) != null){
-            Map<String, String> tokens = kakao_oauthService.login(userinfo.getId(), codeResult.getAccess_token(), codeResult.getRefresh_token());
+            Map<String, String> tokens = kakao_oauthService.login(userinfo.getId(), codeResult.getAccess_token(), codeResult.getRefresh_token(), curTime.plusSeconds(codeResult.getExpires_in()), curTime.plusSeconds(codeResult.getRefresh_token_expires_in()));
 
 
             return "redirect:" + api_gateway_url + "/login/success?"
@@ -196,12 +153,15 @@ public class oauthController {
                     + "&refresh_token=" + tokens.get("refresh_token");
         }
         else {
+
             OAuthRegisterCache registerCache = OAuthRegisterCache
                                             .builder()
                                             .token(Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
                                             .kakao_userID(userinfo.getId())
                                             .kakao_accessToken(codeResult.getAccess_token())
                                             .kakao_refreshToken(codeResult.getRefresh_token())
+                                            ._expires_in(curTime.plusSeconds(codeResult.getExpires_in()))
+                                            ._refresh_token_expires_in(curTime.plusSeconds(codeResult.getRefresh_token_expires_in()))
                                             .build();
 
             System.out.println(registerCache);
@@ -232,7 +192,7 @@ public class oauthController {
 
         //JSON 데이터 받을 URL 객체 생성
 //        URL url = new URL (api_gateway_url + "/user/regist/" + loginCache.getKakao_userID());
-        URL url = new URL (api_gateway_url  + "/user/regist/" + loginCache.getKakao_userID());
+        URL url = new URL (/*api_gateway_url*/   "http://localhost:9000" + "/user/regist/" + loginCache.getKakao_userID());
         //HttpURLConnection 객체를 생성해 openConnection 메소드로 url 연결
         HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
         //전송 방식 (POST)
@@ -260,14 +220,14 @@ public class oauthController {
         if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
         oAuthRegisterCacheRepository.delete(loginCache);
 
-        Map<String, String> tokens = kakao_oauthService.login(loginCache.getKakao_userID(), loginCache.getKakao_accessToken(), loginCache.getKakao_refreshToken());
+        Map<String, String> tokens = kakao_oauthService.login(loginCache.getKakao_userID(), loginCache.getKakao_accessToken(), loginCache.getKakao_refreshToken(), loginCache.get_expires_in(), loginCache.get_refresh_token_expires_in());
 
 
 
         try {
         }
         catch (Throwable e){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
 

@@ -6,6 +6,8 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.time.Instant;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -20,4 +22,6 @@ public class OAuthRegisterCache {
     long kakao_userID;
     String kakao_accessToken;
     String kakao_refreshToken;
+    Instant _expires_in;
+    Instant _refresh_token_expires_in;
 }
