@@ -37,7 +37,10 @@ export default function TeamMatchGamePage() {
   return teamMatch.data && (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-white">
-        <img className="w-100 h-100" src={getImgUrl('profiles/team', teamMatch.data.host.teamId)}></img>
+        <img className="w-100 h-100" src={getImgUrl('profiles/team', teamMatch.data.host.teamId)} onError={({ currentTarget }) => {
+          currentTarget.onerror = null;
+          currentTarget.src = getImgUrl('profiles/team', 'default_team')
+        }}></img>
         <div className="text-20 mt-4">{teamMatch.data.host.name}</div>
       </div>
 

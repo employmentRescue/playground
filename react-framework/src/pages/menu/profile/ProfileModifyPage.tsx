@@ -242,7 +242,10 @@ export default function ProfileModifyPage() {
 		<div>
 			<div className="flex flex-col w-full h-auto pt-150 bg-[#EEF3FC] justify-start tracking-tight">
 				<div className="flex flex-col bg-white">
-					<img src={getImgUrl('profiles/user', userId)} className="w-100 h-100 self-center -mt-50" />
+					<img src={getImgUrl('profiles/user', userId)} onError={({ currentTarget }) => {
+						currentTarget.onerror = null;
+						currentTarget.src = getImgUrl('profiles/user', 'default_user')
+					}} className="w-100 h-100 self-center -mt-50" />
 					<img src={profileModifyImage} className="w-25 h-25 self-center ml-70 -mt-25" onClick={console.log} />
 					<div className="flex justify-center">
 						<input onChange={getNicknameInput} className="w-[170px] mt-12 px-25 text-18 text-inter opacity-50 text-center font-extrabold self-center border-b-2 border-[#DBDBDB] outline-none" ref={inputTeamNameRef} placeholder={nickname} />

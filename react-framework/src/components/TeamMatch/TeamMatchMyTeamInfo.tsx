@@ -9,7 +9,7 @@ interface Iprops {
     myTeamData: any,
     index: number,
 }
-export default function TeamMatchMyTeamInfo({myTeamData, index}: Iprops) {
+export default function TeamMatchMyTeamInfo({ myTeamData, index }: Iprops) {
     const dispatch = useDispatch()
 
     return (
@@ -24,11 +24,14 @@ export default function TeamMatchMyTeamInfo({myTeamData, index}: Iprops) {
                 </div>
             </div>}
             <div className="flex flex-col items-center justify-center w-1/3 h-full rounded-full">
-            <img src={getImgUrl('profiles/team', myTeamData.teamStats.teamId)} className="w-50 h-50"/>
+                <img src={getImgUrl('profiles/team', myTeamData.teamStats.teamId)} className="w-50 h-50" onError={({ currentTarget }) => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = getImgUrl('profiles/team', 'default_team')
+                }} />
             </div>
             <div className="flex flex-col justify-center w-1/3 h-full">
                 <span className="flex-grow-0 font-inter text-[17px] font-normal text-left text-[#000]">{myTeamData.team.name}</span>
-                <span className="flex-grow-0 font-inter text-[17px] font-bold text-left text-[#000]">{myTeamData.teamStats.win+"W "+ myTeamData.teamStats.lose+"L"}</span>
+                <span className="flex-grow-0 font-inter text-[17px] font-bold text-left text-[#000]">{myTeamData.teamStats.win + "W " + myTeamData.teamStats.lose + "L"}</span>
             </div>
             <div className="flex flex-col items-center justify-between w-1/3 h-full my-5">
                 <span className="w-55 border-b-1 border-solid border-[#000] font-inter text-[12px] text-center">{myTeamData.teamStats.tier}</span>

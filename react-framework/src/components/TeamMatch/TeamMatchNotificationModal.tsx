@@ -2,6 +2,7 @@ import exitIcon from '@/assets/icons/exit.png'
 import { useState } from 'react';
 import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
+import { getImgUrl } from '@/utils/getImgUrl';
 
 export default function TeamMatchNotificationModal() {
   const [notification, setNotification] = useState<{ title: string | undefined, body: string | undefined }>({ title: '', body: '' });
@@ -69,9 +70,9 @@ export default function TeamMatchNotificationModal() {
           </div>
           <div className="w-full h-[255px] bg-white">
             <div className="w-full h-196 flex flex-col items-center">
-              <img className="w-100 h-100 mt-19"></img>
-              <div className="text-15 mt-18">{notification.title}</div>
-              <div className="w-88 h-30 mt-5 flex justify-center items-center bg-yellow-200 rounded-10">{notification.body}</div>
+              <img className="w-100 h-100 mt-19" src={getImgUrl('/profiles/team', '1')}></img>
+              <div className="text-15 mt-18">MUNK</div>
+              <div className="w-88 h-30 mt-5 flex justify-center items-center bg-yellow-200 rounded-10">Silver.2</div>
             </div>
             <div className="w-full h-59">
               <div className="absolute bottom-17 right-13 text-16 text-blue-700">자세히 보기</div>

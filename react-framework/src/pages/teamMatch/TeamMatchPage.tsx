@@ -21,6 +21,7 @@ import footBallOriginal from "@/assets/icons/football-original.png"
 import matchButton from "@/assets/icons/personal-match-button.png"
 import TeamMatchFilterBar from "@/components/TeamMatch/TeamMatchFilterBar";
 import { teamMatchList } from "@/models/teamMatchList";
+import { getImgUrl } from "@/utils/getImgUrl";
 
 // ============ 기타 타입 =================================================
 // 자동 매칭, 목록 선택 탭
@@ -181,9 +182,13 @@ function ListItem({ data }: { data: any }) {
     return (
         <Link to={"join/" + data.matchId} className="flex w-[90%] h-114 flex-grow-0 mx-10 p-10 my-10 rounded-15 bg-[#fff]">
             <div className="flex flex-col items-center justify-center w-1/4 h-full">
-                <span>{data.host.sports}</span>
+                <img className="w-60 h-60 rounded-[50%]" src={getImgUrl('profiles/team', data.host.teamId)}
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null;
+                        currentTarget.src = getImgUrl('profiles/team', 'default_team')
+                    }} />
             </div>
-            <div className="flex flex-col justify-center w-1/2 h-full">
+            <div className="flex flex-col justify-center w-1/2 h-full ml-10">
                 <span className="flex-grow-0 font-inter text-[17px] font-normal text-left text-[#000]">{data.host.name}</span>
                 <span className="flex-grow-0 font-inter text-[17px] font-bold text-left text-[#000]">{data.preferredPlace.address}</span>
             </div>
