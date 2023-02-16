@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -31,7 +29,7 @@ public class MatchingServiceImpl implements MatchingService {
     TeamMatchResultRepository teamMatchResultRepository;
 
     @Override
-    public Match startMatch(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId) throws ParseException {
+    public Map<String, Object> startMatch(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId) throws ParseException {
         Team team = teamRepository.findTeamByTeamId(teamId);
         int point = team.getPoint();
 
@@ -55,7 +53,13 @@ public class MatchingServiceImpl implements MatchingService {
             //2. 있으면 대기열에서 꺼내서 Match db에 저장
             if(roomList != null && roomList.size() != 0) {
                 WaitingRoom room = roomList.get(0); //매칭된 방
-                waitingRoomRepository.deleteByTeamId(room.getTeamId()); //대기열에서 매칭된 팀 꺼내기
+
+                //상대팀 정보 저장
+                Team opTeam = teamRepository.findTeamByTeamId(room.getTeamId());
+                TeamStats opTeamStat = getTeamStats(opTeam);
+
+                //대기열에서 매칭된 팀 꺼내기
+                waitingRoomRepository.deleteByTeamId(room.getTeamId());
 
                 //Match에 등록하기
                 PreferredPlace preferredPlace = PreferredPlace.builder()
@@ -92,7 +96,12 @@ public class MatchingServiceImpl implements MatchingService {
 
                 matchRepository.save(match);
 
-                return match;
+                //Map으로 담아서 반환하기
+                Map<String, Object> resultMap = new HashMap<>();
+                resultMap.put("match", match);
+                resultMap.put("opTeamStat", opTeamStat);
+                
+                return resultMap;
 
             } else { //3. 없으면 대기열에 등록 or 기다림
                 WaitingRoom waitingRoom = waitingRoomRepository.findByTeamId(teamId);
@@ -122,6 +131,60 @@ public class MatchingServiceImpl implements MatchingService {
     @Override
     public void cancelMatching(int teamId) {
         waitingRoomRepository.deleteByTeamId(teamId);
+    }
+
+    public TeamStats getTeamStats(Team team) {
+        TeamStats teamStats = new TeamStats();
+        teamStats.setTeamId(team.getTeamId());
+        teamStats.setTeamName(team.getName());
+
+        List<TeamMatchResult> teamMatchResultList = team.getTeamMatchResultList();
+
+        int win = 0, draw = 0, lose = 0;
+        for(TeamMatchResult teamMatchResult : teamMatchResultList) {
+
+            if(teamMatchResult.getResult() == null) continue;
+
+            switch (teamMatchResult.getResult()) {
+                case "승" : win++; break;
+                case "무" : draw++; break;
+                case "패" : lose++; break;
+                default: break;
+            }
+        }
+
+        teamStats.setMatchTimes(teamMatchResultList.size());
+        teamStats.setWin(win);
+        teamStats.setDraw(draw);
+        teamStats.setLose(lose);
+
+        int point = team.getPoint();
+
+        teamStats.setPoint(point);
+        teamStats.setTier(calculateTier(point));
+
+        return  teamStats;
+    }
+
+    public String calculateTier(int point) {
+        if(point > 2300) return "Platinum";
+        else if (2200 < point && point <= 2300) return "Gold1";
+        else if (2100 < point && point <= 2200) return "Gold2";
+        else if (2000 < point && point <= 2100) return "Gold3";
+        else if (1900 < point && point <= 2000) return "Gold4";
+        else if (1800 < point && point <= 1900) return "Gold5";
+        else if (1700 < point && point <= 1800) return "silver1";
+        else if (1600 < point && point <= 1700) return "silver2";
+        else if (1500 < point && point <= 1600) return "silver3";
+        else if (1400 < point && point <= 1500) return "silver4";
+        else if (1300 < point && point <= 1400) return "silver5";
+        else if (1200 < point && point <= 1300) return "bronze1";
+        else if (1100 < point && point <= 1200) return "bronze2";
+        else if (1000 < point && point <= 1100) return "bronze3";
+        else if (900 < point && point <= 1000) return "bronze4";
+        else if (point <= 900) return "bronze5";
+
+        return "";
     }
 
 }
