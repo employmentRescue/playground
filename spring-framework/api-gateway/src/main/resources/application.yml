@@ -60,7 +60,7 @@ spring:
 
         - id: user-service
 #          uri: https://i8b309.p.ssafy.io:9002
-          uri: http://localhost:9000
+          uri: https://localhost:9000
           predicates:
             - Path=/user/**, /file/**
 #          filters:
