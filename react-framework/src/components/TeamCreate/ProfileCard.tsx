@@ -8,9 +8,11 @@ interface ClassNameProps {
     nickname: string;
     isSelected: boolean;
     onClick?: any;
+    selectedMemberIds: number[];
+    setSelectedMemberIds: any;
 }
 
-export default function ProfileCard({ userId, className, imageSrc, imageSize, nickname, isSelected, onClick }: ClassNameProps) {
+export default function ProfileCard({ userId, className, imageSrc, imageSize, nickname, isSelected, onClick, selectedMemberIds, setSelectedMemberIds }: ClassNameProps) {
     return (
         <div
             className={className}
@@ -21,7 +23,7 @@ export default function ProfileCard({ userId, className, imageSrc, imageSize, ni
                     <h2 className="text-15 ">{nickname}</h2>
                 </div>
             </div>
-            <CheckBox className="flex ml-15 mr-24 w-19 h-19 border-2 rounded-20 self-center" userId={userId} imageSrc={imageSrc} nickname={nickname} isSelected={isSelected} onClick={onClick} />
+            <CheckBox className="flex ml-15 mr-24 w-19 h-19 border-2 rounded-20 self-center" userId={userId} imageSrc={imageSrc} nickname={nickname} isSelected={isSelected} onClick={onClick} selectedMemberIds={selectedMemberIds} setSelectedMemberIds={setSelectedMemberIds} />
         </div>
     )
 }

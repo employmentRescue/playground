@@ -3,6 +3,8 @@ import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import { useNavigate } from "react-router-dom";
+import useGetUserInfoByToken from "@/hooks/user/useGetUserInfoByToken";
+import { useEffect } from "react"
 
 export default function LoginSuccessPage() {
     // 이 페이지는 굳이 만들 필요 없이 바로 메인 페이지로 연결시켜도 될 듯 함
@@ -19,7 +21,15 @@ export default function LoginSuccessPage() {
         appId: "1:808423483984:web:abdb73b3b73219b3b1bf55",
         measurementId: "G-S20W3SX3K1"
     };
-
+    const params = new URLSearchParams(location.search);
+    let myToken = params.get("access_token")
+    console.log("액세스 토큰 : ", myToken)
+    const { data } = useGetUserInfoByToken(myToken ? myToken : "");
+    console.log(data)
+    useEffect(() => {
+        if (data)
+            console.log("내 카카오 아이디 : ", data)
+    }, [data])
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
 
@@ -28,7 +38,7 @@ export default function LoginSuccessPage() {
         await Notification.requestPermission().then((permission) => {
             if (permission === 'granted') {
                 console.log('Notification permission granted.');
-                navigate("/");
+                // navigate("/");
             }
         })
     }
@@ -40,7 +50,7 @@ export default function LoginSuccessPage() {
     getToken(messaging, { vapidKey: "BNQmQhy0t5IXHTfP3RhasoNL_no_HYBNDPnygCfciW5c3nopkkWkqxasbcesQ5DzISkX5JvheAIOrNaeeBrQ2ho" }).then((currentToken) => {
         if (currentToken) {
             console.log("current Token : ", currentToken)
-            axios.post(KAKAO_LOGIN_TEST_SERVER_URL + `/user/update/`, { "web_fcm_token": currentToken })
+            axios.post(KAKAO_LOGIN_TEST_SERVER_URL + `/user/update/`, [{ "web_fcm_token": currentToken }])
                 .then(response => {
                     console.log("토큰 보냈으니까 확인해봐")
                 })

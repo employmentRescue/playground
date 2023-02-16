@@ -42,13 +42,13 @@ export default function ChoiceCompoleteButton({ innerText, isNicknameDuplicated 
                     if (currentIndex == 2) {
                         saveInfo();
                         console.log(info)
-                        navigate("/login/register/complete")
+
                     } else {
                         dispatch(activeIndex(currentIndex + 1))
                     }
                 }
                 else if (innerText == "운동하러 가기") {
-                    navigate("/")
+                    navigate("/home")
                 }
 
             }}

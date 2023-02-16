@@ -18,6 +18,7 @@ export default function MatchListPage() {
     })
     const myMatchList = useGetMyMatch(myUserId);
     const myTeamList = useTeamListQuery(myUserId);
+
     let myTeamIdList: object[] = []
 
     const dispatch = useDispatch();
