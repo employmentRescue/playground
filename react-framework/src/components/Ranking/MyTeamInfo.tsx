@@ -14,9 +14,8 @@ export default function MyTeamInfo(props: Iprops) {
 
   if (Number.isNaN(winRate)) {
     winRate = 0;
-    console.log(winRate)
   } else {
-    winRate.toFixed(1);
+    winRate = Number(winRate.toFixed(1));
   }
   return (
     <div className="w-[calc(100%-8px)] h-167 mt-49 ml-4 mr-4 border-t-4 border-blue-700 rounded-5 flex items-center bg-white">
