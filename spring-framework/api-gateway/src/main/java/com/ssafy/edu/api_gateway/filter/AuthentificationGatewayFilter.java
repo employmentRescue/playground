@@ -109,7 +109,7 @@ public class AuthentificationGatewayFilter implements WebFilter {
             System.out.println("refresh : " + refreshTokenCache);
 
 
-            if (accessTokenCache == null && refreshTokenCache == null) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
+//            if (accessTokenCache == null && refreshTokenCache == null) return serverResponseCode(exchange, HttpStatus.UNAUTHORIZED);
 
             if (accessTokenCache != null) {
                 exchange.getRequest()
