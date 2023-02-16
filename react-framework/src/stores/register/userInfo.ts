@@ -6,8 +6,14 @@ type Level = "입문" | "초수" | "중수" | "고수" | null
 interface NicknameAction {
     payload: string
 }
+interface NameAction {
+    payload: string
+}
 interface FavoriteTimeAction {
     payload: number[]
+}
+interface FavoritePlaceAction {
+    payload: string
 }
 interface FavoriteSportsAction {
     payload: { sportName: "football" | "basketball" | "badminton" | null, isSelected: boolean }
@@ -24,6 +30,7 @@ interface statusMessageAction {
 
 interface UserInfo {
     nickname: string,
+    name: string,
     favoriteTime: number[],
     favoriteSports: {
         football: boolean,
@@ -37,10 +44,12 @@ interface UserInfo {
     },
     myTeam: MyTeam[],
     statusMessage: string,
+    favoritePlace: string,
 }
 
 const initialState: UserInfo = {
     nickname: "",
+    name: "",
     favoriteTime: [0, 24],
     favoriteSports: {
         football: false,
@@ -54,6 +63,7 @@ const initialState: UserInfo = {
     },
     myTeam: [],
     statusMessage: "상태 메시지",
+    favoritePlace: ''
 }
 
 const userInfoSlice = createSlice({
@@ -63,6 +73,10 @@ const userInfoSlice = createSlice({
         setNickname(state, action: NicknameAction) {
             // console.log(action.payload)
             state.nickname = action.payload
+        },
+        setName(state, action: NameAction) {
+            // console.log(action.payload)
+            state.name = action.payload
         },
         setFavoriteTime(state, action: FavoriteTimeAction) {
             // console.log(action.payload)
@@ -102,16 +116,21 @@ const userInfoSlice = createSlice({
         setStatusMessage(state, action: statusMessageAction) {
             state.statusMessage = action.payload
         },
+        setFavoritePlace(state, action: FavoritePlaceAction) {
+            state.favoritePlace = action.payload
+        }
     }
 })
 
 export const {
     setNickname,
+    setName,
     setFavoriteTime,
     setFavoriteSports,
     setSportsLevel,
     setMyTeam,
     setStatusMessage,
+    setFavoritePlace,
 } = userInfoSlice.actions;
 
 export default userInfoSlice.reducer;

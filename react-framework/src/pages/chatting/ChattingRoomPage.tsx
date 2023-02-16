@@ -25,19 +25,20 @@ type TextList = {
     "type": 'TALK' | 'ENTER'
 }
 
+let sock = new SockJS(SOCKET_URL + "/ws-stomp")
+let webSocket = Stomp.over(sock);
+webSocket.debug = () => console.log()
+
 export default function ChattingRoomPage() {
     const params = useParams();
 
     // 더미 데이터가 조금 많습니다..
 
-    const sock = new SockJS(SOCKET_URL + "/ws-stomp")
-    const webSocket = Stomp.over(sock);
     const [textList, setTextList] = useState<TextList[]>([])
 
     const recvMessage = (message: any) => {
-        console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
-        setTextList([...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : message.memberId, "content": message.content, "notice": false, "type": message.type }])
-        axios.post(SOCKET_URL + `/chat/readMessage/` + `${params.roomId}` + `?memberId=` + `${myUserId}`, message);
+        setTextList(textList => [...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : String(message.memberId), "content": message.content, "notice": false, "type": message.type }])
+
     }
 
     const sendMessage = (content: string) => {
@@ -45,14 +46,12 @@ export default function ChattingRoomPage() {
         content = '';
     }
 
-
-
     const getMessageList = async () => {
         await axios.get(CHATTING_SERVER_URL + `/chat/messageList/${params.roomId}`)
             .then(response => {
                 console.log(response.data)
-                setTextList([...textList, ...response.data])
-            })
+                setTextList(textList => [...textList, ...response.data])
+            });
     }
     // 채팅방 처음 접속 시 API에서 해당 채팅방의 모든 메시지 기록을 받아옴
     useEffect(() => {
@@ -60,21 +59,14 @@ export default function ChattingRoomPage() {
         console.log("1111111111111111111111111")
 
         getMessageList()
-
-        return (() => {
-            webSocket.disconnect();
-        })
     }, [])
 
     useEffect(() => {
         webSocket.connect({}, function (frame: any) {
-            // webSocket.reconnectDelay = 0
-            console.log("2222222222222222")
             webSocket.subscribe(`/sub/chat/room/` + `${params.roomId}`, function (message) {
                 recvMessage(JSON.parse(message.body));
             });
             webSocket.send(`/pub/chat/Message`, {}, JSON.stringify({ "chatroomId": `${params.roomId}`, "regTime": '10', "memberId": `${myUserId}`, "isNotice": false, "type": 'ENTER' }));
-            console.log("333333333333333333333333")
         }, function (error: any) {
             alert("error" + error)
         })
@@ -94,10 +86,6 @@ export default function ChattingRoomPage() {
     let scrollRef: any | undefined = useRef(null);
     let inputRef: any | undefined = useRef(null);
 
-    // textList에 받아온 메시지 혹은 내가 보낼 메시지를 push
-    function pushMessage(content: string, memberId: any) {
-        setTextList([...textList, { "chatroomId": `${params.roomId}`, "regTime": "10", "memberId": String(memberId), "content": content, "notice": false, "type": 'TALK' }])
-    }
 
     // 메시지 입력창의 텍스트를 얻어오는 함수
     const handleOnChange = (e: any) => {
@@ -113,7 +101,6 @@ export default function ChattingRoomPage() {
     const handleKeyPress = (e: any) => {
         if (e.code === "Enter") {
             if (!inputValue) return
-            pushMessage(inputValue, myUserId)
             setInputValue("")
             setActivateSend("opacity-40")
             sendMessage(inputValue)
@@ -124,7 +111,6 @@ export default function ChattingRoomPage() {
     // 버튼 클릭으로도 텍스트 전송이 가능
     function handleOnClick() {
         if (!inputValue) return
-        pushMessage(inputValue, myUserId)
         setInputValue("")
         setActivateSend("opacity-40")
         sendMessage(inputValue)
@@ -136,7 +122,6 @@ export default function ChattingRoomPage() {
 
     // 서버에서 불러온 해당 채팅방의 모든 채팅을 화면에 렌더링 해줄 함수
     const TextListRendering = () => {
-        console.log(textList)
         let index = 0
         const Result = textList.map((text: TextList) => {
             index++;
@@ -150,7 +135,6 @@ export default function ChattingRoomPage() {
                     dateTime={new Date()}
                 />
             )
-
         })
         return Result
     }
