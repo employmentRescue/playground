@@ -28,7 +28,6 @@ export default function ChattingListPage() {
     const dispatch = useDispatch();
     const { data } = useGetAllTeamChattingRoomsByMemberId(myUserId);
 
-
     useEffect(() => {
         dispatch(setTabName('채팅 목록'))
         data && console.log(data)

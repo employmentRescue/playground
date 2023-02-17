@@ -3,17 +3,20 @@ import placeIcon from "@/assets/icons/place.png"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
 import { getImgUrl } from "@/utils/getImgUrl";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setTabName } from "@/stores/tab/tabName";
 import useTeamMatchQuery from "@/hooks/teamMatch/useTeamMatchQuery";
 import { useParams } from "react-router-dom";
 import useTeamMatchJoin from "@/hooks/teamMatch/useTeamMatchJoin";
+import useTeamMatchResultRegister from "@/hooks/teamMatch/useTeamMatchResultRegitser";
 
 export default function TeamMatchGamePage() {
 
+  const [record, setRecord] = useState<string>('');
   const { teamMatchId } = useParams();
 
   const teamMatch = useTeamMatchQuery(Number(teamMatchId));
+  const teamMatchResultRegister = useTeamMatchResultRegister();
   const { mutate } = useTeamMatchJoin();
   console.log(teamMatch)
   const dispatch = useDispatch();
@@ -25,6 +28,18 @@ export default function TeamMatchGamePage() {
   useEffect(() => {
     dispatch(setTabName('팀 매칭 상세'))
   }, [])
+
+  useEffect(() => {
+    setRecord(teamMatch.data.teamMatchResultList.result);
+  },[teamMatch.isSuccess])
+
+  const resultRegister = (result: string) => {
+    teamMatchResultRegister.mutate({
+      matchId: Number(teamMatchId),
+      result: result,
+      teamId: teamId
+    })
+  }
 
   const joinChatting = () => {
     mutate({ matchId: Number(teamMatchId), teamId: teamId })
@@ -64,9 +79,9 @@ export default function TeamMatchGamePage() {
           <div className="w-full flex justify-between items-center">
             <div className="text-15 font-bold">매칭 결과 입력</div>
             <div className="flex w-125 justify-between">
-              <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12">승</button>
-              <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12">무</button>
-              <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12">패</button>
+              {record === '승' ?  <button className="w-35 h-25 rounded-5 border-1 bg-blue-700 text-white text-12">승</button>: <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12" onClick={() => { resultRegister('승'); setRecord('승') }}>승</button>}
+              {record === '무' ? <button className="w-35 h-25 rounded-5 border-1 bg-blue-700 text-white text-12">무</button> : <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12" onClick={() => { resultRegister('무'); setRecord('무') }}>무</button>}
+              {record === '패' ? <button className="w-35 h-25 rounded-5 border-1 bg-blue-700 text-white text-12">패</button> : <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12" onClick={() => { resultRegister('패'); setRecord('패') }}>패</button>}
             </div>
           </div>
           <div className="mt-15 text-12 text-gray-700">{teamMatch.data.done ? '매칭 결과 입력 완료' : '상대가 매칭 결과를 입력하기 전입니다.'}</div>
