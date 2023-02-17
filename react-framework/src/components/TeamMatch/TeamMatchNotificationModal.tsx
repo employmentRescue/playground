@@ -3,10 +3,18 @@ import { useState } from 'react';
 import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import { getImgUrl } from '@/utils/getImgUrl';
+import completeIcon from '@/assets/icons/complete.png'
+import { SERVER_URL } from '@/utils/url';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/stores/store';
 
 export default function TeamMatchNotificationModal() {
   const [notification, setNotification] = useState<{ title: string | undefined, body: string | undefined }>({ title: '', body: '' });
 
+  const userId = useSelector((state: RootState) => {
+    return state.userId;
+  });
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
@@ -38,10 +46,12 @@ export default function TeamMatchNotificationModal() {
   const messaging = getMessaging(app);
   // Add the public key generated from the console here.
   getToken(messaging, { vapidKey: "BNQmQhy0t5IXHTfP3RhasoNL_no_HYBNDPnygCfciW5c3nopkkWkqxasbcesQ5DzISkX5JvheAIOrNaeeBrQ2ho" }).then((currentToken) => {
-    if (currentToken) {
+    if (currentToken && userId) {
       // Send the token to your server and update the UI if necessary
       // ...
-      //console.log("current Token : ", currentToken)
+      console.log("current Token : ", currentToken)
+      console.log(userId)
+      axios.post(SERVER_URL + "/token/register", null, { params: { memberId: userId, token: currentToken } }).catch(() => console.log("zzzzzzzz", currentToken))
     } else {
       // Show permission request UI
       console.log('No registration token available. Request permission to generate one.');
@@ -49,7 +59,7 @@ export default function TeamMatchNotificationModal() {
     }
   }).catch((err) => {
     console.log('An error occurred while retrieving token. ', err);
-    // ...
+    // ...s
   });
 
   // foreground
@@ -65,17 +75,17 @@ export default function TeamMatchNotificationModal() {
         <div className="w-[304px] h-[389px] absolute rounded-15 top-1/2 left-1/2 ml-[-152px] mt-[-194px] overflow-hidden">
           <img className="w-10 h-10 absolute top-16 right-16" src={exitIcon}></img>
           <div className="w-full h-134 flex flex-col justify-center items-center bg-green-300">
-            <img className="w-40 h-40"></img>
+            <img className="w-40 h-40" src={completeIcon}></img>
             <div className="text-15 mt-18">매칭이 완료되었습니다</div>
           </div>
           <div className="w-full h-[255px] bg-white">
             <div className="w-full h-196 flex flex-col items-center">
-              <img className="w-100 h-100 mt-19" src={getImgUrl('/profiles/team', '1')}></img>
+              <img className="w-100 h-100 mt-19" src={getImgUrl('profiles/team', '1')}></img>
               <div className="text-15 mt-18">MUNK</div>
               <div className="w-88 h-30 mt-5 flex justify-center items-center bg-yellow-200 rounded-10">Silver.2</div>
             </div>
             <div className="w-full h-59">
-              <div className="absolute bottom-17 right-13 text-16 text-blue-700">자세히 보기</div>
+              <div className="absolute bottom-17 right-13 text-16 text-blue-700" onClick={() => location.assign('/team-match/join/5')}>자세히 보기</div>
             </div>
           </div>
         </div>

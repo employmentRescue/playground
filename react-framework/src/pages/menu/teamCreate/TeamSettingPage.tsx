@@ -17,12 +17,12 @@ interface Iprops {
     memberIds: number[];
 }
 
-type Personnel = "1vs1" | "3vs3" | "5vs5" | "6vs6" | "11vs11"
+type Personnel = "1vs1" | "2vs2" | "3vs3" | "5vs5" | "6vs6" | "11vs11"
 type TeamLevel = "입문" | "초수" | "중수" | "고수"
 
 const footballPersonnel: Personnel[] = ["5vs5", "6vs6", "11vs11"];
 const basketballPersonnel: Personnel[] = ["3vs3", "5vs5"];
-const badmintonPersonnel: Personnel[] = ["1vs1", "3vs3"];
+const badmintonPersonnel: Personnel[] = ["1vs1", "2vs2"];
 
 
 export default function TeamSettingPage({ onClickChangePage, selectedSports, memberIds }: Iprops) {
@@ -48,7 +48,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports, mem
             level: teamLevel,
             name: teamNameInput,
             sports: selectedSports,
-            teamMemberList: selectedMemberIds,
+            teamMemberList: [{ memberId: 222 }, { memberId: 333 }],
         })
     }
 

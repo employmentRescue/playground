@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export type UserId = number
 
-const initialState: UserId = 0
+const initialState: UserId = 222
 
 const userIdSlice = createSlice({
     name: 'userId',

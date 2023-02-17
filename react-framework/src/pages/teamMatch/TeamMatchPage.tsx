@@ -269,7 +269,7 @@ export default function TeamMatchPage() {
     useEffect(() => {
         listItems();
         // console.log('팀매치리스트', teamMatchListQuery)
-    }, [sliderIndex, teamMatchListQuery.isError, teamMatchListQuery.isLoading, teamMatchListQuery.isSuccess, matchDate, location, distance, startTime, sports, gameType, sort])
+    }, [sliderIndex, teamMatchListQuery.isSuccess, matchDate, location, distance, startTime, sports, gameType, sort])
 
     const autoMatch = () => dispatch({ type: 'AUTOMATCH' });
     const list = () => dispatch({ type: 'LIST' });
