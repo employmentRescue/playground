@@ -43,14 +43,18 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports, mem
     }
 
     const handleOnClickCreateTeam = () => {
+        let l: any = [];
+        selectedMemberIds.map((item, index) => {
+            l.push({ memberId: item });
+        });
         mutate({
             gameType: sportsPersonnel,
             level: teamLevel,
             name: teamNameInput,
             sports: selectedSports,
-            teamMemberList: [{ memberId: 222 }, { memberId: 333 }],
+            teamMemberList: l,
         })
-    }
+    };
 
     useEffect(() => {
         console.log(selectedMemberIds)

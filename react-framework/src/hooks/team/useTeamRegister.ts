@@ -13,7 +13,7 @@ const fetcher = (team: team) => axios.post(SERVER_URL + '/team/register',
   }
 ).then(() => {
   axios.post(CHATTING_SERVER_URL + '/chat/GatheringChatRoom',);
-  console.log("?")
+
 });
 
 const useTeamRegister = () => {
