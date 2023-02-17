@@ -1,0 +1,125 @@
+server:
+  port: 443
+
+spring:
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      default-filters:
+       - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "https://openapi.map.naver.com"
+              - "http://localhost:3000"
+              - "https://localhost:3000"
+              - "http://192.168.56.1:3000"
+            allow-credentials: true   #추가
+            allowedHeaders:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - X-AUTH-TOKEN
+              - X-CSRF-TOKEN
+              - x-forwarded-for-user-id
+
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - OPTIONS
+              - DELETE
+
+
+      httpclient:
+        ssl:
+#           useInsecureTrustManager: true # SSL Route(?) 허용
+#           ssl과 domain 관련(https를 사용할 경우 상대 docker container의 name 사용이 불가능한 이유, spring cloud gateway에서 라우팅이 안됨.)
+          #    : https://juinthyme.tistory.com/3
+          trustedX509Certificates:
+            - classpath:cert1.pem
+
+      routes:
+        # - id: react-framework2
+        #   uri: https://i8b309.p.ssafy.io:3000
+        #   predicates:
+        #     - Path=/oauth2/regist,/oauth2/success
+
+        - id: oauth2-service
+          uri: https://i8b309.p.ssafy.io:9001
+#          uri: http://localhost:8080
+          order: 1
+          predicates:
+            - Path=/oauth2/**
+#          filters:
+#            - RewritePath=/oauth/(?<path>.*),/$\{path}
+
+
+        - id: user-service
+          uri: https://i8b309.p.ssafy.io:9002
+#          uri: http://localhost:9000
+          predicates:
+            - Path=/user/**, /file/**
+#          filters:
+#            - RewritePath=/oauth/(?<path>.*),/$\{path}
+
+        - id: matching-service
+          uri: https://i8b309.p.ssafy.io:9003
+          order: 1
+          predicates:
+            - Path=/match/**, /matching/**, /gathering/**, /live/**, /ranking/**, /team/**
+
+        - id: matching-service-tester
+          uri: https://i8b309.p.ssafy.io:10003
+          predicates:
+            - Path=/test/match/**, /test/matching/**, /test/gathering/**, /test/live/**, /test/ranking/**, /test/team/**
+          filters:
+            - RewritePath=/test/(?<path>.*),/$\{path}
+
+        - id: notify-service
+          uri: https://i8b309.p.ssafy.io:9004
+          predicates:
+            - Path=/notify/**
+
+        - id: chat-service
+          uri: https://i8b309.p.ssafy.io:9005
+          predicates:
+            - Path=/chat/**, /ws-stomp/**, /webjars/**
+
+        - id: team_match-service
+          uri: https://i8b309.p.ssafy.io:9006
+          predicates:
+            - Path=/team/matching/**
+
+
+
+        - id: react-framework
+          uri: http://i8b309.p.ssafy.io:3000/
+          order: 2
+          predicates:
+            - Path=/**
+  #          filters:
+#            - RewritePath=/pages/(?<path>.*),/$\{path}
+
+
+  data:
+    redis:
+      host: i8b309.p.ssafy.io  # localhost
+      port: 6379
+
+oauth2:
+  client:
+    registration:
+      client-id:
+        kakao: 79c6d214ca859ea2806d6bd426ffb1fe
+
+#eureka:
+#  client:
+#    fetch-registry: true # 유레카 클라이언트 활성화
+#    register-with-eureka: true # 유레카 클라이언트 활성화
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka # 유레카 클라이언트로 등록

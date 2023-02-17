@@ -1,0 +1,93 @@
+version: '3.5'
+
+services:
+  api-gateway:
+    # build:
+    #   context: ./spring-framework/api_gateway-service
+    image: api-gateway-service
+    container_name: api-gateway
+    ports:
+      # - "80:80"
+      - "443:443"
+    networks:
+      - playground-broadcast-network
+
+  oauth2-service:
+    # build: 
+    #   context: ./spring-framework/oauth_service
+    image: oauth2-service
+    container_name: playground-oauth2-service
+    ports:
+      - "9001:8080"
+    networks:
+      - playground-broadcast-network
+
+  user-service:
+    # build: 
+    #   context: ./spring-framework/user-service
+    image: user-service
+    container_name: user-service
+    ports:
+      - "9002:8080"
+    networks:
+      - playground-broadcast-network
+
+  matching-service:
+    # build: 
+    #   context: ./spring-framework/matching
+    image: matching-service
+    container_name: matching-service
+    ports:
+      - "9003:8080"
+    networks:
+      - playground-broadcast-network
+
+  notify-service:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: notify-service
+    container_name: notify-service
+    ports:
+      - "9004:8080"
+    networks:
+      - playground-broadcast-network
+    # depends_on:
+    # - matching-service
+    # - user-service
+
+
+  chat-service:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: chat-service
+    container_name: chat-service
+    ports:
+      - "9005:8080"
+    networks:
+      - playground-broadcast-network
+
+
+  team_matching-service:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: team_matching-service
+    container_name: team_matching-service
+    ports:
+      - "9006:8080"
+    networks:
+      - playground-broadcast-network
+
+  react-framework:
+    # build: 
+    #   context: ./spring-framework/fcm-service
+    image: react-framework
+    container_name: react-framework
+    ports:
+      - "3000:80"
+    networks:
+      - playground-broadcast-network
+
+networks:
+  playground-broadcast-network:
+    name: playground-broadcast-network
+    driver: bridge

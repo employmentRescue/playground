@@ -99,3 +99,7 @@ Flutter를 사용하여 앱에 브라우저를 내장시키면서, 그 고통스
 그래서 pipeline을 사용하면, 'build' job, 'test' job, 'gitlab clone' job, 'curl' job 등으로 여러개를 나눌 수 있다.  
 다만.. gradle 스크립트를 짜야한다.  
 + pipeline이 싫다면 'freestyle' 아이템을 생성해서 jenkins에게 리눅스 스크립트를 작성해줄수도 있다.
+
+
+
+K8S - HPA

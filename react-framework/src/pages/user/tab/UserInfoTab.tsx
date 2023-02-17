@@ -3,27 +3,44 @@ import { Slider } from "@mui/material"
 import ChoiceCompoleteButton from "@/components/userRegister/Buttons/ChoiceCompleteButton"
 import NicknameCheckButton from "@/components/userRegister/Buttons/NicknameCheckButton"
 import { useDispatch, useSelector } from "react-redux"
-import { setNickname, setFavoriteTime } from "@/stores/register/user"
-import { User } from "@/stores/register/user"
+import { setNickname, setFavoriteTime } from "@/stores/register/userInfo"
+import { RootState } from "@/stores/store";
 
-interface userState {
-    user: User
-}
+import axios from "axios";
+import { KAKAO_LOGIN_TEST_SERVER_URL } from "@/utils/url";
 
 export default function UserInfoTab() {
     // const [favoriteTime, setFavoriteTime] = useState(initialTimeState);
     // const [nickname, setNickname] = useState("");
+    const [isNicknameDuplicated, setIsnicknameDuplicated] = useState<boolean>(false)
     const dispatch = useDispatch();
-    const favoriteTime = useSelector((state: userState) => {
-        return state.user.favoriteTime;
+    const favoriteTime = useSelector((state: RootState) => {
+        return state.userInfo.favoriteTime;
     });
-    const nickname = useSelector((state: userState) => {
-        return state.user.nickname;
+    const nickname = useSelector((state: RootState) => {
+        return state.userInfo.nickname;
     });
+
+    const nicknameChecker = async () => {
+        await axios.post(KAKAO_LOGIN_TEST_SERVER_URL + `/user/check/nickname/` + `${nickname}`)
+            .then(response => {
+                // console.log("asdasdas")
+                if (response.data.isExist) {
+                    alert("중복된 닉네임 입니다. 다시 설정해주세요.")
+                    setIsnicknameDuplicated(true)
+                    dispatch(setNickname(""))
+                    nicknameInput.current.focus()
+                } else {
+                    alert("사용 가능한 닉네임 입니다.")
+                }
+            })
+    }
 
     const handleChange = (event: Event, value: number | number[]) => {
         event.preventDefault();
-        dispatch(setFavoriteTime(value))
+        const newValue = value as number | number[] as number[]
+        // console.log(value)
+        dispatch(setFavoriteTime(newValue))
     }
 
     const handleNickname = (event: React.BaseSyntheticEvent) => {
@@ -39,26 +56,10 @@ export default function UserInfoTab() {
             value: 0,
             label: '0시',
         },
-        // {
-        //     value: 4,
-        //     label: '4시',
-        // },
-        // {
-        //     value: 8,
-        //     label: '8시',
-        // },
         {
             value: 12,
             label: '12시',
         },
-        // {
-        //     value: 16,
-        //     label: '16시',
-        // },
-        // {
-        //     value: 20,
-        //     label: '20시',
-        // },
         {
             value: 24,
             label: '24시',
@@ -74,12 +75,13 @@ export default function UserInfoTab() {
         // calc안의 100vh-146은 탭이 끝나는 지점부터의 높이를 의미
         <div className="flex flex-col h-[calc(100vh-149px)] justify-between">
             <div className="flex flex-col mt-37 self-center">
-                <h2 className="font-inter text-20 font-bold text-center tracking-tight">닉네임을 설정해주세요</h2>
+                <h2 className=" text-20 font-bold text-center tracking-tight">닉네임을 설정해주세요</h2>
                 <div className="flex justify-center mt-35">
                     <input
                         type="text"
                         value={nickname}
-                        className="border-b-2 mx-11 border-gray-600 w-160 h-26"
+                        className="border-b-2 mx-11 border-gray-600 w-160 h-26 outline-none text-center"
+                        placeholder="닉네임 입력"
                         onChange={handleNickname}
                         ref={nicknameInput}
                     />
@@ -90,19 +92,19 @@ export default function UserInfoTab() {
                             dispatch(setNickname(""))
                             return
                         } else {
-                            alert("사용 가능한 닉네임 입니다.")
+                            nicknameChecker()
+                            nicknameInput.current.focus()
+
                         }
                         /* 백엔드에 요청해서 중복되는 아이디가 있는지 검사하는 코드 넣기!!
 
 
                         */
-
-                        console.log(nickname)
                     }} />
                 </div>
 
                 <div className="flex mt-37 self-center justify-center">
-                    <h2 className="text-20 font-inter font-bold tracking-tight">선호시간을 입력해주세요<span className="text-gray-600">(선택)</span></h2>
+                    <h2 className="text-20  font-bold tracking-tight">선호시간을 입력해주세요<span className="text-gray-600">(선택)</span></h2>
                 </div>
                 <div className="w-[260px] self-center">
                     <Slider
@@ -120,7 +122,7 @@ export default function UserInfoTab() {
 
             <div className="self-center sticky bottom-0">
                 <div className="self-center bg-gradient-to-t from-white pt-50" />
-                <ChoiceCompoleteButton innerText="선택 완료" />
+                <ChoiceCompoleteButton innerText="선택 완료" isNicknameDuplicated={isNicknameDuplicated} />
             </div>
         </div>
     )

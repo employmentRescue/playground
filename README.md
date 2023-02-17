@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 소셜 운동 매칭 서비스 PLAYGROUND
 
 ![PLAYGROUND_로고](https://user-images.githubusercontent.com/67595512/216354195-c1b5a322-c60b-47a1-b585-d73594f8a50a.jpg)
@@ -255,3 +256,23 @@ playground
 ### 실시간 운동 모임 및 운동 모임 서버 API
 ![matching_api](https://user-images.githubusercontent.com/67595512/216484286-44757490-fc1e-4e30-bd64-3ca58b09335d.PNG)
 
+=======
+# Playground Develop 브랜치
+  
+spring, react 프로젝트와 docker 스크립트가 있음.  
+이 브랜치는 gitlab 파이프라인으로 결과를 볼 수 있음.
+
+how can i see the process of jenkins building status on gitlab?
+: 'gitlab의 좌측메뉴(access_token 가져오는 메뉴) -> CI/CD -> Pipelines'
+
++ status를 누르면 상세 빌드를 볼 수 있음.
+![pipeline-detail-1](./img/pipeline-detail-1.PNG)  
+![pipeline-detail-2](./img/pipeline-detail-2.PNG)  
+![pipeline-detail-3](./img/pipeline-detail-3.PNG)  
+![pipeline-detail-4](./img/pipeline-detail-4.PNG)  
+--> 기대효과 : 팀원들이 gitlab으로만으로도 ci/cd 성공여부를 확인할 수 있음.  
+
+.
+.
+..........
+>>>>>>> origin/develop

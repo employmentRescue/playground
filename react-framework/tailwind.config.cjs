@@ -23,12 +23,14 @@ module.exports = {
         "blue-400": "#d8caff",
         "blue-700": "#303EFF",
         "blue-800": "#2632cc",
+        "gray-400": "#858e94",
         "gray-500": "#D9D9D9",
         "gray-600": "#DBDBDB",
         "gray-700": "#969696",
         "gray-100": "#f5f5f5",
         "yellow-200": "#fde9b4",
         "yellow-600": "#efad45",
+        "green-300": "#e2ffd4",
         "green-400": "#c4ffb6",
         "gray-service": "#3B485B",
         "red-600": "#ff2323",
@@ -36,6 +38,9 @@ module.exports = {
       },
 
     },
+    fontFamily: {
+      cookie: ["cookie"]
+    }
 
   },
   plugins: [require('tailwindcss-font-inter')],

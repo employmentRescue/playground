@@ -1,3 +1,20 @@
+@import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css');
+@import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
+
 @tailwind base;
+
+.spoka {
+  font-family: 'Spoqa Han Sans', 'Spoqa Han Sans JP', 'Sans-serif';
+}
+
+.nanumgothic {
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+@font-face {
+  font-family: "cookie";
+  src: url("assets/fonts/CookieRun Bold.ttf");
+}
+
 @tailwind components;
 @tailwind utilities;

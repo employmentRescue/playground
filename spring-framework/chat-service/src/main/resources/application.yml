@@ -1,0 +1,43 @@
+spring:
+  profiles:
+    active: local
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: false
+  freemarker:
+    cache: false
+    template-loader-path: classpath:/templates
+    prefix: /chat/
+    suffix: .ftl
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  cache:
+    type: redis
+  redis:
+    host: i8b309.p.ssafy.io
+    port: 6379
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://i8b309.p.ssafy.io:3333/playground?serverTimezone=UTC&characterEncoding=UTF-8
+    username: ssafy
+    password: b309oo
+
+
+
+
+
+# jdbc:mysql://localhost:3306/playground?serverTimezone=UTC&characterEncoding=UTF-8
+# jdbc:mysql://i8b309.p.ssafy.io:3306/playground?serverTimezone=UTC&characterEncoding=UTF-8
+
+server:
+  ssl:
+    enabled: true
+    key-store: classpath:chat-service.p12
+    key-store-password: b309309
+  port: 8080
+
+
+
