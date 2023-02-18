@@ -55,7 +55,12 @@ public class ChatRepository {
     public int unreadMessageNumber(long memberId, int roomId) {
         List<ChatMessage> messageList = messageList(roomId);
         ChatMessage chatMessage = bringMessage(memberId, roomId);
-        int unreadMessageNumber = messageList.size() - chatMessage.getMessageId();
+
+        int unreadMessageNumber = 0;
+
+        if(messageList != null && chatMessage != null)
+            unreadMessageNumber = messageList.size() - chatMessage.getMessageId();
+
         return unreadMessageNumber;
     }
 }

@@ -50,7 +50,7 @@
 
         <ul class="list-group">
             <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.teamChatroomId" v-on:click="enterRoom(item.teamChatroomId)">
-                {{item.chatroomName}}
+                {{item.chatroomName}} &nbsp; {{item.lastMessageContent}} &nbsp; {{item.unreadMessageNumber}}
             </li>
         </ul>
     </div>
