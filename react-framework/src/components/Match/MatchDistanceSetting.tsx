@@ -33,7 +33,7 @@ export function MatchFilterDistance({ shutOtherWindow, clicked, distance }: { sh
 				clicked();
 				shutOtherWindow();
 			}}>
-			<span className="w-41 h-15 flex-grow mt-5 p-0  text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{'~' + distance + 'km'}</span>
+			<span className="w-41 h-15 flex-grow mt-5 p-0  text-12 font-[500] leading-tight tracking-normal text-left text-[#fff]">{'~' + distance + 'km'}</span>
 			<img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
 		</div>
 	)

@@ -178,7 +178,7 @@ export default function MatchFilterBar({ setFilterData, setSearchingData, startD
                 break;
         }
     }
-    // 날짜 탭 포맷팅
+    // 날짜 탭 포맷팅 ()=> string[]
     const dateDisplay = () => {
         if (startDate[5] === '0') {
             if (startDate[8] === '0') {
