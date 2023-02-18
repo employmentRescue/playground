@@ -4,7 +4,7 @@ services:
   api-gateway:
     # build:
     #   context: ./spring-framework/api_gateway-service
-    image: api-gateway-service
+    image: itmagician/ssafy-b309:api-gateway-service
     container_name: api-gateway
     ports:
       # - "80:80"
@@ -15,7 +15,7 @@ services:
   oauth2-service:
     # build: 
     #   context: ./spring-framework/oauth_service
-    image: oauth2-service
+    image: itmagician/ssafy-b309:oauth2-service
     container_name: playground-oauth2-service
     ports:
       - "9001:8080"
@@ -25,7 +25,7 @@ services:
   user-service:
     # build: 
     #   context: ./spring-framework/user-service
-    image: user-service
+    image: itmagician/ssafy-b309:user-service
     container_name: user-service
     ports:
       - "9002:8080"
@@ -35,7 +35,7 @@ services:
   matching-service:
     # build: 
     #   context: ./spring-framework/matching
-    image: matching-service
+    image: itmagician/ssafy-b309:matching-service
     container_name: matching-service
     ports:
       - "9003:8080"
@@ -45,7 +45,7 @@ services:
   notify-service:
     # build: 
     #   context: ./spring-framework/fcm-service
-    image: notify-service
+    image: itmagician/ssafy-b309:notify-service
     container_name: notify-service
     ports:
       - "9004:8080"
@@ -59,7 +59,7 @@ services:
   chat-service:
     # build: 
     #   context: ./spring-framework/fcm-service
-    image: chat-service
+    image: itmagician/ssafy-b309:chat-service
     container_name: chat-service
     ports:
       - "9005:8080"
@@ -70,7 +70,7 @@ services:
   team_matching-service:
     # build: 
     #   context: ./spring-framework/fcm-service
-    image: team_matching-service
+    image: itmagician/ssafy-b309:team_matching-service
     container_name: team_matching-service
     ports:
       - "9006:8080"
@@ -80,7 +80,7 @@ services:
   react-framework:
     # build: 
     #   context: ./spring-framework/fcm-service
-    image: react-framework
+    image: itmagician/ssafy-b309:react-framework
     container_name: react-framework
     ports:
       - "3000:80"
