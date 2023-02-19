@@ -2,20 +2,15 @@ package com.websocket.chat.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.websocket.chat.dto.ChatMessage;
 import com.websocket.chat.dto.GatheringChatroom;
 import com.websocket.chat.dto.TeamChatroom;
-import com.websocket.chat.repository.ChatRoomRepository;
 import com.websocket.chat.service.ChatRoomService;
 import com.websocket.chat.service.ChatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,18 +32,6 @@ public class ChatRoomController {
     @ApiOperation(value = "전체 팀 채팅방 조회", notes = "회원의 팀 채팅방을 전부 가져온다.")
     @GetMapping("/TeamChatRoom/{memberId}")
     public ResponseEntity<List<TeamChatroom>> getTeamChatRoomList(@PathVariable long memberId){
-//        List<TeamChatroom> list = chatRoomService.getAllTeamChatroomByMemberId(memberId);
-//        for(TeamChatroom room : list){
-//            long id = memberId;
-//            int roomId = room.getTeamChatroomId();
-//
-//            String lastMessageContent = chatService.bringMessage(id, roomId).getContent();
-//            int unreadMessageNumber = chatService.unreadMessageNumber(id,roomId);
-//
-//            room.setLastMessageContent(lastMessageContent);
-//            room.setUnreadMessageNumber(unreadMessageNumber);
-//        }
-
         return new ResponseEntity<List<TeamChatroom>>(chatRoomService.getAllTeamChatroomByMemberId(memberId), HttpStatus.OK);
     }
 
@@ -58,14 +41,6 @@ public class ChatRoomController {
         return new ResponseEntity<TeamChatroom>(chatRoomService.getTeamChatroomByRoomId(roomId), HttpStatus.OK);
     }
 
-
-
-//    @ApiOperation(value = "팀 채팅방 생성", notes = "팀 채팅방을 생성한다.")
-//    @PostMapping("/TeamChatRoom")
-//    public ResponseEntity<String> createTeamChatRoom(@RequestParam List<Long> memberIdList, @RequestBody TeamChatroom teamChatroom){
-//        chatRoomService.createTeamChatroom(memberIdList, teamChatroom);
-//        return new ResponseEntity<String>(SUCCESS, HttpStatus.CREATED);
-//    }
 
     @ApiOperation(value = "팀 채팅방 생성", notes = "팀 채팅방을 생성한다.")
     @PostMapping("/TeamChatRoom")
@@ -130,37 +105,4 @@ public class ChatRoomController {
     }
 
 
-
-//    =================================================================================================================
-
-
-
-//    @GetMapping("/room")
-//    public String rooms(Model model) {
-//        return "/chat/room";
-//    }
-//
-//    @GetMapping("/rooms")
-//    @ResponseBody
-//    public List<ChatRoom> room() {
-//        return chatRoomRepository.findAllRoom();
-//    }
-//
-//    @PostMapping("/room")
-//    @ResponseBody
-//    public ChatRoom createRoom(@RequestParam String name) {
-//        return chatRoomRepository.createChatRoom(name);
-//    }
-//
-//    @GetMapping("/room/enter/{roomId}")
-//    public String roomDetail(Model model, @PathVariable String roomId) {
-//        model.addAttribute("roomId", roomId);
-//        return "/chat/roomdetail";
-//    }
-//
-//    @GetMapping("/room/{roomId}")
-//    @ResponseBody
-//    public ChatRoom roomInfo(@PathVariable String roomId) {
-//        return chatRoomRepository.findRoomById(roomId);
-//    }
 }
