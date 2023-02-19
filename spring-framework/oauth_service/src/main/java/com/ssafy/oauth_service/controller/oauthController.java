@@ -148,7 +148,10 @@ public class oauthController {
             Map<String, String> tokens = kakao_oauthService.login(userinfo.getId(), codeResult.getAccess_token(), codeResult.getRefresh_token(), curTime.plusSeconds(codeResult.getExpires_in()), curTime.plusSeconds(codeResult.getRefresh_token_expires_in()));
 
 
-            return "redirect:" + api_gateway_url+ /*"https://localhost:3000" + */  "/login/success?"
+            return "redirect:"
+                    + "https://localhost:3000"
+//                    + api_gateway_url
+                    + "/login/success?"
                     + "access_token=" + tokens.get("access_token")
                     + "&refresh_token=" + tokens.get("refresh_token")
                     + "&user_id=" + userinfo.getId();
@@ -171,7 +174,10 @@ public class oauthController {
             System.out.println(registerCache);
 
 
-            return "redirect:" + api_gateway_url + "/login/regist?code=" + registerCache.getToken();
+            return "redirect:"
+                    + "https://localhost:3000"
+//                    + api_gateway_url
+                    + "/login/regist?code=" + registerCache.getToken();
         }
 
 //return "redirect:https://www.naver.com";
