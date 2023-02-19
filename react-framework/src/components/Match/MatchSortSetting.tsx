@@ -22,8 +22,8 @@ const engToKor = (value: string)=>{
 export function MatchFilterSort({ shutOtherWindow, clicked, sort }: { shutOtherWindow: ()=>void, clicked: ()=>void, sort: string }) {
     
     return (
-        <div className="flex flex-row w-74 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); clicked(); shutOtherWindow(); }}>
-            <span className="w-43 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] line-normal tracking-normal text-left text-[#fff]">{engToKor(sort)}</span>
+        <div className="flex flex-row justify-between w-80 h-25 flex-grow-0 pt-0 pl-9 pr-6 rounded-5 bg-[#303eff]" onClick={(e)=>{ e.preventDefault(); clicked(); shutOtherWindow(); }}>
+            <span className="w-43 h-15 flex-grow mt-5 p-0 font-inter text-12 font-[500] leading-snug tracking-normal text-left text-[#fff]">{engToKor(sort)}</span>
             <img className="w-8 h-4 mt-10 mr-1" src={whiteArrow} alt="" />
         </div>
     )
