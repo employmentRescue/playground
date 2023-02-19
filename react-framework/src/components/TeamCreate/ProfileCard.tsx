@@ -8,7 +8,7 @@ interface ClassNameProps {
     nickname: string;
     isSelected: boolean;
     onClick?: any;
-    selectedNicknames: string[];
+    selectedNicknames: { memberId: number, nickname: string }[];
     selectedMemberIds: number[];
     setSelectedMemberIds: any;
     setSelectedNicknames: any;

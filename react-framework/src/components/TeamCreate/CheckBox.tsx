@@ -12,7 +12,7 @@ interface Iprops {
     isSelected: boolean;
     onClick?: any;
     selectedMemberIds: number[];
-    selectedNicknames: string[];
+    selectedNicknames: { memberId: number, nickname: string }[];
     setSelectedMemberIds: any;
     setSelectedNicknames: any;
 }
@@ -21,10 +21,20 @@ export default function CheckBox({ userId, className, imageSrc, nickname, isSele
     const dispatch = useDispatch();
     const [selected, setSelected] = useState(isSelected)
 
+    useEffect(() => {
+        setSelected(false)
+        for (const id of selectedMemberIds) {
+            if (id === userId) {
+                setSelected(true)
+                break;
+            }
+        }
+    }, [selectedMemberIds])
+
     const handleSelect = () => {
         setSelected(!selected)
         selected ? setSelectedMemberIds(selectedMemberIds.filter((memberId) => { return memberId != userId })) : setSelectedMemberIds([userId, ...selectedMemberIds])
-        selected ? setSelectedNicknames(selectedNicknames.filter((name) => { return name != nickname })) : setSelectedNicknames([nickname, ...selectedNicknames])
+        selected ? setSelectedNicknames(selectedNicknames.filter((memberInfo) => { return memberInfo.nickname != nickname })) : setSelectedNicknames([...selectedNicknames, { memberId: userId, nickname: nickname }])
     }
 
     return (
