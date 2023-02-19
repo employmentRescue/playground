@@ -159,11 +159,6 @@ public class UserInfoController {
     @Transactional
     @PostMapping("/regist/{user_id}")
     ResponseEntity registUserInfo(@PathVariable("user_id") long userID, @RequestBody Map<String, Object> json) throws IOException {
-        // MemberOften Entity를 입력받는다.
-        // prefer_activites를 입력받는다.
-        // MemberSome Entity를 입력받는다.
-        // prefer_activity가 null이 아니면, 중복제거후 MemberOften Entity에 넣는다.
-        //
 
         try {
 
