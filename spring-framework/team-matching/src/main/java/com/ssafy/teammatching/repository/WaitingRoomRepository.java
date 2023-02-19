@@ -18,7 +18,6 @@ public interface WaitingRoomRepository extends JpaRepository<WaitingRoom, Intege
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(lng, lat)) <= (distance + ?4) * 1000 " +
             "AND ((?5 between min_start_time AND max_start_time) OR (?6 between min_start_time AND max_start_time) OR (?5 < min_start_time AND max_start_time < ?6)) " +
             "AND sports = ?7 AND game_type = ?8 " +
-            "AND match_date >= now() " +
             "AND ABS(team_point - ?9) <= 100 " +
             "AND team_id != ?10 " +
             "ORDER BY register_time ASC", nativeQuery = true)
@@ -29,7 +28,6 @@ public interface WaitingRoomRepository extends JpaRepository<WaitingRoom, Intege
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(lng, lat)) <= (distance + ?4) * 1000 " +
             "AND ((?5 between min_start_time AND max_start_time) OR (?6 between min_start_time AND max_start_time) OR (?5 < min_start_time AND max_start_time < ?6)) " +
             "AND sports = ?7 AND game_type = ?8 " +
-            "AND match_date >= now() " +
             "AND ABS(team_point - ?9) <= 200 " +
             "AND team_id != ?10 " +
             "ORDER BY register_time ASC", nativeQuery = true)
@@ -40,7 +38,6 @@ public interface WaitingRoomRepository extends JpaRepository<WaitingRoom, Intege
             "AND ST_Distance_Sphere(POINT(?3, ?2), POINT(lng, lat)) <= (distance + ?4) * 1000 " +
             "AND ((?5 between min_start_time AND max_start_time) OR (?6 between min_start_time AND max_start_time) OR (?5 < min_start_time AND max_start_time < ?6)) " +
             "AND sports = ?7 AND game_type = ?8 " +
-            "AND match_date >= now() " +
             "AND ABS(team_point - ?9) <= 300 " +
             "AND team_id != ?10 " +
             "ORDER BY register_time ASC", nativeQuery = true)

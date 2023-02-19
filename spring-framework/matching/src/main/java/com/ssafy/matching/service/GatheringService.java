@@ -15,7 +15,7 @@ public interface GatheringService {
     void updateGathering(Gathering gathering);
     void deleteGathering(int gatheringId);
 
-    void joinGathering(GatheringMember memberGathering);
+    Gathering joinGathering(GatheringMember memberGathering);
     void leaveGathering(int gatheringId, long memberId);
 
     List<Gathering> searchGatheringsByKeyword(String keyword);
