@@ -121,7 +121,7 @@ public class UserInfoController {
 
     @Transactional
     @PostMapping("/search")
-    ResponseEntity searchUserInfo(@RequestHeader("x-forwarded-for-user-id") long userID , @RequestBody Set<String> req){
+    ResponseEntity searchUserInfo(@RequestHeader("x-forwarded-for-user-id") long userID, @RequestBody Set<String> req){
         if (req == null) return new ResponseEntity(HttpStatus.BAD_REQUEST);
         System.out.println("req : " + req);
         Map<String, Object> searchResult = new HashMap<>();
