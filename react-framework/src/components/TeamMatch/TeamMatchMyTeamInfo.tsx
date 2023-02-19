@@ -35,7 +35,7 @@ export default function TeamMatchMyTeamInfo({ myTeamData, index }: Iprops) {
             </div>
             <div className="flex flex-col items-center justify-between w-1/3 h-full my-5">
                 <span className="w-55 border-b-1 border-solid border-[#000] font-inter text-[12px] text-center">{myTeamData.teamStats.tier}</span>
-                <Link to='/team-match/register' className="grid place-content-center h-23 my-15 w-60 text-center bg-[#303eff] rounded-[5px] font-inter text-[12px] text-[#fff] " onClick={(e) => { dispatch(setTeamId(myTeamData.team.teamId)) }}>경기 등록</Link>
+                <Link to='/team-match/register' className="grid place-content-center h-26 w-64 my-15 text-center bg-[#303eff] rounded-[5px] font-inter text-[12px] text-[#fff] " onClick={(e) => { dispatch(setTeamId(myTeamData.team.teamId)) }}>경기 등록</Link>
             </div>
         </div>
     )

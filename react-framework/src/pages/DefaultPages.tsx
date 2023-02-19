@@ -11,7 +11,7 @@ export function DefaultPage() {
       <Outlet />
       <div className="pt-55" />
       <Footer />
-      <TeamMatchNotificationModal/> 
+      <TeamMatchNotificationModal />
     </div>
   )
 }
@@ -36,6 +36,18 @@ export function ChattingDefaultPage() {
       <Footer />
     </div>
 
+  )
+}
+
+export function WhiteBackGroundPage() {
+  return (
+    <div className="bg-white w-screen h-screen flex flex-col">
+      <Header />
+      <div className="pt-55" />
+      <Outlet />
+      <div className="pt-55" />
+      <Footer />
+    </div>
   )
 }
 

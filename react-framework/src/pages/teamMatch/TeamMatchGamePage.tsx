@@ -8,13 +8,15 @@ import { setTabName } from "@/stores/tab/tabName";
 import useTeamMatchQuery from "@/hooks/teamMatch/useTeamMatchQuery";
 import { useParams } from "react-router-dom";
 import useTeamMatchJoin from "@/hooks/teamMatch/useTeamMatchJoin";
+import useTeamMatchResultRegister from "@/hooks/teamMatch/useTeamMatchResultRegitser";
 
 export default function TeamMatchGamePage() {
 
   const { teamMatchId } = useParams();
 
   const teamMatch = useTeamMatchQuery(Number(teamMatchId));
-  const { mutate } = useTeamMatchJoin();
+  const teamMatchJoin = useTeamMatchJoin();
+
   console.log(teamMatch)
   const dispatch = useDispatch();
 
@@ -28,8 +30,10 @@ export default function TeamMatchGamePage() {
   }, [])
 
   const join = () => {
-    mutate({ matchId: Number(teamMatchId), teamId: 1 })
+    teamMatchJoin.mutate({ matchId: Number(teamMatchId), teamId: 1 })
   }
+
+
 
   return teamMatch.data && (
     <div className="w-full">
@@ -58,14 +62,6 @@ export default function TeamMatchGamePage() {
             <div className="text-13">{teamMatch.data.preferredPlace.address}</div>
           </div>
           <div className="w-full h-1 bg-gray-600 mt-24 mb-24 "></div>
-          <div className="w-full flex justify-between items-center">
-            <div className="text-15 font-bold">매칭 결과 입력</div>
-            <div className="flex w-125 justify-between">
-              <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12">승</button>
-              <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12">무</button>
-              <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12">패</button>
-            </div>
-          </div>
           <div className="mt-15 text-12 text-gray-700">{teamMatch.data.done ? '매칭 결과 입력 완료' : '상대가 매칭 결과를 입력하기 전입니다.'}</div>
         </div>
         <div className="flex mb-15">
