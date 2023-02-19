@@ -159,7 +159,6 @@ public class UserInfoController {
     @Transactional
     @PostMapping("/regist/{user_id}")
     ResponseEntity registUserInfo(@PathVariable("user_id") long userID, @RequestBody Map<String, Object> json) throws IOException {
-
         try {
 
             MemberSometimesEntity memberSometimes = objectMapper.convertValue(json, MemberSometimesEntity.class);
