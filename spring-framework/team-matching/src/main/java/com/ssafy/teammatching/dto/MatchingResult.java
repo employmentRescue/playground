@@ -5,7 +5,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class MatchingResult {
     private Long memberId; //알림을 보낼 멤버 아이디
     private int matchId; //매칭된 경기의 아이디
@@ -18,5 +17,15 @@ public class MatchingResult {
         this.matchId = matchId;
         this.opTeamName = opTeamName;
         this.opTier = opTier;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "memberId:" + memberId +
+                ", matchId:" + matchId +
+                ", opTeamName:" + opTeamName +
+                ", opTier:" + opTier +
+                "}";
     }
 }

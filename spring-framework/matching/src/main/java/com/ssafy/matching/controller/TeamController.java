@@ -2,6 +2,7 @@ package com.ssafy.matching.controller;
 
 import com.ssafy.matching.dto.Team;
 import com.ssafy.matching.dto.TeamMember;
+import com.ssafy.matching.service.ChatService;
 import com.ssafy.matching.service.TeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Api("팀 API")
 public class TeamController {
     private TeamService teamService;
+    private ChatService chatService;
 
     @ApiOperation(value = "팀 상세 보기", notes = "팀 id에 해당하는 팀 정보를 반환한다", response = Team.class)
     @GetMapping("/{teamid}")
@@ -30,8 +32,10 @@ public class TeamController {
     @ApiOperation(value = "팀 등록하기", notes = "새로 팀을 등록한다.")
     @PostMapping("/register")
     public ResponseEntity<Team> register(@RequestBody @ApiParam(value = "팀 정보", required = true) Team team) throws Exception {
-        System.out.println(team);
-        return new ResponseEntity<Team>(teamService.registerTeam(team), HttpStatus.OK);
+        Team savedTeam = teamService.registerTeam(team);
+        chatService.createTeamChatroom(savedTeam); //채팅방 생성
+
+        return new ResponseEntity<Team>(savedTeam, HttpStatus.OK);
     }
 
     @ApiOperation(value = "팀 수정하기", notes = "팀을 수정한다.")
