@@ -15,10 +15,9 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-@ApiModel(value = "Gathering : 운동 모임 정보", description = "운동 모임의 상세 정보를 나타낸다.")
 public class TeamChatroom implements Serializable {
 
-    private static final long serialVersionUID = 6494678977089006639L;
+//    private static final long serialVersionUID = 6494678977089006639L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

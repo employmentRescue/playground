@@ -35,7 +35,7 @@ public class Gathering {
     @ApiModelProperty(value = "인원 확정여부", required = true)
     private boolean isCompleted;
     @ApiModelProperty(value = "운동모임 매니저", required = true)
-    private int manager;
+    private long host_id;
     @ApiModelProperty(value = "운동모임 성별", required = true)
     private String sex;
     @ApiModelProperty(value = "운동모임 수준", required = true)

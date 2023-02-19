@@ -1,5 +1,7 @@
 package com.websocket.chat.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +15,7 @@ import java.util.List;
 @Setter
 public class GatheringChatroom implements Serializable {
 
-    private static final long serialVersionUID = 6494678977089006649L;
+//    private static final long serialVersionUID = 6494678977089006649L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +37,7 @@ public class GatheringChatroom implements Serializable {
     private Gathering gathering;
 
     @OneToMany
-    @JoinColumn(name = "gaatheringChatroomId")
+    @JoinColumn(name = "gatheringChatroomId")
     private List<MemberGatheringChatroom> memberGatheringChatrooms;
 
     @OneToMany

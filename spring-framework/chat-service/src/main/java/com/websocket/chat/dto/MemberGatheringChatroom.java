@@ -1,5 +1,6 @@
 package com.websocket.chat.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,12 @@ public class MemberGatheringChatroom {
 
     @ManyToOne
     @JoinColumn(name = "memberId", insertable=false, updatable = false)
+    @JsonIgnore
     private MemberSometimes memberSometimes;
+
+    @ManyToOne
+    @JoinColumn(name = "gatheringChatroomId", insertable=false, updatable = false)
+    @JsonIgnore
+    private  GatheringChatroom gatheringChatroom;
 
 }
