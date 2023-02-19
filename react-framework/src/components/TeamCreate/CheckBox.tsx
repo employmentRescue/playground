@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import { inviteToMyTeam, dropOutOfMyTeam } from "@/stores/user/myTeam";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import { SampleUser } from "@/pages/menu/teamCreate/TeamCreateDefaultPage";
 
 interface Iprops {
     userId: number;
@@ -13,19 +12,29 @@ interface Iprops {
     isSelected: boolean;
     onClick?: any;
     selectedMemberIds: number[];
-    selectedMemberInfo: SampleUser[];
+    selectedNicknames: { memberId: number, nickname: string }[];
     setSelectedMemberIds: any;
-    setSelectedMemberInfo: any;
+    setSelectedNicknames: any;
 }
 
-export default function CheckBox({ userId, className, imageSrc, nickname, isSelected, onClick, selectedMemberIds, selectedMemberInfo, setSelectedMemberIds, setSelectedMemberInfo }: Iprops) {
+export default function CheckBox({ userId, className, imageSrc, nickname, isSelected, onClick, selectedMemberIds, selectedNicknames, setSelectedMemberIds, setSelectedNicknames }: Iprops) {
     const dispatch = useDispatch();
     const [selected, setSelected] = useState(isSelected)
 
+    useEffect(() => {
+        setSelected(false)
+        for (const id of selectedMemberIds) {
+            if (id === userId) {
+                setSelected(true)
+                break;
+            }
+        }
+    }, [selectedMemberIds])
+
     const handleSelect = () => {
         setSelected(!selected)
-        selected ? setSelectedMemberIds(selectedMemberIds.filter((memberId) => { return memberId != userId })) : setSelectedMemberIds([...selectedMemberIds, userId])
-        selected ? setSelectedMemberInfo(selectedMemberInfo.filter((memberInfo) => { return memberInfo.id != userId })) : setSelectedMemberInfo([...selectedMemberInfo, { id: userId, imageSrc: imageSrc, nickname: nickname, isSelected: isSelected }])
+        selected ? setSelectedMemberIds(selectedMemberIds.filter((memberId) => { return memberId != userId })) : setSelectedMemberIds([userId, ...selectedMemberIds])
+        selected ? setSelectedNicknames(selectedNicknames.filter((memberInfo) => { return memberInfo.nickname != nickname })) : setSelectedNicknames([...selectedNicknames, { memberId: userId, nickname: nickname }])
     }
 
     return (
