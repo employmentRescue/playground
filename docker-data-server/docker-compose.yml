@@ -11,8 +11,8 @@ services:
       - MYSQL_USER=ssafy
       - MYSQL_PASSWORD=b309oo
       - MYSQL_DATABASE=playground # default 생성 DB Schema
-
       - MYSQL_ROOT_PASSWORD=b309oo
+      - TZ=Asia/Seoul
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
