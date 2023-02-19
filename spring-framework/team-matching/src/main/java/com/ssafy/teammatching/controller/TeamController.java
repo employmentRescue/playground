@@ -1,6 +1,8 @@
 package com.ssafy.teammatching.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.ssafy.teammatching.dto.*;
 import com.ssafy.teammatching.service.MatchingService;
 import com.ssafy.teammatching.service.MemberService;
@@ -74,9 +76,16 @@ public class TeamController {
             System.out.println("매칭 멤버1" + matchingResult1.getMemberId());
             System.out.println("매칭 멤버2" + matchingResult2.getMemberId());
 
+//            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//            String result1ToStr = gson.toJson(matchingResult1);
+//            String result2ToStr = gson.toJson(matchingResult2);
+//
+//            System.out.println(result1ToStr);
+//            System.out.println(result2ToStr);
+
             Map<String, String> data = new HashMap<>();
-            data.put(matchingResult1.getMemberId().toString(), matchingResult1.toString());
-            data.put(matchingResult2.getMemberId().toString(), matchingResult2.toString());
+            data.put("team1", matchingResult1.toString());
+            data.put("team2", matchingResult2.toString());
 
             FCM fcm = FCM.builder()
                     .title("매칭 완료")
