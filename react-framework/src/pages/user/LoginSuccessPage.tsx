@@ -24,7 +24,7 @@ export default function LoginSuccessPage() {
         appId: "1:808423483984:web:abdb73b3b73219b3b1bf55",
         measurementId: "G-S20W3SX3K1"
     };
-    const params = new URLSearchParams(location.search);
+    const params = new URLSearchParams(window.location.search);
     console.log("params: ", params);
     navigate("/home")
     // Initialize Firebase
