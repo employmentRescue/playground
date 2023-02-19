@@ -25,7 +25,7 @@ export default function LoginSuccessPage() {
         measurementId: "G-S20W3SX3K1"
     };
     const params = useParams();
-    console.log("params", params);
+    console.log("params: ", params);
     navigate("/home")
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
