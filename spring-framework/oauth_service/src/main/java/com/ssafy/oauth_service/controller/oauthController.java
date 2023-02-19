@@ -146,8 +146,8 @@ public class oauthController {
 
 
             return "redirect:"
-                    + "https://localhost:3000"
-//                    + api_gateway_url
+//                    + "https://localhost:3000"
+                    + api_gateway_url
                     + "/login/success?"
                     + "access_token=" + tokens.get("access_token")
                     + "&refresh_token=" + tokens.get("refresh_token")
@@ -172,8 +172,8 @@ public class oauthController {
 
 
             return "redirect:"
-                    + "https://localhost:3000"
-//                    + api_gateway_url
+//                    + "https://localhost:3000"
+                    + api_gateway_url
                     + "/login/regist?code=" + registerCache.getToken();
         }
 
