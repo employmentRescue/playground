@@ -65,8 +65,6 @@ public class KakaoOAuthService {
 //        refreshTokenCacheRepository.delete(old_refresh_token);
 
 
-        
-
         // get kakao access_token, refresh_token
         URL url = UriComponentsBuilder
                 .fromHttpUrl("https://kauth.kakao.com/oauth/token")
