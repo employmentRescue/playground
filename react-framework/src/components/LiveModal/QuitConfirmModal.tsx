@@ -11,7 +11,7 @@ interface Iprops {
 
 export default function QuitConfirmModal(props: Iprops) {
     const userId = useSelector((state: RootState) => {
-        return state.userId
+        return state.userId.id
     })
     const { mutate } = useLiveMatchQuit();
 

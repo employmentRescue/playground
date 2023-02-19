@@ -32,6 +32,7 @@ import TeamMatchDetailPage from './pages/teamMatch/TeamMatchDeatilPage';
 import TeamMatchGamePage from './pages/teamMatch/TeamMatchGamePage';
 import TeamMatchPage from './pages/teamMatch/TeamMatchPage';
 import StartPage from './pages/start/StartPage';
+import TestLoginPage from './pages/test/TestLoginPage';
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
@@ -158,6 +159,10 @@ const router = createBrowserRouter([
         path: 'login/register/complete',
         element: <RegisterCompletePage />,
       },
+      {
+        path: 'test/login',
+        element: <TestLoginPage />,
+      }
     ],
   },
 

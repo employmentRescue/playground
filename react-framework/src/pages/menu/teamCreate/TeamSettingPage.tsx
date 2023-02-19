@@ -30,7 +30,7 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports, mem
     const [teamLevel, setTeamLevel] = useState<TeamLevel>("입문");
     const [sportsPersonnel, setSportsPersonnel] = useState<Personnel>("11vs11");
     const userId = useSelector((state: RootState) => {
-        return state.userId;
+        return state.userId.id;
     });
     const selectedMemberIds = [...memberIds, userId]
 

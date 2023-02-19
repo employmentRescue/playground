@@ -20,7 +20,7 @@ interface Iprops {
 export default function JoinModal(props: Iprops) {
 
     const userId = useSelector((state: RootState) => {
-        return state.userId
+        return state.userId.id
     })
 
     const join = () => {

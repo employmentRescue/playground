@@ -69,7 +69,7 @@ export default function ProfileModifyPage() {
 	const inputStatusMessageRef: any = useRef();
 
 	const userId = useSelector((state: RootState) => {
-		return state.userId
+		return state.userId.id
 	})
 
 	const userInfo = useGetUserInfo(userId);

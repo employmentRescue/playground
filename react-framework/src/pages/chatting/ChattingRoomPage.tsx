@@ -82,7 +82,7 @@ export default function ChattingRoomPage() {
     const [inputValue, setInputValue] = useState("")
 
     const myUserId = useSelector((state: RootState) => {
-        return state.userId
+        return state.userId.id
     })
     let scrollRef: any | undefined = useRef(null);
     let inputRef: any | undefined = useRef(null);

@@ -23,7 +23,7 @@ interface Room {
 export default function ChattingListPage() {
 
     const myUserId = useSelector((state: RootState) => {
-        return state.userId
+        return state.userId.id
     })
     const dispatch = useDispatch();
     const { data } = useGetAllTeamChattingRoomsByMemberId(myUserId);

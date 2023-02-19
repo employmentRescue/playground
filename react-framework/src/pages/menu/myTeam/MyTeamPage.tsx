@@ -12,7 +12,7 @@ import useTeamListQuery from "@/hooks/team/useTeamListQuery";
 
 export default function MyTeamPage() {
     const userId = useSelector((state: RootState) => {
-        return state.userId;
+        return state.userId.id;
     });
 
     const { data } = useTeamListQuery(userId);

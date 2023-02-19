@@ -203,8 +203,8 @@ export default function TeamMatchPage() {
     const [state, dispatch] = useReducer(registerTabType, initialTabState);
     // 내팀 데이터 불러오기
     const userId = useSelector((state: RootState) => {
-        // console.log('userId', state.userId)
-        return state.userId;
+        // console.log('userId', state.userId.id)
+        return state.userId.id;
     });
     // const userId = 0
 

@@ -13,7 +13,7 @@ export default function TeamMatchNotificationModal() {
   const [notification, setNotification] = useState<{ title: string | undefined, body: string | undefined }>({ title: '', body: '' });
 
   const userId = useSelector((state: RootState) => {
-    return state.userId;
+    return state.userId.id;
   });
   // Your web app's Firebase configuration
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional

@@ -37,7 +37,7 @@ export default function MatchDetailPage() {
   const geolocation = useGeolocation();
 
   const userId = useSelector((state: RootState) => {
-    return state.userId;
+    return state.userId.id;
   });
 
   const { matchId } = useParams();

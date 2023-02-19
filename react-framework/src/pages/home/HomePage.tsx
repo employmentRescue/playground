@@ -123,7 +123,7 @@ export default function HomePage() {
 	const geolocation = useGeolocation();
 	const liveMatchList = useLiveMatchListQuery(geolocation.latitude, geolocation.longitude);
 	const userId = useSelector((state: RootState) => {
-		return state.userId;
+		return state.userId.id;
 	});
 	const promisedMatchList = usePromisedMatchListQuery(userId);
 	const dispatchTab = useDispatch();

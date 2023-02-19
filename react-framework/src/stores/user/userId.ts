@@ -1,15 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
 
-export type UserId = number
+interface userId {
+    id: number;
+}
 
-const initialState: UserId = 111
+const initialState: userId = {
+    id: 0
+}
 
 const userIdSlice = createSlice({
     name: 'userId',
     initialState,
     reducers: {
         saveUserId(state, action) {
-            state = action.payload
+            state.id = action.payload
         },
     }
 })

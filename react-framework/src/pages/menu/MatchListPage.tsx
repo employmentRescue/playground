@@ -14,7 +14,7 @@ import { RootState } from "@/stores/store";
 export default function MatchListPage() {
 
     const myUserId = useSelector((state: RootState) => {
-        return state.userId
+        return state.userId.id
     })
     const myMatchList = useGetMyMatch(myUserId);
     const myTeamList = useTeamListQuery(myUserId);

@@ -32,7 +32,7 @@ export default function RankPage() {
 
   const teamList = useTeamRankingListQuery(gameType, sportsType, sortType, filterModal);
   const userId = useSelector((state: RootState) => {
-    return state.userId;
+    return state.userId.id;
   });
   const myTeamList = useTeamListQuery(userId);
   const myTeamInfo = useTeamRankingMyListQuery(myTeamId, sortType, tabIndex, myTeamList);

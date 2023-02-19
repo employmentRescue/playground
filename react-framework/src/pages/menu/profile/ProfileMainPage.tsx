@@ -15,7 +15,7 @@ import useGetUserInfo from "@/hooks/user/useGetUserInfo"
 
 export default function ProfileMainPage() {
 	const userId = useSelector((state: RootState) => {
-		return state.userId
+		return state.userId.id
 	})
 
 	const userInfo = useGetUserInfo(userId)

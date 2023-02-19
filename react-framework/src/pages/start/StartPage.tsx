@@ -1,11 +1,16 @@
 import logo from '@/assets/icons/logo.png'
 import paint from '@/assets/welcome/blue-paint.png'
+import { RootState } from '@/stores/store';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function StartPage() {
   const [textLoad, setTextLoad] = useState<boolean>(false);
   const [logoLoad, setLogoLoad] = useState<boolean>(false);
   const [paintLoad, setPaintLoad] = useState<boolean>(false);
+  const userId = useSelector((state: RootState) => {
+    return state.userId.id
+  })
   useEffect(() => {
     setTimeout(() => {
       setTextLoad(true);
@@ -14,7 +19,11 @@ export default function StartPage() {
         setTimeout(() => {
           setPaintLoad(true);
           setTimeout(() => {
-            location.assign('/home');
+            if (userId == 0) {
+              location.assign('/login');
+            } else {
+              location.assign('/home');
+            }
           }, 1000)
         }, 500)
       }, 1000);
