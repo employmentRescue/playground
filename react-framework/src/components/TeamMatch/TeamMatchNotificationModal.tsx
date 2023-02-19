@@ -11,7 +11,12 @@ import { RootState } from '@/stores/store';
 
 export default function TeamMatchNotificationModal() {
   const [notification, setNotification] = useState<{ title: string | undefined, body: string | undefined }>({ title: '', body: '' });
-
+  const [matchId, setMatchId] = useState<number>(0);
+  const [memberId, setMemberId] = useState<number>(0);
+  const [teamId, setTeamId] = useState<number>(0);
+  const [teamName, setTeamName] = useState<string>('');
+  const [tier, setTier] = useState<string>('');
+  const [open, setOpen] = useState<boolean>(false);
   const userId = useSelector((state: RootState) => {
     return state.userId.id;
   });
@@ -65,29 +70,43 @@ export default function TeamMatchNotificationModal() {
   // foreground
   onMessage(messaging, (payload) => {
     console.log('Message received(foregorund). ', payload);
-    const matchData = payload && payload.data && JSON.parse(payload?.data?.value);
-    console.log(matchData);
-    setNotification({ title: payload?.notification?.title, body: payload?.notification?.body });
+    const matchData = payload && payload.data && JSON.parse(payload?.data?.team1);
+    const matchData2 = payload && payload.data && JSON.parse(payload?.data?.team2);
+    if (matchData.memberId === userId) {
+      setMatchId(matchData.matchId);
+      setMemberId(matchData.memberId);
+      setTeamId(matchData.opTeamId);
+      setTeamName(matchData.opTeamName);
+      setTier(matchData.opTier);
+    } else if (matchData2.memberId === userId) {
+      setMatchId(matchData2.matchId);
+      setMemberId(matchData2.memberId);
+      setTeamId(matchData2.opTeamId);
+      setTeamName(matchData2.opTeamName);
+      setTier(matchData2.opTier);
+    }
+    console.log(matchData)
+    setOpen(true);
     // ...
   });
 
   return (
     <div>
-      {notification.title ? <div className="absolute w-full h-full bottom-0 bg-black/50 z-20">
+      {open ? <div className="absolute w-full h-full bottom-0 bg-black/50 z-20">
         <div className="w-[304px] h-[389px] absolute rounded-15 top-1/2 left-1/2 ml-[-152px] mt-[-194px] overflow-hidden">
-          <img className="w-10 h-10 absolute top-16 right-16" src={exitIcon}></img>
+          <img className="w-10 h-10 absolute top-16 right-16" src={exitIcon} onClick={() => setOpen(false)}></img>
           <div className="w-full h-134 flex flex-col justify-center items-center bg-green-300">
             <img className="w-40 h-40" src={completeIcon}></img>
             <div className="text-15 mt-18">매칭이 완료되었습니다</div>
           </div>
           <div className="w-full h-[255px] bg-white">
             <div className="w-full h-196 flex flex-col items-center">
-              <img className="w-100 h-100 mt-19" src={getImgUrl('profiles/team', '1')}></img>
-              <div className="text-15 mt-18">MUNK</div>
-              <div className="w-88 h-30 mt-5 flex justify-center items-center bg-yellow-200 rounded-10">Silver.2</div>
+              <img className="w-100 h-100 mt-19" src={getImgUrl('profiles/team', teamId)}></img>
+              <div className="text-15 mt-18">{teamName}</div>
+              <div className="w-88 h-30 mt-5 flex justify-center items-center bg-yellow-200 rounded-10">{tier}</div>
             </div>
             <div className="w-full h-59">
-              <div className="absolute bottom-17 right-13 text-16 text-blue-700" onClick={() => location.assign('/team-match/join/5')}>자세히 보기</div>
+              <div className="absolute bottom-17 right-13 text-16 text-blue-700" onClick={() => location.assign(`/team-match/join/${matchId}`)}>자세히 보기</div>
             </div>
           </div>
         </div>

@@ -9,11 +9,11 @@ interface ListCardProps {
     roomId: number;
     roomProfile: string;    // 채팅방 사진(팀 로고, 기본 이미지 등등)
     title: string;      // 채팅방 제목
-    personnel: any;  // 채팅방 인원
-    latestMsg: string   // 채팅방 제목 밑에서 볼 수 있는 최근 메세지
+    latestMsg: string;   // 채팅방 제목 밑에서 볼 수 있는 최근 메세지
+    unreadMsgCount: number;
 }
 
-export default function ListCard({ roomId, roomProfile, title, personnel, latestMsg }: ListCardProps) {
+export default function ListCard({ roomId, roomProfile, title, latestMsg, unreadMsgCount }: ListCardProps) {
 
     const [showModal, setShowModal] = useState(false)
     const navigate = useNavigate();
@@ -35,10 +35,10 @@ export default function ListCard({ roomId, roomProfile, title, personnel, latest
             {showModal && <ChatListModal showModal={showModal} setShowModal={setShowModal} />}
             <div className="flex bg-white w-full h-70 py-10" onClick={() => handleOnClickToChattingRoom()} {...onLongPress()}>
                 <Profile profile={roomProfile} className="self-center mx-14" />
-                <div className="flex flex-col ">
-                    <div className="flex mt-5">
-                        <p className="text-15 font-semibold">{title}</p>
-                        <p className="ml-5 -mt-1 text-15 opacity-20">{personnel}</p>
+                <div className="flex w-full flex-col ">
+                    <div className="flex w-full mt-5 justify-between">
+                        <div className="text-15 font-semibold">{title}</div>
+                        <div className="flex w-30 h-20 rounded-15 bg-red-600 text-white mr-20 justify-center items-center text-12">{unreadMsgCount}</div>
                     </div>
                     <div className="text-13 opacity-50">
                         <p>{latestMsg}</p>

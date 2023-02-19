@@ -150,6 +150,7 @@ function MatchContent({ matchRequestData }: { matchRequestData: matchRequestData
     const handleClicked = () => {
         if (matchStatus === "매칭 시작") {
             setMatchStatus("매칭 취소")
+            console.log(matchRequestData);
             useTeamMatchRequest.mutate(matchRequestData)
         } else {
             setMatchStatus("매칭 시작")
@@ -248,7 +249,7 @@ export default function TeamMatchPage() {
         maxStartTime: startTime[1],
         memberId: userId,
         minStartTime: startTime[0],
-        registerTime: dayjs(new Date()).format('YYYY-MM-DD HH-mm-ss'),
+        registerTime: dayjs(new Date()).format('YYYY-MM-DD HH:mm:ss'),
         sports: sports,
         teamId: currentTeamId,
     }

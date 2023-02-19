@@ -31,17 +31,20 @@ export default function ChattingListPage() {
 
     useEffect(() => {
         dispatch(setTabName('채팅 목록'))
-        data && console.log(data)
     }, [])
+
+    useEffect(() => {
+        console.log(data)
+    }, [data])
 
     const renderChatRooms = () => {
         return data && data.map((chattingRoom: any) => {
-            return <ListCard key={chattingRoom.teamChatroomId} roomId={chattingRoom.teamChatroomId} roomProfile={basketball} title={chattingRoom.chatroomName} personnel={chattingRoom.gameType} latestMsg="오늘 저녁 농구 ㄱ?" />
+            return <ListCard key={chattingRoom.teamChatroomId} roomId={chattingRoom.teamChatroomId} roomProfile={basketball} title={chattingRoom.chatroomName} latestMsg={chattingRoom.lastMessageContent} unreadMsgCount={chattingRoom.unreadMessageNumber} />
         })
     }
 
     return (
-        <div className="flex flex-col h-auto">
+        <div className="flex flex-col h-[calc(100%-110px)] bg-white">
             <Notice title="오늘 운동은 어떠셨나요?" content="팀원들에게 격려의 메세지를 남겨주세요!" />
             {renderChatRooms()}
         </div>

@@ -31,7 +31,7 @@ export default function MenuListPage() {
 
 	return (
 		<div className="flex flex-col bg-white h-[calc(100%-110px)]">
-			<h1 className="ml-31 mt-41  font-bold text-18 tracking-tight">프로필</h1>
+			<h1 className="ml-31 mt-41 font-bold text-18 tracking-tight">프로필</h1>
 			<Link to="/menu/profile">
 				<ProfileCard
 					className={"flex bg-[#F1F3FF] mx-15 mt-15 pl-15 py-20 rounded-15 tracking-tight justify-between"}
@@ -39,7 +39,6 @@ export default function MenuListPage() {
 					imageSrc={myProfile}
 					name={userInfo.data?.data.name}
 					nickname={userInfo.data?.data.nickname}
-					rating="bronze.1"
 				/>
 			</Link>
 

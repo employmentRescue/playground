@@ -31,10 +31,9 @@ let webSocket = Stomp.over(sock);
 webSocket.debug = () => console.log()
 
 export default function ChattingRoomPage() {
-
-
     const params = useParams();
-    const [textList, setTextList] = useState<TextList[]>([])
+    const [textList, setTextList] = useState<TextList[]>([]);
+    const [title, setTitle] = useState<string>('');
 
     const recvMessage = (message: any) => {
         setTextList(textList => [...textList, { "chatroomId": `${message.chatroomId}`, "regTime": "10", "memberId": message.type == 'ENTER' ? '[알림]' : String(message.memberId), "content": message.content, "notice": false, "type": message.type }])
@@ -55,10 +54,8 @@ export default function ChattingRoomPage() {
 
     // 채팅방 처음 접속 시 API에서 해당 채팅방의 모든 메시지 기록을 받아옴
     useEffect(() => {
-        dispatch(setTabName(`roomid=${params.roomId}에 해당하는 팀 이름 넣기`))
-        console.log("1111111111111111111111111")
-
-        getMessageList()
+        getMessageList();
+        axios.get(CHATTING_SERVER_URL + `/chat/TeamChatRoom/enter/${params.roomId}`).then(({ data }) => dispatch(setTabName(data.chatroomName)));
     }, [])
 
     useEffect(() => {

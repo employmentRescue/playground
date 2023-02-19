@@ -19,17 +19,12 @@ const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
     hostId: match.hostId,
     people: match.people,
   }
-).then(() => {
-  const gatheringId =
-    axios.post(CHATTING_SERVER_URL + '/chat/GatheringChatRoom', { chatroomName: match.title, memberIdList: [match.hostId] });
-  console.log("?")
-});
-
+)
 
 const useMatchRegister = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
-      //location.assign('/match')
+      location.assign('/match')
     },
   });
 };

@@ -89,14 +89,8 @@ export default function ProfileModifyPage() {
 		},
 	];
 
-	function valueText(value: number, index: number) {
-		return `${value}시간`
-	}
-
-
 	const handleChange = (event: Event, value: number | number[]) => {
-		event.preventDefault();
-		const newValue = value as number | number[] as number[]
+		const newValue = value as number[]
 		setFavoriteTime(newValue);
 	}
 
@@ -143,11 +137,14 @@ export default function ProfileModifyPage() {
 	}, [])
 
 	useEffect(() => {
-		setIsFavoritefootball(userInfo.data?.data.prefer_activites[0].activites);
-		setIsFavoriteBasketball(userInfo.data?.data.prefer_activites[0].activites);
-		setIsFavoriteBadminton(userInfo.data?.data.prefer_activites[0].activites);
+		console.log(userInfo.data?.data.prefer_activities[0])
+		setIsFavoritefootball(userInfo.data?.data.prefer_activities[0].activity);
+		setIsFavoriteBasketball(userInfo.data?.data.prefer_activities[0].activity);
+		setIsFavoriteBadminton(userInfo.data?.data.prefer_activities[0].activity);
 		setNickname(userInfo.data?.data.nickname);
-		setFavoriteTime(userInfo.data?.data.prefer_time);
+		const preferStartTime = userInfo.data?.data.prefer_time.split('-')[0];
+		const preferEndTime = userInfo.data?.data.prefer_time.split('-')[1];
+		setFavoriteTime([preferStartTime, preferEndTime]);
 		setFavoritePlace(userInfo.data?.data.prefer_place);
 	}, [userInfo.data])
 
@@ -386,7 +383,6 @@ export default function ProfileModifyPage() {
 						marks={marks}
 						min={0}
 						max={24}
-						getAriaValueText={valueText}
 						className="mt-5"
 						sx={{
 							color: 'blue',

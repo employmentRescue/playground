@@ -11,10 +11,7 @@ const fetcher = (team: team) => axios.post(SERVER_URL + '/team/register',
     sports: team.sports,
     teamMemberList: team.teamMemberList
   }
-).then(() => {
-  axios.post(CHATTING_SERVER_URL + '/chat/GatheringChatRoom',);
-
-});
+);
 
 const useTeamRegister = () => {
   return useMutation(fetcher, {
