@@ -21,11 +21,11 @@ export default function Footer() {
                 </div>
             }
             {tabIndex === 2 ?
-                <div className="w-70 h-55 flex flex-col justify-center items-center border-t-2 border-blue-700" onClick={() => { navigate("/match"); setTabIndex(2); }}>
+                <div className="w-70 h-55 flex flex-col justify-center items-center border-t-2 border-blue-700" onClick={() => { navigate("/gathering"); setTabIndex(2); }}>
                     <img className="w-17 h-17 mt-3" src={search}></img>
                     <div className="text-8 text-gray-700 mt-3">매칭</div>
                 </div> :
-                <div className="w-70 h-55 flex flex-col justify-center items-center" onClick={() => { navigate("/match"); setTabIndex(2); }}>
+                <div className="w-70 h-55 flex flex-col justify-center items-center" onClick={() => { navigate("/gathering"); setTabIndex(2); }}>
                     <img className="w-17 h-17 mt-3" src={search}></img>
                     <div className="text-8 text-gray-700 mt-3">매칭</div>
                 </div>

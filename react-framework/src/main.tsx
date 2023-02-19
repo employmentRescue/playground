@@ -59,15 +59,15 @@ const router = createBrowserRouter([
       ,
       // 매칭 페이지
       {
-        path: 'match',
+        path: 'gathering',
         element: <MatchPage />,
       },
       {
-        path: 'match/detail/:matchId',
+        path: 'gathering/detail/:matchId',
         element: <MatchDetailPage />,
       },
       {
-        path: 'match/register',
+        path: 'gathering/register',
         element: <MatchRegisterPage />,
       },
 

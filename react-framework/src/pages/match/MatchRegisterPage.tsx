@@ -73,7 +73,7 @@ export default function MatchRegisterPage() {
         hostId: userId,
         people: people,
       })
-      navigate('/match')
+      navigate('/gathering')
     } else {
       console.log('fail!')
       console.log(people)

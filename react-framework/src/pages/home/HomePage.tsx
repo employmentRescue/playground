@@ -310,7 +310,7 @@ export default function HomePage() {
 					}}
 				>{promisedMatchList.data.map((item: match, index: number) =>
 				(
-					<SwiperSlide key={index} onClick={() => location.assign(`/match/detail/${item.gatheringId}`)}>
+					<SwiperSlide key={index} onClick={() => location.assign(`/gathering/detail/${item.gatheringId}`)}>
 						<div className="w-full h-55 mt-8 mb-8 ml-[-10px]">
 							<MatchSlide
 								sports={item.sports}
