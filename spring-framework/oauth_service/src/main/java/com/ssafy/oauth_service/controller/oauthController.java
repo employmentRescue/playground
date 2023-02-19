@@ -124,7 +124,6 @@ public class oauthController {
 
 
 
-
     @RequestMapping("/login")
     String login(@RequestParam Map<String, Object> map, HttpServletRequest req) throws Throwable
     {
