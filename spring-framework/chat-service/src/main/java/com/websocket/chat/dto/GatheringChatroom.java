@@ -23,6 +23,12 @@ public class GatheringChatroom implements Serializable {
     private int gatheringId;
     @ApiModelProperty(value = "채팅방 이름", required = true)
     private String chatroomName;
+    @Transient
+    @ApiModelProperty(value = "채팅방의 마지막 메세지")
+    private String lastMessageContent;
+    @Transient
+    @ApiModelProperty(value = "채팅방의 안 읽은 메세지 개수")
+    private String unreadMessageNumber;
 
     @OneToOne
     @JoinColumn(name = "gatheringId", insertable=false, updatable = false)

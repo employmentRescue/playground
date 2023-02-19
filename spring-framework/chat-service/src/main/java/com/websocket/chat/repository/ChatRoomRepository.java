@@ -121,14 +121,35 @@ public class ChatRoomRepository {
         return gatheringChatroom;
     }
 
+
     public List<GatheringChatroom> findAllGatheringChatRoomByMemberId(long memberId) {
         List<MemberGatheringChatroom> list = memberGatheringChatRoomJpaRepository.findAllByMemberId(memberId);
         List<GatheringChatroom> gatheringChatroomList = new ArrayList<>();
         for(MemberGatheringChatroom mgc : list){
             int roomId = mgc.getGatheringChatroomId();
             GatheringChatroom gatheringChatroom = gatheringChatRoomJpaRepository.findAllByGatheringChatroomId(roomId);
+
+            String lastMessageContent = "";
+
+            List<ChatMessage> chatMessageList = chatService.messageList(roomId);
+
+            if(chatMessageList != null)
+                lastMessageContent = chatMessageList.get(chatMessageList.size()-1).getContent();
+
+
+            int unreadMessageNumber = chatService.unreadMessageNumber(memberId,roomId);
+
+            String stUnreadMessageNumber = "";
+            if(unreadMessageNumber != 0)
+                stUnreadMessageNumber = Integer.toString(unreadMessageNumber);
+
+
+            gatheringChatroom.setLastMessageContent(lastMessageContent);
+            gatheringChatroom.setUnreadMessageNumber(stUnreadMessageNumber);
+
             gatheringChatroomList.add(gatheringChatroom);
         }
+
         return gatheringChatroomList;
     }
 
