@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { inviteToMyTeam, dropOutOfMyTeam } from "@/stores/user/myTeam";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
+import { SampleUser } from "@/pages/menu/teamCreate/TeamCreateDefaultPage";
 
 interface Iprops {
     userId: number;
@@ -12,19 +13,19 @@ interface Iprops {
     isSelected: boolean;
     onClick?: any;
     selectedMemberIds: number[];
-    selectedNicknames: string[];
+    selectedMemberInfo: SampleUser[];
     setSelectedMemberIds: any;
-    setSelectedNicknames: any;
+    setSelectedMemberInfo: any;
 }
 
-export default function CheckBox({ userId, className, imageSrc, nickname, isSelected, onClick, selectedMemberIds, selectedNicknames, setSelectedMemberIds, setSelectedNicknames }: Iprops) {
+export default function CheckBox({ userId, className, imageSrc, nickname, isSelected, onClick, selectedMemberIds, selectedMemberInfo, setSelectedMemberIds, setSelectedMemberInfo }: Iprops) {
     const dispatch = useDispatch();
     const [selected, setSelected] = useState(isSelected)
 
     const handleSelect = () => {
         setSelected(!selected)
-        selected ? setSelectedMemberIds(selectedMemberIds.filter((memberId) => { return memberId != userId })) : setSelectedMemberIds([userId, ...selectedMemberIds])
-        selected ? setSelectedNicknames(selectedNicknames.filter((name) => { return name != nickname })) : setSelectedNicknames([nickname, ...selectedNicknames])
+        selected ? setSelectedMemberIds(selectedMemberIds.filter((memberId) => { return memberId != userId })) : setSelectedMemberIds([...selectedMemberIds, userId])
+        selected ? setSelectedMemberInfo(selectedMemberInfo.filter((memberInfo) => { return memberInfo.id != userId })) : setSelectedMemberInfo([...selectedMemberInfo, { id: userId, imageSrc: imageSrc, nickname: nickname, isSelected: isSelected }])
     }
 
     return (

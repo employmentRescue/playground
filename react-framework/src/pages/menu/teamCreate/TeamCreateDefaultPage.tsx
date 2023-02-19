@@ -10,7 +10,7 @@ import { setTabName } from "@/stores/tab/tabName"
 import axios from "axios"
 import { USER_SERVER_URL } from "@/utils/url"
 
-interface SampleUser {
+export interface SampleUser {
 	id: number;
 	imageSrc: string;
 	nickname: string;
@@ -26,7 +26,7 @@ export default function TeamCreateDefaultPage() {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [profileList, setProfileList] = useState<SampleUser[]>([]);
 	const [selectedMemberIds, setSelectedMemberIds] = useState<number[]>([]);
-	const [selectedNicknames, setSelectedMemberNicknames] = useState<string[]>([]);
+	const [selectedMemberInfo, setSelectedMemberInfo] = useState<SampleUser[]>([]);
 
 	// const { data } = useGetUserIdByNickname(searchInput);
 
@@ -55,9 +55,9 @@ export default function TeamCreateDefaultPage() {
 					nickname={profile.nickname}
 					isSelected={profile.isSelected}
 					selectedMemberIds={selectedMemberIds}
-					selectedNicknames={selectedNicknames}
+					selectedMemberInfo={selectedMemberInfo}
 					setSelectedMemberIds={setSelectedMemberIds}
-					setSelectedNicknames={setSelectedMemberNicknames}
+					setSelectedMemberInfo={setSelectedMemberInfo}
 				/>
 			)
 		})
@@ -66,13 +66,15 @@ export default function TeamCreateDefaultPage() {
 
 	//선택된 사람이 있으면  닉네임 입력창 위쪽에 프로필 사진이 추가됨
 	function selectedProfileRendering() {
-		let Result = selectedNicknames.map((item, index) => {
+		let Result = selectedMemberInfo.map((memberInfo, index) => {
 			return (
 				<div key={index} className="flex flex-col w-52 mt-15 mx-7">
 					<div className="flex w-52 h-52">
-						<img src={profileSampleImg} className="w-47 h-47 rounded-25" />
+						<img src={memberInfo.imageSrc} className="w-47 h-47 rounded-25" onClick={() => {
+							setSelectedMemberInfo(selectedMemberInfo.filter((selectedMemeber) => { return memberInfo.id != selectedMemeber.id }))
+						}} />
 					</div>
-					<p className="text-10 text-center mt-3 px-2 tracking-tight truncate">{item}</p>
+					<p className="text-10 text-center mt-3 px-2 tracking-tight truncate">{memberInfo.nickname}</p>
 				</div>
 			)
 		})
@@ -87,7 +89,6 @@ export default function TeamCreateDefaultPage() {
 					<p className="text-14 mt-8">친구 목록</p>
 					<ButtonDesign innerText="다음" className={"w-[50px] mt-5 h-28 bg-blue-700 text-14 text-white border-blue-700 rounded-40"} onClick={() => handleOnClickChangePage(1)} />
 				</div>}
-
 				{searchInput ? searchProfileRendering() : <div className="m-10 p-8 text-14 w-fit bg-[#F1F3FF] rounded-10">친구를 검색해보세요 !</div>}
 			</>
 		)
@@ -115,7 +116,7 @@ export default function TeamCreateDefaultPage() {
 	}, [searchInput])
 
 	return (
-		<div className="flex flex-col h-[calc(100vh-113px)] w-auto justify-start bg-white">
+		<div className="flex flex-col h-full w-auto justify-start bg-white">
 			<div className="flex justify-evenly mt-16">
 				<SportsSelectButtons selectedSports={selectedSports} setSelectedSports={setSelectedSports} />
 			</div>

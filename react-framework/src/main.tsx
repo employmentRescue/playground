@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { PersistGate } from 'redux-persist/integration/react';
 import store from './stores/store';
 import './index.css';
-import { UserDefaultPage, DefaultPage, StartDefaultPage } from './pages/DefaultPages';
+import { UserDefaultPage, DefaultPage, StartDefaultPage, WhiteBackGroundPage } from './pages/DefaultPages';
 import HomePage from './pages/home/HomePage';
 import MatchPage from './pages/match/MatchPage';
 
@@ -106,10 +106,6 @@ const router = createBrowserRouter([
         element: <MatchListPage />,
       },
       {
-        path: 'menu/team/create',
-        element: <TeamCreateDefaultPage />,
-      },
-      {
         path: 'menu/team',
         element: <MyTeamPage />,
       },
@@ -157,6 +153,17 @@ const router = createBrowserRouter([
       {
         path: 'login/register/complete',
         element: <RegisterCompletePage />,
+      },
+    ],
+  },
+  {
+    // 최상위 컴포넌트의 배경이 꼭 흰색이어야 하는 페이지들 넣기
+    path: '/',
+    element: <WhiteBackGroundPage />,
+    children: [
+      {
+        path: 'menu/team/create',
+        element: <TeamCreateDefaultPage />,
       },
     ],
   },
