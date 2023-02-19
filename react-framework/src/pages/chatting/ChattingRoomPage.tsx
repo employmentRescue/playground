@@ -55,7 +55,16 @@ export default function ChattingRoomPage() {
     // 채팅방 처음 접속 시 API에서 해당 채팅방의 모든 메시지 기록을 받아옴
     useEffect(() => {
         getMessageList();
-        axios.get(CHATTING_SERVER_URL + `/chat/TeamChatRoom/enter/${params.roomId}`).then(({ data }) => dispatch(setTabName(data.chatroomName)));
+        // axios.get(CHATTING_SERVER_URL + `/chat/GatheringChatRoom/enter/${params.roomId}`).then(({ data }) => {
+        //     console.log(data)
+        //     if (data)
+        //         dispatch(setTabName(data.chatroomName))
+        // });
+        // axios.get(CHATTING_SERVER_URL + `/chat/TeamChatRoom/enter/${params.roomId}`).then(({ data }) => {
+        //     console.log(data)
+        //     if (data)
+        //         dispatch(setTabName(data.chatroomName))
+        // });
     }, [])
 
     useEffect(() => {
