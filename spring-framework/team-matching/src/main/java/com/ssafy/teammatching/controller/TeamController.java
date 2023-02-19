@@ -65,7 +65,7 @@ public class TeamController {
             MemberDetail memberDetail1 = memberService.getMemberDetail(matchingResult1.getMemberId());
             String token1 = memberDetail1.getWebFcmToken();
 
-            MemberDetail memberDetail2 = memberService.getMemberDetail(matchingResult1.getMemberId());
+            MemberDetail memberDetail2 = memberService.getMemberDetail(matchingResult2.getMemberId());
             String token2 = memberDetail2.getWebFcmToken();
 
             List<String> token_list = new ArrayList<>();
