@@ -180,7 +180,6 @@ public class oauthController {
                     + "/login/regist?code=" + registerCache.getToken();
         }
 
-//return "redirect:https://www.naver.com";
     }
 
     @Transactional
