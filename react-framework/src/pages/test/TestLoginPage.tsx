@@ -7,7 +7,7 @@ export default function TestLoginPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(saveUserId(111))
+    dispatch(saveUserId(100))
     navigate('/home')
   }, [])
   return (
