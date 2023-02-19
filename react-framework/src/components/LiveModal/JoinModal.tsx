@@ -63,9 +63,9 @@ export default function JoinModal(props: Iprops) {
             <div className='w-[284px] h-1 mt-10 bg-gray-600'></div>
             <div className='w-[284px] h-100 mt-16 mb-16 flex justify-between'>
                 <div className='w-63 h-100 ml-20 flex flex-col justify-center'>
-                    <img className='w-63 h-63' src={getImgUrl('profiles/user', props.liveMatch.hostId)} onError={({ currentTarget }) => {
+                    <img className='w-63 h-63' src={getImgUrl('../assets/profiles/user', props.liveMatch.hostId)} onError={({ currentTarget }) => {
                         currentTarget.onerror = null;
-                        currentTarget.src = getImgUrl('profiles/user', 'default_user')
+                        currentTarget.src = getImgUrl('../assets/profiles/user', 'default_user')
                     }}></img>
                     <div className='mt-3 text-11 text-center'>{props.liveMatch.hostNickName}</div>
                 </div>

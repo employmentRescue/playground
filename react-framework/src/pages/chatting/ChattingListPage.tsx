@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useEffect } from "react"
 import { setTabName } from "@/stores/tab/tabName"
 import { RootState } from "@/stores/store"
+import useGetAllGatheringChattingRooms from "@/hooks/chat/useGetAllGatheringChattingRooms"
 
 interface Room {
     roomId: number;
@@ -26,26 +27,34 @@ export default function ChattingListPage() {
         return state.userId.id
     })
     const dispatch = useDispatch();
-    const { data } = useGetAllTeamChattingRoomsByMemberId(myUserId);
+    const team = useGetAllTeamChattingRoomsByMemberId(myUserId);
+    const gather = useGetAllGatheringChattingRooms(myUserId);
 
     useEffect(() => {
         dispatch(setTabName('채팅 목록'))
     }, [])
 
     useEffect(() => {
-        console.log(data)
-    }, [data])
+        console.log(team.data)
+    }, [team.data])
 
-    const renderChatRooms = () => {
-        return data && data.map((chattingRoom: any) => {
+    const renderTeamChatRooms = () => {
+        return team.data && team.data.map((chattingRoom: any) => {
             return <ListCard key={chattingRoom.teamChatroomId} roomId={chattingRoom.teamChatroomId} roomProfile={basketball} title={chattingRoom.chatroomName} latestMsg={chattingRoom.lastMessageContent} unreadMsgCount={chattingRoom.unreadMessageNumber} />
+        })
+    }
+
+    const renderGatheringChatRooms = () => {
+        return gather.data && gather.data.map((chattingRoom: any) => {
+            return <ListCard key={chattingRoom.gatheringChatroomId} roomId={chattingRoom.gatheringChatroomId} roomProfile={basketball} title={chattingRoom.chatroomName} latestMsg={chattingRoom.lastMessageContent} unreadMsgCount={chattingRoom.unreadMessageNumber} />
         })
     }
 
     return (
         <div className="flex flex-col h-[calc(100%-110px)] bg-white">
             <Notice title="오늘 운동은 어떠셨나요?" content="팀원들에게 격려의 메세지를 남겨주세요!" />
-            {renderChatRooms()}
+            {renderTeamChatRooms()}
+            {renderGatheringChatRooms()}
         </div>
     )
 }

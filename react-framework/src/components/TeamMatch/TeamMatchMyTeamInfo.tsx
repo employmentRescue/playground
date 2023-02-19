@@ -24,9 +24,9 @@ export default function TeamMatchMyTeamInfo({ myTeamData, index }: Iprops) {
                 </div>
             </div>}
             <div className="flex flex-col items-center justify-center w-1/3 h-full rounded-full">
-                <img src={getImgUrl('profiles/team', myTeamData.teamStats.teamId)} className="w-50 h-50" onError={({ currentTarget }) => {
+                <img src={getImgUrl('../assets/profiles/team', myTeamData.teamStats.teamId)} className="w-50 h-50" onError={({ currentTarget }) => {
                     currentTarget.onerror = null;
-                    currentTarget.src = getImgUrl('profiles/team', 'default_team')
+                    currentTarget.src = getImgUrl('../assets/profiles/team', 'default_team')
                 }} />
             </div>
             <div className="flex flex-col justify-center w-1/3 h-full">

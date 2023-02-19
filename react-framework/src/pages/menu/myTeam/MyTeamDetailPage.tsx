@@ -24,9 +24,9 @@ export default function MyTeamDetailPage() {
   return data && (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-[#fcfffb]">
-        <img className="w-100 h-100" src={getImgUrl('profiles/team', data.team.teamId)} onError={({ currentTarget }) => {
+        <img className="w-100 h-100" src={getImgUrl('../assets/profiles/team', data.team.teamId)} onError={({ currentTarget }) => {
           currentTarget.onerror = null;
-          currentTarget.src = getImgUrl('profiles/team', 'default_team')
+          currentTarget.src = getImgUrl('../assets/profiles/team', 'default_team')
         }}></img>
         <div className="text-20 mt-4">{data.team.name}</div>
       </div>
@@ -69,7 +69,10 @@ export default function MyTeamDetailPage() {
             <div className="flex mt-18 w-full flex-wrap">
               {data.team.teamMemberList.map((item: any, index: number) => (
                 <div className="flex flex-col justify-center items-center mr-13" key={index}>
-                  <img className="w-47 h-47 rounded-50" src={getImgUrl('profiles/user', item.memberId)}></img>
+                  <img className="w-47 h-47 rounded-50" src={getImgUrl('../assets/profiles/user', item.memberId)} onError={({ currentTarget }) => {
+                    currentTarget.onerror = null;
+                    currentTarget.src = getImgUrl('../assets/profiles/user', 'default_user')
+                  }}></img>
                   <div className="text-9">{item.member.nickname}</div>
                 </div>
               ))}
