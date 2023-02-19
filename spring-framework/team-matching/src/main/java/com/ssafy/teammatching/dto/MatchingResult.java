@@ -4,8 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MatchingResult {
     private Long memberId; //알림을 보낼 멤버 아이디
     private int matchId; //매칭된 경기의 아이디

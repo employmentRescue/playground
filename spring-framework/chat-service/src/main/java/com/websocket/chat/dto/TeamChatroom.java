@@ -33,7 +33,7 @@ public class TeamChatroom implements Serializable {
     private String lastMessageContent;
     @Transient
     @ApiModelProperty(value = "채팅방의 안 읽은 메세지 개수")
-    private String unreadMessageNumber;
+    private int unreadMessageNumber;
 
     @OneToOne
     @JoinColumn(name = "teamId", insertable=false, updatable = false)

@@ -2,6 +2,7 @@ package com.ssafy.matching.controller;
 
 import com.ssafy.matching.dto.Gathering;
 import com.ssafy.matching.dto.GatheringMember;
+import com.ssafy.matching.service.ChatService;
 import com.ssafy.matching.service.GatheringService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,7 @@ public class GatheringController {
     private static final String FAIL = "fail";
 
     private GatheringService gatheringService;
+    private ChatService chatService;
 
     @GetMapping("/hello")
     public String hello() {
@@ -81,11 +83,6 @@ public class GatheringController {
         System.out.println(gathering);
 
         gatheringService.registerGathering(gathering);
-
-//        if (gatheringService.registerGathering(gathering)) {
-//            return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     }
 
     @ApiOperation(value = "운동 모임 수정하기", notes = "운동 모임을 수정한다.")
@@ -105,9 +102,12 @@ public class GatheringController {
     @ApiOperation(value = "운동 모임에 참여하기", notes = "운동모임에 참여한다.")
     @PostMapping("/join")
     public void join(@RequestBody @ApiParam(value = "운동 모임 멤버 정보", required = true) GatheringMember memberGathering) throws Exception {
-        System.out.println(memberGathering);
+        Gathering gathering = gatheringService.joinGathering(memberGathering);
 
-        gatheringService.joinGathering(memberGathering);
+        if(gathering.getMemberGatheringList().size() == gathering.getPeople()) { //인원이 다 차면
+            chatService.createGatheringChatroom(gathering);
+        }
+        
     }
 
     @ApiOperation(value = "운동 모임 참여 취소하기", notes = "모임Id와 유저ID에 해당하는 운동 모임을 삭제한다.")

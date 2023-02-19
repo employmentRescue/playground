@@ -84,13 +84,8 @@ public class ChatRoomRepository {
 
             int unreadMessageNumber = chatService.unreadMessageNumber(memberId,roomId);
 
-            String stUnreadMessageNumber = "";
-            if(unreadMessageNumber != 0)
-                stUnreadMessageNumber = Integer.toString(unreadMessageNumber);
-
-
             teamChatroom.setLastMessageContent(lastMessageContent);
-            teamChatroom.setUnreadMessageNumber(stUnreadMessageNumber);
+            teamChatroom.setUnreadMessageNumber(unreadMessageNumber);
 
             teamChatroomList.add(teamChatroom);
         }
@@ -139,13 +134,8 @@ public class ChatRoomRepository {
 
             int unreadMessageNumber = chatService.unreadMessageNumber(memberId,roomId);
 
-            String stUnreadMessageNumber = "";
-            if(unreadMessageNumber != 0)
-                stUnreadMessageNumber = Integer.toString(unreadMessageNumber);
-
-
             gatheringChatroom.setLastMessageContent(lastMessageContent);
-            gatheringChatroom.setUnreadMessageNumber(stUnreadMessageNumber);
+            gatheringChatroom.setUnreadMessageNumber(unreadMessageNumber);
 
             gatheringChatroomList.add(gatheringChatroom);
         }

@@ -30,8 +30,6 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/oauth2")
-//@CrossOrigin(origins = {"*"})
-//@CrossOrigin(origins = {"https://kauth.kakao.com","https://localhost:3000", "https://192.168.31.246", "https://192.168.31.246:3000", "https://192.168.31.246/oauth2/login/kakao"})
 public class oauthController {
     @RequestMapping("hello")
     @ResponseBody
@@ -123,7 +121,6 @@ public class oauthController {
         System.out.println("redirect:kakao" + kakao_cliendID + "://oauth?server_error=abc&access_token=" + codeResult.getAccess_token());
         return "redirect:kakao" + kakao_cliendID + "://oauth?server_error=abc&access_token=" + codeResult.getAccess_token();
     }
-
 
 
 

@@ -1,6 +1,7 @@
 package com.ssafy.teammatching.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.ssafy.teammatching.dto.*;
 import com.ssafy.teammatching.service.MatchingService;
 import com.ssafy.teammatching.service.MemberService;
@@ -29,7 +30,9 @@ public class TeamController {
 
     @ApiOperation(value = "원하는 조건으로 팀 경기 매칭하기", notes = "조건(날짜(matchDate), 지역(lat, lng), 반경(distance), 최소 시작시간(minStartTime), 최대 시작시간(maxStartTime), 스포츠 종류(sports), 게임 타입(gameType)에 맞는 팀 경기를 매칭해준다.")
     @PostMapping("/matching")
-    public ResponseEntity<?> match(String matchDate, double lat, double lng, int distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, int teamId, Long memberId) throws Exception {
+    public ResponseEntity<?> match(String matchDate, Double lat, Double lng, Integer distance, String minStartTime, String maxStartTime, String sports, String gameType, String registerTime, Integer teamId, Long memberId) throws Exception {
+        System.out.println("들어오는거 확인: " + lat + " " + lng + " " + distance + " ");
+
         Map<String, Object> map = matchingService.startMatch(matchDate, lat, lng, distance, minStartTime, maxStartTime, sports, gameType, registerTime, teamId, memberId);
 
         System.out.println("매칭 결과: " + map);
@@ -61,22 +64,26 @@ public class TeamController {
             //멤버의 토큰 가져오기 -> 토큰 리스트에 넣기
             MemberDetail memberDetail1 = memberService.getMemberDetail(matchingResult1.getMemberId());
             String token1 = memberDetail1.getWebFcmToken();
-//            token1 = "fNGBxyTXLbabHNgQbvL9Y1:APA91bFTWorrmDTNO9--VergBZSiOX_SP7ZdeBWNi2lYmG3Dwzw30kvObyek9Aq4Zr1-vma_cduMZUBuLhSXZy5EOchanPYAKCeXSJE2IfBM4Ah7c_iEVL2EuEmt0Svr0Ua7c91nCC2-";
 
             MemberDetail memberDetail2 = memberService.getMemberDetail(matchingResult1.getMemberId());
             String token2 = memberDetail2.getWebFcmToken();
-//            token2 = "fNGBxyTXLbabHNgQbvL9Y1:APA91bFTWorrmDTNO9--VergBZSiOX_SP7ZdeBWNi2lYmG3Dwzw30kvObyek9Aq4Zr1-vma_cduMZUBuLhSXZy5EOchanPYAKCeXSJE2IfBM4Ah7c_iEVL2EuEmt0Svr0Ua7c91nCC2-";
 
             List<String> token_list = new ArrayList<>();
             token_list.add(token1);
             token_list.add(token2);
 
-            System.out.println("매칭 멤버1" + matchingResult1.getMemberId());
-            System.out.println("매칭 멤버2" + matchingResult2.getMemberId());
+            //data에 매칭 정보 넣기
+            Gson gson = new Gson();
+            String jsonString1 = gson.toJson(matchingResult1);
+            String jsonString2 = gson.toJson(matchingResult2);
+
+            System.out.println("매칭 멤버1" + jsonString1);
+            System.out.println("매칭 멤버2" + jsonString2);
 
             Map<String, String> data = new HashMap<>();
-            data.put(matchingResult1.getMemberId().toString(), matchingResult1.toString());
-            data.put(matchingResult2.getMemberId().toString(), matchingResult2.toString());
+
+            data.put("team1", jsonString1);
+            data.put("team2", jsonString2);
 
             FCM fcm = FCM.builder()
                     .title("매칭 완료")
