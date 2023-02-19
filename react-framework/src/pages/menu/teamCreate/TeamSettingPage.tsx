@@ -32,7 +32,9 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports, mem
     const userId = useSelector((state: RootState) => {
         return state.userId;
     });
-    const selectedMemberIds = [...memberIds, userId]
+    const selectedMemberIds = memberIds.map((id) => {
+        return { memberId: id }
+    })
 
     const teamNameInputRef: any = useRef();
 
@@ -43,12 +45,13 @@ export default function TeamSettingPage({ onClickChangePage, selectedSports, mem
     }
 
     const handleOnClickCreateTeam = () => {
+        console.log(selectedMemberIds)
         mutate({
             gameType: sportsPersonnel,
             level: teamLevel,
             name: teamNameInput,
             sports: selectedSports,
-            teamMemberList: [{ memberId: 222 }, { memberId: 333 }],
+            teamMemberList: selectedMemberIds
         })
     }
 

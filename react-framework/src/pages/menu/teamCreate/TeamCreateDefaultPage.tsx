@@ -136,7 +136,7 @@ export default function TeamCreateDefaultPage() {
 			<div className="flex justify-evenly mt-16">
 				<SportsSelectButtons selectedSports={selectedSports} setSelectedSports={setSelectedSports} />
 			</div>
-			<div className="flex mx-16 w-auto">{selectedProfileRendering()}</div>
+			<div className="flex mx-16 w-auto overflow-auto">{selectedProfileRendering()}</div>
 			{(currentPage === 1) && MemberInvitePage()}
 			{(currentPage === 2) && <TeamSettingPage onClickChangePage={handleOnClickChangePage} selectedSports={selectedSports} setSelectedSports={setSelectedSports} memberIds={selectedMemberIds} />}
 		</div>
