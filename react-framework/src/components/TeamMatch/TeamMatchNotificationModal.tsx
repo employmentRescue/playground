@@ -86,6 +86,7 @@ export default function TeamMatchNotificationModal() {
       setTier(matchData2.opTier);
     }
     console.log(matchData)
+
     setOpen(true);
     // ...
   });
