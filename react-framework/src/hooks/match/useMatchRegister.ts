@@ -24,7 +24,7 @@ const fetcher = (match: match) => axios.post(SERVER_URL + '/gathering/register',
 const useMatchRegister = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
-      location.assign('/match')
+      location.assign('/gather')
     },
   });
 };

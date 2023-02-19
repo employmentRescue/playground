@@ -7,7 +7,7 @@ const fetcher = (variables: { gatheringId?: number, memberId?: number }) => axio
 const useMatchJoin = () => {
   return useMutation(fetcher, {
     onSuccess: () => {
-      location.assign('/match');
+      location.assign('/gather');
     },
   })
 };

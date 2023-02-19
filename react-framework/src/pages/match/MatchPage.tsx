@@ -222,7 +222,7 @@ export default function MatchPage() {
                 {listItems()}
             </div>
             <div className="fixed bottom-70 right-15 rounded-50 w-45 h-45 bg-blue-700 text-white text-45 flex justify-center items-center"
-                onClick={() => navigate('/gathering/register')}>+</div>
+                onClick={() => navigate('/gather/register')}>+</div>
         </div>
     )
 }       

@@ -30,7 +30,7 @@ export default function MatchCard({ imgSrc, matchTitle, place, matchPersonnel, m
                     {matchPersonnel && <p className="text-10 mt-0 text-[#969696]">{matchPersonnel}</p>}
                 </div>
             </div>
-            <button className={"flex w-60 px-22 " + buttonColor} onClick={() => location.assign(`/match/detail/${matchId}`)} disabled={isOldMatch}>
+            <button className={"flex w-60 px-22 " + buttonColor} onClick={() => location.assign(`/gather/detail/${matchId}`)} disabled={isOldMatch}>
                 <img src={goButtonImage} className={"w-15 h-15 self-center"} />
             </button>
         </div>
