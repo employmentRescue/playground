@@ -31,7 +31,7 @@ export default function TeamMatchGamePage() {
 
   useEffect(() => {
     setRecord(teamMatch.data.teamMatchResultList.result);
-  },[teamMatch.isSuccess])
+  }, [teamMatch.isSuccess])
 
   const resultRegister = (result: string) => {
     teamMatchResultRegister.mutate({
@@ -52,9 +52,9 @@ export default function TeamMatchGamePage() {
   return teamMatch.data && (
     <div className="w-full">
       <div className="w-full h-173 flex flex-col justify-center items-center bg-white">
-        <img className="w-100 h-100" src={getImgUrl('../assets/profiles/team', teamMatch.data.host.teamId)} onError={({ currentTarget }) => {
+        <img className="w-100 h-100" src={getImgUrl('profiles/team', teamMatch.data.host.teamId)} onError={({ currentTarget }) => {
           currentTarget.onerror = null;
-          currentTarget.src = getImgUrl('../assets/profiles/team', 'default_team')
+          currentTarget.src = getImgUrl('profiles/team', 'default_team')
         }}></img>
         <div className="text-20 mt-4">{teamMatch.data.host.name}</div>
       </div>
@@ -79,7 +79,7 @@ export default function TeamMatchGamePage() {
           <div className="w-full flex justify-between items-center">
             <div className="text-15 font-bold">매칭 결과 입력</div>
             <div className="flex w-125 justify-between">
-              {record === '승' ?  <button className="w-35 h-25 rounded-5 border-1 bg-blue-700 text-white text-12">승</button>: <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12" onClick={() => { resultRegister('승'); setRecord('승') }}>승</button>}
+              {record === '승' ? <button className="w-35 h-25 rounded-5 border-1 bg-blue-700 text-white text-12">승</button> : <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12" onClick={() => { resultRegister('승'); setRecord('승') }}>승</button>}
               {record === '무' ? <button className="w-35 h-25 rounded-5 border-1 bg-blue-700 text-white text-12">무</button> : <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12" onClick={() => { resultRegister('무'); setRecord('무') }}>무</button>}
               {record === '패' ? <button className="w-35 h-25 rounded-5 border-1 bg-blue-700 text-white text-12">패</button> : <button className="w-35 h-25 rounded-5 border-1 border-blue-700 text-blue-700 text-12" onClick={() => { resultRegister('패'); setRecord('패') }}>패</button>}
             </div>

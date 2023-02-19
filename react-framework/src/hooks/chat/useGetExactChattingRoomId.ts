@@ -2,7 +2,7 @@ import { CHATTING_SERVER_URL } from '@/utils/url';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
-export const CHATTING = '/chatting';
+export const CHATTING = '/chatting_exact';
 
 const fetcher = (roomId: number) => axios.get(CHATTING_SERVER_URL + `/chat/TeamChatRoom/enter/${roomId}`).then(({ data }) => data).catch((error) => console.log(error))
 

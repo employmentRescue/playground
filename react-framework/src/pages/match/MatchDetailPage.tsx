@@ -258,10 +258,10 @@ export default function MatchDetailPage() {
                 >
                   <img
                     className="w-40 h-40"
-                    src={getImgUrl('../assets/profiles/user', e.member.memberId)}
+                    src={getImgUrl('profiles/user', e.member.memberId)}
                     onError={({ currentTarget }) => {
                       currentTarget.onerror = null;
-                      currentTarget.src = getImgUrl('../assets/profiles/user', 'default_user')
+                      currentTarget.src = getImgUrl('profiles/user', 'default_user')
                     }}
                   ></img>
                   <div className="text-10 mt-4">{e.member.nickname}</div>

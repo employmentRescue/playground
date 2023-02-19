@@ -36,7 +36,8 @@ export default function ChattingListPage() {
 
     useEffect(() => {
         console.log(team.data)
-    }, [team.data])
+        console.log(gather.data)
+    }, [team.data, gather.data])
 
     const renderTeamChatRooms = () => {
         return team.data && team.data.map((chattingRoom: any) => {

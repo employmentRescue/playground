@@ -2,7 +2,7 @@ import { CHATTING_SERVER_URL } from '@/utils/url';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
-export const CHATTING = '/chatting';
+export const CHATTING = '/chatting_gahter';
 
 const fetcher = (memberId: number) => axios.get(CHATTING_SERVER_URL + `/chat/GatheringChatRoom/${memberId}`).then(({ data }) => data).catch((error) => console.log(error))
 

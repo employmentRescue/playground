@@ -102,9 +102,9 @@ export default function TeamMatchNotificationModal() {
           </div>
           <div className="w-full h-[255px] bg-white">
             <div className="w-full h-196 flex flex-col items-center">
-              <img className="w-100 h-100 mt-19" src={getImgUrl('../assets/profiles/team', teamId)} onError={({ currentTarget }) => {
+              <img className="w-100 h-100 mt-19" src={getImgUrl('profiles/team', teamId)} onError={({ currentTarget }) => {
                 currentTarget.onerror = null;
-                currentTarget.src = getImgUrl('../assets/profiles/team', 'default_team')
+                currentTarget.src = getImgUrl('profiles/team', 'default_team')
               }}></img>
               <div className="text-15 mt-18">{teamName}</div>
               <div className="w-88 h-30 mt-5 flex justify-center items-center bg-yellow-200 rounded-10">{tier}</div>

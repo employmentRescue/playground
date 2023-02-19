@@ -184,9 +184,9 @@ function ListItem({ data }: { data: any }) {
     return (
         <Link to={"join/" + data.matchId} className="flex w-[90%] h-114 flex-grow-0 mx-10 p-10 my-10 rounded-15 bg-[#fff]">
             <div className="flex flex-col items-center justify-center w-1/4 h-full">
-                <img className="w-60 h-60 rounded-[50%]" src={getImgUrl('../assets/profiles/team', data.host.teamId)} onError={({ currentTarget }) => {
+                <img className="w-60 h-60 rounded-[50%]" src={getImgUrl('profiles/team', data.host.teamId)} onError={({ currentTarget }) => {
                     currentTarget.onerror = null;
-                    currentTarget.src = getImgUrl('../assets/profiles/team', 'default_team')
+                    currentTarget.src = getImgUrl('profiles/team', 'default_team')
                 }} />
             </div>
             <div className="flex flex-col justify-center w-1/2 h-full ml-10">
