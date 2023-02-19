@@ -1,8 +1,6 @@
 package com.ssafy.teammatching.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.ssafy.teammatching.dto.*;
 import com.ssafy.teammatching.service.MatchingService;
 import com.ssafy.teammatching.service.MemberService;
@@ -63,11 +61,9 @@ public class TeamController {
             //멤버의 토큰 가져오기 -> 토큰 리스트에 넣기
             MemberDetail memberDetail1 = memberService.getMemberDetail(matchingResult1.getMemberId());
             String token1 = memberDetail1.getWebFcmToken();
-//            token1 = "fNGBxyTXLbabHNgQbvL9Y1:APA91bFTWorrmDTNO9--VergBZSiOX_SP7ZdeBWNi2lYmG3Dwzw30kvObyek9Aq4Zr1-vma_cduMZUBuLhSXZy5EOchanPYAKCeXSJE2IfBM4Ah7c_iEVL2EuEmt0Svr0Ua7c91nCC2-";
 
             MemberDetail memberDetail2 = memberService.getMemberDetail(matchingResult1.getMemberId());
             String token2 = memberDetail2.getWebFcmToken();
-//            token2 = "fNGBxyTXLbabHNgQbvL9Y1:APA91bFTWorrmDTNO9--VergBZSiOX_SP7ZdeBWNi2lYmG3Dwzw30kvObyek9Aq4Zr1-vma_cduMZUBuLhSXZy5EOchanPYAKCeXSJE2IfBM4Ah7c_iEVL2EuEmt0Svr0Ua7c91nCC2-";
 
             List<String> token_list = new ArrayList<>();
             token_list.add(token1);
@@ -75,13 +71,6 @@ public class TeamController {
 
             System.out.println("매칭 멤버1" + matchingResult1.getMemberId());
             System.out.println("매칭 멤버2" + matchingResult2.getMemberId());
-
-//            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//            String result1ToStr = gson.toJson(matchingResult1);
-//            String result2ToStr = gson.toJson(matchingResult2);
-//
-//            System.out.println(result1ToStr);
-//            System.out.println(result2ToStr);
 
             Map<String, String> data = new HashMap<>();
             data.put("team1", matchingResult1.toString());

@@ -1,6 +1,7 @@
 package com.ssafy.matching.service;
 
 import com.ssafy.matching.dto.Team;
+import com.ssafy.matching.dto.TeamChatroom;
 import com.ssafy.matching.dto.TeamMember;
 import com.ssafy.matching.dto.TeamStats;
 import com.ssafy.matching.repository.TeamMemberRepository;
@@ -55,7 +56,11 @@ public class TeamServiceImpl implements TeamService {
             teamMember.setTeam(team);
         }
 
-        return teamRepository.save(team);
+        Team savedTeam = teamRepository.save(team);
+
+        System.out.println("savedTeam: " + savedTeam);
+
+        return savedTeam;
     }
 
     @Override
