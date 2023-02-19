@@ -103,12 +103,14 @@ public class MatchingServiceImpl implements MatchingService {
                 Map<String, Object> resultMap = new HashMap<>();
                 MatchingResult myTeamMatchingResult = MatchingResult.builder() //우리팀과 매칭된 상대팀 정보
                         .memberId(memberId)
+                        .opTeamId(room.getTeamId())
                         .opTeamName(opTeamStats.getTeamName())
                         .opTier(opTeamStats.getTier())
                         .build();
 
                 MatchingResult opTeamMatchingResult = MatchingResult.builder() //상대팀이 매칭된 우리팀 정보
                         .memberId(room.getMemberId())
+                        .opTeamId(teamId)
                         .opTeamName(myTeamStats.getTeamName())
                         .opTier(myTeamStats.getTier())
                         .build();
