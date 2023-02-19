@@ -28,6 +28,12 @@ public class TeamChatroom implements Serializable {
     private int teamId;
     @ApiModelProperty(value = "팀채팅방 이름", required = true)
     private String chatroomName;
+    @Transient
+    @ApiModelProperty(value = "채팅방의 마지막 메세지")
+    private String lastMessageContent;
+    @Transient
+    @ApiModelProperty(value = "채팅방의 안 읽은 메세지 개수")
+    private String unreadMessageNumber;
 
     @OneToOne
     @JoinColumn(name = "teamId", insertable=false, updatable = false)

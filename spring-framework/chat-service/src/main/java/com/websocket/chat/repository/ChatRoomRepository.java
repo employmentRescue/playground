@@ -3,6 +3,7 @@ package com.websocket.chat.repository;
 import com.websocket.chat.dto.*;
 import com.websocket.chat.pubsub.RedisSubscriber;
 import com.websocket.chat.service.ChatRoomService;
+import com.websocket.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -11,6 +12,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import javax.swing.text.html.Option;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class ChatRoomRepository {
     */
     private Map<String, ChannelTopic> topics;
 
+    private final ChatService chatService;
     private final TeamChatRoomJpaRepository teamChatRoomJpaRepository;
     private final GatheringChatRoomJpaRepository gatheringChatRoomJpaRepository;
     private final MemberTeamChatRoomJpaRepository memberTeamChatRoomJpaRepository;
@@ -70,8 +73,28 @@ public class ChatRoomRepository {
         for(MemberTeamChatroom mtc : list){
             int roomId = mtc.getTeamChatroomId();
             TeamChatroom teamChatroom = teamChatRoomJpaRepository.findAllByTeamChatroomId(roomId);
+
+            String lastMessageContent = "";
+
+            List<ChatMessage> chatMessageList = chatService.messageList(roomId);
+
+            if(chatMessageList != null)
+                lastMessageContent = chatMessageList.get(chatMessageList.size()-1).getContent();
+
+
+            int unreadMessageNumber = chatService.unreadMessageNumber(memberId,roomId);
+
+            String stUnreadMessageNumber = "";
+            if(unreadMessageNumber != 0)
+                stUnreadMessageNumber = Integer.toString(unreadMessageNumber);
+
+
+            teamChatroom.setLastMessageContent(lastMessageContent);
+            teamChatroom.setUnreadMessageNumber(stUnreadMessageNumber);
+
             teamChatroomList.add(teamChatroom);
         }
+
         return teamChatroomList;
     }
 

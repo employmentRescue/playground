@@ -28,9 +28,10 @@
                 <button class="btn btn-primary" type="button" @click="createRoom">채팅방 개설</button>
             </div>
         </div>
+<#--        {{item.lastMessageContent}} &nbsp; {{item.unreadMessageNumber}}-->
         <ul class="list-group">
             <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId" v-on:click="enterRoom(item.roomId)">
-                {{item.name}}
+                {{item.name}} &nbsp; dd
             </li>
         </ul>
     </div>

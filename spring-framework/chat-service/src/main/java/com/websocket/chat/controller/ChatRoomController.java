@@ -2,10 +2,12 @@ package com.websocket.chat.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.websocket.chat.dto.ChatMessage;
 import com.websocket.chat.dto.GatheringChatroom;
 import com.websocket.chat.dto.TeamChatroom;
 import com.websocket.chat.repository.ChatRoomRepository;
 import com.websocket.chat.service.ChatRoomService;
+import com.websocket.chat.service.ChatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +31,24 @@ public class ChatRoomController {
     private static final String FAIL = "fail";
 
     private final ChatRoomService chatRoomService;
+    private final ChatService chatService;
 
 
     @ApiOperation(value = "전체 팀 채팅방 조회", notes = "회원의 팀 채팅방을 전부 가져온다.")
     @GetMapping("/TeamChatRoom/{memberId}")
     public ResponseEntity<List<TeamChatroom>> getTeamChatRoomList(@PathVariable long memberId){
+//        List<TeamChatroom> list = chatRoomService.getAllTeamChatroomByMemberId(memberId);
+//        for(TeamChatroom room : list){
+//            long id = memberId;
+//            int roomId = room.getTeamChatroomId();
+//
+//            String lastMessageContent = chatService.bringMessage(id, roomId).getContent();
+//            int unreadMessageNumber = chatService.unreadMessageNumber(id,roomId);
+//
+//            room.setLastMessageContent(lastMessageContent);
+//            room.setUnreadMessageNumber(unreadMessageNumber);
+//        }
+
         return new ResponseEntity<List<TeamChatroom>>(chatRoomService.getAllTeamChatroomByMemberId(memberId), HttpStatus.OK);
     }
 
