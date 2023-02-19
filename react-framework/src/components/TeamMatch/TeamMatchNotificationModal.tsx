@@ -65,6 +65,8 @@ export default function TeamMatchNotificationModal() {
   // foreground
   onMessage(messaging, (payload) => {
     console.log('Message received(foregorund). ', payload);
+    const matchData = payload && payload.data && JSON.parse(payload?.data?.value);
+    console.log(matchData);
     setNotification({ title: payload?.notification?.title, body: payload?.notification?.body });
     // ...
   });

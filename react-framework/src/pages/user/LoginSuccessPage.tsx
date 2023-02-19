@@ -2,7 +2,7 @@ import { KAKAO_LOGIN_TEST_SERVER_URL, SERVER_URL } from "@/utils/url";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useGetUserInfoByToken from "@/hooks/user/useGetUserInfoByToken";
 import { useEffect } from "react"
 import { useDispatch } from "react-redux";
@@ -24,10 +24,8 @@ export default function LoginSuccessPage() {
         appId: "1:808423483984:web:abdb73b3b73219b3b1bf55",
         measurementId: "G-S20W3SX3K1"
     };
-    const params = new URLSearchParams(location.search);
-    let myId = params.get("user_id")
-    console.log(myId)
-    dispatch(saveUserId(myId))
+    const params = useParams();
+    console.log("params", params);
     navigate("/home")
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);

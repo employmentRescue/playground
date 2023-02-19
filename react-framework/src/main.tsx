@@ -151,7 +151,7 @@ const router = createBrowserRouter([
       },
       {
         // 백엔드 서버에서 로그인 토큰까지 받아왔을 때 Redirect될 URL
-        path: 'login/success',
+        path: 'login/success/:access_token/:refesh_token/:user_id',
         element: <LoginSuccessPage />,
       },
       {
