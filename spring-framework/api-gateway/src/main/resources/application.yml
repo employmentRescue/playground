@@ -106,6 +106,7 @@ spring:
 #            - RewritePath=/pages/(?<path>.*),/$\{path}
 
 
+
   data:
     redis:
       host: i8b309.p.ssafy.io  # localhost
