@@ -144,7 +144,7 @@ export default function MatchDetailPage() {
 
     let isUserExisted = false;
     for (const member of match.data.memberGatheringList) {
-      if (member.memberId === userId || member.memberId === 111) {
+      if (member.memberId === userId) {
         isUserExisted = true;
         break;
       }
