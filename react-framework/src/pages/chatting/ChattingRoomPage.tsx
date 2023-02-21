@@ -13,7 +13,7 @@ import { Stomp } from "@stomp/stompjs";
 import { RootState } from "@/stores/store";
 import { setTabName } from "@/stores/tab/tabName";
 import { SpeechBubble } from "@/components/Chatting/SpeechBubble";
-import { CHATTING_SERVER_URL, SOCKET_URL } from "@/utils/url";
+import { CHATTING_SERVER_URL, SOCKET_URL, USER_SERVER_URL } from "@/utils/url";
 
 
 type TextList = {
@@ -33,6 +33,7 @@ webSocket.debug = () => console.log()
 export default function ChattingRoomPage() {
     const params = useParams();
     const [textList, setTextList] = useState<TextList[]>([]);
+    const [nicknameList, setNicknameList] = useState<{ id: string, nickname: string }[]>([]);
     const [title, setTitle] = useState<string>('');
 
     const recvMessage = (message: any) => {
@@ -52,9 +53,20 @@ export default function ChattingRoomPage() {
             });
     }
 
+    const getNickname = async () => await axios.post(USER_SERVER_URL + `/user/search/id/similar?nickname=`)
+        .then((response) => {
+            console.log("받은 응답", response.data)
+            setNicknameList(response.data)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+        ;
+
     // 채팅방 처음 접속 시 API에서 해당 채팅방의 모든 메시지 기록을 받아옴
     useEffect(() => {
         getMessageList();
+        getNickname();
         // axios.get(CHATTING_SERVER_URL + `/chat/GatheringChatRoom/enter/${params.roomId}`).then(({ data }) => {
         //     console.log(data)
         //     if (data)
@@ -132,11 +144,17 @@ export default function ChattingRoomPage() {
         let index = 0
         const Result = textList.map((text: TextList) => {
             index++;
+            let nicknameRender
+            for (const nicknameInfo of nicknameList) {
+                if (nicknameInfo.id == text.memberId) {
+                    nicknameRender = nicknameInfo.nickname
+                }
+            }
             return (
                 params.roomId == String(text.chatroomId) && <SpeechBubble
                     key={index}
                     isMine={String(myUserId) == text.memberId}
-                    nickName={text.memberId}    // 닉네임 대신 임시로 멤버 ID
+                    nickName={String(nicknameRender)}    // 닉네임 대신 임시로 멤버 ID
                     innerText={text.content}
                     profile={defaultProfile}    // 임시로 기본 이미지
                     dateTime={new Date()}
