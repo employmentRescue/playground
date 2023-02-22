@@ -34,6 +34,16 @@ import TeamMatchPage from './pages/teamMatch/TeamMatchPage';
 import StartPage from './pages/start/StartPage';
 import TestLoginPage from './pages/test/TestLoginPage';
 
+
+
+declare global {
+  interface Window {
+    setAccess_token: Function;
+    fcmForegroundOnFlutterApp: Function;
+    isFluttApp: Boolean;
+  }
+}
+
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
