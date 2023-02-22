@@ -44,7 +44,7 @@ export default function RankPage() {
   }, [])
 
   useEffect(() => {
-    if (myTeamList.data) {
+    if (myTeamList.data != null) {
       setMyteamId(myTeamList.data[myTeamIndex]?.team?.teamId)
     }
   }, [myTeamList.isSuccess, myTeamIndex])

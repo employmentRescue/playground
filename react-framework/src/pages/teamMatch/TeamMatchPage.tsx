@@ -228,7 +228,7 @@ export default function TeamMatchPage() {
     // console.log('myTeamList', myTeamList)
 
     useEffect(() => {
-        if (myTeamList.data) {
+        if (myTeamList.data != null) {
             console.log(myTeamList.data)
             setSports(myTeamList.data[myTeamIndex]?.team.sports);
             setGameType(myTeamList.data[myTeamIndex]?.team.gameType)
