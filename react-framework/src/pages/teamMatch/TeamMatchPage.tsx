@@ -230,9 +230,9 @@ export default function TeamMatchPage() {
     useEffect(() => {
         if (myTeamList.data) {
             console.log(myTeamList.data)
-            setSports(myTeamList.data[myTeamIndex].team.sports);
-            setGameType(myTeamList.data[myTeamIndex].team.gameType)
-            setCurrentTeamId(myTeamList.data[myTeamIndex].team.teamId);
+            setSports(myTeamList.data[myTeamIndex]?.team.sports);
+            setGameType(myTeamList.data[myTeamIndex]?.team.gameType)
+            setCurrentTeamId(myTeamList.data[myTeamIndex]?.team.teamId);
         }
 
     }, [myTeamList.isSuccess, sliderIndex])
