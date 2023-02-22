@@ -11,6 +11,7 @@ import TeamSettingPage from "./TeamSettingPage"
 import { setTabName } from "@/stores/tab/tabName"
 import axios from "axios"
 import { USER_SERVER_URL } from "@/utils/url"
+import { getImgUrl } from "@/utils/getImgUrl"
 
 interface SampleUser {
 	id: number;
@@ -52,7 +53,7 @@ export default function TeamCreateDefaultPage() {
 					key={profile.id}
 					userId={profile.id}
 					className={"flex my-5 justify-between"}
-					imageSrc={profileSampleImg}
+					imageSrc={getImgUrl('profiles/user', profile.id)}
 					imageSize="ml-24 w-52 h-52"
 					nickname={profile.nickname}
 					isSelected={profile.isSelected}
@@ -79,7 +80,7 @@ export default function TeamCreateDefaultPage() {
 							return memberInfo.memberId !== selectedMemberId
 						}))
 					}}>
-						<img src={profileSampleImg} className="w-47 h-auto rounded-25" />
+						<img src={getImgUrl('profiles/user', memberInfo.memberId)} className="w-47 h-47 rounded-25" />
 						<img src={xButton} className="w-15 h-15 -ml-10" />
 					</div>
 					<p className="text-10 text-center mt-3 px-2 tracking-tight truncate">{memberInfo.nickname}</p>
