@@ -28,7 +28,7 @@ export default function ChattingListPage() {
     })
     const dispatch = useDispatch();
     const team = useGetAllTeamChattingRoomsByMemberId(myUserId);
-    const gather = useGetAllGatheringChattingRooms(myUserId);
+    //const gather = useGetAllGatheringChattingRooms(myUserId);
 
     useEffect(() => {
         dispatch(setTabName('채팅 목록'))
@@ -36,8 +36,8 @@ export default function ChattingListPage() {
 
     useEffect(() => {
         console.log(team.data)
-        console.log(gather.data)
-    }, [team.data, gather.data])
+        // console.log(gather.data)
+    }, [team.data])
 
     const renderTeamChatRooms = () => {
         return team.data && team.data.map((chattingRoom: any) => {
@@ -45,17 +45,17 @@ export default function ChattingListPage() {
         })
     }
 
-    const renderGatheringChatRooms = () => {
-        return gather.data && gather.data.map((chattingRoom: any) => {
-            return <ListCard key={chattingRoom.gatheringChatroomId} roomId={chattingRoom.gatheringChatroomId} roomProfile={basketball} title={chattingRoom.chatroomName} latestMsg={chattingRoom.lastMessageContent} unreadMsgCount={chattingRoom.unreadMessageNumber} />
-        })
-    }
+    // const renderGatheringChatRooms = () => {
+    //     return gather.data && gather.data.map((chattingRoom: any) => {
+    //         return <ListCard key={chattingRoom.gatheringChatroomId} roomId={chattingRoom.gatheringChatroomId} roomProfile={basketball} title={chattingRoom.chatroomName} latestMsg={chattingRoom.lastMessageContent} unreadMsgCount={chattingRoom.unreadMessageNumber} />
+    //     })
+    // }
 
     return (
         <div className="flex flex-col h-[calc(100%-110px)] bg-white">
             <Notice title="오늘 운동은 어떠셨나요?" content="팀원들에게 격려의 메세지를 남겨주세요!" />
             {renderTeamChatRooms()}
-            {renderGatheringChatRooms()}
+
         </div>
     )
 }
