@@ -33,7 +33,7 @@ public class MemberSometimes {
     @ApiModelProperty(value = "경도")
     private Double lng;
     @ApiModelProperty(value = "거리", required = true)
-    private int distance;
+    private Integer distance;
 
     @OneToMany
     @JoinColumn(name="memberId")
