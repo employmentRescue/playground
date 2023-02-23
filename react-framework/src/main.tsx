@@ -38,7 +38,7 @@ import TestLoginPage from './pages/test/TestLoginPage';
 
 declare global {
   interface Window {
-    setAccess_token: Function;
+    setAccess_tokenOnFlutterApp: Function;
     fcmForegroundOnFlutterApp: Function;
     isFluttApp: Boolean;
   }
