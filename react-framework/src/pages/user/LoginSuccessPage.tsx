@@ -22,6 +22,7 @@ export default function LoginSuccessPage() {
   const userId = searchParams.get('user_id');
   const accessToken = searchParams.get('access_token');
   if (window.isFluttApp) {
+    const accessTokenForApp = searchParams.get('access_token_for_app')
     window.setAccess_tokenOnFlutterApp(accessToken);
   }
 
