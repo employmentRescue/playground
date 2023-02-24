@@ -23,8 +23,10 @@ export default function LoginSuccessPage() {
     console.log(userId);
     useEffect(() => {
         console.log(userId)
-        dispatch(saveUserId(userId))
+      dispatch(saveUserId(userId))
+      if (userId != null) {
         navigate('/home')
+      } 
     }, [userId])
 
     return (
