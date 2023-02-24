@@ -32,7 +32,9 @@ export default function LoginSuccessPage() {
       dispatch(saveUserId(userId))
       if (userId != null) {
         navigate('/home')
-      } 
+      } else {
+        navigate('/login');
+      }
     }, [userId])
 
     return (
