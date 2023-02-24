@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.*;
@@ -67,64 +68,24 @@ public class oauthController {
 
 
 
-    @RequestMapping("/login/kakao")
+    @RequestMapping(value = {"/login/kakao", "/app/login/kakao", "/web/login/kakao"})
     String redirectTologin(HttpServletRequest req) throws MalformedURLException {
+        String reqPath = (String) req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+
+        System.out.println(reqPath.equals("/app/login/kakao"));
+        System.out.println(api_gateway_url + "/oauth2" + (reqPath.equals("/oauth2/app/login/kakao") ? "/app/login" : "/web/login"));
 
         return "redirect:" + "https://kauth.kakao.com/oauth/authorize?" +
                 "response_type=code&client_id=" + kakao_cliendID +
                 "&redirect_uri=" +
-                api_gateway_url + "/oauth2/login"; // 내 서버로 redirect 해서 kakao access_token, kakao refresh_token 받음
+                api_gateway_url
+//                "https://localhost:8080"
+                + "/oauth2" + (reqPath.equals("/oauth2/app/login/kakao") ? "/app/login" : "/web/login"); // 내 서버로 redirect 해서 kakao access_token, kakao refresh_token 받음
         // <- 나중에 naver도 합치면 @RequestMapping("/login/{provider}")로 하면 될듯.
     }
 
 
-
-    @RequestMapping("/login/app")
-    String appLogin(@RequestParam Map<String, Object> map, HttpServletRequest req) throws Throwable
-    {
-        System.out.println("login : " + map);
-//        if (map.isEmpty() || !map.containsKey("code")) return "redirect:" + api_gateway_url +  "/login/fail";
-
-        String code = (String) map.get("code");
-
-        // oauth code를 이용해서 access_token, refresh_token 받기
-        URL url = new URL("https://kauth.kakao.com/oauth/token"+ "?"
-                + "grant_type=authorization_code&"
-                + "client_id=" + kakao_cliendID
-                + "&redirect_uri=" + URLEncoder.encode(api_gateway_url + "/oauth2/login/app", StandardCharsets.UTF_8)
-                + "&code=" + code //(String) map.get("code")
-        );
-
-        HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-        httpConn.setRequestMethod("POST");
-        httpConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-        InputStream responseStream = httpConn.getInputStream();
-//        System.out.println(new String(responseStream.readAllBytes()));
-        byte[] access_tokens_bytes = responseStream.readAllBytes();
-        KakaoTokenByCodeDTO codeResult = objectMapper.readValue(access_tokens_bytes, KakaoTokenByCodeDTO.class);
-
-
-
-        // access_token으로 사용자 정보 받기
-        url = new URL("https://kapi.kakao.com/v2/user/me");
-        httpConn = (HttpURLConnection) url.openConnection();
-        httpConn.setRequestMethod("POST");
-        httpConn.setRequestProperty("Authorization", "Bearer " + codeResult.getAccess_token());
-        responseStream = httpConn.getInputStream();
-        String ret = new String(responseStream.readAllBytes());
-        System.out.println(ret);
-
-        KakaoUserInfoDTO userinfo = objectMapper.readValue(ret, KakaoUserInfoDTO.class);
-        System.out.println(userinfo);
-
-        System.out.println("redirect:kakao" + kakao_cliendID + "://oauth?server_error=abc&access_token=" + codeResult.getAccess_token());
-        return "redirect:kakao" + kakao_cliendID + "://oauth?server_error=abc&access_token=" + codeResult.getAccess_token();
-    }
-
-
-
-    @RequestMapping("/login")
+    @RequestMapping(value = {"/login", "/app/login", "/web/login"})
     String login(@RequestParam Map<String, Object> map, HttpServletRequest req) throws Throwable
     {
         System.out.println("login : " + map);
@@ -132,7 +93,10 @@ public class oauthController {
 
         String code = (String) map.get("code");
 
-        KakaoTokenByCodeDTO codeResult = kakao_oauthService.getKakaoToken(kakao_cliendID, api_gateway_url, code);
+        String reqPath = (String) req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        boolean isAppLogin = reqPath.equals("/oauth2/app/login");
+
+        KakaoTokenByCodeDTO codeResult = kakao_oauthService.getKakaoToken(kakao_cliendID, api_gateway_url, code, isAppLogin);
         Instant curTime = Instant.now();
 
 
@@ -142,7 +106,7 @@ public class oauthController {
 
         System.out.println(entityManager.find(MemberOftenEntity.class, userinfo.getId()));
         if (entityManager.find(MemberOftenEntity.class, userinfo.getId()) != null){
-            Map<String, String> tokens = kakao_oauthService.login(userinfo.getId(), codeResult.getAccess_token(), codeResult.getRefresh_token(), curTime.plusSeconds(codeResult.getExpires_in()), curTime.plusSeconds(codeResult.getRefresh_token_expires_in()));
+            Map<String, String> tokens = kakao_oauthService.login(userinfo.getId(), codeResult.getAccess_token(), codeResult.getRefresh_token(), curTime.plusSeconds(codeResult.getExpires_in()), curTime.plusSeconds(codeResult.getRefresh_token_expires_in()), isAppLogin);
 
 
             return "redirect:"
@@ -151,7 +115,10 @@ public class oauthController {
                     + "/login/success?"
                     + "access_token=" + tokens.get("access_token")
                     + "&refresh_token=" + tokens.get("refresh_token")
-                    + "&user_id=" + userinfo.getId();
+                    + "&user_id=" + userinfo.getId()
+
+                    + (isAppLogin?"&access_token_for_app=" + tokens.get("access_token_for_app"):"");
+
         }
         else {
 
@@ -224,7 +191,7 @@ public class oauthController {
         if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
         oAuthRegisterCacheRepository.delete(loginCache);
 
-        Map<String, String> tokens = kakao_oauthService.login(loginCache.getKakao_userID(), loginCache.getKakao_accessToken(), loginCache.getKakao_refreshToken(), loginCache.get_expires_in(), loginCache.get_refresh_token_expires_in());
+        Map<String, String> tokens = kakao_oauthService.login(loginCache.getKakao_userID(), loginCache.getKakao_accessToken(), loginCache.getKakao_refreshToken(), loginCache.get_expires_in(), loginCache.get_refresh_token_expires_in(), false);
 
 
 

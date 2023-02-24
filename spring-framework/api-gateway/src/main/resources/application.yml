@@ -71,7 +71,7 @@ spring:
           uri: https://i8b309.p.ssafy.io:9003
           order: 1
           predicates:
-            - Path=/match/**, /matching/**, /gathering/**, /live/**, /ranking/**, /team/**
+            - Path=/match/**, /matching/**, /mypage/**, /gathering/**, /live/**, /ranking/**, /team/**, , /token/**
 
         - id: matching-service-tester
           uri: https://i8b309.p.ssafy.io:10003

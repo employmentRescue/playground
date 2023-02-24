@@ -2,12 +2,10 @@ package com.ssafy.oauth_service.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.oauth_service.Repository.KakaoLoginAccessTokenCacheForAppRepository;
 import com.ssafy.oauth_service.Repository.KakaoLoginAccessTokenCacheRepository;
 import com.ssafy.oauth_service.Repository.KakaoLoginRefreshTokenCacheRepository;
-import com.ssafy.oauth_service.dto.KakaoLoginAccessTokenCache;
-import com.ssafy.oauth_service.dto.KakaoLoginRefreshTokenCache;
-import com.ssafy.oauth_service.dto.KakaoTokenByCodeDTO;
-import com.ssafy.oauth_service.dto.KakaoUserInfoDTO;
+import com.ssafy.oauth_service.dto.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -32,21 +30,24 @@ public class kakaoOauthService {
 
     KakaoLoginAccessTokenCacheRepository kakaoLoginAccessTokenCacheRepository;
 
+    KakaoLoginAccessTokenCacheForAppRepository kakaoLoginAccessTokenCacheForAppRepository;
+
     KakaoLoginRefreshTokenCacheRepository kakaoLoginRefreshTokenCacheRepository;
 
     @Autowired
-    kakaoOauthService(ObjectMapper objectMapper, KakaoLoginAccessTokenCacheRepository kakaoLoginAccessTokenCacheRepository, KakaoLoginRefreshTokenCacheRepository kakaoLoginRefreshTokenCacheRepository){
+    kakaoOauthService(ObjectMapper objectMapper, KakaoLoginAccessTokenCacheRepository kakaoLoginAccessTokenCacheRepository, KakaoLoginAccessTokenCacheForAppRepository kakaoLoginAccessTokenCacheForAppRepository, KakaoLoginRefreshTokenCacheRepository kakaoLoginRefreshTokenCacheRepository){
         this.objectMapper = objectMapper;
         this.kakaoLoginAccessTokenCacheRepository = kakaoLoginAccessTokenCacheRepository;
+        this.kakaoLoginAccessTokenCacheForAppRepository = kakaoLoginAccessTokenCacheForAppRepository;
         this.kakaoLoginRefreshTokenCacheRepository = kakaoLoginRefreshTokenCacheRepository;
     }
 
-    public KakaoTokenByCodeDTO getKakaoToken(String kakao_cliendID, String api_gateway_url, String code) throws IOException {
+    public KakaoTokenByCodeDTO getKakaoToken(String kakao_cliendID, String api_gateway_url, String code, boolean isAppLogin) throws IOException {
         // oauth code를 이용해서 access_token, refresh_token 받기
         URL url = new URL("https://kauth.kakao.com/oauth/token?" +
                 "grant_type=authorization_code" +
                 "&client_id=" + kakao_cliendID +
-                "&redirect_uri=" + URLEncoder.encode(api_gateway_url + "/oauth2/login", StandardCharsets.UTF_8) +
+                "&redirect_uri=" + URLEncoder.encode(api_gateway_url /*"https://localhost:8080"*/ + "/oauth2" + (isAppLogin ? "/app/login" : "/web/login"), StandardCharsets.UTF_8) +
                 "&code=" + code //(String) map.get("code")
         );
 
@@ -76,10 +77,25 @@ public class kakaoOauthService {
         return userinfo;
     }
 
-    public Map<String, String> login(long kakao_userID, String kakao_accessToken, String kakao_refreshToken, Instant _expires_in, Instant _refresh_token_expires_in) {
+    public Map<String, String> login(long kakao_userID, String kakao_accessToken, String kakao_refreshToken, Instant _expires_in, Instant _refresh_token_expires_in, boolean isApp) {
         String accessToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+        String accessTokenForApp = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
         String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
 
+
+        if (isApp){
+            kakaoLoginAccessTokenCacheForAppRepository
+                    .save(
+                            KakaoLoginAccessTokenCacheForApp
+                                    .builder()
+                                    .token(accessTokenForApp)
+                                    .kakao_accessToken(kakao_accessToken)
+                                    .kakao_refreshToken(kakao_refreshToken)
+                                    .kakao_userID(kakao_userID)
+                                    ._expires_in(_expires_in)
+                                    .build()
+                    );
+        }
 
         kakaoLoginAccessTokenCacheRepository
                 .save(
@@ -122,7 +138,8 @@ public class kakaoOauthService {
 
         return Map.of(
                 "access_token", accessToken,
-                "refresh_token", refreshToken
+                "refresh_token", refreshToken,
+                "access_token_for_app", accessTokenForApp
         );
     }
 }
