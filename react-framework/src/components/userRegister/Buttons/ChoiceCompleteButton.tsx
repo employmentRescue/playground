@@ -48,7 +48,7 @@ export default function ChoiceCompoleteButton({ innerText, isNicknameDuplicated 
                     }
                 }
                 else if (innerText == "운동하러 가기") {
-                    navigate("/login/success")
+                    navigate("/login")
                 }
 
             }}
