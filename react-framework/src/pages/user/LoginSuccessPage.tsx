@@ -19,8 +19,14 @@ export default function LoginSuccessPage() {
     console.log("location: ", locationLogin);
     const searchParams = new URLSearchParams(locationLogin.search);
     console.log(searchParams);
-    const userId = searchParams.get('user_id');
-    console.log(userId);
+  const userId = searchParams.get('user_id');
+  const accessToken = searchParams.get('access_token');
+  if (window.isFluttApp) {
+    window.setAccess_tokenOnFlutterApp(accessToken);
+  }
+
+  console.log(userId);
+  
     useEffect(() => {
         console.log(userId)
       dispatch(saveUserId(userId))
