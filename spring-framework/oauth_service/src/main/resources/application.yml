@@ -1,3 +1,7 @@
+env:
+  server:
+    port: 8080
+
 server:
   port: ${env.server.port}
 
@@ -5,11 +9,21 @@ eureka:
   instance:
 #    prefer-ip-address: true
     hostname: i8b309.p.ssafy.io
+    non-secure-port-enabled: false
+    secure-port-enabled: true
+    secure-port: ${env.server.port}
   client:
     fetch-registry: true
     register-with-eureka: true
     serviceUrl:
       defaultZone: http://i8b309.p.ssafy.io:8761/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "info"
 
 spring:
   application:
