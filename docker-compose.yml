@@ -17,8 +17,10 @@ services:
     #   context: ./spring-framework/oauth_service
     image: itmagician/ssafy-b309:oauth2-service
     container_name: playground-oauth2-service
+    environment:
+      - env.server.port=9001
     ports:
-      - "9001:8080"
+      - "9001:9001"
     networks:
       - playground-broadcast-network
 
@@ -65,7 +67,6 @@ services:
       - "9005:8080"
     networks:
       - playground-broadcast-network
-
 
   team_matching-service:
     # build: 
