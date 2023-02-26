@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.oauth_service.Repository.KakaoLoginAccessTokenCacheRepository;
 import com.ssafy.oauth_service.Repository.KakaoLoginRefreshTokenCacheRepository;
 import com.ssafy.oauth_service.Repository.OAuthRegisterCacheRepository;
+import com.ssafy.oauth_service.Repository.RegisterCodeCacheRepository;
 import com.ssafy.oauth_service.dto.*;
 import com.ssafy.oauth_service.service.kakaoOauthService;
 import jakarta.persistence.EntityManager;
@@ -56,6 +57,8 @@ public class oauthController {
     @Autowired
     OAuthRegisterCacheRepository oAuthRegisterCacheRepository;
 
+    @Autowired
+    RegisterCodeCacheRepository registerCodeCacheRepository;
 
     @Autowired
     kakaoOauthService kakao_oauthService;
@@ -68,7 +71,7 @@ public class oauthController {
 
 
 
-    @RequestMapping(value = {"/login/kakao", "/app/login/kakao", "/web/login/kakao"})
+    @RequestMapping(value = {/*"/login/kakao",*/ "/app/login/kakao", "/web/login/kakao"})
     String redirectTologin(HttpServletRequest req) throws MalformedURLException {
         String reqPath = (String) req.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
@@ -85,7 +88,8 @@ public class oauthController {
     }
 
 
-    @RequestMapping(value = {"/login", "/app/login", "/web/login"})
+    @Transactional
+    @RequestMapping(value = {/*"/login",*/ "/app/login", "/web/login"})
     String login(@RequestParam Map<String, Object> map, HttpServletRequest req) throws Throwable
     {
         System.out.println("login : " + map);
@@ -104,11 +108,11 @@ public class oauthController {
         // access_token으로 사용자 정보 받기
         KakaoUserInfoDTO userinfo = kakao_oauthService.getUserInfo(kakao_cliendID, api_gateway_url, codeResult.getAccess_token());
 
-        System.out.println(entityManager.find(MemberOftenEntity.class, userinfo.getId()));
+
         if (entityManager.find(MemberOftenEntity.class, userinfo.getId()) != null){
             Map<String, String> tokens = kakao_oauthService.login(userinfo.getId(), codeResult.getAccess_token(), codeResult.getRefresh_token(), curTime.plusSeconds(codeResult.getExpires_in()), curTime.plusSeconds(codeResult.getRefresh_token_expires_in()), isAppLogin);
 
-            if (isAppLogin) System.out.println("app token : " + tokens.get("access_token_for_app"));
+            System.out.println("tokens : " + tokens.get("access_token_for_app"));
 
             return "redirect:"
 //                    + "https://localhost:3000"
@@ -122,10 +126,19 @@ public class oauthController {
 
         }
         else {
+            RegisterCodeCache registerCodeCache =  registerCodeCacheRepository.findById(userinfo.getId()).orElse(null);
+            if (registerCodeCache != null){
+                OAuthRegisterCache oAuthRegisterCache = oAuthRegisterCacheRepository.findById(registerCodeCache.getRegister_code()).orElse(null);
+
+                if (oAuthRegisterCache != null) oAuthRegisterCacheRepository.delete(oAuthRegisterCache);
+                registerCodeCacheRepository.delete(registerCodeCache);
+            }
+
+            String registerCode = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
 
             OAuthRegisterCache registerCache = OAuthRegisterCache
                                             .builder()
-                                            .token(Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8)))
+                                            .token(registerCode)
                                             .kakao_userID(userinfo.getId())
                                             .kakao_accessToken(codeResult.getAccess_token())
                                             .kakao_refreshToken(codeResult.getRefresh_token())
@@ -133,9 +146,13 @@ public class oauthController {
                                             ._refresh_token_expires_in(curTime.plusSeconds(codeResult.getRefresh_token_expires_in()))
                                             .build();
 
-            System.out.println(registerCache);
+            registerCodeCache = RegisterCodeCache.builder().kakao_userID(userinfo.getId()).register_code(registerCode).build();
 
             oAuthRegisterCacheRepository.save(registerCache);
+            registerCodeCacheRepository.save(registerCodeCache);
+
+
+
             System.out.println(registerCache);
 
 
@@ -157,7 +174,6 @@ public class oauthController {
         System.out.println("regist : " + loginCache);
         if (loginCache == null || code == null || code.isEmpty()) return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
-        System.out.println("regist : " + loginCache);
 
 
 
@@ -192,7 +208,11 @@ public class oauthController {
         if (httpConn.getResponseCode() / 100 != 2) throw new Exception();
         oAuthRegisterCacheRepository.delete(loginCache);
 
-        Map<String, String> tokens = kakao_oauthService.login(loginCache.getKakao_userID(), loginCache.getKakao_accessToken(), loginCache.getKakao_refreshToken(), loginCache.get_expires_in(), loginCache.get_refresh_token_expires_in(), false);
+        RegisterCodeCache registerCodeCache =  registerCodeCacheRepository.findById(loginCache.getKakao_userID()).orElse(null);
+        if (registerCodeCache != null) registerCodeCacheRepository.delete(registerCodeCache);
+
+        System.out.println("regist - deleted : " + loginCache + " " + registerCodeCache);
+//        Map<String, String> tokens = kakao_oauthService.login(loginCache.getKakao_userID(), loginCache.getKakao_accessToken(), loginCache.getKakao_refreshToken(), loginCache.get_expires_in(), loginCache.get_refresh_token_expires_in(), false);
 
 
 

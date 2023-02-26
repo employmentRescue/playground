@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.oauth_service.Repository.KakaoLoginAccessTokenCacheForAppRepository;
 import com.ssafy.oauth_service.Repository.KakaoLoginAccessTokenCacheRepository;
 import com.ssafy.oauth_service.Repository.KakaoLoginRefreshTokenCacheRepository;
+import com.ssafy.oauth_service.Repository.KakaoTokenListRepository;
 import com.ssafy.oauth_service.dto.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -34,12 +35,19 @@ public class kakaoOauthService {
 
     KakaoLoginRefreshTokenCacheRepository kakaoLoginRefreshTokenCacheRepository;
 
+    KakaoTokenListRepository kakaoTokenListRepository;
+
     @Autowired
-    kakaoOauthService(ObjectMapper objectMapper, KakaoLoginAccessTokenCacheRepository kakaoLoginAccessTokenCacheRepository, KakaoLoginAccessTokenCacheForAppRepository kakaoLoginAccessTokenCacheForAppRepository, KakaoLoginRefreshTokenCacheRepository kakaoLoginRefreshTokenCacheRepository){
+    kakaoOauthService(ObjectMapper objectMapper
+            , KakaoLoginAccessTokenCacheRepository kakaoLoginAccessTokenCacheRepository
+            , KakaoLoginAccessTokenCacheForAppRepository kakaoLoginAccessTokenCacheForAppRepository
+            , KakaoLoginRefreshTokenCacheRepository kakaoLoginRefreshTokenCacheRepository
+            , KakaoTokenListRepository kakaoTokenListRepository){
         this.objectMapper = objectMapper;
         this.kakaoLoginAccessTokenCacheRepository = kakaoLoginAccessTokenCacheRepository;
         this.kakaoLoginAccessTokenCacheForAppRepository = kakaoLoginAccessTokenCacheForAppRepository;
         this.kakaoLoginRefreshTokenCacheRepository = kakaoLoginRefreshTokenCacheRepository;
+        this.kakaoTokenListRepository = kakaoTokenListRepository;
     }
 
     public KakaoTokenByCodeDTO getKakaoToken(String kakao_cliendID, String api_gateway_url, String code, boolean isAppLogin) throws IOException {
@@ -70,7 +78,7 @@ public class kakaoOauthService {
         httpConn.setRequestProperty("Authorization", "Bearer " + kakao_accessToken);
         InputStream responseStream = httpConn.getInputStream();
         String ret = new String(responseStream.readAllBytes());
-        System.out.println(ret);
+        System.out.println("getUserInfo : "  + ret);
 
         KakaoUserInfoDTO userinfo = objectMapper.readValue(ret, KakaoUserInfoDTO.class);
 
@@ -82,6 +90,30 @@ public class kakaoOauthService {
         String accessTokenForApp = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
         String refreshToken = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
 
+
+        KakaoTokensList tokensList = kakaoTokenListRepository.findById(kakao_userID).orElse(null);
+        if (tokensList != null) {
+
+            KakaoLoginAccessTokenCache kakaoLoginAccessTokenCache = kakaoLoginAccessTokenCacheRepository
+                                                                                            .findById(tokensList.getAccess_token()).orElse(null);
+            KakaoLoginAccessTokenCacheForApp kakaoLoginAccessTokenCacheForApp = kakaoLoginAccessTokenCacheForAppRepository
+                                                                                            .findById(tokensList.getAccess_token_for_app()).orElse(null);
+            KakaoLoginRefreshTokenCache kakaoLoginRefreshTokenCache = kakaoLoginRefreshTokenCacheRepository
+                                                                                    .findById(tokensList.getRefresh_token()).orElse(null);
+
+
+            if (kakaoLoginAccessTokenCache != null) kakaoLoginAccessTokenCacheRepository.delete(kakaoLoginAccessTokenCache);
+            if (kakaoLoginAccessTokenCacheForApp != null) kakaoLoginAccessTokenCacheForAppRepository.delete(kakaoLoginAccessTokenCacheForApp);
+            if (kakaoLoginRefreshTokenCache != null) kakaoLoginRefreshTokenCacheRepository.delete(kakaoLoginRefreshTokenCache);
+        }
+
+        KakaoTokensList kakaoTokensList = KakaoTokensList.builder()
+                                                            .kakao_userID(kakao_userID)
+                                                            .access_token(accessToken)
+                                                            .access_token_for_app(accessTokenForApp)
+                                                            .refresh_token(refreshToken)
+                                                            .build();
+        kakaoTokenListRepository.save(kakaoTokensList);
 
         if (isApp){
             kakaoLoginAccessTokenCacheForAppRepository
