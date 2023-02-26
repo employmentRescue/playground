@@ -7,7 +7,7 @@ import { useState } from "react";
 
 export default function LoginPage() {
     const [LoginEnable, setLoginEnable] = useState(false);
-    function movePage(e) {
+    function movePage(e: any) {
         e.preventDefault()
         console.log("LoginPage(movePage)", window.isFluttApp)
     }
