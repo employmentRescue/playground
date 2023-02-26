@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: Service-Registry
+
+server:
+  port: 8761
+
+eureka:
+  server:
+    enable-self-preservation: false
+
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: false
+    fetch-registry: false
