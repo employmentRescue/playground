@@ -67,6 +67,8 @@ export default function TeamMatchNotificationModal() {
     // ...s
   });
 
+  window.fcmForegroundOnFlutterApp = (data: String) => { console.log("fcmForegroundOnFlutterApp!!!! : ", data, JSON.parse(data)) }
+
   // foreground
   onMessage(messaging, (payload) => {
 
@@ -95,7 +97,7 @@ export default function TeamMatchNotificationModal() {
   if (window.fluttFcmData) {
     console.log(window.fluttFcmData);
   }
-  
+
   return (
     <div>
       {open ? <div className="absolute w-full h-full bottom-0 bg-black/50 z-20">
