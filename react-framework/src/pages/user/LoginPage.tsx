@@ -10,7 +10,7 @@ export default function LoginPage() {
     function movePage(e: any) {
         e.preventDefault()
         console.log("LoginPage(movePage)", window.isFluttApp)
-        window.location.replace(window.isFluttApp ? KAKAO_LOGIN_TEST_SERVER_URL + "/oauth2/app/login/kakao" : KAKAO_LOGIN_TEST_SERVER_URL + "/oauth2/web/login/kakao")
+        window.location.href = window.isFluttApp ? KAKAO_LOGIN_TEST_SERVER_URL + "/oauth2/app/login/kakao" : KAKAO_LOGIN_TEST_SERVER_URL + "/oauth2/web/login/kakao"
     }
 
     return (
