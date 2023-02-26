@@ -119,9 +119,10 @@ oauth2:
       client-id:
         kakao: 79c6d214ca859ea2806d6bd426ffb1fe
 
-#eureka:
-#  client:
-#    fetch-registry: true # 유레카 클라이언트 활성화
-#    register-with-eureka: true # 유레카 클라이언트 활성화
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka # 유레카 클라이언트로 등록
+eureka:
+  client:
+    fetch-registry: true # 유레카 클라이언트 활성화
+    register-with-eureka: true # 유레카 클라이언트 활성화
+#    use-dns-for-fetching-service-urls: true
+    service-url:
+      defaultZone: https://i8b309.p.ssafy.io:8761/eureka # 유레카 클라이언트로 등록
