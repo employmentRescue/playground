@@ -12,7 +12,7 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     serviceUrl:
-      defaultZone: http://i8b309.p.ssafy.io/:8761/eureka
+      defaultZone: http://i8b309.p.ssafy.io:8761/eureka
 
 spring:
   application:
