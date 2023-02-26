@@ -12,7 +12,6 @@ eureka:
 #    non-secure-port-enabled: false
 #    secure-port-enabled: true
 #    secure-port: ${env.server.port}
-#    home-page-url: https://i8b309.p.ssafy.io:${env.server.port}
   client:
     fetch-registry: true
     register-with-eureka: true
