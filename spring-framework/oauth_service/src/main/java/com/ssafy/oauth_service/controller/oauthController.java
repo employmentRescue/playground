@@ -108,6 +108,7 @@ public class oauthController {
         if (entityManager.find(MemberOftenEntity.class, userinfo.getId()) != null){
             Map<String, String> tokens = kakao_oauthService.login(userinfo.getId(), codeResult.getAccess_token(), codeResult.getRefresh_token(), curTime.plusSeconds(codeResult.getExpires_in()), curTime.plusSeconds(codeResult.getRefresh_token_expires_in()), isAppLogin);
 
+            if (isAppLogin) System.out.println("app token : " + tokens.get("access_token_for_app"));
 
             return "redirect:"
 //                    + "https://localhost:3000"
@@ -202,10 +203,10 @@ public class oauthController {
         }
 
 
-        return new ResponseEntity(Map.of(
+        return new ResponseEntity(/*Map.of(
                 "access_token", tokens.get("access_token")
                 , "refresh_token", tokens.get("refresh_token")
                 , "user_id", loginCache.getKakao_userID()
-        ) , HttpStatus.OK);
+        ) , */HttpStatus.OK);
     }
 }
