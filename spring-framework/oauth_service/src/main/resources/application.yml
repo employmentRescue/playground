@@ -34,7 +34,7 @@ spring:
 
 
 oauth2:
-  api_gateway_url: "https://localhost:8080" # "https://i8b309.p.ssafy.io" #
+  api_gateway_url: "https://i8b309.p.ssafy.io" # "https://localhost:8080" # 
   client:
     registration:
       client-id:
