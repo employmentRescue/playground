@@ -69,6 +69,7 @@ export default function TeamMatchNotificationModal() {
 
   // foreground
   onMessage(messaging, (payload) => {
+
     console.log('Message received(foregorund). ', payload);
     const matchData = payload && payload.data && JSON.parse(payload?.data?.team1);
     const matchData2 = payload && payload.data && JSON.parse(payload?.data?.team2);
@@ -91,6 +92,10 @@ export default function TeamMatchNotificationModal() {
     // ...
   });
 
+  if (window.fluttFcmData) {
+    console.log(window.fluttFcmData);
+  }
+  
   return (
     <div>
       {open ? <div className="absolute w-full h-full bottom-0 bg-black/50 z-20">

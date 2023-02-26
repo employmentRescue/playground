@@ -25,7 +25,7 @@
 
   <script>
     window.isFluttApp = false;
-    window.fcmForegroundOnFlutterApp = (data) => { console.log("fcmForegroundOnFlutterApp!!!! : ", data, window.isFluttApp) }
+    window.fcmForegroundOnFlutterApp = (data) => { window.fluttFcmData = data };
   </script>
 </body>
 

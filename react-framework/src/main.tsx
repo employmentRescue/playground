@@ -41,6 +41,7 @@ declare global {
     setAccess_tokenOnFlutterApp: Function;
     fcmForegroundOnFlutterApp: Function;
     isFluttApp: Boolean;
+    fluttFcmData: String;
   }
 }
 
