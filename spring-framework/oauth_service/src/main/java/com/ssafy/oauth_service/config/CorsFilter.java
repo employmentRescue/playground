@@ -29,7 +29,7 @@ public class CorsFilter implements Filter {
 //
 ////        String url = ((HttpServletRequest)req).getRequestURL().toString();
 ////        String queryString = ((HttpServletRequest)request).getQueryString();
-//        System.out.println(((HttpServletRequest)req).getRequestURL().toString());
+        System.out.println(((HttpServletRequest)req).getRequestURL().toString());
 //
 //
         HttpServletRequest request = (HttpServletRequest) req;
