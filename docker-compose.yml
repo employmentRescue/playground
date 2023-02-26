@@ -24,17 +24,17 @@ services:
     networks:
       - playground-broadcast-network
 
-  # oauth2-service2:
-  #   # build: 
-  #   #   context: ./spring-framework/oauth_service
-  #   image: itmagician/ssafy-b309:oauth2-service
-  #   container_name: playground-oauth2-service2
-  #   environment:
-  #     - env.server.port=9011
-  #   ports:
-  #     - "9011:9011"
-  #   networks:
-  #     - playground-broadcast-network
+  oauth2-service2:
+    # build: 
+    #   context: ./spring-framework/oauth_service
+    image: itmagician/ssafy-b309:oauth2-service
+    container_name: playground-oauth2-service2
+    environment:
+      - env.server.port=9011
+    ports:
+      - "9011:9011"
+    networks:
+      - playground-broadcast-network
 
   user-service:
     # build: 
