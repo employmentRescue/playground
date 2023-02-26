@@ -6,9 +6,19 @@
 #    key-store-type: PKCS12
 #    key-password: password
 
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://i8b309.p.ssafy.io/:8761/eureka
+
 spring:
   application:
     name: oauth2-service
+
+
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
