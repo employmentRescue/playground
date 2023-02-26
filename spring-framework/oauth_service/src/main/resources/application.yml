@@ -8,7 +8,7 @@ server:
 eureka:
   instance:
     hostname: i8b309.p.ssafy.io
-    prefer-ip-address: true
+#    prefer-ip-address: true
     non-secure-port-enabled: false
     secure-port-enabled: true
     secure-port: ${env.server.port}
