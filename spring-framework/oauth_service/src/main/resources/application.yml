@@ -1,6 +1,7 @@
 eureka:
   instance:
-    prefer-ip-address: true
+#    prefer-ip-address: true
+    hostname: i8b309.p.ssafy.io
   client:
     fetch-registry: true
     register-with-eureka: true
@@ -9,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: oauth2-service
+    name: OAUTH2-SERVICE
 
 
 

@@ -50,7 +50,7 @@ spring:
         #     - Path=/oauth2/regist,/oauth2/success
 
         - id: oauth2-service
-          uri: lb://oauth2-service
+          uri: lb://OAUTH2-SERVICE
 #          uri: https://i8b309.p.ssafy.io:9001
 #          uri: http://localhost:8080
           order: 1
