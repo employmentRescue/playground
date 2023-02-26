@@ -67,7 +67,7 @@ export default function TeamMatchNotificationModal() {
     // ...s
   });
 
-  window.fcmForegroundOnFlutterApp = (data: String) => { console.log("fcmForegroundOnFlutterApp!!!! : ", data, JSON.parse(data)) }
+  window.fcmForegroundOnFlutterApp = (data: string) => { console.log("fcmForegroundOnFlutterApp!!!! : ", data, JSON.parse(data)) }
 
   // foreground
   onMessage(messaging, (payload) => {
