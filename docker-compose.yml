@@ -28,7 +28,7 @@ services:
     # build: 
     #   context: ./spring-framework/oauth_service
     image: itmagician/ssafy-b309:oauth2-service
-    container_name: playground-oauth2-service
+    container_name: playground-oauth2-service2
     environment:
       - env.server.port=9011
     ports:
