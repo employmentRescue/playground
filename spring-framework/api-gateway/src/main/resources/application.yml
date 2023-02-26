@@ -119,6 +119,15 @@ oauth2:
       client-id:
         kakao: 79c6d214ca859ea2806d6bd426ffb1fe
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: gateway
+  endpoint:
+    gateway:
+      enabled: true # default: true
+
 eureka:
   client:
     fetch-registry: true # 유레카 클라이언트 활성화
