@@ -67,7 +67,28 @@ export default function TeamMatchNotificationModal() {
     // ...s
   });
 
-  window.fcmForegroundOnFlutterApp = (data: string) => { console.log("fcmForegroundOnFlutterApp!!!! : ", data, JSON.parse(data)) }
+  window.fcmForegroundOnFlutterApp = (data: any) => {
+    data = JSON.parse(data)
+
+    const matchData = data && JSON.parse(data?.team1);
+    const matchData2 = data && JSON.parse(data?.team2);
+    if (matchData.memberId === userId) {
+      setMatchId(matchData.matchId);
+      setMemberId(matchData.memberId);
+      setTeamId(matchData.opTeamId);
+      setTeamName(matchData.opTeamName);
+      setTier(matchData.opTier);
+    } else if (matchData2.memberId === userId) {
+      setMatchId(matchData2.matchId);
+      setMemberId(matchData2.memberId);
+      setTeamId(matchData2.opTeamId);
+      setTeamName(matchData2.opTeamName);
+      setTier(matchData2.opTier);
+    }
+    console.log(matchData)
+
+    setOpen(true);
+  }
 
   // foreground
   onMessage(messaging, (payload) => {

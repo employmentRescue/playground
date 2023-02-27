@@ -41,9 +41,23 @@ declare global {
     setAccess_tokenOnFlutterApp: Function;
     fcmForegroundOnFlutterApp: Function;
     isFluttApp: Boolean;
+    Kakao: any
     fluttFcmData: String;
   }
 }
+
+
+const javascriptKey = "d3f38120255f831f57eb14d896de704c";
+
+// SDK는 한 번만 초기화해야 한다.
+// 중복되는 초기화를 막기 위해 isInitialized()로 SDK 초기화 여부를 판단한다.
+if (!window.Kakao.isInitialized()) {
+  // JavaScript key를 인자로 주고 SDK 초기화
+  window.Kakao.init(javascriptKey);
+  // SDK 초기화 여부를 확인하자.
+  console.log(window.Kakao.isInitialized());
+}
+// else alert("kakao sdk가 성공적으로 초기화되었습니다.")
 
 const container = document.getElementById('root') as HTMLElement;
 const queryClient = new QueryClient();
