@@ -20,7 +20,7 @@ chmod +x gradlew
 
 cd ..
 
-cd matching
+cd matching-service
 echo "matching Service BUILD"
 chmod +x gradlew
 ./gradlew clean bootJar; sudo docker build --no-cache -t itmagician/ssafy-b309:matching-service .; sudo docker push itmagician/ssafy-b309:matching-service;
@@ -34,14 +34,14 @@ chmod +x gradlew
 
 cd ..
 
-cd oauth_service
+cd oauth-service
 echo "oauth Service BUILD"
 chmod +x gradlew
 ./gradlew clean bootJar; sudo docker build --no-cache -t itmagician/ssafy-b309:oauth2-service .; sudo docker push itmagician/ssafy-b309:oauth2-service;
 
 cd ..
 
-cd team-matching
+cd team-matching-service
 echo "team-matching Service BUILD"
 chmod +x gradlew
 ./gradlew clean bootJar; sudo docker build --no-cache -t itmagician/ssafy-b309:team_matching-service .; sudo docker push itmagician/ssafy-b309:team_matching-service;
