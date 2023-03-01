@@ -70,8 +70,8 @@ export default function TeamMatchNotificationModal() {
   window.fcmForegroundOnFlutterApp = (data: any) => {
     data = JSON.parse(data)
 
-    const matchData = data && JSON.parse(data?.team1);
-    const matchData2 = data && JSON.parse(data?.team2);
+    const matchData = data?.team1;
+    const matchData2 = data?.team2;
     if (matchData.memberId === userId) {
       setMatchId(matchData.matchId);
       setMemberId(matchData.memberId);
