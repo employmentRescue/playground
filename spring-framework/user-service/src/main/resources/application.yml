@@ -1,11 +1,26 @@
+
+eureka:
+  instance:
+    hostname: www.b309-playground.com
+  #    prefer-ip-address: true
+  #    non-secure-port-enabled: false
+  #    secure-port-enabled: true
+  #    secure-port: ${env.server.port}
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    serviceUrl:
+      defaultZone: http://www.b309-playground.com:8761/eureka
+
 spring:
+  application:
+    name: user-service
+
   datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy # com.mysql.cj.jdbc.Driver
-    url: jdbc:log4jdbc:mysql://i8b309.p.ssafy.io:3333/playground?serverTimezone=UTC&characterEncoding=UTF-8
-#    url: jdbc:log4jdbc:mysql://localhost:3306/playground?serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://ssafy-project.mysql.database.azure.com:3306/playground?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=true
     username: ssafy
-    password: b309oo
-#    password: ssafy
+    password: b309oob309oo*&
 
 
 
@@ -13,7 +28,7 @@ spring:
   jpa:
     show-sq: true
     hibernate:
-      ddl-auto: validate # update
+      ddl-auto: update # validate #
     properties:
       hibernate:
         format_sql: true

@@ -45,13 +45,13 @@ spring:
 
       routes:
         # - id: react-framework2
-        #   uri: https://i8b309.p.ssafy.io:3000
+        #   uri: https://www.b309-playground.com:3000
         #   predicates:
         #     - Path=/oauth2/regist,/oauth2/success
 
         - id: oauth2-service
           uri: lb://OAUTH2-SERVICE
-#          uri: https://i8b309.p.ssafy.io:9001
+#          uri: https://www.b309-playground.com:9001
 #          uri: http://localhost:8080
           order: 1
           predicates:
@@ -61,7 +61,7 @@ spring:
 
 
         - id: user-service
-          uri: https://i8b309.p.ssafy.io:9002
+          uri: lb://USER-SERVICE
 #          uri: http://localhost:9000
           predicates:
             - Path=/user/**, /file/**
@@ -69,37 +69,37 @@ spring:
 #            - RewritePath=/oauth/(?<path>.*),/$\{path}
 
         - id: matching-service
-          uri: https://i8b309.p.ssafy.io:9003
+          uri: https://www.b309-playground.com:9003
           order: 1
           predicates:
             - Path=/match/**, /matching/**, /mypage/**, /gathering/**, /live/**, /ranking/**, /team/**, , /token/**
 
         - id: matching-service-tester
-          uri: https://i8b309.p.ssafy.io:10003
+          uri: https://www.b309-playground.com:10003
           predicates:
             - Path=/test/match/**, /test/matching/**, /test/gathering/**, /test/live/**, /test/ranking/**, /test/team/**
           filters:
             - RewritePath=/test/(?<path>.*),/$\{path}
 
         - id: notify-service
-          uri: https://i8b309.p.ssafy.io:9004
+          uri: lb://NOTIFY-SERVICE
           predicates:
             - Path=/notify/**
 
         - id: chat-service
-          uri: https://i8b309.p.ssafy.io:9005
+          uri: https://www.b309-playground.com:9005
           predicates:
             - Path=/chat/**, /ws-stomp/**, /webjars/**
 
         - id: team_match-service
-          uri: https://i8b309.p.ssafy.io:9006
+          uri: https://www.b309-playground.com:9006
           predicates:
             - Path=/team/matching/**
 
 
 
         - id: react-framework
-          uri: http://i8b309.p.ssafy.io:3000/
+          uri: http://www.b309-playground.com:3000/
           order: 2
           predicates:
             - Path=/**
@@ -110,7 +110,7 @@ spring:
 
   data:
     redis:
-      host: i8b309.p.ssafy.io  # localhost
+      host: www.b309-playground.com  # localhost
       port: 6379
 
 oauth2:
@@ -121,10 +121,10 @@ oauth2:
 
 eureka:
   instance:
-    hostname: i8b309.p.ssafy.io
+    hostname: www.b309-playground.com
   client:
     fetch-registry: true # 유레카 클라이언트 활성화
     register-with-eureka: true # 유레카 클라이언트 활성화
 #    use-dns-for-fetching-service-urls: true
     service-url:
-      defaultZone: https://i8b309.p.ssafy.io:8761/eureka # 유레카 클라이언트로 등록
+      defaultZone: https://www.b309-playground.com:8761/eureka # 유레카 클라이언트로 등록
